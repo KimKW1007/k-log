@@ -1,9 +1,12 @@
+import { Header } from '@components/header/Header'
 import type { NextPage } from 'next'
 
 
 const Home: NextPage = () => {
   return (
-    <div>초기 설정</div>
+    <div>
+      <Header/>
+    </div>
   )
 }
 
