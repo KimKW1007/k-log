@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
-import logo_black from "@images/logo_black.svg"
+import logo_black from "@images/black.svg"
 export const Header = () => {
   return (
     <HeaderBox>
@@ -37,10 +37,13 @@ const HeaderInnerBox = styled.div`
   justify-content:space-between;
 `
 const Logo = styled.div`
-  width: ${({theme})=> theme.rem.p100};
+  width: ${({theme})=> theme.rem.p50};
   height: 100%;
   display:flex;
   align-items: center;
+  img{
+    max-width:100%;
+  }
 `
 
 const BtnBox = styled.div`
