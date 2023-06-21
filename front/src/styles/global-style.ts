@@ -91,7 +91,8 @@ html{
 }
 
 html,
-body{
+body,
+#__next{
   width: 100%;
   height: 100%;
 }
