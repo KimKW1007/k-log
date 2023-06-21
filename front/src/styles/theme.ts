@@ -28,6 +28,10 @@ export const rem = {
   p56 : "3.5rem",
   p58 : "3.625rem",
   p60 : "3.75rem",
+  p70 : "4.375rem",
+  p80 : "5rem",
+  p90 : "5.625rem",
+  p100 : "6.25rem",
 }
 
 
