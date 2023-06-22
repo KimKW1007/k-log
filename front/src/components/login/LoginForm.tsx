@@ -1,4 +1,3 @@
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import UserInfoInput from '@components/common/UserInfoInput';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import customApi from 'utils/customApi';
 
 interface Inputs {
-  userId: string;
+  userid: string;
   password: string;
 }
 
@@ -28,14 +27,15 @@ const LoginForm = () => {
 
   const { mutate } = useMutation( postApi, {
     onError(error: any) {
-      console.log("에러")
+      console.log({error})
     },
     onSuccess(data) {
-      console.log("오케이")
+      console.log({data})
     },
   });
 
   const onSubmit = (data : Inputs) => {
+    console.log({data})
     mutate({...data})
   };
   
@@ -47,11 +47,11 @@ const LoginForm = () => {
           <h2>로그인</h2>
         </LoginTitleBox>
         <InputsBox>
-          <UserInfoInput bold type="text" inputName="아이디" register={register('userId',{required:true})} watch={watch('userId')} />
+          <UserInfoInput bold type="text" inputName="아이디" register={register('userid',{required:true})} watch={watch('userid')} />
           <UserInfoInput type="password" inputName="비밀번호" register={register('password',{required:true})} watch={watch('password')} />
         </InputsBox>
         <SubmitBox>
-          <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
+          <SubmitBtn type="submit" disabled={!watch('userid') || !watch('password')}>
             <PowerIcon></PowerIcon>
           </SubmitBtn>
         </SubmitBox>
