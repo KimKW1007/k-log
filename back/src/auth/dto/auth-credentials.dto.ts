@@ -13,7 +13,7 @@ export class AuthCredentialsDto extends Repository<User> {
   @IsString()
   @MinLength(4)
   @MaxLength(12)
-  userid: string;
+  userId: string;
   
   @IsNotEmpty()
   @IsString()

@@ -11,12 +11,12 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
   async createUser(authCredentialsDto:AuthCredentialsDto):Promise<void>{
-    const {userid, password} = authCredentialsDto;
+    const {userId, password} = authCredentialsDto;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = this.create({userid, password : hashedPassword})
+    const user = this.create({userId, password : hashedPassword})
     try{
       await this.save(user)
     }catch(e){
