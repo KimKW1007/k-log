@@ -19,11 +19,11 @@ export class AuthService {
   }
 
   async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken : string}> {
-    const { userId, password } = authCredentialsDto;
-    const user = await this.userRepository.findOneBy({ userId });
+    const { userid, password } = authCredentialsDto;
+    const user = await this.userRepository.findOneBy({ userid });
     if (user && (await bcrypt.compare(password, user.password))) {
       // 유저 토큰 생성( Secret + Payload)
-      const payload = { userId };
+      const payload = { userid };
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };
     } else {
