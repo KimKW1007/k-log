@@ -5,6 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Power } from '@styled-icons/ionicons-solid/Power';
 import Link from 'next/link'
+import { useMutation } from '@tanstack/react-query';
+import customApi from 'utils/customApi';
 
 interface Inputs {
   userId: string;
@@ -12,6 +14,9 @@ interface Inputs {
 }
 
 const LoginForm = () => {
+
+  const { postApi } = customApi("/auth/signin");
+
   const {
     register,
     handleSubmit,
@@ -20,7 +25,19 @@ const LoginForm = () => {
   } = useForm<Inputs>({
     mode: 'onSubmit'
   });
-  const onSubmit = (data : Inputs) => console.log(data);
+
+  const { mutate } = useMutation( postApi, {
+    onError(error: any) {
+      console.log("에러")
+    },
+    onSuccess(data) {
+      console.log("오케이")
+    },
+  });
+
+  const onSubmit = (data : Inputs) => {
+    mutate({...data})
+  };
   
   
   return (

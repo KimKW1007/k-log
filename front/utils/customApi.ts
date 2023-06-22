@@ -5,7 +5,7 @@ const axiosBase = axios.create({
     "Content-Type": "application/json",
   }
 })
-
+axiosBase.defaults.baseURL = 'https://localhost:5000'
 const baseApi = () => {
   axiosBase.interceptors.response.use(
     response => response,

@@ -8,7 +8,6 @@ const LoginPage: NextPage = () => {
   return (
     <LoginWrap>
       <LoginInnerBox>
-        
         <LoginForm></LoginForm>
       </LoginInnerBox>
     </LoginWrap>
