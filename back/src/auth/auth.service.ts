@@ -19,18 +19,19 @@ export class AuthService {
   async signUp(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     return this.userRepository.createUser(authRegistrationDto);
   }
+  
 
-  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken : string, user: User}> {
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken : string}> {
     const { userId, password } = authCredentialsDto;
     const user = await this.userRepository.findOneBy({ userId });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // 유저 토큰 생성( Secret + Payload)
-      const payload = { userId };
-      const accessToken = await this.jwtService.sign(payload);
-      delete user.password;
-      return { accessToken, user };
-    } else {
+    
+    if (!user && !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('login failed');
     }
+    // 유저 토큰 생성( Secret + Payload)
+    delete user.password
+    const payload = { ...user };
+    const accessToken = this.jwtService.sign(payload);
+    return {accessToken};
   }
 }
