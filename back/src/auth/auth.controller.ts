@@ -34,13 +34,35 @@ export class AuthController {
   ): Promise<any> {
     const jwt = await this.authService.signIn(authCredentialsDto);
     res.setHeader('Authorization', 'Bearer ' + jwt.accessToken);
-    return res.json(jwt);
+    res.cookie('jwt', jwt.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+    });
+    return res.json({
+      message: 'success',
+    });
   }
 
-  @Get("/authenticate")
+  @Get('/authenticate')
   @UseGuards(AuthGuard())
-  isAuthenticated(@Req() req : any):User{
-    const user : User = req.user;
+  isAuthenticated(@Req() req: any): User {
+    const user: User = req.user;
     return user;
+  }
+
+  @Get('/cookies')
+  getCookies(@Req() req: Request, @Res() res: Response): any {
+    const jwt = req.cookies['jwt'];
+    return res.send(jwt);
+  }
+
+  @Post('/logout')
+  logout(@Res() res: Response): any {
+    res.cookie('jwt', '', {
+      maxAge: 0,
+    });
+    return res.send({
+      message: 'success',
+    });
   }
 }
