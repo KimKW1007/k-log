@@ -3,18 +3,22 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Power } from '@styled-icons/ionicons-solid/Power';
-import Link from 'next/link'
-import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import customApi from 'utils/customApi';
-
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@src/atoms/atoms';
 interface Inputs {
-  userid: string;
+  userId: string;
   password: string;
 }
 
 const LoginForm = () => {
-
-  const { postApi } = customApi("/auth/signin");
+  const router = useRouter();
+  const { postApi } = customApi('/auth/signin');
+  const { getApi } = customApi('/auth/authenticate');
+  const [user, setUser] = useRecoilState(userInfomation);
 
   const {
     register,
@@ -25,21 +29,25 @@ const LoginForm = () => {
     mode: 'onSubmit'
   });
 
-  const { mutate } = useMutation( postApi, {
+  
+  
+
+  const { mutate } = useMutation(postApi, {
     onError(error: any) {
-      console.log({error})
+      console.log({ error });
     },
-    onSuccess(data) {
-      console.log({data})
-    },
+    async onSuccess(data) {
+      sessionStorage.setItem("jwtToken", data.accessToken);
+      const userData = await getApi();
+      setUser(userData)
+      router.push('/');
+    }
   });
 
-  const onSubmit = (data : Inputs) => {
-    console.log({data})
+  const onSubmit = (data: Inputs) => {
     mutate({...data})
   };
-  
-  
+
   return (
     <React.Fragment>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -47,17 +55,17 @@ const LoginForm = () => {
           <h2>로그인</h2>
         </LoginTitleBox>
         <InputsBox>
-          <UserInfoInput bold type="text" inputName="아이디" register={register('userid',{required:true})} watch={watch('userid')} />
-          <UserInfoInput type="password" inputName="비밀번호" register={register('password',{required:true})} watch={watch('password')} />
+          <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} />
+          <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} />
         </InputsBox>
         <SubmitBox>
-          <SubmitBtn type="submit" disabled={!watch('userid') || !watch('password')}>
+          <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
             <PowerIcon></PowerIcon>
           </SubmitBtn>
         </SubmitBox>
         <SignUpAskQuestionBox>
           <Link href={'#'}>아이디/비밀번호를 잃어 버리셨나요?</Link>
-          <Link href={'#'}>아이디 생성하기</Link>
+          <Link href={'/signup'}>아이디 생성하기</Link>
         </SignUpAskQuestionBox>
       </Form>
     </React.Fragment>
@@ -70,12 +78,12 @@ const Form = styled.form`
   width: 100%;
   height: 100%;
   flex-flow: column;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 `;
 
 const LoginTitleBox = styled.div`
-  margin: 0 0 ${({ theme }) => theme.rem.p50};
+  margin: 0 0 ${({ theme }) => theme.rem.p100};
   h2 {
     font-size: ${({ theme }) => theme.rem.p36};
   }
@@ -93,24 +101,23 @@ const SubmitBox = styled.div`
   width: ${({ theme }) => theme.rem.p100};
   height: ${({ theme }) => theme.rem.p100};
   margin-top: ${({ theme }) => theme.rem.p70};
-  
-
 `;
-
 
 const SubmitBtn = styled.button`
   width: 100%;
   height: 100%;
   overflow: hidden;
   border-radius: 15px;
-  border: 2px solid rgba(0,0,0,0);
+  border: 2px solid rgba(0, 0, 0, 0);
   background: rgb(147, 118, 224);
-  transition: .3s;
-  &:disabled{
+  transition: 0.3s;
+  &:disabled {
     border: 2px solid rgb(221, 221, 221);
     background: rgba(0, 0, 0, 0);
   }
-  
+  &:not(:disabled):hover {
+    background: rgb(127, 98, 204);
+  }
 `;
 
 const PowerIcon = styled(Power)`
@@ -120,10 +127,14 @@ const PowerIcon = styled(Power)`
 
 const SignUpAskQuestionBox = styled.div`
   margin: ${({ theme }) => theme.rem.p30} 0;
-  a{
-    display:block;
+  a {
+    display: block;
     text-align: center;
     margin: ${({ theme }) => theme.rem.p10} 0;
-    font-weight:bold;
+    font-weight: bold;
+    color: #666;
+    &:hover {
+      color: #232323;
+    }
   }
-`
+`;
