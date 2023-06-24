@@ -36,10 +36,11 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + jwt.accessToken);
     res.cookie('jwt', jwt.accessToken, {
       httpOnly: true,
+      secure: true,
       maxAge: 60 * 60 * 1000,
     });
     return res.json({
-      message: 'success',
+      accessToken: jwt.accessToken,
     });
   }
 
