@@ -10,7 +10,7 @@ const { persistAtom: sessionPersistAtom } = recoilPersist({
 });
 
 export const userInfomation = atom<any>({
-  key: "userInfomationdsa",
+  key: "userInfomationKey",
   default: null,
   effects_UNSTABLE: [sessionPersistAtom],
 });
