@@ -1,14 +1,17 @@
 import UserInfoInput from '@components/common/UserInfoInput';
 import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Power } from '@styled-icons/ionicons-solid/Power';
 import Link from 'next/link';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import customApi from 'utils/customApi';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@src/atoms/atoms';
+import { InputsBox } from '@components/common/InputsBox';
+import Title from '@components/common/TitleBox';
+
 interface Inputs {
   userId: string;
   password: string;
@@ -29,71 +32,49 @@ const LoginForm = () => {
     mode: 'onSubmit'
   });
 
-  
-  
-
   const { mutate } = useMutation(postApi, {
     onError(error: any) {
       console.log({ error });
     },
     async onSuccess(data) {
-      sessionStorage.setItem("jwtToken", data.accessToken);
+      sessionStorage.setItem('jwtToken', data.accessToken);
       const userData = await getApi();
-      setUser(userData)
+      setUser(userData);
       router.push('/');
     }
   });
 
   const onSubmit = (data: Inputs) => {
-    mutate({...data})
+    mutate({ ...data });
   };
 
   return (
-    <React.Fragment>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <LoginTitleBox>
-          <h2>로그인</h2>
-        </LoginTitleBox>
-        <InputsBox>
-          <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} />
-          <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} />
-        </InputsBox>
-        <SubmitBox>
-          <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
-            <PowerIcon></PowerIcon>
-          </SubmitBtn>
-        </SubmitBox>
-        <SignUpAskQuestionBox>
-          <Link href={'#'}>아이디/비밀번호를 잃어 버리셨나요?</Link>
-          <Link href={'/signup'}>아이디 생성하기</Link>
-        </SignUpAskQuestionBox>
-      </Form>
-    </React.Fragment>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Title>로그인</Title>
+      <InputsBox>
+        <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} />
+        <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} />
+      </InputsBox>
+      <SubmitBox>
+        <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
+          <PowerIcon></PowerIcon>
+        </SubmitBtn>
+      </SubmitBox>
+      <SignUpAskQuestionBox>
+        <Link href={'#'}>아이디/비밀번호를 잃어 버리셨나요?</Link>
+        <Link href={'/signup'}>아이디 생성하기</Link>
+      </SignUpAskQuestionBox>
+    </Form>
   );
 };
 
 export default LoginForm;
 
-const Form = styled.form`
+export const Form = styled.form`
   width: 100%;
-  height: 100%;
   flex-flow: column;
   display: flex;
   align-items: center;
-`;
-
-const LoginTitleBox = styled.div`
-  margin: 0 0 ${({ theme }) => theme.rem.p100};
-  h2 {
-    font-size: ${({ theme }) => theme.rem.p36};
-  }
-`;
-
-const InputsBox = styled.div`
-  width: 100%;
-  div:first-child {
-    margin-bottom: ${({ theme }) => theme.rem.p20};
-  }
 `;
 
 const SubmitBox = styled.div`
