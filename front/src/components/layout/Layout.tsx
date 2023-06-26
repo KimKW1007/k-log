@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components'
 
-interface LayoutProps {
-  children : React.ReactNode;
+export interface ChildrenProps {
+  children: React.ReactNode
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children }: ChildrenProps) => {
   return <Root>{children}</Root>;
 };
 
