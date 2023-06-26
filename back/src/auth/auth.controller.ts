@@ -15,6 +15,7 @@ import { AuthRegistrationDto } from './dto/auth-registration.dto';
 import { User } from './user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
+import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -49,6 +50,15 @@ export class AuthController {
   isAuthenticated(@Req() req: any): User {
     const user: User = req.user;
     return user;
+  }
+
+  @Get('/checkemail')
+  async checkEmail(
+    @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
+    @Res() res: any,
+  ): Promise<User[]> {
+    return res.json(await this.authService.checkEmail(authCheckEmailDto));
+    
   }
 
   @Get('/cookies')
