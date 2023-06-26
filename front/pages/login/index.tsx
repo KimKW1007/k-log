@@ -18,7 +18,7 @@ export default LoginPage;
 
 const LoginWrap = styled(AllCenterFlex)`
   width: 100%;
-  height: 100%;
+  padding:${({theme})=>theme.rem.p70}  ${({theme})=>theme.rem.p50} ;
 `;
 
 const LoginInnerBox = styled.div`
