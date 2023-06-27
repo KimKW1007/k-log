@@ -12,8 +12,9 @@ import {
 export class AuthRegistrationDto extends Repository<User> {
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  @MaxLength(12)
+  @Matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{4,24}$/, {
+    message: '아이디 형식을 확인해주세요.',
+  })
   userId: string;
   
   @IsNotEmpty()
@@ -27,11 +28,9 @@ export class AuthRegistrationDto extends Repository<User> {
   
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  @MaxLength(12)
   // 영어랑 숫자만 가능한 유효성 체크
-  @Matches(/^[a-zA-Z0-9]*$/, {
-    message: 'password only aceepts english and number',
+  @Matches(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/, {
+    message: '비밀번호 형식을 확인해주세요.',
   })
   password: string;
 }
