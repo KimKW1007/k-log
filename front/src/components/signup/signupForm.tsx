@@ -1,15 +1,15 @@
 import { Form } from '@components/login/LoginForm';
 import React, { useEffect, useState } from 'react';
 import Title from '@components/common/TitleBox';
-import { InputsBox } from '@components/common/InputsBox';
-import UserInfoInput from '@components/common/UserInfoInput';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX } from '@src/constant/regex';
-import CheckBoxInputs from '@components/common/CheckBoxInputs';
+import styled, {css} from 'styled-components';
 import SecondPage from './SecondPage';
 import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
+import customApi from 'utils/customApi';
+import { useMutation } from '@tanstack/react-query';
+import CheckIdByEmailPage, { User } from './CheckIdByEmailPage';
+import CommonModal from '@components/modal/CommonModal';
 
 export interface Inputs {
   userId?: string;
@@ -19,62 +19,109 @@ export interface Inputs {
   userEmail?: string;
 }
 
-
 interface CurrentTitleType {
-  [anyKeyword: string]: string;
+  [key: string]: {
+    title: string;
+    submitText: string;
+  };
 }
 
 const SignupForm = () => {
+  const CurrentTitle: CurrentTitleType = {
+    first: {
+      title: '서비스 계약 동의',
+      submitText: '다음'
+    },
+    second: {
+      title: '이름/이메일 입력',
+      submitText: '다음'
+    },
+    checkIdByEmail: {
+      title: '해당 이메일로 가입된 아이디',
+      submitText: '새로 만들기'
+    },
+    third: {
+      title: '아이디/비밀번호 입력',
+      submitText: '가입완료하기'
+    }
+  };
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors },
+    setError,
+    clearErrors
   } = useForm<Inputs>({
     mode: 'all'
   });
 
-  
+  // error modal
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [modalErrMsg, setModalErrMsg] = useState<string>('');
 
   const [currentLevel, setCurrentLevel] = useState<string>('first');
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
+
+  const [userIds, setUserIds] = useState<User[]>([]);
+
+  const { postApi: createAccountPostApi } = customApi('/auth/signup');
+  const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
+
+  const checkSubmitType = currentLevel !== 'first' && currentLevel !== 'checkIdByEmail';
+
+  const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
+    onError(error: any) {
+      console.log({ error: error.response.data.message });
+      setIsOpenModal(true);
+      setModalErrMsg(error.response.data.message);
+    },
+    async onSuccess(data) {
+      console.log({ data });
+    }
+  });
+  const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
+    onError(error: any) {
+      console.log({ error });
+    },
+    async onSuccess(data) {
+      console.log({ data });
+      setUserIds(data);
+    }
+  });
+
   const onSubmit = (data: Inputs) => {
-    if(currentLevel === 'second'){
-
+    if (currentLevel === 'second') {
+      checkEmailMutate({ userEmail: data.userEmail });
+      setCurrentLevel((prev) => (prev = 'checkIdByEmail'));
+    }
+    if (currentLevel === 'third') {
+      delete data.confirmPassword;
+      createAccountMutate({ ...data });
     }
   };
 
-  const CurrentTitle: CurrentTitleType = {
-    first: '서비스 계약 동의',
-    second: '이름/이메일 입력',
-    third: '아이디/비밀번호 입력'
+  const onClickNextPage = () => {
+    if (!checkSubmitType) {
+      setIsAllChecked((prev) => !prev);
+      if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'third'));
+      if (currentLevel === 'checkIdByEmail') setCurrentLevel((prev) => (prev = 'third'));
+    }
   };
-
-  useEffect(()=>{
-    if(watch("userEmail")&&watch("userName")){
-      setIsAllChecked(true)
-    }else{
-      setIsAllChecked(false)
-    }
-    console.log(isAllChecked);
-  },[watch("userEmail"),watch("userName")])
-
-  const onClickNextPage = ()=>{
-    if(currentLevel !== 'first'){
-      setIsAllChecked(prev => !prev)
-      setCurrentLevel(prev => prev === 'first' ? 'second' : 'third')
-    }
-  }
 
   return (
     <SignUpForm onSubmit={handleSubmit(onSubmit)}>
-      <Title>{CurrentTitle[currentLevel]}</Title>
-      {/* <div>{errors.userEmail?.message}</div> */}
+      <Title>{CurrentTitle[currentLevel].title}</Title>
+      {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>{modalErrMsg}</CommonModal>}
       {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
       {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch}></SecondPage>}
-      {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked} register={register} watch={watch}></ThirdPage>}
+      {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
+      {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors}></ThirdPage>}
       <SubmitBox>
-        <button type={currentLevel !== 'first' ? 'submit' : 'button'} disabled={!isAllChecked} onClick={onClickNextPage}>제출</button>
+        <SubmitBtn type={checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
+          {CurrentTitle[currentLevel].submitText}
+        </SubmitBtn>
       </SubmitBox>
     </SignUpForm>
   );
@@ -83,12 +130,47 @@ const SignupForm = () => {
 export default SignupForm;
 
 const SignUpForm = styled(Form)`
+  height: 100%;
+  justify-content: space-between;
   padding: 0 0 ${({ theme }) => theme.rem.p80};
 `;
 
 const SubmitBox = styled.div`
-  width: 80%;
+  width: 70%;
   height: 50px;
-  border: 1px solid #000;
   margin-top: 50px;
+`;
+
+const SubmitBtn = styled.button<{currentLevel:string}>`
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  font-weight:bold;
+  transition: .2s;
+  &:not(:disabled){
+    background:rgba(255, 109, 96,.8);
+    color:#fff;
+  }
+  &:not(:disabled):hover{
+    background:rgba(255, 109, 96,1);
+  }
+  ${({currentLevel})=> currentLevel === "checkIdByEmail" && css`
+  &:not(:disabled){
+    background:#f2f2f2;
+    color:#acacac;
+  }
+  &:not(:disabled):hover{
+    background:#e5e5e5;
+    color:#777;
+  }
+  `}
+  ${({currentLevel})=> currentLevel === "third" && css`
+  &:not(:disabled){
+    background: rgba(134, 150, 254,.8);
+    color:#fff;
+  }
+  &:not(:disabled):hover{
+    background:rgba(134, 150, 254,1);
+  }
+  `}
 `;
