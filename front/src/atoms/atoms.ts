@@ -1,3 +1,4 @@
+import { User } from "@components/signup/CheckIdByEmailPage";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
@@ -9,7 +10,7 @@ const { persistAtom: sessionPersistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-export const userInfomation = atom<any>({
+export const userInfomation = atom<User | null>({
   key: "userInfomationKey",
   default: null,
   effects_UNSTABLE: [sessionPersistAtom],
