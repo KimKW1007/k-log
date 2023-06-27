@@ -52,7 +52,7 @@ export class AuthController {
     return user;
   }
 
-  @Get('/checkemail')
+  @Post('/checkemail')
   async checkEmail(
     @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
     @Res() res: any,
