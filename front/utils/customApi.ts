@@ -9,7 +9,7 @@ const baseApi = () => {
   axiosBase.interceptors.response.use(
     response => response,
     error => {
-      throw error;
+      throw error.response.data;
     },
   );
 
