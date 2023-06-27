@@ -71,7 +71,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
       />
       <UserInfoInput
         small
-        type="text"
+        type="password"
         inputName="비밀번호"
         register={register('password', {
           required: errMsg['passwordMinLength'],
@@ -101,7 +101,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
       />
       <UserInfoInput
         small
-        type="text"
+        type="password"
         inputName="비밀번호 확인"
         register={register('confirmPassword', {
           required: errMsg['passwordMinLength'],
