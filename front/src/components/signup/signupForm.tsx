@@ -42,7 +42,7 @@ const SignupForm = () => {
     },
     third: {
       title: '아이디/비밀번호 입력',
-      submitText: '가입완료하기'
+      submitText: '가입완료'
     }
   };
 
@@ -60,24 +60,28 @@ const SignupForm = () => {
   // error modal
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [modalErrMsg, setModalErrMsg] = useState<string>('');
+  const [currentUserId, setCurrentUserId] = useState("");
 
+  // 현재 단계
   const [currentLevel, setCurrentLevel] = useState<string>('first');
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
+  // 해당 이메일로 가입되어있는 아이디들
   const [userIds, setUserIds] = useState<User[]>([]);
 
   const { postApi: createAccountPostApi } = customApi('/auth/signup');
   const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
 
+  // 버튼 타입 설정
   const checkSubmitType = currentLevel !== 'first' && currentLevel !== 'checkIdByEmail';
 
   const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
     onError(error: any) {
-      console.log({ error: error.response.data.message });
+      console.log({ error: error.config.data.userId });
       setIsOpenModal(true);
       setModalErrMsg(error.response.data.message);
     },
-    async onSuccess(data) {
+    onSuccess(data) {
       console.log({ data });
     }
   });
@@ -98,6 +102,7 @@ const SignupForm = () => {
     }
     if (currentLevel === 'third') {
       delete data.confirmPassword;
+      setCurrentUserId(data.userId!)
       createAccountMutate({ ...data });
     }
   };
@@ -105,7 +110,7 @@ const SignupForm = () => {
   const onClickNextPage = () => {
     if (!checkSubmitType) {
       setIsAllChecked((prev) => !prev);
-      if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'third'));
+      if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'second'));
       if (currentLevel === 'checkIdByEmail') setCurrentLevel((prev) => (prev = 'third'));
     }
   };
@@ -113,7 +118,7 @@ const SignupForm = () => {
   return (
     <SignUpForm onSubmit={handleSubmit(onSubmit)}>
       <Title>{CurrentTitle[currentLevel].title}</Title>
-      {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>{modalErrMsg}</CommonModal>}
+      {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>&#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}</CommonModal>}
       {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
       {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch}></SecondPage>}
       {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
@@ -139,6 +144,8 @@ const SubmitBox = styled.div`
   width: 70%;
   height: 50px;
   margin-top: 50px;
+  border-radius: 10px;
+  overflow:hidden;
 `;
 
 const SubmitBtn = styled.button<{currentLevel:string}>`
