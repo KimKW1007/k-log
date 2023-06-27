@@ -25,10 +25,10 @@ const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
     <React.Fragment>
       <CheckInputsBox>
         <CheckBoxInputs id="id" onClick={onClickAgree(0)}>
-          K-log 서비스 약관에 동의 &#40;필수&#41;
+          <strong>K-log 서비스 약관</strong>에 동의 &#40;필수&#41;
         </CheckBoxInputs>
         <CheckBoxInputs id="id1" onClick={onClickAgree(1)}>
-          개인정보 수집 및 이용에 동의 &#40;필수&#41;
+          <strong>개인정보 수집 및 이용</strong>에 동의 &#40;필수&#41;
         </CheckBoxInputs>
       </CheckInputsBox>
       <EmptyBox/>
