@@ -10,6 +10,9 @@ import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import CheckIdByEmailPage, { User } from './CheckIdByEmailPage';
 import CommonModal from '@components/modal/CommonModal';
+import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/router';
+import FinallPage from './FinallPage';
 
 export interface Inputs {
   userId?: string;
@@ -42,7 +45,11 @@ const SignupForm = () => {
     },
     third: {
       title: '아이디/비밀번호 입력',
-      submitText: '가입완료'
+      submitText: '가입하기'
+    },
+    finally: {
+      title: '회원가입 완료',
+      submitText: '로그인하기'
     }
   };
 
@@ -56,6 +63,8 @@ const SignupForm = () => {
   } = useForm<Inputs>({
     mode: 'all'
   });
+
+  const router = useRouter();
 
   // error modal
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -73,7 +82,8 @@ const SignupForm = () => {
   const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
 
   // 버튼 타입 설정
-  const checkSubmitType = currentLevel !== 'first' && currentLevel !== 'checkIdByEmail';
+  const checkSubmitType = currentLevel !== 'second' && currentLevel !== 'third';
+
 
   const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
     onError(error: any) {
@@ -82,7 +92,7 @@ const SignupForm = () => {
       setModalErrMsg(error.response.data.message);
     },
     onSuccess(data) {
-      console.log({ data });
+      setCurrentLevel("finally")
     }
   });
   const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
@@ -108,10 +118,11 @@ const SignupForm = () => {
   };
 
   const onClickNextPage = () => {
-    if (!checkSubmitType) {
+    if (checkSubmitType) {
       setIsAllChecked((prev) => !prev);
       if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'second'));
       if (currentLevel === 'checkIdByEmail') setCurrentLevel((prev) => (prev = 'third'));
+      if (currentLevel === 'finally') router.push("/login");
     }
   };
 
@@ -123,8 +134,9 @@ const SignupForm = () => {
       {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch}></SecondPage>}
       {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
       {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors}></ThirdPage>}
+      {currentLevel === 'finally' && <FinallPage></FinallPage>}
       <SubmitBox>
-        <SubmitBtn type={checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
+        <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
           {CurrentTitle[currentLevel].submitText}
         </SubmitBtn>
       </SubmitBox>
