@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/bundle-analyzer": "^13.4.6",
+    "@styled-icons/bootstrap": "^10.47.0",
     "@styled-icons/entypo": "^10.46.0",
     "@styled-icons/ionicons-solid": "^10.46.0",
     "@tanstack/react-query": "^4.29.15",
