@@ -9,7 +9,6 @@ import customApi from 'utils/customApi';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@src/atoms/atoms';
-import { InputsBox } from '@components/common/InputsBox';
 import Title from '@components/common/TitleBox';
 
 interface Inputs {
@@ -118,4 +117,8 @@ const SignUpAskQuestionBox = styled.div`
       color: #232323;
     }
   }
+`;
+
+export const InputsBox = styled.div`
+  width: 100%;
 `;
