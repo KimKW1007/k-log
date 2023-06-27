@@ -42,6 +42,7 @@ const CheckBoxInput = styled.input`
   &:checked + label {
     &::before {
       background: url(${checkedIcon.src}) center center no-repeat;
+      background-size: 70%;
       background-color: #000;
     }
   }
