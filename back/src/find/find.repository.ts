@@ -17,7 +17,7 @@ export class FindRepository extends Repository<FindId> {
   async createPayload(sendEmaildDto: SendEmaildDto): Promise<void> {
     const { userEmail } = sendEmaildDto;
     const payload = String(Math.floor(10000 + Math.random() * 1000000));
-    const checkEmail = this.find({where: {userEmail}})
+    const checkEmail = await this.find({where: {userEmail}})
     if(checkEmail){
       await this.delete({userEmail})
     }
