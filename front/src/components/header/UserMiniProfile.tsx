@@ -109,7 +109,7 @@ const PlMenuInnerBox = styled.ul`
   background: #292929;
   border-radius:  8px 0 0  8px;
   padding:  ${({ theme }) => theme.rem.p10} 0;
-  border-right: 4px solid #FF6D60;
+  border-right: 4px solid ${({ theme }) => theme.color.err};
 `;
 const PlMeunItem = styled.li`
   width:160px;

@@ -69,6 +69,10 @@ const LoginForm = () => {
 
 export default LoginForm;
 
+const ErrMsgBox =styled.div`
+  color: ${({ theme }) => theme.color.err};
+`
+
 export const Form = styled.form`
   width: 100%;
   flex-flow: column;

@@ -62,18 +62,18 @@ const InputBox = styled.div<{ errColor?: boolean }>`
     background: rgba(255, 255, 255, 1);
     border: 2px solid #555;
   }
-  ${({ errColor }) =>
+  ${({ errColor, theme }) =>
     errColor &&
     css`
-      background: rgba(255, 109, 96, 0.1);
-      border: 2px solid rgba(255, 109, 96, 0.1);
+      background: ${theme.color.err}1a;
+      border: 2px solid ${theme.color.err}1a;
       &:focus-within {
-        border: 2px solid rgba(255, 109, 96, 0.5);
+        border: 2px solid ${theme.color.err}cc;
       }
       span {
-        color: #FF6D60;
+        color: ${theme.color.err};
         &.high{
-          color: #FF6D60;
+          color: ${theme.color.err};
         }
       }
     `}
@@ -140,10 +140,10 @@ const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
     margin-right: 6px;
     color: #00C4FF;
   }
-  ${({ errColor }) =>
+  ${({ errColor, theme }) =>
     errColor &&
     css`
-      color: #FF6D60;
+      color: ${theme.color.err};
       svg{
         color: inherit;
       }

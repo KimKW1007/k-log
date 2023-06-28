@@ -34,8 +34,12 @@ export const rem = {
   p100 : "6.25rem",
 }
 
+export const color ={
+  err : "#FF6D60"
+}
+
 
 export const theme : DefaultTheme = {
-  color : "black",
+  color,
   rem,
 }
