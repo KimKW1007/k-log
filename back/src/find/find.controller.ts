@@ -14,6 +14,11 @@ export class FindController {
     return this.findService.sendEmail(sendEmaildDto);
   }
 
+  @Post("/certificate")
+  certificate(@Body(ValidationPipe) findIdDto: FindIdDto): Promise<{ message: string }>{
+    return this.findService.certificate(findIdDto);
+  }
+
 
   @Post("/findId")
   findId(@Body(ValidationPipe) findIdDto: FindIdDto): Promise<User[]>{

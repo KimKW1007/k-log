@@ -18,18 +18,42 @@ export class FindService {
     return this.findRepository.createPayload(sendEmaildDto);
   }
 
-  async findId(findIdDto: FindIdDto){
-    const {userEmail, token} = findIdDto;
-    const certificatEmail = await this.findRepository.findOneBy({userEmail, token})
-    if(!certificatEmail){
-      throw new ConflictException('이메일 또는 토큰 값을 확인해주세요.'); 
+  async certificate(findIdDto: FindIdDto): Promise<{ message: string }> {
+    const { userEmail, token } = findIdDto;
+    if (!findIdDto) {
+      throw new ConflictException('이메일 또는 토큰 값을 확인해주세요.');
     }
-    const foundUser = await this.userRepository.find({where:{userEmail : certificatEmail.userEmail}})
-    if(foundUser.length <= 0){
-      throw new ConflictException('해당 이메일로 가입된 아이디가 없습니다.'); 
+    const certificatEmail = await this.findRepository.findOneBy({
+      userEmail,
+      token,
+    });
+    if (!certificatEmail) {
+      throw new ConflictException('이메일 또는 토큰 값을 확인해주세요.');
     }
-    await this.findRepository.delete({userEmail})
-    return foundUser
+    await this.findRepository.delete({ userEmail });
+
+    return { message: 'success' };
   }
 
+  async findId(findIdDto: FindIdDto): Promise<User[]> {
+    const { userEmail, token } = findIdDto;
+    if (!findIdDto) {
+      throw new ConflictException('이메일 또는 토큰 값을 확인해주세요.');
+    }
+    const certificatEmail = await this.findRepository.findOneBy({
+      userEmail,
+      token,
+    });
+    if (!certificatEmail) {
+      throw new ConflictException('이메일 또는 토큰 값을 확인해주세요.');
+    }
+    const foundUser = await this.userRepository.find({
+      where: { userEmail: certificatEmail.userEmail },
+    });
+    if (foundUser.length <= 0) {
+      throw new ConflictException('해당 이메일로 가입된 아이디가 없습니다.');
+    }
+    await this.findRepository.delete({ userEmail });
+    return foundUser;
+  }
 }
