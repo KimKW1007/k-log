@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
 import UserInfoInput from '@components/common/UserInfoInput';
-import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
+import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
 import { RegisterPagesProps } from './SecondPage';
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
 import { InputsBox } from '@components/login/LoginForm';
 import { Inputs } from './signupForm';
+import EmailInput from './EmailInput';
 
 interface keyString {
   [key: string]: string;
 }
 
-interface ThirdPageProps extends RegisterPagesProps{
-  setError : UseFormSetError<Inputs>
-  clearErrors: UseFormClearErrors<Inputs>;
-}
 
-const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: ThirdPageProps) => {
+const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {
   
   const errMsg: keyString = {
     userIdMinLength: '4자 이상 입력해 주세요.',
