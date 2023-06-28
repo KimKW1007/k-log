@@ -2,7 +2,7 @@ import { Form } from '@components/login/LoginForm';
 import React, { useEffect, useState } from 'react';
 import Title from '@components/common/TitleBox';
 import { useForm } from 'react-hook-form';
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import SecondPage from './SecondPage';
 import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
@@ -13,6 +13,7 @@ import CommonModal from '@components/modal/CommonModal';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import FinallPage from './FinallPage';
+import { EMAIL_REGEX } from '@src/constant/regex';
 
 export interface Inputs {
   userId?: string;
@@ -20,6 +21,7 @@ export interface Inputs {
   confirmPassword?: string;
   userName?: string;
   userEmail?: string;
+  token?: string;
 }
 
 interface CurrentTitleType {
@@ -30,36 +32,14 @@ interface CurrentTitleType {
 }
 
 const SignupForm = () => {
-  const CurrentTitle: CurrentTitleType = {
-    first: {
-      title: '서비스 계약 동의',
-      submitText: '다음'
-    },
-    second: {
-      title: '이름/이메일 입력',
-      submitText: '다음'
-    },
-    checkIdByEmail: {
-      title: '해당 이메일로 가입된 아이디',
-      submitText: '새로 만들기'
-    },
-    third: {
-      title: '아이디/비밀번호 입력',
-      submitText: '가입하기'
-    },
-    finally: {
-      title: '회원가입 완료',
-      submitText: '로그인하기'
-    }
-  };
-
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
     setError,
-    clearErrors
+    clearErrors,
+    setValue
   } = useForm<Inputs>({
     mode: 'all'
   });
@@ -69,7 +49,10 @@ const SignupForm = () => {
   // error modal
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [modalErrMsg, setModalErrMsg] = useState<string>('');
-  const [currentUserId, setCurrentUserId] = useState("");
+  const [currentUserId, setCurrentUserId] = useState('');
+  const [isOpenCheckErrIdModal, setIsOpenCheckErrIdModal] = useState(false);
+  const [checkErrMsg, setCheckErrMsg] = useState('');
+  const [isPassCertificate, setIsPassCertificate] = useState(false);
 
   // 현재 단계
   const [currentLevel, setCurrentLevel] = useState<string>('first');
@@ -84,7 +67,6 @@ const SignupForm = () => {
   // 버튼 타입 설정
   const checkSubmitType = currentLevel !== 'second' && currentLevel !== 'third';
 
-
   const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
     onError(error: any) {
       console.log({ error: error.config.data.userId });
@@ -92,7 +74,7 @@ const SignupForm = () => {
       setModalErrMsg(error.response.data.message);
     },
     onSuccess(data) {
-      setCurrentLevel("finally")
+      setCurrentLevel('finally');
     }
   });
   const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
@@ -100,20 +82,48 @@ const SignupForm = () => {
       console.log({ error });
     },
     async onSuccess(data) {
+      if (data.message) {
+        setIsOpenCheckErrIdModal(true);
+        setCheckErrMsg(data.message);
+      }
       console.log({ data });
-      setUserIds(data);
+      setUserIds(data.user || data);
     }
   });
 
   const onSubmit = (data: Inputs) => {
     if (currentLevel === 'second') {
-      checkEmailMutate({ userEmail: data.userEmail });
-      setCurrentLevel((prev) => (prev = 'checkIdByEmail'));
+      if (isPassCertificate) {
+        checkEmailMutate({ userEmail: data.userEmail });
+        setCurrentLevel((prev) => (prev = 'checkIdByEmail'));
+      }
     }
     if (currentLevel === 'third') {
       delete data.confirmPassword;
-      setCurrentUserId(data.userId!)
+      setCurrentUserId(data.userId!);
       createAccountMutate({ ...data });
+    }
+  };
+  const CurrentTitle: CurrentTitleType = {
+    first: {
+      title: '서비스 계약 동의',
+      submitText: '다음'
+    },
+    second: {
+      title: '이름/이메일 입력',
+      submitText: '다음'
+    },
+    checkIdByEmail: {
+      title: '해당 이메일로 가입된 아이디',
+      submitText: userIds.length < 5 ? '새로 만들기' : '돌아가기'
+    },
+    third: {
+      title: '아이디/비밀번호 입력',
+      submitText: '가입하기'
+    },
+    finally: {
+      title: '회원가입 완료',
+      submitText: '로그인하기'
     }
   };
 
@@ -121,17 +131,24 @@ const SignupForm = () => {
     if (checkSubmitType) {
       setIsAllChecked((prev) => !prev);
       if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'second'));
-      if (currentLevel === 'checkIdByEmail') setCurrentLevel((prev) => (prev = 'third'));
-      if (currentLevel === 'finally') router.push("/login");
+      if (currentLevel === 'checkIdByEmail') {
+        userIds.length < 5 ? setCurrentLevel((prev) => (prev = 'third')) : setCurrentLevel((prev) => (prev = 'second'));
+      }
+      if (currentLevel === 'finally') router.push('/login');
     }
   };
 
   return (
     <SignUpForm onSubmit={handleSubmit(onSubmit)}>
       <Title>{CurrentTitle[currentLevel].title}</Title>
-      {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>&#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}</CommonModal>}
+      {isOpenModal && (
+        <CommonModal setIsOpenModal={setIsOpenModal}>
+          &#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}
+        </CommonModal>
+      )}
+      {isOpenCheckErrIdModal && <CommonModal setIsOpenModal={setIsOpenCheckErrIdModal}>{checkErrMsg}</CommonModal>}
       {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
-      {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch}></SecondPage>}
+      {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} setValue={setValue} setError={setError} clearErrors={clearErrors}></SecondPage>}
       {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
       {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors}></ThirdPage>}
       {currentLevel === 'finally' && <FinallPage></FinallPage>}
@@ -157,39 +174,43 @@ const SubmitBox = styled.div`
   height: 50px;
   margin-top: 50px;
   border-radius: 10px;
-  overflow:hidden;
+  overflow: hidden;
 `;
 
-const SubmitBtn = styled.button<{currentLevel:string}>`
+const SubmitBtn = styled.button<{ currentLevel: string }>`
   width: 100%;
   height: 100%;
   font-size: 20px;
-  font-weight:bold;
-  transition: .2s;
-  &:not(:disabled){
-    background:rgba(255, 109, 96,.8);
-    color:#fff;
+  font-weight: bold;
+  transition: 0.2s;
+  &:not(:disabled) {
+    background: rgba(255, 109, 96, 0.8);
+    color: #fff;
   }
-  &:not(:disabled):hover{
-    background:rgba(255, 109, 96,1);
+  &:not(:disabled):hover {
+    background: rgba(255, 109, 96, 1);
   }
-  ${({currentLevel})=> currentLevel === "checkIdByEmail" && css`
-  &:not(:disabled){
-    background:#f2f2f2;
-    color:#acacac;
-  }
-  &:not(:disabled):hover{
-    background:#e5e5e5;
-    color:#777;
-  }
-  `}
-  ${({currentLevel})=> currentLevel === "third" && css`
-  &:not(:disabled){
-    background: rgba(134, 150, 254,.8);
-    color:#fff;
-  }
-  &:not(:disabled):hover{
-    background:rgba(134, 150, 254,1);
-  }
-  `}
+  ${({ currentLevel }) =>
+    currentLevel === 'checkIdByEmail' &&
+    css`
+      &:not(:disabled) {
+        background: #f2f2f2;
+        color: #acacac;
+      }
+      &:not(:disabled):hover {
+        background: #e5e5e5;
+        color: #777;
+      }
+    `}
+  ${({ currentLevel }) =>
+    currentLevel === 'third' &&
+    css`
+      &:not(:disabled) {
+        background: rgba(134, 150, 254, 0.8);
+        color: #fff;
+      }
+      &:not(:disabled):hover {
+        background: rgba(134, 150, 254, 1);
+      }
+    `}
 `;
