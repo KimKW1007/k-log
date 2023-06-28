@@ -1,5 +1,5 @@
 import UserInfoInput from '@components/common/UserInfoInput';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Power } from '@styled-icons/ionicons-solid/Power';
@@ -10,6 +10,9 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@src/atoms/atoms';
 import Title from '@components/common/TitleBox';
+import LoginErrBox from './LoginErrBox';
+import Loading from '@components/common/Loading';
+import { AllCenterFlex } from '@components/common/CommonFlex';
 
 interface Inputs {
   userId: string;
@@ -21,7 +24,7 @@ const LoginForm = () => {
   const { postApi } = customApi('/auth/signin');
   const { getApi } = customApi('/auth/authenticate');
   const [user, setUser] = useRecoilState(userInfomation);
-
+  const [isError, setIsError] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -31,9 +34,9 @@ const LoginForm = () => {
     mode: 'onSubmit'
   });
 
-  const { mutate } = useMutation(postApi, {
+  const { mutate, isLoading } = useMutation(postApi, {
     onError(error: any) {
-      console.log({ error });
+      setIsError(true);
     },
     async onSuccess(data) {
       sessionStorage.setItem('jwtToken', data.accessToken);
@@ -50,14 +53,19 @@ const LoginForm = () => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>로그인</Title>
+      {isError && <LoginErrBox></LoginErrBox>}
       <InputsBox>
-        <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} />
-        <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} />
+        <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} errColor={isError} />
+        <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} errColor={isError} />
       </InputsBox>
       <SubmitBox>
-        <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
-          <PowerIcon></PowerIcon>
-        </SubmitBtn>
+        {isLoading ? (
+          <Loading></Loading>
+        ) : (
+          <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
+            <PowerIcon></PowerIcon>
+          </SubmitBtn>
+        )}
       </SubmitBox>
       <SignUpAskQuestionBox>
         <Link href={'#'}>아이디/비밀번호를 잃어 버리셨나요?</Link>
@@ -69,10 +77,6 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-const ErrMsgBox =styled.div`
-  color: ${({ theme }) => theme.color.err};
-`
-
 export const Form = styled.form`
   width: 100%;
   flex-flow: column;
@@ -80,7 +84,7 @@ export const Form = styled.form`
   align-items: center;
 `;
 
-const SubmitBox = styled.div`
+const SubmitBox = styled(AllCenterFlex)`
   position: relative;
   width: ${({ theme }) => theme.rem.p100};
   height: ${({ theme }) => theme.rem.p100};
