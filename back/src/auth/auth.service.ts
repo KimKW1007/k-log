@@ -20,14 +20,12 @@ export class AuthService {
   async signUp(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     return this.userRepository.createUser(authRegistrationDto);
   }
-  async checkEmail(authCheckEmailDto: AuthCheckEmailDto): Promise<User[]> {
+  async checkEmail(authCheckEmailDto: AuthCheckEmailDto): Promise<User[] | {user: User[], message: string}> {
     const { userEmail } = authCheckEmailDto;
     const user = await this.userRepository.find({ where: { userEmail } });
 
     if (user.length >= 5) {
-      throw new ConflictException(
-        '한개의 이메일은 최대 5개의 아이디만 생성할 수 있습니다.',
-      );
+        return {user, message:'한개의 이메일은 최대 5개의 아이디만 생성할 수 있습니다.'}
     }
     
     return user;

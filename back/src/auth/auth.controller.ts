@@ -56,7 +56,7 @@ export class AuthController {
   async checkEmail(
     @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
     @Res() res: any,
-  ): Promise<User[]> {
+  ): Promise<User[] | {user: User[], message: string}> {
     return res.json(await this.authService.checkEmail(authCheckEmailDto));
     
   }
