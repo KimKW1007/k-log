@@ -68,7 +68,6 @@ const LogoBox = styled(OnlyAlignCenterFlex)`
 `;
 
 const BtnBox = styled(OnlyAlignCenterFlex)`
-  font-size: 12px;
 `;
 
 const LogoAndCategoryBox = styled.div`

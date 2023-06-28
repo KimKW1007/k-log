@@ -5,13 +5,12 @@ import Link from 'next/link';
 const LoginSignUpBox = () => {
   return (
     <>
-      <LoginSignUpText href={'/login'} title="로그인">
+      <LoginText href={'/login'} title="로그인">
         로그인
-      </LoginSignUpText>
-      <ShortLine />
-      <LoginSignUpText href={'/signup'} className="rightLine" title="회원가입">
+      </LoginText>
+      <SignupText href={'/signup'} className="rightLine" title="회원가입">
         회원가입
-      </LoginSignUpText>
+      </SignupText>
     </>
   );
 };
@@ -19,8 +18,27 @@ const LoginSignUpBox = () => {
 export default LoginSignUpBox;
 
 const LoginSignUpText = styled(Link)`
-  margin: 0 ${({ theme }) => theme.rem.p10};
+  padding: 0.5rem ${({ theme }) => theme.rem.p12};
+  margin : 0 0.313em;
+  transition:  .3s;
+  border-radius: 6px;
+  font-size: 13px;
+  &:hover{
+    color: #fff;
+  }
 `;
+
+const LoginText = styled(LoginSignUpText)`
+  &:hover{
+    background: #408E91;
+  }
+`
+const SignupText = styled(LoginSignUpText)`
+  background: #9DB2BF;
+  &:hover{
+    background: #454545;
+  }
+`
 
 const ShortLine = styled.i`
   display: inline-block;
