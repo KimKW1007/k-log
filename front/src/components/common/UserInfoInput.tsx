@@ -1,30 +1,35 @@
-import React, { useState } from 'react';
-import { FieldValues, UseFormRegisterReturn, UseFormWatch } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import {  UseFormRegisterReturn } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import { ExclamationDiamondFill, ExclamationCircleFill} from "@styled-icons/bootstrap"
 import { OnlyAlignCenterFlex } from './CommonFlex';
-interface InputProps {
+
+
+export interface InputProps {
   type: string;
   inputName: string;
   register: UseFormRegisterReturn;
-  watch?: UseFormWatch<FieldValues> | string;
+  watch?:  string;
   bold?: boolean;
   small?: boolean;
   errColor?: boolean;
   errors?: string;
 }
 
-const UserInfoInput = ({ type, inputName, watch, register, bold, small, errColor, errors }: InputProps) => {
+const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors}: InputProps) => {
   const [isFocus, setIsFocus] = useState(false);
+  useEffect(()=>{
+    watch && setIsFocus(true)
+  },[watch])
   return (
     <React.Fragment>
       <InputBox errColor={errColor}>
-        <CurrentInputName className={isFocus ? 'high' : ''} small={small ?? false}>
+        <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
           {inputName}
         </CurrentInputName>
         <Input
-          small={small ?? false}
-          bold={bold ?? false}
+          small={small}
+          bold={bold}
           type={type}
           {...register}
           onFocus={() => {
@@ -41,14 +46,16 @@ const UserInfoInput = ({ type, inputName, watch, register, bold, small, errColor
           <ErrMsg>{errors}</ErrMsg>
         </ErrMsgBox>
       )}
+      
     </React.Fragment>
   );
 };
 
 export default UserInfoInput;
 
-const InputBox = styled.div<{ errColor?: boolean }>`
+export const InputBox = styled.div<{ errColor?: boolean; disabled ?:boolean }>`
   position: relative;
+  z-index:2;
   width: 100%;
   border-radius: 5px;
   border: 2px solid transparent;
@@ -77,9 +84,22 @@ const InputBox = styled.div<{ errColor?: boolean }>`
         }
       }
     `}
+    ${({disabled})=> disabled && css`
+      pointer-events: none;
+      &::after{
+        content:"";
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        z-index:4;
+        background: rgba(0,0,0,.4);
+      }
+  `}
 `;
 
-const Input = styled.input<{ bold: boolean; small: boolean }>`
+export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?:boolean; }>`
   position: relative;
   z-index: 2;
   width: 100%;
@@ -97,13 +117,19 @@ const Input = styled.input<{ bold: boolean; small: boolean }>`
   ${({ small, theme }) =>
     small &&
     css`
-      line-height: ${theme.rem.p28};
-      padding: ${theme.rem.p22} ${theme.rem.p12} ${theme.rem.p10};
+      line-height: ${theme.rem.p26};
+      padding: ${theme.rem.p28} ${theme.rem.p12} .5rem;
       font-size: ${theme.rem.p16};
     `}
+  ${({ isEmail, theme }) =>
+  isEmail &&
+    css`
+      padding: ${theme.rem.p28} ${theme.rem.p100} ${theme.rem.p10} ${theme.rem.p12};
+    `}
+    
 `;
 
-const CurrentInputName = styled.span<{ small: boolean }>`
+export const CurrentInputName = styled.span<{ small: boolean }>`
   position: absolute;
   z-index: 1;
   top: 50%;
@@ -133,7 +159,7 @@ const CurrentInputName = styled.span<{ small: boolean }>`
   }
 `;
 
-const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
+export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
   margin: 6px 0 30px;
   svg{
     width: 1em;
@@ -149,6 +175,24 @@ const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
       }
     `}
 `;
-const ErrMsg = styled.div`
+export const ErrMsg = styled.div`
 
 `;
+
+export const CertificateBtn=styled.button`
+    width:100%;
+    height:100%;
+    font-size: 12px;
+`
+
+
+export const CertificateBtnBox = styled.div`
+    position :absolute;
+    z-index: 4;
+    right: 10px;
+    top: 50%;
+    transform :translateY(-50%);
+    width: ${({theme}) => theme.rem.p90};
+    height: ${({theme}) => theme.rem.p40};
+    border : 1px solid #000;
+`
