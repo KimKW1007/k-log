@@ -59,6 +59,7 @@ const SecondPage = ({
     }
     mutate({ userEmail: watch('userEmail') });
     setValue!('token', '');
+    clearErrors("token")
     setIsPassCertificate!(true);
     if (isSuccess) {
       setIsPassCertificate!(false);
