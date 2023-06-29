@@ -148,9 +148,28 @@ const SignupForm = () => {
       )}
       {isOpenCheckErrIdModal && <CommonModal setIsOpenModal={setIsOpenCheckErrIdModal}>{checkErrMsg}</CommonModal>}
       {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
-      {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} setValue={setValue} setError={setError} clearErrors={clearErrors}></SecondPage>}
+      {currentLevel === 'second' && (
+        <SecondPage
+          setIsAllChecked={setIsAllChecked}
+          register={register}
+          watch={watch}
+          errors={errors}
+          isPassCertificate={isPassCertificate}
+          setIsPassCertificate={setIsPassCertificate}
+          setValue={setValue}
+          setError={setError}
+          clearErrors={clearErrors}></SecondPage>
+      )}
       {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
-      {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked} register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors}></ThirdPage>}
+      {currentLevel === 'third' && (
+        <ThirdPage
+          setIsAllChecked={setIsAllChecked}
+          register={register}
+          watch={watch}
+          errors={errors}
+          setError={setError}
+          clearErrors={clearErrors}></ThirdPage>
+      )}
       {currentLevel === 'finally' && <FinallPage></FinallPage>}
       <SubmitBox>
         <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
