@@ -53,7 +53,7 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
 
 export default UserInfoInput;
 
-export const InputBox = styled.div<{ errColor?: boolean; disabled ?:boolean }>`
+export const InputBox = styled.div<{ errColor?: boolean; }>`
   position: relative;
   z-index:2;
   width: 100%;
@@ -84,19 +84,6 @@ export const InputBox = styled.div<{ errColor?: boolean; disabled ?:boolean }>`
         }
       }
     `}
-    ${({disabled})=> disabled && css`
-      pointer-events: none;
-      &::after{
-        content:"";
-        position:absolute;
-        left:0;
-        top:0;
-        width:100%;
-        height:100%;
-        z-index:4;
-        background: rgba(0,0,0,.4);
-      }
-  `}
 `;
 
 export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?:boolean; }>`
@@ -183,6 +170,12 @@ export const CertificateBtn=styled.button`
     width:100%;
     height:100%;
     font-size: 12px;
+    background: #787878;
+    color:#fff;
+    transition : .3s;
+    &:hover{
+      background: #454545;
+  }
 `
 
 
@@ -194,5 +187,6 @@ export const CertificateBtnBox = styled.div`
     transform :translateY(-50%);
     width: ${({theme}) => theme.rem.p90};
     height: ${({theme}) => theme.rem.p40};
-    border : 1px solid #000;
+    border-radius : 8px;
+    overflow: hidden;
 `
