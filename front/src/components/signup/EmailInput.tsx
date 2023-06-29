@@ -8,10 +8,11 @@ interface EmailProps extends InputProps{
   isSuccess : boolean;
   isLoading : boolean;
   certificateEmail: () => void
+  isPassCertificate ?: boolean;
 }
 
 
-const EmailInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors, isSuccess, isLoading, certificateEmail }: EmailProps) => {
+const EmailInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors, isSuccess, isLoading, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
 
@@ -22,7 +23,7 @@ const EmailInput = ({ type, inputName, watch, register, bold = false, small = fa
   return (
     <React.Fragment>
       <OuterBox>
-        <InputBox errColor={errColor} disabled={isLoading || isSuccess}>
+        <InputBox errColor={errColor} className={(isLoading || isSuccess) ? 'certified' : ""}>
           <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
             {inputName}
           </CurrentInputName>
@@ -40,11 +41,11 @@ const EmailInput = ({ type, inputName, watch, register, bold = false, small = fa
             
           />
         </InputBox>
-        <CertificateBtnBox>
+        {isPassCertificate || <CertificateBtnBox>
           <CertificateBtn type="button" onClick={certificateEmail} >
             {isLoading ? "전송 중" : isSuccess ? "재전송" : '인증번호 받기'}
           </CertificateBtn>
-        </CertificateBtnBox>
+        </CertificateBtnBox>}
       </OuterBox>
       {errors && (
         <ErrMsgBox errColor={errColor}>
