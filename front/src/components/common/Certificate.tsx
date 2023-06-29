@@ -9,37 +9,46 @@ import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/boo
 const Certificate = ({ register, watch, setIsPassCertificate, isPassCertificate, errors, setError, clearErrors }: RegisterPagesProps) => {
   const { postApi } = customApi('/find/certificate');
   const certificateToken = async () => {
-    if(errors?.token?.message) return
+    if (!watch('token')) {
+      setError('token', { type: 'custom', message: '값을 입력해주세요' });
+      return;
+    }
+    if (errors?.token?.message) return;
     await postApi({ userEmail: watch('userEmail'), token: watch('token') })
       .then((res) => {
         console.log({ res });
         setIsPassCertificate!(true);
       })
-      .catch((e) => {console.log({ e }); setError("token",{type:"custom", message:"인증번호가 일치하지 않습니다."})});
+      .catch((e) => {
+        console.log({ e });
+        setError('token', { type: 'custom', message: '인증번호가 일치하지 않습니다.' });
+      });
   };
 
   return (
     <>
-      <CertBox disabled={isPassCertificate} errColor={Boolean(errors?.token?.message)}>
-        <CertInput
-          placeholder="인증번호"
-          {...register('token', {
-            required: true,
-            validate: {
-              checkRegex: (value) => /^[0-9]{4,6}$/.test(value!) || '4~6자리 숫자만 입력하세요.'
-            }
-          })}
-        />
-        <CertificateBtnBox>
-          <CertificateBtn type="button" onClick={certificateToken}>
-            인증하기
-          </CertificateBtn>
-        </CertificateBtnBox>
-      </CertBox>
-      {errors?.token?.message && (
-        <ErrMsgBox errColor={Boolean(errors?.token.message)}>
-          {errors?.token.message && <ExclamationCircleFill />}
-          <ErrMsg>{errors?.token.message}</ErrMsg>
+      {isPassCertificate || (
+        <CertBox errColor={Boolean(errors?.token?.message)}>
+          <CertInput
+            placeholder="인증번호"
+            {...register('token', {
+              required: "값을 입력해주세요",
+              validate: {
+                checkRegex: (value) => /^[0-9]{4,6}$/.test(value!) || '4~6자리 숫자만 입력하세요.'
+              }
+            })}
+          />
+          <CertificateBtnBox>
+            <CertificateBtn type="button" onClick={certificateToken}>
+              인증하기
+            </CertificateBtn>
+          </CertificateBtnBox>
+        </CertBox>
+      )}
+      {(errors?.token?.message || isPassCertificate) && (
+        <ErrMsgBox errColor={Boolean(errors?.token?.message)}>
+          {(errors?.token?.message && <ExclamationCircleFill />) || (isPassCertificate && <ExclamationCircleFill />)}
+          <ErrMsg>{errors?.token?.message || (isPassCertificate && '인증되었습니다')}</ErrMsg>
         </ErrMsgBox>
       )}
     </>
@@ -68,7 +77,7 @@ const CertInput = styled.input`
   }
 `;
 
-const CertBox = styled.div<{ disabled?: boolean; errColor?: boolean;  }>`
+const CertBox = styled.div<{ errColor?: boolean }>`
   position: relative;
   width: 100%;
   margin-top: ${({ theme }) => theme.rem.p10};
@@ -78,25 +87,10 @@ const CertBox = styled.div<{ disabled?: boolean; errColor?: boolean;  }>`
     errColor &&
     css`
       background: ${theme.color.err}1a;
-      ${CertInput}{
+      ${CertInput} {
         border-bottom: 2px solid ${theme.color.err}8a;
       }
     `}
-
-  ${({ disabled }) =>
-    disabled &&
-    css`
-    pointer-events: none;
-    &::after{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      width:100%;
-      height:100%;
-      z-index:5;
-      background: rgba(0,0,0,.4);
-  `}
 `;
 
 // ${({ theme }) => theme.color.err}
