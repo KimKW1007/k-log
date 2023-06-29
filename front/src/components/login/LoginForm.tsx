@@ -68,7 +68,7 @@ const LoginForm = () => {
         )}
       </SubmitBox>
       <SignUpAskQuestionBox>
-        <Link href={'#'}>아이디/비밀번호를 잃어 버리셨나요?</Link>
+        <Link href={'/identity/find'}>아이디/비밀번호를 잃어버리셨나요?</Link>
         <Link href={'/signup'}>아이디 생성하기</Link>
       </SignUpAskQuestionBox>
     </Form>
