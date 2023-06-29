@@ -30,7 +30,6 @@ export const PageInnerBox = styled.div`
   width: 36rem;
   padding:${({theme})=>theme.rem.p80} ${({theme})=>theme.rem.p70} 0;
   background: #fefefe;
-  box-shadow: 25px 25px 18px 10px rgba(0,0,0,.4);
 `;
 
 const LoginInnerBox = styled(PageInnerBox)`
