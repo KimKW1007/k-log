@@ -22,7 +22,17 @@ export interface RegisterPagesProps {
   clearErrors: UseFormClearErrors<Inputs>;
 }
 
-const SecondPage = ({ register, watch, setIsAllChecked, errors, setIsPassCertificate, isPassCertificate, setValue, setError, clearErrors }: RegisterPagesProps) => {
+const SecondPage = ({
+  register,
+  watch,
+  setIsAllChecked,
+  errors,
+  setIsPassCertificate,
+  isPassCertificate,
+  setValue,
+  setError,
+  clearErrors
+}: RegisterPagesProps) => {
   const [isComplete, setIsComplete] = useState(false);
 
   const { postApi: certificatePostApi } = customApi('/find/sendEmail');
@@ -32,17 +42,25 @@ const SecondPage = ({ register, watch, setIsAllChecked, errors, setIsPassCertifi
     },
     onSuccess(data, variables, context) {
       setIsComplete(true);
+      setIsPassCertificate!(false);
     }
   });
 
   const certificateEmail = () => {
+    if (!watch('userEmail')) {
+      setError('userEmail', {
+        type: 'custom',
+        message: '값을 입력해주세요'
+      });
+      return;
+    }
     if (errors?.userEmail?.message) {
       return;
     }
     mutate({ userEmail: watch('userEmail') });
-      setValue!('token', '');
-      setIsPassCertificate!(true);
-      if (isSuccess) {
+    setValue!('token', '');
+    setIsPassCertificate!(true);
+    if (isSuccess) {
       setIsPassCertificate!(false);
     }
   };
@@ -90,8 +108,19 @@ const SecondPage = ({ register, watch, setIsAllChecked, errors, setIsPassCertifi
           isSuccess={isSuccess}
           isLoading={isLoading}
           certificateEmail={certificateEmail}
+          isPassCertificate={isPassCertificate}
         />
-        {isComplete && <Certificate register={register} watch={watch} setIsAllChecked={setIsAllChecked} isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} errors={errors} setError={setError} clearErrors={clearErrors}></Certificate>}
+        {isComplete && (
+          <Certificate
+            register={register}
+            watch={watch}
+            setIsAllChecked={setIsAllChecked}
+            isPassCertificate={isPassCertificate}
+            setIsPassCertificate={setIsPassCertificate}
+            errors={errors}
+            setError={setError}
+            clearErrors={clearErrors}></Certificate>
+        )}
       </InputsBox>
       <EmptyBox />
     </>
