@@ -10,7 +10,7 @@ import { UserInfoInputProps } from '@src/types/user';
 const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors}: UserInfoInputProps) => {
   const [isFocus, setIsFocus] = useState(false);
   useEffect(()=>{
-    watch && setIsFocus(true)
+    watch ? setIsFocus(true) :setIsFocus(false)
   },[watch])
   return (
     <React.Fragment>
