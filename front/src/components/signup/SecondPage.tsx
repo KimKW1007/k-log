@@ -5,7 +5,7 @@ import { InputListBox } from '@components/login/LoginForm';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { RegisterPagesProps } from '@src/types/register';
-import FindId from '@components/find/FindId';
+import CertificateEmail from '@components/common/CertificateEmail';
 
 const SecondPage = ({
   register,
@@ -76,7 +76,7 @@ const SecondPage = ({
           errors={errors?.userName?.message}
           errColor={Boolean(errors?.userName?.message)}
         />
-        <FindId
+        <CertificateEmail
           small
           register={register}
           watch={watch}
