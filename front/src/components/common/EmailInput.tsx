@@ -23,7 +23,7 @@ const EmailInput = ({ inputName = '이메일', watch, register, small = false, e
 
 
   useEffect(() => {
-    watch && setIsFocus(true);
+    watch ? setIsFocus(true) : setIsFocus(false);
   }, [watch]);
   return (
     <React.Fragment>
