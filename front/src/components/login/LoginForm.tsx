@@ -13,11 +13,9 @@ import Title from '@components/common/TitleBox';
 import LoginErrBox from './LoginErrBox';
 import Loading from '@components/common/Loading';
 import { AllCenterFlex } from '@components/common/CommonFlex';
+import { Inputs } from '@src/types/user';
 
-interface Inputs {
-  userId: string;
-  password: string;
-}
+
 
 const LoginForm = () => {
   const router = useRouter();
