@@ -9,7 +9,7 @@ import styled, { css } from 'styled-components';
 
 interface EmailProps extends Omit<UserInfoInputProps, "register" | "type" | "inputName">{
   inputName ?: string;
-  isSuccess : boolean;
+  isComplete : boolean;
   isLoading : boolean;
   certificateEmail: () => void
   isPassCertificate ?: boolean;
@@ -17,7 +17,7 @@ interface EmailProps extends Omit<UserInfoInputProps, "register" | "type" | "inp
 }
 
 
-const EmailInput = ({ inputName = '이메일', watch, register, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
+const EmailInput = ({ inputName = '이메일', watch, register, small = false, errColor, errors, isComplete, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
 
@@ -28,7 +28,7 @@ const EmailInput = ({ inputName = '이메일', watch, register, small = false, e
   return (
     <React.Fragment>
       <OuterBox>
-        <InputBox errColor={errColor} className={(isLoading || isSuccess) ? 'certified' : ""}>
+        <InputBox errColor={errColor} className={(isLoading || isComplete) ? 'certified' : ""}>
           <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
             {inputName}
           </CurrentInputName>
@@ -54,7 +54,7 @@ const EmailInput = ({ inputName = '이메일', watch, register, small = false, e
         </InputBox>
         {isPassCertificate || <CertificateBtnBox>
           <CertificateBtn type="button" onClick={certificateEmail} >
-            {isLoading ? "전송 중" : isSuccess ? "재전송" : '인증번호 받기'}
+            {isLoading ? "전송 중" : isComplete ? "재전송" : '인증번호 받기'}
           </CertificateBtn>
         </CertificateBtnBox>}
       </OuterBox>
