@@ -8,21 +8,13 @@ import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import CheckIdByEmailPage, { User } from './CheckIdByEmailPage';
+import CheckIdByEmailPage from '../common/CheckIdByEmail';
 import CommonModal from '@components/modal/CommonModal';
-import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import FinallPage from './FinallPage';
-import { EMAIL_REGEX } from '@src/constant/regex';
+import { Inputs, User } from '@src/types/user';
 
-export interface Inputs {
-  userId?: string;
-  password?: string;
-  confirmPassword?: string;
-  userName?: string;
-  userEmail?: string;
-  token?: string;
-}
+
 
 interface CurrentTitleType {
   [key: string]: {

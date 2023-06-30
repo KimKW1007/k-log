@@ -1,23 +1,18 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import { EmptyBox } from './FirstPage';
+import { FlexEmptyBox } from './FirstPage';
 
 const FinallPage = () => {
   return (
     <FinallBox>
       <FinalText>&#40;준비중&#41; 일단 가입을 축하한다.</FinalText>
-      <EmptyBox/>
+      <FlexEmptyBox />
     </FinallBox>
-  )
-}
+  );
+};
 
-export default FinallPage
+export default FinallPage;
 
-const FinallBox = styled.div`
+const FinallBox = styled.div``;
 
-`
-
-const FinalText =styled.span`
-
-`
-
+const FinalText = styled.span``;

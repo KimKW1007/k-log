@@ -2,13 +2,13 @@ import UserInfoInput from '@components/common/UserInfoInput';
 import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX } from '@src/constant/regex';
 import React, { useEffect, useState } from 'react';
 import { FieldError, FieldErrors, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { Inputs } from './signupForm';
 import { InputsBox } from '@components/login/LoginForm';
-import { EmptyBox } from './FirstPage';
+import { FlexEmptyBox } from './FirstPage';
 import Certificate from '@components/common/Certificate';
 import EmailInput from './EmailInput';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
+import { Inputs } from '@src/types/user';
 
 export interface RegisterPagesProps {
   register: UseFormRegister<Inputs>;
@@ -59,7 +59,7 @@ const SecondPage = ({
     }
     mutate({ userEmail: watch('userEmail') });
     setValue!('token', '');
-    clearErrors("token")
+    clearErrors('token');
     setIsPassCertificate!(true);
     if (isSuccess) {
       setIsPassCertificate!(false);
@@ -123,7 +123,7 @@ const SecondPage = ({
             clearErrors={clearErrors}></Certificate>
         )}
       </InputsBox>
-      <EmptyBox />
+      <FlexEmptyBox />
     </>
   );
 };
