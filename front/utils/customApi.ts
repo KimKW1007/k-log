@@ -40,5 +40,9 @@ export default function customApi<T = any>(url: string) {
     const result = await baseApi().put(url, data);
     return result.data;
   };
-  return { postApi, getApi, deleteApi, putApi };
+  const patchApi = async (data: T) => {
+    const result = await baseApi().patch(url, data);
+    return result.data;
+  };
+  return { postApi, getApi, deleteApi, putApi, patchApi };
 }
