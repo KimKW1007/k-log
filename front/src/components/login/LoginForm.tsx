@@ -2,7 +2,7 @@ import UserInfoInput from '@components/common/UserInfoInput';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { Power } from '@styled-icons/ionicons-solid/Power';
+import { Power, LogIn } from '@styled-icons/ionicons-solid';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import customApi from 'utils/customApi';
@@ -71,7 +71,7 @@ const LoginForm = () => {
         {isLoading ? (
           <Loading></Loading>
         ) : (
-          <SubmitBtn type="submit" disabled={!watch('userId') || !watch('password')}>
+          <SubmitBtn type="submit" title='로그인' disabled={!watch('userId') || !watch('password')}>
             <PowerIcon></PowerIcon>
           </SubmitBtn>
         )}
@@ -104,10 +104,10 @@ const SubmitBtn = styled.button`
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 15px;
+  border-radius: 30px;
   border: 2px solid rgba(0, 0, 0, 0);
   background: rgb(147, 118, 224);
-  transition: 0.3s;
+  transition: all 0.3s;
   &:disabled {
     border: 2px solid rgb(221, 221, 221);
     background: rgba(0, 0, 0, 0);
@@ -115,11 +115,15 @@ const SubmitBtn = styled.button`
   &:not(:disabled):hover {
     background: rgb(127, 98, 204);
   }
+  &:not(:disabled):active{
+    background: rgb(107, 70, 180);
+  }
 `;
 
-const PowerIcon = styled(Power)`
+const PowerIcon = styled(LogIn)`
   width: 50%;
-  color: #e9e9e9;
+  color: #fff;
+  margin-left: -8px;
 `;
 
 const SignUpAskQuestionBox = styled.div`
