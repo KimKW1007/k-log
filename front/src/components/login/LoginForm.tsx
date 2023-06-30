@@ -100,6 +100,13 @@ const SubmitBox = styled(AllCenterFlex)`
   margin-top: ${({ theme }) => theme.rem.p70};
 `;
 
+const PowerIcon = styled(LogIn)`
+  width: 50%;
+  margin-left: -8px;
+  transition: color 0.3s;
+`;
+
+
 const SubmitBtn = styled.button`
   width: 100%;
   height: 100%;
@@ -107,10 +114,16 @@ const SubmitBtn = styled.button`
   border-radius: 30px;
   border: 2px solid rgba(0, 0, 0, 0);
   background: rgb(147, 118, 224);
-  transition: all 0.3s;
+  transition:  0.3s;
+  ${PowerIcon}{
+    color: #fff;
+  }
   &:disabled {
     border: 2px solid rgb(221, 221, 221);
     background: rgba(0, 0, 0, 0);
+    ${PowerIcon}{
+      color: #e9e9e9;
+    }
   }
   &:not(:disabled):hover {
     background: rgb(127, 98, 204);
@@ -120,11 +133,6 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const PowerIcon = styled(LogIn)`
-  width: 50%;
-  color: #fff;
-  margin-left: -8px;
-`;
 
 const SignUpAskQuestionBox = styled.div`
   margin: ${({ theme }) => theme.rem.p30} 0;
