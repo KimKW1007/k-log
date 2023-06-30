@@ -1,8 +1,6 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { FindId } from './findId.entity';
-import { FindIdDto } from './dto/find-findId.dto';
-import { User } from 'src/auth/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SendEmaildDto } from './dto/sendEmail.dto';
 

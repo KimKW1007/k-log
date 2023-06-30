@@ -8,14 +8,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { AuthCredentialsDto } from './auth-credentials.dto';
 
-export class AuthRegistrationDto extends Repository<User> {
-  @IsNotEmpty()
-  @IsString()
-  @Matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{4,24}$/, {
-    message: '아이디 형식을 확인해주세요.',
-  })
-  userId: string;
+export class AuthRegistrationDto extends AuthCredentialsDto {
   
   @IsNotEmpty()
   @IsString()
@@ -25,12 +20,5 @@ export class AuthRegistrationDto extends Repository<User> {
   @IsString()
   @IsEmail()
   userEmail: string;
-  
-  @IsNotEmpty()
-  @IsString()
-  // 영어랑 숫자만 가능한 유효성 체크
-  @Matches(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/, {
-    message: '비밀번호 형식을 확인해주세요.',
-  })
-  password: string;
+
 }

@@ -5,9 +5,9 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { FindId } from '../findId.entity';
+import { SendEmaildDto } from './sendEmail.dto';
 
-export class FindIdDto extends Repository<FindId> {
+export class CertificateEmailDto extends SendEmaildDto {
 
   @IsNotEmpty()
   @IsString()
