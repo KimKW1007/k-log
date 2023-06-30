@@ -8,18 +8,18 @@ import Certificate from '@components/common/Certificate';
 import EmailInput from './EmailInput';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { Inputs } from '@src/types/user';
+import { RegisterInputs } from '@src/types/user';
 
 export interface RegisterPagesProps {
-  register: UseFormRegister<Inputs>;
-  watch: UseFormWatch<Inputs>;
+  register: UseFormRegister<RegisterInputs>;
+  watch: UseFormWatch<RegisterInputs>;
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  errors?: FieldErrors<Inputs>;
+  errors?: FieldErrors<RegisterInputs>;
   setIsPassCertificate?: React.Dispatch<React.SetStateAction<boolean>>;
   isPassCertificate?: boolean;
-  setValue?: UseFormSetValue<Inputs>;
-  setError: UseFormSetError<Inputs>;
-  clearErrors: UseFormClearErrors<Inputs>;
+  setValue?: UseFormSetValue<RegisterInputs>;
+  setError: UseFormSetError<RegisterInputs>;
+  clearErrors: UseFormClearErrors<RegisterInputs>;
 }
 
 const SecondPage = ({

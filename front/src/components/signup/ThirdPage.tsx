@@ -4,8 +4,6 @@ import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/reg
 import { RegisterPagesProps } from './SecondPage';
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
 import { InputsBox } from '@components/login/LoginForm';
-import { Inputs } from './signupForm';
-import EmailInput from './EmailInput';
 
 interface keyString {
   [key: string]: string;

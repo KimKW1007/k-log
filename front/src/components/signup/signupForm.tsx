@@ -12,7 +12,7 @@ import CheckIdByEmailPage from '../common/CheckIdByEmail';
 import CommonModal from '@components/modal/CommonModal';
 import { useRouter } from 'next/router';
 import FinallPage from './FinallPage';
-import { Inputs, User } from '@src/types/user';
+import { RegisterInputs, User } from '@src/types/user';
 
 
 
@@ -32,7 +32,7 @@ const SignupForm = () => {
     setError,
     clearErrors,
     setValue
-  } = useForm<Inputs>({
+  } = useForm<RegisterInputs>({
     mode: 'all'
   });
 
@@ -83,7 +83,7 @@ const SignupForm = () => {
     }
   });
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: RegisterInputs) => {
     if (currentLevel === 'second') {
       if (isPassCertificate) {
         checkEmailMutate({ userEmail: data.userEmail });

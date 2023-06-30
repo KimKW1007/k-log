@@ -13,7 +13,7 @@ import Title from '@components/common/TitleBox';
 import LoginErrBox from './LoginErrBox';
 import Loading from '@components/common/Loading';
 import { AllCenterFlex } from '@components/common/CommonFlex';
-import { Inputs } from '@src/types/user';
+import { RegisterInputs } from '@src/types/user';
 
 
 
@@ -28,7 +28,7 @@ const LoginForm = () => {
     handleSubmit,
     watch,
     formState: { errors }
-  } = useForm<Inputs>({
+  } = useForm<RegisterInputs>({
     mode: 'onSubmit'
   });
 
@@ -44,7 +44,7 @@ const LoginForm = () => {
     }
   });
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: RegisterInputs) => {
     mutate({ ...data });
   };
 
