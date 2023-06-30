@@ -1,19 +1,22 @@
 import { CertificateBtn, CertificateBtnBox, CurrentInputName, ErrMsg, ErrMsgBox, Input, InputBox } from '@components/common/UserInfoInput';
-import { UserInfoInputProps } from '@src/types/user';
+import { EMAIL_REGEX } from '@src/constant/regex';
+import { RegisterInputs, UserInfoInputProps } from '@src/types/user';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import React, { useEffect, useState } from 'react';
+import { UseFormRegister } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 
 
-interface EmailProps extends UserInfoInputProps{
+interface EmailProps extends Omit<UserInfoInputProps, "register" | "type">{
   isSuccess : boolean;
   isLoading : boolean;
   certificateEmail: () => void
   isPassCertificate ?: boolean;
+  register: UseFormRegister<RegisterInputs>
 }
 
 
-const EmailInput = ({ type, inputName = '이메일', watch, register, bold = false, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
+const EmailInput = ({ inputName = '이메일', watch, register, bold = false, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
 
@@ -31,8 +34,13 @@ const EmailInput = ({ type, inputName = '이메일', watch, register, bold = fal
           <Input
             small={small}
             bold={bold}
-            type={type}
-            {...register}
+            type="text"
+            {...register('userEmail', {
+            required: '값을 입력해주세요',
+            validate: {
+              checkEmailValidate: (value) => EMAIL_REGEX.test(value!) || '이메일 형식에 맞지 않습니다'
+            }
+          })}
             onFocus={() => {
               setIsFocus(true);
             }}
