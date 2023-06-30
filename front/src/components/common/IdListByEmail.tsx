@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { FlexEmptyBox } from '../signup/FirstPage';
 import { UserIds } from '@src/types/user';
 
 
@@ -11,7 +10,6 @@ const IdListByEmail = ({ userIds }: UserIds) => {
       <AccountsBox>
         {userIds && userIds.length >= 1 ? userIds.map(({ id, userId }) => <p key={id}>{userId}</p>) : <p>가입된 아이디가 없습니다</p>}
       </AccountsBox>
-      <FlexEmptyBox />
     </React.Fragment>
   );
 };

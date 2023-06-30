@@ -1,14 +1,9 @@
 import UserInfoInput from '@components/common/UserInfoInput';
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX } from '@src/constant/regex';
+import { NAME_REGEX } from '@src/constant/regex';
 import React, { useEffect, useState } from 'react';
-import { FieldError, FieldErrors, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { InputListBox } from '@components/login/LoginForm';
-import { FlexEmptyBox } from './FirstPage';
-import Certificate from '@components/common/Certificate';
-import EmailInput from './EmailInput';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { RegisterInputs } from '@src/types/user';
 import { RegisterPagesProps } from '@src/types/register';
 import FindId from '@components/find/FindId';
 
@@ -93,7 +88,6 @@ const SecondPage = ({
           isPassCertificate={isPassCertificate}
         />
       </InputListBox>
-      <FlexEmptyBox />
     </>
   );
 };

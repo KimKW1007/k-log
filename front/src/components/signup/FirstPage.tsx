@@ -33,17 +33,13 @@ const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
           </CheckBoxInputs>
         ))}
       </CheckInputListBox>
-      <FlexEmptyBox />
     </React.Fragment>
   );
 };
 
 export default FirstPage;
 
-export const FlexEmptyBox = styled.div`
-  width: 100%;
-  flex-grow: 1;
-`;
+
 
 const CheckInputListBox = styled.div`
   width: 100%;

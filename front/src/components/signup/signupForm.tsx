@@ -163,6 +163,7 @@ const SignupForm = () => {
           clearErrors={clearErrors}></ThirdPage>
       )}
       {currentLevel === 'finally' && <FinallPage></FinallPage>}
+      <FlexEmptyBox />
       <SubmitBox>
         <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
           {CurrentTitle[currentLevel].submitText}
@@ -174,13 +175,18 @@ const SignupForm = () => {
 
 export default SignupForm;
 
+export const FlexEmptyBox = styled.div`
+  width: 100%;
+  flex-grow: 1;
+`;
+
 const SignUpForm = styled(Form)`
   height: 100%;
   justify-content: space-between;
   padding: 0 0 ${({ theme }) => theme.rem.p80};
 `;
 
-const SubmitBox = styled.div`
+export const SubmitBox = styled.div`
   width: 70%;
   height: 50px;
   margin-top: 50px;
@@ -188,12 +194,13 @@ const SubmitBox = styled.div`
   overflow: hidden;
 `;
 
-const SubmitBtn = styled.button<{ currentLevel: string }>`
+export const SubmitBtn = styled.button<{ currentLevel?: string }>`
   width: 100%;
   height: 100%;
   font-size: 20px;
   font-weight: bold;
   transition: 0.2s;
+  
   &:not(:disabled) {
     background: rgba(255, 109, 96, 0.8);
     color: #fff;
@@ -224,4 +231,7 @@ const SubmitBtn = styled.button<{ currentLevel: string }>`
         background: rgba(134, 150, 254, 1);
       }
     `}
+    &:disabled{
+      cursor : not-allowed;
+    }
 `;
