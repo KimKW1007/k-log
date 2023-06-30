@@ -8,7 +8,7 @@ import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
 import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import CheckIdByEmailPage from '../common/CheckIdByEmail';
+import IdListByEmail from '../common/IdListByEmail';
 import CommonModal from '@components/modal/CommonModal';
 import { useRouter } from 'next/router';
 import FinallPage from './FinallPage';
@@ -87,7 +87,7 @@ const SignupForm = () => {
     if (currentLevel === 'second') {
       if (isPassCertificate) {
         checkEmailMutate({ userEmail: data.userEmail });
-        setCurrentLevel((prev) => (prev = 'checkIdByEmail'));
+        setCurrentLevel((prev) => (prev = 'idListByEmail'));
       }
     }
     if (currentLevel === 'third') {
@@ -105,7 +105,7 @@ const SignupForm = () => {
       title: '이름/이메일 입력',
       submitText: '다음'
     },
-    checkIdByEmail: {
+    idListByEmail: {
       title: '해당 이메일로 가입된 아이디',
       submitText: userIds.length < 5 ? '새로 만들기' : '돌아가기'
     },
@@ -123,7 +123,7 @@ const SignupForm = () => {
     if (checkSubmitType) {
       setIsAllChecked((prev) => !prev);
       if (currentLevel === 'first') setCurrentLevel((prev) => (prev = 'second'));
-      if (currentLevel === 'checkIdByEmail') {
+      if (currentLevel === 'idListByEmail') {
         userIds.length < 5 ? setCurrentLevel((prev) => (prev = 'third')) : setCurrentLevel((prev) => (prev = 'second'));
       }
       if (currentLevel === 'finally') router.push('/login');
@@ -152,7 +152,7 @@ const SignupForm = () => {
           setError={setError}
           clearErrors={clearErrors}></SecondPage>
       )}
-      {currentLevel === 'checkIdByEmail' && <CheckIdByEmailPage userIds={userIds}></CheckIdByEmailPage>}
+      {currentLevel === 'idListByEmail' && <IdListByEmail userIds={userIds}></IdListByEmail>}
       {currentLevel === 'third' && (
         <ThirdPage
           setIsAllChecked={setIsAllChecked}
@@ -202,7 +202,7 @@ const SubmitBtn = styled.button<{ currentLevel: string }>`
     background: rgba(255, 109, 96, 1);
   }
   ${({ currentLevel }) =>
-    currentLevel === 'checkIdByEmail' &&
+    currentLevel === 'idListByEmail' &&
     css`
       &:not(:disabled) {
         background: #f2f2f2;
