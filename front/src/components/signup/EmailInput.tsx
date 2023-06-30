@@ -13,7 +13,7 @@ interface EmailProps extends UserInfoInputProps{
 }
 
 
-const EmailInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors, isSuccess, isLoading, certificateEmail, isPassCertificate }: EmailProps) => {
+const EmailInput = ({ type, inputName = '이메일', watch, register, bold = false, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
 
