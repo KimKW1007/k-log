@@ -132,7 +132,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     }
     if (submitText?.includes("비밀번호 찾기")) {
       checkIdEmailMutate({userEmail , userId })
-    }``
+    }
     if (submitText?.includes("비밀번호 변경")) {
       changePasswordMutate({userEmail , userId , password })
     }
