@@ -6,11 +6,13 @@ const FinallPage = ({ isSignupFinal = false }: { isSignupFinal?: boolean }) => {
     <FinalBox>
       {isSignupFinal ? (
         <FinalText>
-          회원가입을 진심으로 축하합니다. <strong>K-log</strong>를 세세하게 즐겨주세요!
+          <p>회원가입을 진심으로 축하합니다.</p>
+          <p><strong>K-log</strong>를 세세하게 즐겨주세요!</p>
         </FinalText>
       ) : (
         <FinalText>
-          비밀번호 변경이 완료되었습니다. 다시 한번 <strong>K-log</strong>를 즐겨주세요!
+          <p>비밀번호 변경이 완료되었습니다.</p>
+          <p><strong>K-log</strong> 로그인하러 가볼까요?</p>
         </FinalText>
       )}
     </FinalBox>
@@ -21,6 +23,13 @@ export default FinallPage;
 
 const FinalBox = styled.div`
   width: 100%;
+  margin: 30px 0 0;
 `;
 
-const FinalText = styled.span``;
+const FinalText = styled.div`
+  font-size:22px;
+  text-align:center;
+  p{
+    padding: 10px 0;
+  }
+`;
