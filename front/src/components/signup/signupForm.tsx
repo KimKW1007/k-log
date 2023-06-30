@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import IdListByEmail from '../common/IdListByEmail';
 import CommonModal from '@components/modal/CommonModal';
 import { useRouter } from 'next/router';
-import FinallPage from './FinallPage';
+import FinallPage from '../common/FinallPage';
 import { RegisterInputs, User } from '@src/types/user';
 
 
@@ -162,7 +162,7 @@ const SignupForm = () => {
           setError={setError}
           clearErrors={clearErrors}></ThirdPage>
       )}
-      {currentLevel === 'finally' && <FinallPage></FinallPage>}
+      {currentLevel === 'finally' && <FinallPage isSignupFinal></FinallPage>}
       <FlexEmptyBox />
       <SubmitBox>
         <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
