@@ -2,6 +2,8 @@ import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonF
 import FindForm from '@components/find/FindForm';
 import type { NextPage } from 'next';
 import React, { MouseEvent, useEffect, useState } from 'react';
+import { inputResetBoolean } from '@src/atoms/atoms';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { ListTypes, findList, tabList } from 'utils/mapList';
 
@@ -10,9 +12,12 @@ const FindPage: NextPage = () => {
   const [isOnPasswordTab, setIsOnPasswordTab] = useState(false);
   const [textById, setTextById] = useState<ListTypes>();
 
+  const [resetState, setResetState] = useRecoilState(inputResetBoolean)
+
   const onClickChangeTab=(id : string)=>()=>{
     id === "tabId" ? setIsOnPasswordTab(false) : setIsOnPasswordTab(true)
     setTextById(findList.find(x => x.id === id))
+    setResetState(prev => !prev)
   }
   useEffect(()=>{
     setTextById(findList[0])
