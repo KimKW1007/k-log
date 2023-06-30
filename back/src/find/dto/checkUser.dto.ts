@@ -5,9 +5,9 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { CertificateEmailDto } from './certificate.dto';
+import { SendEmaildDto } from './sendEmail.dto';
 
-export class CheckUserDto extends CertificateEmailDto {
+export class CheckUserDto extends SendEmaildDto {
 
   @IsNotEmpty()
   @IsString()

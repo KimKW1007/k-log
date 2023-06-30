@@ -62,12 +62,11 @@ export class FindService {
 
   async checkUserIdByUserIdEmail(checkUserDto: CheckUserDto): Promise<{ message: string }>{
     const { userEmail, userId } = checkUserDto;
-    const certificatEmail = await this.getOneUserByEmail(checkUserDto);
     const foundUser = await this.userRepository.findOneBy({
-      userEmail: certificatEmail.userEmail, userId
+      userEmail, userId
     });
     if(!foundUser){
-      throw new ConflictException('해당 아이디 및 이메일과 일치한 계정이 없습니다.');
+      throw new ConflictException('아이디와 이메일을 확인해주세요.');
     }
     await this.findRepository.delete({ userEmail });
     return {message : "success"}
@@ -75,12 +74,11 @@ export class FindService {
 
   async getOneUserChangePassword(changePasswordDto: ChangePasswordDto): Promise<{ message: string }>{
     const { userEmail, userId, password } = changePasswordDto;
-    const certificatEmail = await this.getOneUserByEmail(changePasswordDto);
     const foundUser = await this.userRepository.findOneBy({
-        userEmail: certificatEmail.userEmail, userId 
+        userEmail, userId 
     });
     if(!foundUser){
-      throw new ConflictException('해당 아이디 및 이메일과 일치한 계정이 없습니다.');
+      throw new ConflictException('아이디와 이메일을 확인해주세요.');
     }
     await this.findRepository.delete({ userEmail });
     const salt = await bcrypt.genSalt();
