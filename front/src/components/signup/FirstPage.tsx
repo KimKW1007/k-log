@@ -26,13 +26,13 @@ const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
   }, [isServiceAgree, isCollectionAgree]);
   return (
     <React.Fragment>
-      <CheckInputsBox>
+      <CheckInputListBox>
         {agreeList.map(({ id, text }) => (
           <CheckBoxInputs id={id} onClick={onClickAgreeBtn(id)}>
             <strong>{text}</strong>에 동의 &#40;필수&#41;
           </CheckBoxInputs>
         ))}
-      </CheckInputsBox>
+      </CheckInputListBox>
       <FlexEmptyBox />
     </React.Fragment>
   );
@@ -45,6 +45,6 @@ export const FlexEmptyBox = styled.div`
   flex-grow: 1;
 `;
 
-const CheckInputsBox = styled.div`
+const CheckInputListBox = styled.div`
   width: 100%;
 `;

@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 import UserInfoInput from '@components/common/UserInfoInput';
 import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
-import { InputsBox } from '@components/login/LoginForm';
+import { InputListBox } from '@components/login/LoginForm';
 import { RegisterPagesProps } from '@src/types/register';
 
 interface keyString {
   [key: string]: string;
 }
 
-
 const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {
-  
   const errMsg: keyString = {
     userIdMinLength: '4자 이상 입력해 주세요.',
     passwordMinLength: '8자 이상 입력해 주세요.',
@@ -33,7 +31,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
         return '비밀번호가 일치합니다.';
       }
       return '비밀번호가 일치하지 않습니다.';
-    };
+    }
   };
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
     }
   }, [watch('userId'), watch('password'), watch('confirmPassword')]);
   return (
-    <InputsBox>
+    <InputListBox>
       <UserInfoInput
         small
         bold
@@ -79,13 +77,13 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
           },
           onChange: () => {
             if (watch('confirmPassword')!.length >= 8) {
-              if(watch('password') !== watch('confirmPassword')){
+              if (watch('password') !== watch('confirmPassword')) {
                 // 실질적으로 보이진 않고 에러관련 boolean으로 사용
                 setError('confirmPassword', {
                   type: 'custom',
                   message: '비밀번호가 일치하지 않습니다.'
                 });
-              }else{
+              } else {
                 clearErrors(['password', 'confirmPassword']);
               }
             }
@@ -109,7 +107,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
         errors={checkSamePassword() || errorFn(errMsg['passwordRegexMsg'], errors?.password, errors?.confirmPassword)}
         errColor={Boolean(errors?.confirmPassword?.message)}
       />
-    </InputsBox>
+    </InputListBox>
   );
 };
 

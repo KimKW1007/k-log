@@ -2,7 +2,7 @@ import UserInfoInput from '@components/common/UserInfoInput';
 import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX } from '@src/constant/regex';
 import React, { useEffect, useState } from 'react';
 import { FieldError, FieldErrors, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { InputsBox } from '@components/login/LoginForm';
+import { InputListBox } from '@components/login/LoginForm';
 import { FlexEmptyBox } from './FirstPage';
 import Certificate from '@components/common/Certificate';
 import EmailInput from './EmailInput';
@@ -10,8 +10,7 @@ import customApi from 'utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { RegisterInputs } from '@src/types/user';
 import { RegisterPagesProps } from '@src/types/register';
-
-
+import FindId from '@components/find/FindId';
 
 const SecondPage = ({
   register,
@@ -58,16 +57,15 @@ const SecondPage = ({
   };
 
   useEffect(() => {
-    if (watch('userName') && watch('userEmail') && isPassCertificate) {
+    if (watch('userName') && watch('userEmail') && watch('token') && isPassCertificate) {
       setIsAllChecked!(true);
     } else {
       setIsAllChecked!(false);
     }
-  }, [watch('userName'), watch('userEmail'), isPassCertificate]);
-  console.log({ errors });
+  }, [watch('userName'), watch('userEmail'), watch('token'), isPassCertificate]);
   return (
     <>
-      <InputsBox>
+      <InputListBox>
         <UserInfoInput
           small
           bold
@@ -83,31 +81,18 @@ const SecondPage = ({
           errors={errors?.userName?.message}
           errColor={Boolean(errors?.userName?.message)}
         />
-        <EmailInput
+        <FindId
           small
-          bold
-          inputName="이메일"
           register={register}
-          watch={watch('userEmail')}
-          errors={errors?.userEmail?.message}
-          errColor={Boolean(errors?.userEmail?.message)}
-          isSuccess={isSuccess}
-          isLoading={isLoading}
-          certificateEmail={certificateEmail}
+          watch={watch}
+          errors={errors}
+          setError={setError}
+          setValue={setValue}
+          clearErrors={clearErrors}
+          setIsPassCertificate={setIsPassCertificate}
           isPassCertificate={isPassCertificate}
         />
-        {isComplete && (
-          <Certificate
-            register={register}
-            watch={watch}
-            setIsAllChecked={setIsAllChecked}
-            isPassCertificate={isPassCertificate}
-            setIsPassCertificate={setIsPassCertificate}
-            errors={errors}
-            setError={setError}
-            clearErrors={clearErrors}></Certificate>
-        )}
-      </InputsBox>
+      </InputListBox>
       <FlexEmptyBox />
     </>
   );

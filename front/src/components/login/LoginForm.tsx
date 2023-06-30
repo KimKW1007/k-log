@@ -15,8 +15,6 @@ import Loading from '@components/common/Loading';
 import { AllCenterFlex } from '@components/common/CommonFlex';
 import { RegisterInputs } from '@src/types/user';
 
-
-
 const LoginForm = () => {
   const router = useRouter();
   const { postApi } = customApi('/auth/signin');
@@ -52,10 +50,23 @@ const LoginForm = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>로그인</Title>
       {isError && <LoginErrBox></LoginErrBox>}
-      <InputsBox>
-        <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} errColor={isError} />
-        <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} errColor={isError} />
-      </InputsBox>
+      <InputListBox>
+        <UserInfoInput
+          bold
+          type="text"
+          inputName="아이디"
+          register={register('userId', { required: true })}
+          watch={watch('userId')}
+          errColor={isError}
+        />
+        <UserInfoInput
+          type="password"
+          inputName="비밀번호"
+          register={register('password', { required: true })}
+          watch={watch('password')}
+          errColor={isError}
+        />
+      </InputListBox>
       <SubmitBox>
         {isLoading ? (
           <Loading></Loading>
@@ -125,6 +136,6 @@ const SignUpAskQuestionBox = styled.div`
   }
 `;
 
-export const InputsBox = styled.div`
+export const InputListBox = styled.div`
   width: 100%;
 `;
