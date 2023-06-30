@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import UserInfoInput from '@components/common/UserInfoInput';
 import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
-import { RegisterPagesProps } from './SecondPage';
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
 import { InputsBox } from '@components/login/LoginForm';
+import { RegisterPagesProps } from '@src/types/register';
 
 interface keyString {
   [key: string]: string;
