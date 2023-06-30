@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import customApi from 'utils/customApi';
-import { CertificateEmailProps } from '@src/types/CertificateEmail';
+import { CertificateEmailProps } from '@src/types/certificateEmail';
 import { inputResetBoolean } from '@src/atoms/atoms';
 import { useRecoilState } from 'recoil';
 

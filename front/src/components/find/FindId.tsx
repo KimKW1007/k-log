@@ -1,7 +1,7 @@
 import CertificateEmail from '@components/common/CertificateEmail';
 import IdListByEmail from '@components/common/IdListByEmail';
 import { InputListBox } from '@components/login/LoginForm';
-import { CertificateEmailProps } from '@src/types/CertificateEmail';
+import { CertificateEmailProps } from '@src/types/certificateEmail';
 import React from 'react'
 
 

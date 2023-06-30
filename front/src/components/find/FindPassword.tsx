@@ -4,7 +4,7 @@ import FinallPage from '@components/common/FinallPage';
 import UserInfoInput from '@components/common/UserInfoInput';
 import { InputListBox } from '@components/login/LoginForm';
 import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
-import { CertificateEmailProps } from '@src/types/CertificateEmail';
+import { CertificateEmailProps } from '@src/types/certificateEmail';
 import React from 'react';
 import { checkSamePassword, onChangePasswordValidate } from 'utils/checkSamPassword';
 import { errorFn } from 'utils/singupErrorFn';
