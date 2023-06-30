@@ -313,6 +313,14 @@
     "@babel/runtime" "^7.19.0"
     "@styled-icons/styled-icon" "^10.7.0"
 
+"@styled-icons/fluentui-system-filled@^10.47.0":
+  version "10.47.0"
+  resolved "https://registry.npmjs.org/@styled-icons/fluentui-system-filled/-/fluentui-system-filled-10.47.0.tgz"
+  integrity sha512-jAO8bs9SY/5Xu2vxg5sJmnD5YA966G2m2qU4ezlDbLDIXSaX/1qUBUivBFSWCDn4q5rslegzD1rhc9FncgPbSw==
+  dependencies:
+    "@babel/runtime" "^7.20.7"
+    "@styled-icons/styled-icon" "^10.7.0"
+
 "@styled-icons/ionicons-solid@^10.46.0":
   version "10.46.0"
   resolved "https://registry.npmjs.org/@styled-icons/ionicons-solid/-/ionicons-solid-10.46.0.tgz"
