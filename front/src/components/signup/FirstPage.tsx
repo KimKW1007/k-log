@@ -1,35 +1,39 @@
 import CheckBoxInputs from '@components/common/CheckBoxInputs';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { agreeList } from 'utils/mapList';
 
 interface isAllCheckedProps {
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
-  const [isAgree, setIsAgree] = useState([false, false]);
-  const onClickAgree = (idx: number) => () => {
-    const newIsAgree = [...isAgree];
-    newIsAgree[idx] = !newIsAgree[idx];
-    setIsAgree(newIsAgree);
-  };
+  const [isServiceAgree, setIsServiceAgree] = useState(false);
+  const [isCollectionAgree, setIsCollectionAgree] = useState(false);
+
+
+  const onClickAgreeBtn = (id : string) => ()=> {
+    if(id === "serviceAgree") setIsServiceAgree(prev => !prev)
+    if(id === "collectionAgree") setIsCollectionAgree(prev => !prev)
+  }
+
+
   useEffect(() => {
-    if (isAgree[0] && isAgree[1]) {
+    if (isServiceAgree && isCollectionAgree) {
       setIsAllChecked(true);
     } else {
       setIsAllChecked(false);
     }
     return () => {};
-  }, [isAgree]);
+  }, [isServiceAgree, isCollectionAgree]);
   return (
     <React.Fragment>
       <CheckInputsBox>
-        <CheckBoxInputs id="id" onClick={onClickAgree(0)}>
-          <strong>K-log 서비스 약관</strong>에 동의 &#40;필수&#41;
+        {agreeList.map(({id, text}) =>(
+          <CheckBoxInputs id={id} onClick={onClickAgreeBtn(id)}>
+          <strong>{text}</strong>에 동의 &#40;필수&#41;
         </CheckBoxInputs>
-        <CheckBoxInputs id="id1" onClick={onClickAgree(1)}>
-          <strong>개인정보 수집 및 이용</strong>에 동의 &#40;필수&#41;
-        </CheckBoxInputs>
+        ))}
       </CheckInputsBox>
       <EmptyBox/>
     </React.Fragment>
