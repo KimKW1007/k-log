@@ -4,25 +4,11 @@ import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/reg
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
 import { InputListBox } from '@components/login/LoginForm';
 import { RegisterPagesProps } from '@src/types/register';
+import { errMsg } from 'utils/singupThirdErrMsg';
+import { errorFn } from 'utils/singupErrorFn';
 
-interface keyString {
-  [key: string]: string;
-}
 
 const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {
-  const errMsg: keyString = {
-    userIdMinLength: '4자 이상 입력해 주세요.',
-    passwordMinLength: '8자 이상 입력해 주세요.',
-    userIdRegexMsg: '영문으로 시작하는 4~24자의 영문+숫자로 입력해주세요.',
-    passwordRegexMsg: '8자리 이상의 영문, 숫자, 특수문자 조합을 입력해주세요.'
-  };
-  const errorFn = (passSentence: string, firVal?: FieldError, secVal?: FieldError) => {
-    if (secVal) {
-      return firVal?.message || secVal.message || passSentence;
-    }
-    return firVal?.message || passSentence;
-  };
-
   const checkSamePassword = () => {
     // 2단계 : 두개의 password 입력란이 안 비워져있는지
     if (watch('confirmPassword') && watch('password')!.length >= 8 && watch('confirmPassword')!.length >= 1) {
