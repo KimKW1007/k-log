@@ -20,6 +20,7 @@ const SignupWrap = styled(OnlyAlignCenterFlex)`
   width: 100%;
   height:100%;
   padding:${({ theme }) => theme.rem.p100}  ${({ theme }) => theme.rem.p100};
+  justify-content: flex-end;
 `;
 
 const SignupInnerBox = styled(PageInnerBox)`
