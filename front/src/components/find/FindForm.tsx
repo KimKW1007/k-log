@@ -10,32 +10,67 @@ import FindId from './FindId';
 import FindPassword from './FindPassword';
 import { ListTypes } from 'utils/mapList';
 import {useRouter} from "next/router";
+import CommonModal from '@components/modal/CommonModal';
+import { inputResetBoolean } from '@src/atoms/atoms';
+import { useRecoilState } from 'recoil';
 
 const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; textById?: ListTypes }) => {
-
+  const [resetState, setResetState] = useRecoilState(inputResetBoolean);
+  
   const router = useRouter();
 
-  const [isPassCertificate, setIsPassCertificate] = useState(false);
+  const [isPassCertificate, setIsPassCertificate] = useState<boolean>(false);
 
   const [submitText, setSubmitText] = useState<string | undefined>('');
 
-  // 해당 이메일로 가입되어있는 아이디들 관련
-  const [isClickFindBtn, setIsClickFindBtn] = useState(false);
+  const [isOpenModal , setIsOpenModal] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState("");
+
+
+  const [isSuccessChangePassword, setIsSuccessChangePassword] = useState<boolean>(false);
+  // 해당 이메일로 가입되어있는 아이디 확인
+  const [isClickFindBtn, setIsClickFindBtn] = useState<boolean>(false);
   const [userIds, setUserIds] = useState<User[]>([]);
   const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
   const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
     onError(error: any) {
-      console.log({ error });
+      setErrMsg(error.response.data.message);
+      setIsOpenModal(true);
     },
-    async onSuccess(data) {
+    onSuccess(data) {
       console.log(data);
       setIsClickFindBtn(true);
       setUserIds(data.user || data);
     }
   });
   // ================================================
+  // 비밀번호 변경 전 아이디 이메일 확인
+  const { postApi: checkIdEmailPostApi } = customApi('/find/checkUser');
+  const { mutate: checkIdEmailMutate } = useMutation(checkIdEmailPostApi, {
+    onError(error: any) {
+      setErrMsg(error.response.data.message);
+      setIsOpenModal(true);
+    },
+    onSuccess(data) {
+      setIsClickFindBtn(true);
+      
+    }
+  });
+  // ================================================
+  // 비밀번호 변경
+  const { patchApi: changePasswordPatchApi } = customApi('/find/changePassword');
+  const { mutate: changePasswordMutate } = useMutation(changePasswordPatchApi, {
+    onError(error: any) {
+      setErrMsg(error.response.data.message);
+      setIsOpenModal(true);
+    },
+    onSuccess(data) {
+      setIsSuccessChangePassword(true);
+    }
+  });
+  // ================================================
 
-  const submitRegex = () => {
+  const submitDisabledRegex = () => {
     //아이디 찾기 일때
     if (!isOnPasswordTab) {
       // 검색 결과로 넘어가기 전
@@ -54,13 +89,14 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       }
     }
   };
-
+  // ================================================
   const currentSubmitText = () => {
     if (textById) {
       if (!isClickFindBtn) {
         return textById.findText;
       }
       if (textById.id === 'tabId' && userIds.length <= 0) return textById.singupText;
+      if (textById.id === 'tabPassword' && isClickFindBtn && isSuccessChangePassword) return textById.loginText;
       if (textById.id === 'tabPassword' && isClickFindBtn) return textById.changePassword;
       return textById.loginText;
     }
@@ -82,10 +118,11 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
   } = useForm<RegisterInputs>({
     mode: 'all'
   });
+  console.log(watch(["userId", "password"]))
 
-  const onSubmit = (data: RegisterInputs) => {
+  const onSubmit = ({userEmail, userId, password}: RegisterInputs) => {
     if (submitText?.includes("아이디")) {
-      checkEmailMutate({ userEmail: data.userEmail });
+      checkEmailMutate({ userEmail  });
     }
     if(submitText?.includes("로그인")){
       router.push("/login")
@@ -94,10 +131,10 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       router.push("/signup")
     }
     if (submitText?.includes("비밀번호 찾기")) {
-      
-    }
+      checkIdEmailMutate({userEmail , userId })
+    }``
     if (submitText?.includes("비밀번호 변경")) {
-      
+      changePasswordMutate({userEmail , userId , password })
     }
   };
 
@@ -106,44 +143,49 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     setIsClickFindBtn(false);
     reset();
     setIsPassCertificate(false);
-  }, [isOnPasswordTab]);
+    setIsSuccessChangePassword(false);
+  }, [resetState]);
 
   return (
-    <FindBoxForm onSubmit={handleSubmit(onSubmit)}>
-      {!isOnPasswordTab ? (
-        <FindId
-          isClickFindBtn={isClickFindBtn}
-          userIds={userIds}
-          register={register}
-          watch={watch}
-          errors={errors}
-          setError={setError}
-          setValue={setValue}
-          clearErrors={clearErrors}
-          setIsPassCertificate={setIsPassCertificate}
-          isPassCertificate={isPassCertificate}
-        />
-      ) : (
-        <FindPassword
-          isClickFindBtn={isClickFindBtn}
-          userIds={userIds}
-          register={register}
-          watch={watch}
-          errors={errors}
-          setError={setError}
-          setValue={setValue}
-          clearErrors={clearErrors}
-          setIsPassCertificate={setIsPassCertificate}
-          isPassCertificate={isPassCertificate}
-        />
-      )}
-      <FlexEmptyBox />
-      <SubmitBox>
-        <SubmitBtn type="submit" disabled={submitRegex()}>
-          {currentSubmitText()}
-        </SubmitBtn>
-      </SubmitBox>
-    </FindBoxForm>
+    <>
+      <FindBoxForm onSubmit={handleSubmit(onSubmit)}>
+        {!isOnPasswordTab ? (
+          <FindId
+            isClickFindBtn={isClickFindBtn}
+            userIds={userIds}
+            register={register}
+            watch={watch}
+            errors={errors}
+            setError={setError}
+            setValue={setValue}
+            clearErrors={clearErrors}
+            setIsPassCertificate={setIsPassCertificate}
+            isPassCertificate={isPassCertificate}
+          />
+        ) : (
+          <FindPassword
+            isClickFindBtn={isClickFindBtn}
+            userIds={userIds}
+            register={register}
+            watch={watch}
+            errors={errors}
+            setError={setError}
+            setValue={setValue}
+            clearErrors={clearErrors}
+            setIsPassCertificate={setIsPassCertificate}
+            isPassCertificate={isPassCertificate}
+            isSuccessChangePassword={isSuccessChangePassword}
+          />
+        )}
+        <FlexEmptyBox />
+        <SubmitBox>
+          <SubmitBtn type="submit" disabled={submitDisabledRegex()}>
+            {currentSubmitText()}
+          </SubmitBtn>
+        </SubmitBox>
+      </FindBoxForm>
+      {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>{errMsg}</CommonModal>}
+    </>
   );
 };
 
