@@ -1,10 +1,11 @@
-import { CertificateBtn, CertificateBtnBox, CurrentInputName, ErrMsg, ErrMsgBox, Input, InputBox, InputProps } from '@components/common/UserInfoInput';
+import { CertificateBtn, CertificateBtnBox, CurrentInputName, ErrMsg, ErrMsgBox, Input, InputBox } from '@components/common/UserInfoInput';
+import { UserInfoInputProps } from '@src/types/user';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 
-interface EmailProps extends InputProps{
+interface EmailProps extends UserInfoInputProps{
   isSuccess : boolean;
   isLoading : boolean;
   certificateEmail: () => void

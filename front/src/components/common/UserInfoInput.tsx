@@ -3,20 +3,11 @@ import {  UseFormRegisterReturn } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import { ExclamationDiamondFill, ExclamationCircleFill} from "@styled-icons/bootstrap"
 import { OnlyAlignCenterFlex } from './CommonFlex';
+import { UserInfoInputProps } from '@src/types/user';
 
 
-export interface InputProps {
-  type: string;
-  inputName: string;
-  register: UseFormRegisterReturn;
-  watch?:  string;
-  bold?: boolean;
-  small?: boolean;
-  errColor?: boolean;
-  errors?: string;
-}
 
-const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors}: InputProps) => {
+const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors}: UserInfoInputProps) => {
   const [isFocus, setIsFocus] = useState(false);
   useEffect(()=>{
     watch && setIsFocus(true)
