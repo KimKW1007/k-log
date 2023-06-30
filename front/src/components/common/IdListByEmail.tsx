@@ -5,7 +5,7 @@ import { UserIds } from '@src/types/user';
 
 
 
-const CheckIdByEmail = ({ userIds }: UserIds) => {
+const IdListByEmail = ({ userIds }: UserIds) => {
   return (
     <React.Fragment>
       <AccountsBox>
@@ -16,7 +16,7 @@ const CheckIdByEmail = ({ userIds }: UserIds) => {
   );
 };
 
-export default CheckIdByEmail;
+export default IdListByEmail;
 
 const AccountsBox = styled.div`
   width: 100%;
