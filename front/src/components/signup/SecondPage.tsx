@@ -86,14 +86,8 @@ const SecondPage = ({
         <EmailInput
           small
           bold
-          type="text"
           inputName="이메일"
-          register={register('userEmail', {
-            required: '값을 입력해주세요',
-            validate: {
-              checkEmailValidate: (value) => EMAIL_REGEX.test(value!) || '이메일 형식에 맞지 않습니다'
-            }
-          })}
+          register={register}
           watch={watch('userEmail')}
           errors={errors?.userEmail?.message}
           errColor={Boolean(errors?.userEmail?.message)}
