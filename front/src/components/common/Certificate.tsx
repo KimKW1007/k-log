@@ -2,11 +2,19 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { CertificateBtn, CertificateBtnBox, ErrMsg, ErrMsgBox } from './UserInfoInput';
 import { useForm } from 'react-hook-form';
-import { RegisterPagesProps } from '@components/signup/SecondPage';
 import customApi from 'utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
+import { RegisterPagesProps } from '@src/types/register';
 
-const Certificate = ({ register, watch, setIsPassCertificate, isPassCertificate, errors, setError, clearErrors }: RegisterPagesProps) => {
+const Certificate = ({
+  register,
+  watch,
+  setIsPassCertificate,
+  isPassCertificate,
+  errors,
+  setError,
+  clearErrors
+}: Omit<RegisterPagesProps, 'setIsAllChecked'>) => {
   const { postApi } = customApi('/find/certificate');
   const certificateToken = async () => {
     if (!watch('token')) {
@@ -47,7 +55,7 @@ const Certificate = ({ register, watch, setIsPassCertificate, isPassCertificate,
       )}
       {(errors?.token?.message || isPassCertificate) && (
         <ErrMsgBox errColor={Boolean(errors?.token?.message)}>
-          {(errors?.token?.message && <ExclamationCircleFill />) || (isPassCertificate && <ExclamationCircleFill />)}
+          {(errors?.token?.message && <ExclamationDiamondFill />) || (isPassCertificate && <ExclamationCircleFill />)}
           <ErrMsg>{errors?.token?.message || (isPassCertificate && '인증되었습니다')}</ErrMsg>
         </ErrMsgBox>
       )}
