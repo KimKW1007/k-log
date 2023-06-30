@@ -31,26 +31,6 @@ const SecondPage = ({
     }
   });
 
-  const certificateEmail = () => {
-    if (!watch('userEmail')) {
-      setError('userEmail', {
-        type: 'custom',
-        message: '값을 입력해주세요'
-      });
-      return;
-    }
-    if (errors?.userEmail?.message) {
-      return;
-    }
-    mutate({ userEmail: watch('userEmail') });
-    setValue!('token', '');
-    clearErrors('token');
-    setIsPassCertificate!(true);
-    if (isSuccess) {
-      setIsPassCertificate!(false);
-    }
-  };
-
   useEffect(() => {
     if (watch('userName') && watch('userEmail') && watch('token') && isPassCertificate) {
       setIsAllChecked!(true);
