@@ -7,7 +7,8 @@ import { UseFormRegister } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 
 
-interface EmailProps extends Omit<UserInfoInputProps, "register" | "type">{
+interface EmailProps extends Omit<UserInfoInputProps, "register" | "type" | "inputName">{
+  inputName ?: string;
   isSuccess : boolean;
   isLoading : boolean;
   certificateEmail: () => void
@@ -16,7 +17,7 @@ interface EmailProps extends Omit<UserInfoInputProps, "register" | "type">{
 }
 
 
-const EmailInput = ({ inputName = '이메일', watch, register, bold = false, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
+const EmailInput = ({ inputName = '이메일', watch, register, small = false, errColor, errors, isSuccess  = false, isLoading  = false, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
 
@@ -33,7 +34,7 @@ const EmailInput = ({ inputName = '이메일', watch, register, bold = false, sm
           </CurrentInputName>
           <Input
             small={small}
-            bold={bold}
+            bold={true}
             type="text"
             {...register('userEmail', {
             required: '값을 입력해주세요',
