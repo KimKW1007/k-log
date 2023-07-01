@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Power, LogIn } from '@styled-icons/ionicons-solid';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@src/atoms/atoms';
+import { userInfomation } from '@atoms/atoms';
 import Title from '@components/common/TitleBox';
 import LoginErrBox from './LoginErrBox';
 import Loading from '@components/common/Loading';
@@ -71,7 +71,7 @@ const LoginForm = () => {
         {isLoading ? (
           <Loading></Loading>
         ) : (
-          <SubmitBtn type="submit" title='로그인' disabled={!watch('userId') || !watch('password')}>
+          <SubmitBtn type="submit" title="로그인" disabled={!watch('userId') || !watch('password')}>
             <PowerIcon></PowerIcon>
           </SubmitBtn>
         )}
@@ -106,7 +106,6 @@ const PowerIcon = styled(LogIn)`
   transition: color 0.3s;
 `;
 
-
 const SubmitBtn = styled.button`
   width: 100%;
   height: 100%;
@@ -114,25 +113,24 @@ const SubmitBtn = styled.button`
   border-radius: 30px;
   border: 2px solid rgba(0, 0, 0, 0);
   background: rgb(147, 118, 224);
-  transition:  0.3s;
-  ${PowerIcon}{
+  transition: 0.3s;
+  ${PowerIcon} {
     color: #fff;
   }
   &:disabled {
     border: 2px solid rgb(221, 221, 221);
     background: rgba(0, 0, 0, 0);
-    ${PowerIcon}{
+    ${PowerIcon} {
       color: #e9e9e9;
     }
   }
   &:not(:disabled):hover {
     background: rgb(127, 98, 204);
   }
-  &:not(:disabled):active{
+  &:not(:disabled):active {
     background: rgb(107, 70, 180);
   }
 `;
-
 
 const SignUpAskQuestionBox = styled.div`
   margin: ${({ theme }) => theme.rem.p30} 0;

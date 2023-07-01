@@ -1,7 +1,7 @@
 import CheckBoxInputs from '@components/common/CheckBoxInputs';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { agreeList } from 'utils/mapList';
+import { agreeList } from '@utils/mapList';
 
 interface isAllCheckedProps {
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,8 +38,6 @@ const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
 };
 
 export default FirstPage;
-
-
 
 const CheckInputListBox = styled.div`
   width: 100%;

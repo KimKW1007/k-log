@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {  UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import styled, { css } from 'styled-components';
-import { ExclamationDiamondFill, ExclamationCircleFill} from "@styled-icons/bootstrap"
+import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
 import { OnlyAlignCenterFlex } from './CommonFlex';
 import { UserInfoInputProps } from '@src/types/user';
 
-
-
-const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors}: UserInfoInputProps) => {
+const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors }: UserInfoInputProps) => {
   const [isFocus, setIsFocus] = useState(false);
-  useEffect(()=>{
-    watch ? setIsFocus(true) :setIsFocus(false)
-  },[watch])
+  useEffect(() => {
+    watch ? setIsFocus(true) : setIsFocus(false);
+  }, [watch]);
   return (
     <React.Fragment>
       <InputBox errColor={errColor}>
@@ -33,20 +31,19 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
       </InputBox>
       {errors && (
         <ErrMsgBox errColor={errColor}>
-          {errColor ? <ExclamationDiamondFill/> : <ExclamationCircleFill/>}
+          {errColor ? <ExclamationDiamondFill /> : <ExclamationCircleFill />}
           <ErrMsg>{errors}</ErrMsg>
         </ErrMsgBox>
       )}
-      
     </React.Fragment>
   );
 };
 
 export default UserInfoInput;
 
-export const InputBox = styled.div<{ errColor?: boolean; }>`
+export const InputBox = styled.div<{ errColor?: boolean }>`
   position: relative;
-  z-index:2;
+  z-index: 2;
   width: 100%;
   border-radius: 5px;
   border: 2px solid transparent;
@@ -70,14 +67,14 @@ export const InputBox = styled.div<{ errColor?: boolean; }>`
       }
       span {
         color: ${theme.color.err};
-        &.high{
+        &.high {
           color: ${theme.color.err};
         }
       }
     `}
 `;
 
-export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?:boolean; }>`
+export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?: boolean }>`
   position: relative;
   z-index: 2;
   width: 100%;
@@ -96,15 +93,14 @@ export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?:bo
     small &&
     css`
       line-height: ${theme.rem.p26};
-      padding: ${theme.rem.p28} ${theme.rem.p12} .5rem;
+      padding: ${theme.rem.p28} ${theme.rem.p12} 0.5rem;
       font-size: ${theme.rem.p16};
     `}
   ${({ isEmail, theme }) =>
-  isEmail &&
+    isEmail &&
     css`
       padding: ${theme.rem.p28} ${theme.rem.p100} ${theme.rem.p10} ${theme.rem.p12};
     `}
-    
 `;
 
 export const CurrentInputName = styled.span<{ small: boolean }>`
@@ -139,45 +135,42 @@ export const CurrentInputName = styled.span<{ small: boolean }>`
 
 export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
   margin: 6px 0 30px;
-  svg{
+  svg {
     width: 1em;
     margin-right: 6px;
-    color: #00C4FF;
+    color: #00c4ff;
   }
   ${({ errColor, theme }) =>
     errColor &&
     css`
       color: ${theme.color.err};
-      svg{
+      svg {
         color: inherit;
       }
     `}
 `;
-export const ErrMsg = styled.div`
+export const ErrMsg = styled.div``;
 
+export const CertificateBtn = styled.button`
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  background: #787878;
+  color: #fff;
+  transition: 0.3s;
+  &:hover {
+    background: #454545;
+  }
 `;
 
-export const CertificateBtn=styled.button`
-    width:100%;
-    height:100%;
-    font-size: 12px;
-    background: #787878;
-    color:#fff;
-    transition : .3s;
-    &:hover{
-      background: #454545;
-  }
-`
-
-
 export const CertificateBtnBox = styled.div`
-    position :absolute;
-    z-index: 4;
-    right: 10px;
-    top: 50%;
-    transform :translateY(-50%);
-    width: ${({theme}) => theme.rem.p90};
-    height: ${({theme}) => theme.rem.p40};
-    border-radius : 8px;
-    overflow: hidden;
-`
+  position: absolute;
+  z-index: 4;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: ${({ theme }) => theme.rem.p90};
+  height: ${({ theme }) => theme.rem.p40};
+  border-radius: 8px;
+  overflow: hidden;
+`;

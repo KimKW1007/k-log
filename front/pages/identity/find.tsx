@@ -2,10 +2,10 @@ import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonF
 import FindForm from '@components/find/FindForm';
 import type { NextPage } from 'next';
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { inputResetBoolean } from '@src/atoms/atoms';
+import { inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
-import { ListTypes, findList, tabList } from 'utils/mapList';
+import { ListTypes, findList, tabList } from '@utils/mapList';
 
 const FindPage: NextPage = () => {
   // 텝 관련
@@ -28,8 +28,10 @@ const FindPage: NextPage = () => {
       <FindInnerBox>
         <SelectTabBox>
           {tabList.map(({ id, text }, idx: number) => (
-            <FindTabBox id={id} >
-              <FindBtn onClick={onClickChangeTab(id)} currentId={id} textById={textById?.id}>{text} 찾기</FindBtn>
+            <FindTabBox id={id}>
+              <FindBtn onClick={onClickChangeTab(id)} currentId={id} textById={textById?.id}>
+                {text} 찾기
+              </FindBtn>
             </FindTabBox>
           ))}
         </SelectTabBox>
@@ -57,7 +59,7 @@ const SelectTabBox = styled.div`
   display: flex;
 `;
 
-const FindBtn = styled.button<{currentId : string; textById ?: string;}>`
+const FindBtn = styled.button<{ currentId: string; textById?: string }>`
   width: 100%;
   padding: 16px 0;
   font-weight: bold;
@@ -66,25 +68,22 @@ const FindBtn = styled.button<{currentId : string; textById ?: string;}>`
   border-bottom: 1px solid transparent;
   background: #232323;
   color: #e5e5e5;
-  transform : scale(1);
-  transition: .3s;
-  ${({currentId, textById}) => currentId !== textById && css`
-  transform : scale(.99);
-    background: #f5f5f5;
-    color: #bbb;
-    border-bottom: 1px solid #b5b5b5;
-    ${currentId === 'tabId' && css`
-    
+  transform: scale(1);
+  transition: 0.3s;
+  ${({ currentId, textById }) =>
+    currentId !== textById &&
+    css`
+      transform: scale(0.99);
+      background: #f5f5f5;
+      color: #bbb;
+      border-bottom: 1px solid #b5b5b5;
+      ${currentId === 'tabId' && css``}
     `}
-  `}
-
 `;
 
 const FindTabBox = styled.div`
   flex: 1;
 `;
-
-
 
 const FormBox = styled.div`
   height: 500px;

@@ -1,12 +1,12 @@
 import React from 'react';
 import UserInfoInput from './UserInfoInput';
-import { errMsg } from 'utils/singupThirdErrMsg';
-import { PASSWORD_REGEX } from '@src/constant/regex';
-import { checkSamePassword, onChangePasswordValidate } from 'utils/checkSamPassword';
-import { errorFn } from 'utils/singupErrorFn';
+import { errMsg } from '@utils/singupThirdErrMsg';
+import { PASSWORD_REGEX } from '@constant/regex';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
+import { errorFn } from '@utils/singupErrorFn';
 import { RegisterPagesProps } from '@src/types/register';
 
-const BundleOfPasswords = ({register, watch, errors, setError, clearErrors} : Omit<RegisterPagesProps, "setIsAllChecked">) => {
+const BundleOfPasswords = ({ register, watch, errors, setError, clearErrors }: Omit<RegisterPagesProps, 'setIsAllChecked'>) => {
   return (
     <>
       <UserInfoInput

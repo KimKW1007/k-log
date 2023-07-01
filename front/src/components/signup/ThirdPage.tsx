@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
 import UserInfoInput from '@components/common/UserInfoInput';
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
+import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@constant/regex';
 import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
 import { InputListBox } from '@components/login/LoginForm';
 import { RegisterPagesProps } from '@src/types/register';
-import { errMsg } from 'utils/singupThirdErrMsg';
-import { errorFn } from 'utils/singupErrorFn';
-import { checkSamePassword, onChangePasswordValidate } from 'utils/checkSamPassword';
+import { errMsg } from '@utils/singupThirdErrMsg';
+import { errorFn } from '@utils/singupErrorFn';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
 import BundleOfPasswords from '@components/common/BundleOfPasswords';
 
-
 const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {
- 
-
   useEffect(() => {
     if (watch('userId') && watch('password') && watch('confirmPassword')) {
       setIsAllChecked(true);

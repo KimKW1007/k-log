@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { CertificateBtn, CertificateBtnBox, ErrMsg, ErrMsgBox } from './UserInfoInput';
 import { useForm } from 'react-hook-form';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import { RegisterPagesProps } from '@src/types/register';
 
@@ -40,7 +40,7 @@ const Certificate = ({
           <CertInput
             placeholder="인증번호"
             {...register('token', {
-              required: "값을 입력해주세요",
+              required: '값을 입력해주세요',
               validate: {
                 checkRegex: (value) => /^[0-9]{4,6}$/.test(value!) || '4~6자리 숫자만 입력하세요.'
               }

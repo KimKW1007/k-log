@@ -2,8 +2,6 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { UserIds } from '@src/types/user';
 
-
-
 const IdListByEmail = ({ userIds }: UserIds) => {
   return (
     <React.Fragment>

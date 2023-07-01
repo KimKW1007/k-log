@@ -15,8 +15,7 @@ export const userInfomation = atom<User | null>({
   effects_UNSTABLE: [sessionPersistAtom]
 });
 
-
 export const inputResetBoolean = atom<boolean>({
   key: 'inputResetBooleanKey',
-  default: false,
-})
+  default: false
+});

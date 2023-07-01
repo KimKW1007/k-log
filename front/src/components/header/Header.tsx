@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import logo_black from '@images/black.svg';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
-import { userInfomation } from '@src/atoms/atoms';
+import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
 import UserMiniProfile from './UserMiniProfile';
@@ -14,9 +14,9 @@ export const Header = () => {
   const [isCategoryOn, setIsCategoryOn] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isMount, setIsMount] = useState<boolean>(false);
-  useEffect(()=>{
+  useEffect(() => {
     setIsMount(true);
-  },[])
+  }, []);
 
   return (
     <HeaderBox>
@@ -35,13 +35,7 @@ export const Header = () => {
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
-        <BtnBox>
-          {isMount && userInfo ? (
-            <UserMiniProfile/>
-          ) : (
-            <LoginSignUpBox/>
-          )}
-        </BtnBox>
+        <BtnBox>{isMount && userInfo ? <UserMiniProfile /> : <LoginSignUpBox />}</BtnBox>
       </HeaderInnerBox>
     </HeaderBox>
   );
@@ -67,8 +61,7 @@ const LogoBox = styled(OnlyAlignCenterFlex)`
   }
 `;
 
-const BtnBox = styled(OnlyAlignCenterFlex)`
-`;
+const BtnBox = styled(OnlyAlignCenterFlex)``;
 
 const LogoAndCategoryBox = styled.div`
   display: inline-flex;

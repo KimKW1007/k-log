@@ -6,15 +6,13 @@ import styled, { css } from 'styled-components';
 import SecondPage from './SecondPage';
 import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import IdListByEmail from '../common/IdListByEmail';
 import CommonModal from '@components/modal/CommonModal';
 import { useRouter } from 'next/router';
 import FinallPage from '../common/FinallPage';
 import { RegisterInputs, User } from '@src/types/user';
-
-
 
 interface CurrentTitleType {
   [key: string]: {
@@ -200,7 +198,7 @@ export const SubmitBtn = styled.button<{ currentLevel?: string }>`
   font-size: 20px;
   font-weight: bold;
   transition: 0.2s;
-  
+
   &:not(:disabled) {
     background: rgba(255, 109, 96, 0.8);
     color: #fff;
@@ -231,7 +229,7 @@ export const SubmitBtn = styled.button<{ currentLevel?: string }>`
         background: rgba(134, 150, 254, 1);
       }
     `}
-    &:disabled{
-      cursor : not-allowed;
-    }
+    &:disabled {
+    cursor: not-allowed;
+  }
 `;

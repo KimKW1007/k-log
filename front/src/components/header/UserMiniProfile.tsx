@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { userInfomation } from '@src/atoms/atoms';
+import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import { ArrowDropDown } from '@styled-icons/material-rounded';
 import Link from 'next/link';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 
-interface MenuItemsType{
+interface MenuItemsType {
   title: string;
   link: string;
   text: string;
 }
 
 const UserMiniProfile = () => {
-  const MenuItemList : MenuItemsType[] = [
+  const MenuItemList: MenuItemsType[] = [
     {
-      title:"accountSetting",
+      title: 'accountSetting',
       link: '/',
       text: '계정 설정'
     },
@@ -26,28 +26,27 @@ const UserMiniProfile = () => {
       text: '나의 활동'
     }, */
     {
-      title:"logOut",
+      title: 'logOut',
       link: '/',
       text: '로그아웃'
-    },
-    
+    }
   ];
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
-  const {postApi} = customApi("/auth/logout");
-  const {mutate} = useMutation(postApi,{
+  const { postApi } = customApi('/auth/logout');
+  const { mutate } = useMutation(postApi, {
     onError(error) {
-      console.log({error})
+      console.log({ error });
     },
     onSuccess(data) {
-      console.log({data})
-    },
+      console.log({ data });
+    }
   });
-  const logoutFn = (e: React.MouseEvent<HTMLElement>)=>{
+  const logoutFn = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    setUserInfo(null)
-    sessionStorage.removeItem("jwtToken");
-    mutate({})
-  }
+    setUserInfo(null);
+    sessionStorage.removeItem('jwtToken');
+    mutate({});
+  };
 
   return (
     <UserPlBox>
@@ -57,9 +56,11 @@ const UserMiniProfile = () => {
       </UserPlInnerBox>
       <UserPlMenuBox>
         <PlMenuInnerBox>
-          {MenuItemList.map(({link, text} : MenuItemsType, idx) => (
-            <PlMeunItem id={Date.now() + "salt" + idx}>
-              <Link href={link} onClick={logoutFn}>{text}</Link>
+          {MenuItemList.map(({ link, text }: MenuItemsType, idx) => (
+            <PlMeunItem id={Date.now() + 'salt' + idx}>
+              <Link href={link} onClick={logoutFn}>
+                {text}
+              </Link>
             </PlMeunItem>
           ))}
         </PlMenuInnerBox>
@@ -83,7 +84,7 @@ const MenuAni = keyframes`
 
 const UserPlInnerBox = styled.div`
   position: relative;
-  background: rgba(128,128,128,.2);
+  background: rgba(128, 128, 128, 0.2);
   border-radius: ${({ theme }) => theme.rem.p10};
   font-size: ${({ theme }) => theme.rem.p14};
   overflow: hidden;
@@ -107,24 +108,24 @@ const UserPlMenuBox = styled.div`
 const PlMenuInnerBox = styled.ul`
   margin-top: ${({ theme }) => theme.rem.p10};
   background: #292929;
-  border-radius:  8px 0 0  8px;
-  padding:  ${({ theme }) => theme.rem.p10} 0;
+  border-radius: 8px 0 0 8px;
+  padding: ${({ theme }) => theme.rem.p10} 0;
   border-right: 4px solid ${({ theme }) => theme.color.err};
 `;
 const PlMeunItem = styled.li`
-  width:160px;
+  width: 160px;
   margin: 0.313rem ${({ theme }) => theme.rem.p16};
-  a{
-    display:block;
+  a {
+    display: block;
     font-size: 14px;
-    padding:  ${({ theme }) => theme.rem.p10};
+    padding: ${({ theme }) => theme.rem.p10};
     border-radius: 4px;
-    color:#fff;
-    &:hover{
+    color: #fff;
+    &:hover {
       background: #484848;
     }
   }
-`
+`;
 
 const ArrowIcon = styled(ArrowDropDown)`
   position: absolute;

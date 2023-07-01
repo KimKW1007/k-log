@@ -4,28 +4,27 @@ import { Form, InputListBox } from '@components/login/LoginForm';
 import { useForm } from 'react-hook-form';
 import { RegisterInputs, User } from '@src/types/user';
 import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
-import { ListTypes } from 'utils/mapList';
-import {useRouter} from "next/router";
+import { ListTypes } from '@utils/mapList';
+import { useRouter } from 'next/router';
 import CommonModal from '@components/modal/CommonModal';
-import { inputResetBoolean } from '@src/atoms/atoms';
+import { inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 
 const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; textById?: ListTypes }) => {
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
-  
+
   const router = useRouter();
 
   const [isPassCertificate, setIsPassCertificate] = useState<boolean>(false);
 
   const [submitText, setSubmitText] = useState<string | undefined>('');
 
-  const [isOpenModal , setIsOpenModal] = useState<boolean>(false);
-  const [errMsg, setErrMsg] = useState("");
-
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const [isSuccessChangePassword, setIsSuccessChangePassword] = useState<boolean>(false);
   // 해당 이메일로 가입되어있는 아이디 확인
@@ -53,7 +52,6 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     },
     onSuccess(data) {
       setIsClickFindBtn(true);
-      
     }
   });
   // ================================================
@@ -118,23 +116,23 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
   } = useForm<RegisterInputs>({
     mode: 'all'
   });
-  console.log(watch(["userId", "password"]))
+  console.log(watch(['userId', 'password']));
 
-  const onSubmit = ({userEmail, userId, password}: RegisterInputs) => {
-    if (submitText?.includes("아이디")) {
-      checkEmailMutate({ userEmail  });
+  const onSubmit = ({ userEmail, userId, password }: RegisterInputs) => {
+    if (submitText?.includes('아이디')) {
+      checkEmailMutate({ userEmail });
     }
-    if(submitText?.includes("로그인")){
-      router.push("/login")
+    if (submitText?.includes('로그인')) {
+      router.push('/login');
     }
-    if(submitText?.includes("회원가입")){
-      router.push("/signup")
+    if (submitText?.includes('회원가입')) {
+      router.push('/signup');
     }
-    if (submitText?.includes("비밀번호 찾기")) {
-      checkIdEmailMutate({userEmail , userId })
+    if (submitText?.includes('비밀번호 찾기')) {
+      checkIdEmailMutate({ userEmail, userId });
     }
-    if (submitText?.includes("비밀번호 변경")) {
-      changePasswordMutate({userEmail , userId , password })
+    if (submitText?.includes('비밀번호 변경')) {
+      changePasswordMutate({ userEmail, userId, password });
     }
   };
 

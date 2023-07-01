@@ -5,14 +5,22 @@ import { RegisterPagesProps } from '@src/types/register';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
-import { inputResetBoolean } from '@src/atoms/atoms';
+import { inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 
-
-
-const CertificateEmail = ({ small, register, watch, errors, setError, setValue, clearErrors, setIsPassCertificate, isPassCertificate }: CertificateEmailProps) => {
+const CertificateEmail = ({
+  small,
+  register,
+  watch,
+  errors,
+  setError,
+  setValue,
+  clearErrors,
+  setIsPassCertificate,
+  isPassCertificate
+}: CertificateEmailProps) => {
   const [isComplete, setIsComplete] = useState(false);
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
 
@@ -42,9 +50,9 @@ const CertificateEmail = ({ small, register, watch, errors, setError, setValue, 
     clearErrors('token');
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsComplete(false);
-  },[resetState])
+  }, [resetState]);
 
   return (
     <>

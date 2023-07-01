@@ -1,8 +1,8 @@
 import UserInfoInput from '@components/common/UserInfoInput';
-import { NAME_REGEX } from '@src/constant/regex';
+import { NAME_REGEX } from '@constant/regex';
 import React, { useEffect, useState } from 'react';
 import { InputListBox } from '@components/login/LoginForm';
-import customApi from 'utils/customApi';
+import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { RegisterPagesProps } from '@src/types/register';
 import CertificateEmail from '@components/common/CertificateEmail';

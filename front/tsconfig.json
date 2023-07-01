@@ -20,7 +20,11 @@
       "@styles/*": ["src/styles/*"],
       "@images/*": ["src/assets/images/*"],
       "@components/*": ["src/components/*"],
-      "@src/*": ["src/*"],
+      "@atoms/*": ["src/atoms/*"],
+      "@assets/*": ["src/assets/*"],
+      "@constant/*": ["src/constant/*"],
+      "@src/types/*": ["src/types/*"],
+      "@utils/*": ["src/utils/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

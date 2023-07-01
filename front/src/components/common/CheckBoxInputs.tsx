@@ -6,7 +6,6 @@ import { ArrowUpRightSquareFill } from '@styled-icons/bootstrap';
 import CommonModal from '@components/modal/CommonModal';
 import { ChildrenProps } from '@src/types/children';
 
-
 interface CheckBoxProps extends ChildrenProps {
   id: string;
   onClick: any;

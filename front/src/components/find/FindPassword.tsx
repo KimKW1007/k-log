@@ -3,12 +3,12 @@ import CertificateEmail from '@components/common/CertificateEmail';
 import FinallPage from '@components/common/FinallPage';
 import UserInfoInput from '@components/common/UserInfoInput';
 import { InputListBox } from '@components/login/LoginForm';
-import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@src/constant/regex';
+import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@constant/regex';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
 import React from 'react';
-import { checkSamePassword, onChangePasswordValidate } from 'utils/checkSamPassword';
-import { errorFn } from 'utils/singupErrorFn';
-import { errMsg } from 'utils/singupThirdErrMsg';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
+import { errorFn } from '@utils/singupErrorFn';
+import { errMsg } from '@utils/singupThirdErrMsg';
 
 const FindPassword = ({
   register,
