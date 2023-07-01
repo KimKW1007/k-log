@@ -18,16 +18,18 @@ export const checkSamePassword = (watch: UseFormWatch<RegisterInputs>) => {
   }
 };
 
-export const onChangePasswordValidate = ({ watch, setError, clearErrors }: PasswordOnChangeValidateProps) => () => {
-  if (watch('confirmPassword')!.length >= 8) {
-    if (watch('password') !== watch('confirmPassword')) {
-      // 실질적으로 보이진 않고 에러관련 boolean으로 사용
-      setError('confirmPassword', {
-        type: 'custom',
-        message: '비밀번호가 일치하지 않습니다.'
-      });
-    } else {
-      clearErrors(['password', 'confirmPassword']);
+export const onChangePasswordValidate =
+  ({ watch, setError, clearErrors }: PasswordOnChangeValidateProps) =>
+  () => {
+    if (watch('confirmPassword')!.length >= 8) {
+      if (watch('password') !== watch('confirmPassword')) {
+        // 실질적으로 보이진 않고 에러관련 boolean으로 사용
+        setError('confirmPassword', {
+          type: 'custom',
+          message: '비밀번호가 일치하지 않습니다.'
+        });
+      } else {
+        clearErrors(['password', 'confirmPassword']);
+      }
     }
-  }
-};
+  };
