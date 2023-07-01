@@ -4,7 +4,6 @@ import LoginForm from '@components/login/LoginForm';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import styled from 'styled-components';
 import { AuthSeasonBg } from '@components/login/SeasonBg';
-
 const LoginPage: NextPage = () => {
   return (
     <LoginWrap>
@@ -18,11 +17,14 @@ const LoginPage: NextPage = () => {
 export default LoginPage;
 
 const LoginWrap = styled(AllCenterFlex)`
+  position:relative;
+  z-index: 3;
   width: 100%;
   height:100%;
   padding:${({theme})=>theme.rem.p70}  ${({theme})=>theme.rem.p50} ;
-  background : url(${AuthSeasonBg()}) center center no-repeat;
-  background-size:  cover;
+  // background : url(${AuthSeasonBg()}) center center no-repeat;
+  // background-size:  cover;
+  background: #242424;
 `;
 
 export const PageInnerBox = styled.div`
@@ -33,5 +35,5 @@ export const PageInnerBox = styled.div`
 `;
 
 const LoginInnerBox = styled(PageInnerBox)`
-  box-shadow: 25px 25px 18px 10px rgba(0,0,0,.4);
+  box-shadow: 0 0px 25px 20px rgba(155,155,155,.4);
 `;
