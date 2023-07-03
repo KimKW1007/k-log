@@ -42,6 +42,8 @@ export const Header = () => {
 };
 
 const HeaderBox = styled.header`
+  position: relative;
+  z-index: 16;
   width: 100%;
   height: ${({ theme }) => theme.rem.p70};
   padding: 0 ${({ theme }) => theme.rem.p30};

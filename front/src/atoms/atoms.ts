@@ -19,3 +19,9 @@ export const inputResetBoolean = atom<boolean>({
   key: 'inputResetBooleanKey',
   default: false
 });
+
+
+export const currentBanner = atom<number>({
+  key: 'currentBannerKey',
+  default: 1
+})
