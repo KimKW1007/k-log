@@ -13,13 +13,7 @@ import CommonModal from '@components/modal/CommonModal';
 import { useRouter } from 'next/router';
 import FinallPage from '../common/FinallPage';
 import { RegisterInputs, User } from '@src/types/user';
-
-interface CurrentTitleType {
-  [key: string]: {
-    title: string;
-    submitText: string;
-  };
-}
+import { CurrentTitle } from '@utils/signupList';
 
 const SignupForm = () => {
   const {
@@ -45,11 +39,16 @@ const SignupForm = () => {
   const [isPassCertificate, setIsPassCertificate] = useState(false);
 
   // 현재 단계
-  const [currentLevel, setCurrentLevel] = useState<string>('first');
+  const [currentLevel, setCurrentLevel] = useState<string>('third');
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
   // 해당 이메일로 가입되어있는 아이디들
   const [userIds, setUserIds] = useState<User[]>([]);
+
+  // title , submitText  관련
+  const {title, submitText} = CurrentTitle[currentLevel](userIds);
+
+
 
   const { postApi: createAccountPostApi } = customApi('/auth/signup');
   const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
@@ -94,28 +93,6 @@ const SignupForm = () => {
       createAccountMutate({ ...data });
     }
   };
-  const CurrentTitle: CurrentTitleType = {
-    first: {
-      title: '서비스 계약 동의',
-      submitText: '다음'
-    },
-    second: {
-      title: '이름/이메일 입력',
-      submitText: '다음'
-    },
-    idListByEmail: {
-      title: '해당 이메일로 가입된 아이디',
-      submitText: userIds.length < 5 ? '새로 만들기' : '돌아가기'
-    },
-    third: {
-      title: '아이디/비밀번호 입력',
-      submitText: '가입하기'
-    },
-    finally: {
-      title: '회원가입 완료',
-      submitText: '로그인하기'
-    }
-  };
 
   const onClickNextPage = () => {
     if (checkSubmitType) {
@@ -128,9 +105,10 @@ const SignupForm = () => {
     }
   };
 
+  
   return (
     <SignUpForm onSubmit={handleSubmit(onSubmit)}>
-      <Title>{CurrentTitle[currentLevel].title}</Title>
+      <Title>{title}</Title>
       {isOpenModal && (
         <CommonModal setIsOpenModal={setIsOpenModal}>
           &#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}
@@ -164,7 +142,7 @@ const SignupForm = () => {
       <FlexEmptyBox />
       <SubmitBox>
         <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
-          {CurrentTitle[currentLevel].submitText}
+          {submitText}
         </SubmitBtn>
       </SubmitBox>
     </SignUpForm>
