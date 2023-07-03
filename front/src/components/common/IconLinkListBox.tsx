@@ -16,7 +16,7 @@ const IconLinkListBox = () => {
     <ListBox>
       {currentLinkRemoveList.map(({ link, title, icon, color }) => (
         <React.Fragment>
-          <IconButtonBox link={link} title={title} color={color}>
+          <IconButtonBox key={link + title} link={link} title={title} color={color}>
             {icon}
           </IconButtonBox>
         </React.Fragment>

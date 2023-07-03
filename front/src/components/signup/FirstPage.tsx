@@ -28,7 +28,7 @@ const FirstPage = ({ setIsAllChecked }: isAllCheckedProps) => {
     <React.Fragment>
       <CheckInputListBox>
         {agreeList.map(({ id, text }) => (
-          <CheckBoxInputs id={id} onClick={onClickAgreeBtn(id)}>
+          <CheckBoxInputs key={id + text} id={id} onClick={onClickAgreeBtn(id)}>
             <strong>{text}</strong>에 동의 &#40;필수&#41;
           </CheckBoxInputs>
         ))}

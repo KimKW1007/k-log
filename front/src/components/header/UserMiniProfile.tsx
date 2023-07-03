@@ -57,7 +57,7 @@ const UserMiniProfile = () => {
       <UserPlMenuBox>
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text }: MenuItemsType, idx) => (
-            <PlMeunItem id={Date.now() + 'salt' + idx}>
+            <PlMeunItem key={Date.now() + 'salt' + idx}>
               <Link href={link} onClick={logoutFn}>
                 {text}
               </Link>

@@ -28,7 +28,7 @@ const FindPage: NextPage = () => {
       <FindInnerBox>
         <SelectTabBox>
           {tabList.map(({ id, text }, idx: number) => (
-            <FindTabBox id={id}>
+            <FindTabBox id={id} key={id}>
               <FindBtn onClick={onClickChangeTab(id)} currentId={id} textById={textById?.id}>
                 {text} 찾기
               </FindBtn>
