@@ -6,7 +6,7 @@ import { InputListBox } from '@components/login/LoginForm';
 import { RegisterPagesProps } from '@src/types/register';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { errorFn } from '@utils/singupErrorFn';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import BundleOfPasswords from '@components/common/BundleOfPasswords';
 
 const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {

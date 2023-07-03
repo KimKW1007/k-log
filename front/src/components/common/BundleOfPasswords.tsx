@@ -2,14 +2,13 @@ import React from 'react';
 import UserInfoInput, { ErrMsg, ErrMsgBox } from './UserInfoInput';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { PASSWORD_REGEX } from '@constant/regex';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import { errorFn } from '@utils/singupErrorFn';
 import { RegisterPagesProps } from '@src/types/register';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 
 const BundleOfPasswords = ({ register, watch, errors, setError, clearErrors }: Omit<RegisterPagesProps, 'setIsAllChecked'>) => {
-
-  const Is_ErrColor = Boolean(errors?.password?.message) || Boolean(errors?.confirmPassword?.message)
+  const Is_ErrColor = Boolean(errors?.password?.message) || Boolean(errors?.confirmPassword?.message);
   return (
     <>
       <UserInfoInput

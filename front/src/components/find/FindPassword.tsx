@@ -6,7 +6,7 @@ import { InputListBox } from '@components/login/LoginForm';
 import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@constant/regex';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
 import React from 'react';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamPassword';
+import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import { errorFn } from '@utils/singupErrorFn';
 import { errMsg } from '@utils/singupThirdErrMsg';
 
