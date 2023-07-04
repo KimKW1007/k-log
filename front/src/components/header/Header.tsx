@@ -30,11 +30,20 @@ export const Header = () => {
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
+        <KlogText>K - Log</KlogText>
         <BtnBox>{isMount && userInfo ? <UserMiniProfile /> : <LoginSignUpBox />}</BtnBox>
       </HeaderInnerBox>
     </HeaderBox>
   );
 };
+
+const KlogText = styled.h2`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform : translate(-50%,-50%);
+  pointer-events: none;
+`
 
 const HeaderBox = styled.header`
   position: relative;
@@ -45,6 +54,7 @@ const HeaderBox = styled.header`
   box-shadow: 0 0 20px #eee;
 `;
 const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
+  position :relative;
   width: 100%;
   height: 100%;
   padding: 0 ${({ theme }) => theme.rem.p30};
@@ -53,7 +63,7 @@ const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
 const LogoBox = styled(OnlyAlignCenterFlex)`
   width: ${({ theme }) => theme.rem.p50};
   height: 100%;
-  margin-left: 158px;
+  margin-left: 180px;
   img {
     max-width: 100%;
   }
