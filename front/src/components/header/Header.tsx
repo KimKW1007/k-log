@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import logo_black from '@images/black.svg';
+import logo_white from '@images/white.svg';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { userInfomation } from '@atoms/atoms';
@@ -26,7 +26,7 @@ export const Header = () => {
           <CategoryBox setIsCategoryOn={setIsCategoryOn} isCategoryOn={isCategoryOn}></CategoryBox>
           <LogoBox>
             <Link href={'/'} title="K - Blog">
-              <Image src={logo_black} alt={'로고'}></Image>
+              <Image src={logo_white} alt={'로고'}></Image>
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
@@ -52,6 +52,8 @@ const HeaderBox = styled.header`
   height: ${({ theme }) => theme.rem.p70};
   padding: 0 ${({ theme }) => theme.rem.p30};
   box-shadow: 0 0 20px #eee;
+  background: #111111;
+  color:#fff;
 `;
 const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
   position :relative;
@@ -75,27 +77,4 @@ const LogoAndCategoryBox = styled.div`
   display: inline-flex;
   height: 100%;
   align-items: center;
-`;
-
-const CategoryBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 8rem;
-  height: ${({ theme }) => theme.rem.p40};
-  margin-right: ${({ theme }) => theme.rem.p30};
-  border-bottom: 1px solid #000;
-  padding-left: ${({ theme }) => theme.rem.p10};
-  text-align: left;
-  font-size: 14px;
-  font-family: 'Pretendard-Regular';
-  font-weight: bold;
-  background: rgba(0, 0, 0, 0);
-`;
-
-const DownDirection = styled(ChevronDown)`
-  width: ${({ theme }) => theme.rem.p20};
-`;
-const UpDirection = styled(ChevronUp)`
-  width: ${({ theme }) => theme.rem.p20};
 `;

@@ -18,7 +18,7 @@ const CategoryBox = ({ setIsCategoryOn, isCategoryOn }: CategoryProps) => {
   })
 
   return (
-    <CategoryWrap>
+    <CategoryWrap currentScroll={currentScroll}>
       <CategoryBtn
       currentScroll={currentScroll}
         onClick={() => {
@@ -57,9 +57,13 @@ const DropAni = keyframes`
   }
 `;
 
-const CategoryWrap = styled.div`
+const CategoryWrap = styled.div<{currentScroll : number}>`
   position: fixed;
   z-index: 44;
+  transition : .4s ease-in-out;
+  ${({currentScroll}) => currentScroll >= 70 && `
+    margin-top: 30px;
+  `}
 `;
 const CategoryNav = styled.nav`
   position: absolute;
@@ -80,16 +84,17 @@ const CategoryBtn = styled.button<{currentScroll : number}>`
   height: ${({ theme }) => theme.rem.p40};
   transition : .4s ease-in-out;
   border: 2px solid transparent;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid #f5f5f5;
   padding-left: ${({ theme }) => theme.rem.p10};
   text-align: left;
   font-size: 14px;
   font-family: 'Pretendard-Regular';
   font-weight: bold;
-  background: rgba(255, 255, 255, 0);
+  background: #232323;
   ${({currentScroll}) => currentScroll >= 70 && `
-  border: 2px solid #000;
-  background: rgba(255, 255, 255, 1);
+    border: 2px solid #232323;
+    background: #fff;
+    color:#232323;
   `}
 `;
 

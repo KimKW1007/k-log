@@ -23,9 +23,8 @@ const LoginSignUpText = styled(Link)`
   transition:  .3s;
   border-radius: 6px;
   font-size: 13px;
-  &:hover{
-    color: #fff;
-  }
+  color:#fff;
+  background: #454545;
 `;
 
 const LoginText = styled(LoginSignUpText)`
@@ -34,9 +33,9 @@ const LoginText = styled(LoginSignUpText)`
   }
 `
 const SignupText = styled(LoginSignUpText)`
-  background: #9DB2BF;
+  background: #A0BFE0;
   &:hover{
-    background: #454545;
+    background: #4A55A2;
   }
 `
 

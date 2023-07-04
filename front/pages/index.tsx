@@ -25,7 +25,6 @@ position: relative;
 min-height: 1000px;
 width: 100%;
 transform-style: preserve-3d;
-background: #fafafa;
 box-shadow: 0 0 20px #333;
 z-index: 1;
 `
