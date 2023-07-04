@@ -9,6 +9,7 @@ import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
 import UserMiniProfile from './UserMiniProfile';
+import CategoryBox from '@components/common/CategoryBox';
 
 export const Header = () => {
   const [isCategoryOn, setIsCategoryOn] = useState(false);
@@ -22,13 +23,7 @@ export const Header = () => {
     <HeaderBox>
       <HeaderInnerBox>
         <LogoAndCategoryBox>
-          <CategoryBtn
-            onClick={() => {
-              setIsCategoryOn((prev) => !prev);
-            }}>
-            CATEGORY
-            {isCategoryOn ? <UpDirection /> : <DownDirection />}
-          </CategoryBtn>
+          <CategoryBox setIsCategoryOn={setIsCategoryOn} isCategoryOn={isCategoryOn}></CategoryBox>
           <LogoBox>
             <Link href={'/'} title="K - Blog">
               <Image src={logo_black} alt={'로고'}></Image>
