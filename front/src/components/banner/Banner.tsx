@@ -13,7 +13,7 @@ const Banner = () => {
   const [itemLength, setItemLength] = useState(0);
   const bannerList = new Array(itemLength).fill(undefined).map((val, idx) => idx);
 
-  const [currentRotate, setCurrentRotate] = useState<number>(-120);
+  const [currentRotate, setCurrentRotate] = useState<number>(0);
   const [currentBg, setCurrentBg] = useState(banner[`banner1`]);
   const [currentBannerNum, setCurrentBannerNum] = useRecoilState(currentBanner);
   const [resetRotate , setResetRotate] = useState(false);
@@ -21,18 +21,18 @@ const Banner = () => {
     innerBoxWidth && setItemLength(Math.floor(innerBoxWidth / 39));
   }, [innerBoxWidth]);
   // 배너 배경 animation
-  useEffect(() => {
+ /*  useEffect(() => {
     const turnTimer = setInterval(() => {
-      setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
-      setCurrentRotate((prev) => prev - 120);
+      if(document.hasFocus()){
+        setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
+        setCurrentRotate((prev) => prev - 120);
+      }
     }, 10000);
     return () => {
       clearInterval(turnTimer);
     };
-  },[]);
+  },[]); */
   useEffect(()=>{
-    console.log({resetRotate})
-    console.log({currentRotate})
     if(currentRotate === -360){
       setTimeout(()=>{
         setResetRotate(true)
@@ -52,7 +52,7 @@ const Banner = () => {
 
   // 초기화
   useEffect(()=>{
-    return()=>{setCurrentBannerNum(3); setCurrentRotate(-240);}
+    return()=>{setCurrentBannerNum(1); setCurrentRotate(0);}
   },[])
 
   useEffect(() => {
