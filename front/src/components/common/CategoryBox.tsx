@@ -76,7 +76,7 @@ const CategoryBtn = styled.button<{currentScroll : number}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 8rem;
+  width: 10rem;
   height: ${({ theme }) => theme.rem.p40};
   transition : .4s ease-in-out;
   border: 2px solid transparent;
