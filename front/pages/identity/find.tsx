@@ -71,13 +71,11 @@ const FindBtn = styled.button<{ currentId: string; textById?: string }>`
   transform: scale(1);
   transition: 0.3s;
   ${({ currentId, textById }) =>
-    currentId !== textById &&
-    css`
+    currentId !== textById &&`
       transform: scale(0.99);
       background: #f5f5f5;
       color: #bbb;
       border-bottom: 1px solid #b5b5b5;
-      ${currentId === 'tabId' && css``}
     `}
 `;
 
