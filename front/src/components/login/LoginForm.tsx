@@ -2,7 +2,7 @@ import UserInfoInput from '@components/common/UserInfoInput';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { Power, LogIn } from '@styled-icons/ionicons-solid';
+import { LogIn } from '@styled-icons/ionicons-solid';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
@@ -46,6 +46,15 @@ const LoginForm = () => {
     mutate({ ...data });
   };
 
+  const onClickFindIdOrPassword = (e: React.MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
+    window.open(
+      '/identity/find',
+      '아이디/비밀번호 찾기',
+      'top=20px, left=20px, width=545px, height=560px, scrollbars=no , toolbar=no, staus=no, memubar=no, location=no, directoryies=no, resizable=no'
+    );
+    return e.preventDefault();
+  };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title>로그인</Title>
@@ -77,7 +86,9 @@ const LoginForm = () => {
         )}
       </SubmitBox>
       <SignUpAskQuestionBox>
-        <Link href={'javascript:void(0)'}onClick={()=>{window.open('/identity/find', '아이디/비밀번호 찾기', 'top=20px, left=20px, width=545px, height=560px, scrollbars=no , toolbar=no, staus=no, memubar=no, location=no, directoryies=no, resizable=no')}}>아이디/비밀번호를 잃어버리셨나요?</Link>
+        <Link href={'#'} onClick={onClickFindIdOrPassword}>
+          아이디/비밀번호를 잃어버리셨나요?
+        </Link>
         <Link href={'/signup'}>아이디 생성하기</Link>
       </SignUpAskQuestionBox>
     </Form>
