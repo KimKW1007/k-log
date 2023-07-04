@@ -39,7 +39,7 @@ const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: numbe
   }
   &:before {
     background: url(${banner3}) -${({ delay }) => delay * 39}px center no-repeat;
-    left: -100%;
+    left: -102%;
     transform: rotateY(240deg);
     transform-origin: right;
   }
