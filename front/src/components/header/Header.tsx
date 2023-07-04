@@ -53,6 +53,7 @@ const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
 const LogoBox = styled(OnlyAlignCenterFlex)`
   width: ${({ theme }) => theme.rem.p50};
   height: 100%;
+  margin-left: 158px;
   img {
     max-width: 100%;
   }
