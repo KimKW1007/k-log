@@ -16,11 +16,9 @@ const IconLinkListBox = () => {
     <ListBox>
       {router.pathname.includes('/identity/find') ||
         currentLinkRemoveList.map(({ link, title, icon, color }) => (
-          <React.Fragment>
             <IconButtonBox key={link + title} link={link} title={title} color={color}>
               {icon}
             </IconButtonBox>
-          </React.Fragment>
         ))}
     </ListBox>
   );
