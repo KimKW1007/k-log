@@ -1,26 +1,31 @@
-import { Header } from '@components/header/Header';
 import type { NextPage } from 'next';
-import { currentBanner, userInfomation } from '@atoms/atoms';
-import { useRecoilState } from 'recoil';
 import Banner from '@components/banner/Banner';
 import styled, { keyframes, css } from 'styled-components';
-import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+
   return (
     <HomeWrap>
       <Banner></Banner>
+      <EmptyBox></EmptyBox>
     </HomeWrap>
   );
 };
 
 export default Home;
 
-const HomeWrap = styled(OnlyJustifyCenterFlex)`
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-  height: 500px;
-  padding: 30px 0;
+const HomeWrap = styled.div`
+  width:100%;
+  height:100%;
 `;
+
+const EmptyBox = styled.div`
+position: relative;
+min-height: 1000px;
+width: 100%;
+transform-style: preserve-3d;
+background: #fafafa;
+box-shadow: 0 0 20px #333;
+z-index: 1;
+`
