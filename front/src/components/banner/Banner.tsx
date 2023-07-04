@@ -13,10 +13,10 @@ const Banner = () => {
   const [itemLength, setItemLength] = useState(0);
   const bannerList = new Array(itemLength).fill(undefined).map((val, idx) => idx);
 
-  const [currentRotate, setCurrentRotate] = useState<number>(0);
+  const [currentRotate, setCurrentRotate] = useState<number>(-120);
   const [currentBg, setCurrentBg] = useState(banner[`banner1`]);
   const [currentBannerNum, setCurrentBannerNum] = useRecoilState(currentBanner);
-
+  const [resetRotate , setResetRotate] = useState(false);
   useEffect(() => {
     innerBoxWidth && setItemLength(Math.floor(innerBoxWidth / 39));
   }, [innerBoxWidth]);
@@ -29,24 +29,45 @@ const Banner = () => {
     return () => {
       clearInterval(turnTimer);
     };
-  });
+  },[]);
+  useEffect(()=>{
+    console.log({resetRotate})
+    console.log({currentRotate})
+    if(currentRotate === -360){
+      setTimeout(()=>{
+        setResetRotate(true)
+        setCurrentRotate((prev) => prev = 0 );
+        setTimeout(()=>{
+          setResetRotate(false)
+        },100)
+      },5500)
+    }
+  },[currentRotate])
 
   useEffect(()=>{
     setCurrentBg(banner[`banner${currentBannerNum}`])
+    return()=>{}
   },[currentBannerNum])
+
+
+  // 초기화
+  useEffect(()=>{
+    return()=>{setCurrentBannerNum(3); setCurrentRotate(-240);}
+  },[])
 
   useEffect(() => {
     if (innerBoxRef.current) {
       setInnerBoxWidth(innerBoxRef.current?.offsetWidth);
       setInnerBoxHeight(innerBoxRef.current?.offsetHeight);
     }
+    return()=>{}
   }, [innerBoxRef.current]);
   return (
     <BannerWrap currentBg={currentBg}>
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele) => (
-            <BannerItem key={'salt' + ele} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={ele}></BannerItem>
+            <BannerItem key={'salt' + ele} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={ele} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
       </BannerInnerBox>

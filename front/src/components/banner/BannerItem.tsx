@@ -8,10 +8,11 @@ interface BannerItemProps {
   delay: number;
   boxWidth?: number;
   boxHeight?: number;
+  resetRotate: boolean;
 }
 
-const BaanerItem = ({ currentRotate, delay, boxWidth, boxHeight }: BannerItemProps) => {
-  return <Item currentRotate={currentRotate} boxWidth={boxWidth}
+const BaanerItem = ({ currentRotate, delay, boxWidth, boxHeight, resetRotate }: BannerItemProps) => {
+  return <Item currentRotate={currentRotate} boxWidth={boxWidth} resetRotate={resetRotate}
   boxHeight={boxHeight} delay={delay}></Item>;
 };
 
@@ -19,7 +20,7 @@ export default BaanerItem;
 // ${({delay}) => delay * 32 }
 // ${({ currentRotate }) => currentRotate}
 
-const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: number; boxHeight?: number }>`
+const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: number; boxHeight?: number; resetRotate: boolean; }>`
   position: absolute;
   width: 40px;
   height: 100%;
@@ -29,7 +30,8 @@ const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: numbe
   transform: rotateY(${({ currentRotate }) => currentRotate}deg);
   left: ${({ delay }) => delay * 39}px;
   top: -7px;
-  transition: transform 2s ${({ delay }) => delay * 0.15}s, box-shadow 0.3s;
+  transition: transform 2s ${({ delay }) => delay * 0.15}s;
+  ${({ resetRotate }) => resetRotate && `transition: none`};
   transform-origin: center center -8.666px;
   &:after {
     background: url(${banner2}) -${({ delay }) => delay * 40}px center no-repeat;
