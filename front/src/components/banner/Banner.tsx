@@ -3,26 +3,24 @@ import styled, { keyframes } from 'styled-components';
 import BannerItem from './BannerItem';
 import { currentBanner } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
-import {banner1, banner2, banner3} from '@utils/bannerList';
+import {banner} from '@utils/bannerList';
+import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 
 const Banner = () => {
-  
   const innerBoxRef = useRef<HTMLDivElement>(null);
   const [innerBoxWidth, setInnerBoxWidth] = useState(0);
   const [innerBoxHeight, setInnerBoxHeight] = useState(0);
-
   const [itemLength, setItemLength] = useState(0);
   const bannerList = new Array(itemLength).fill(undefined).map((val, idx) => idx);
 
-  const [currentRotate, setCurrentRotate] = useState(0);
-
+  const [currentRotate, setCurrentRotate] = useState<number>(0);
+  const [currentBg, setCurrentBg] = useState(banner[`banner1`]);
   const [currentBannerNum, setCurrentBannerNum] = useRecoilState(currentBanner);
-
-
 
   useEffect(() => {
     innerBoxWidth && setItemLength(Math.floor(innerBoxWidth / 39));
   }, [innerBoxWidth]);
+  // 배너 배경 animation
   useEffect(() => {
     const turnTimer = setInterval(() => {
       setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
@@ -33,6 +31,10 @@ const Banner = () => {
     };
   });
 
+  useEffect(()=>{
+    setCurrentBg(banner[`banner${currentBannerNum}`])
+  },[currentBannerNum])
+
   useEffect(() => {
     if (innerBoxRef.current) {
       setInnerBoxWidth(innerBoxRef.current?.offsetWidth);
@@ -40,49 +42,42 @@ const Banner = () => {
     }
   }, [innerBoxRef.current]);
   return (
-    <>
-      <BannerBgBox currentBannerNum={currentBannerNum}/>
+    <BannerWrap currentBg={currentBg}>
       <BannerInnerBox ref={innerBoxRef}>
-        <BannerWrap>
+        <BannerSlideBox>
           {bannerList.map((ele) => (
             <BannerItem key={'salt' + ele} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={ele}></BannerItem>
           ))}
-        </BannerWrap>
+        </BannerSlideBox>
       </BannerInnerBox>
-    </>
+    </BannerWrap>
   );
 };
 
 export default Banner;
+/* ${({ currentBannerNum }) => } */
+const BannerWrap = styled(AllCenterFlex)<{ currentBg: string }>`
+  position: relative;
+  height: 500px;
+  width: 100%;
+  padding: 30px 0;
+  background: url(${({currentBg}) => currentBg}) no-repeat center
+    bottom/cover fixed;
+  transition: background 3s 3s;
+`;
 
 const BannerInnerBox = styled.div`
   position: relative;
-  z-index: 2;
-  height: 90%;
+  height: 100%;
   width: 937px;
-  margin: auto;
   overflow: hidden;
 `;
 
-const BannerWrap = styled.div`
+const BannerSlideBox = styled.div`
   position: relative;
-  z-index: 9;
   transform-style: preserve-3d;
   display: flex;
-  height: 106%;
-  top: -1.9%;
+  height: 106.5%;
+  top: -2%;
   transform: rotateX(-20deg);
 `;
-
-const BannerBgBox= styled.div<{currentBannerNum : number}>`
-  position: absolute;
-  z-index: 1;
-  width:100%;
-  height:100%;
-  left:0;
-  top:0;
-  background-image: url(${({currentBannerNum}) => currentBannerNum === 1 ? banner1 : currentBannerNum === 2? banner2 : banner3});
-  background-size: cover;
-  background-position: center center;
-  transition: background 3s 3s;
-`
