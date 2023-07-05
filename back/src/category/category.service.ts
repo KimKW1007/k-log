@@ -24,9 +24,10 @@ export class CategoryService {
   }
 
   async getAllCategory(): Promise<Category[]> {
-    return await this.categoryRepository.find({
+    const category = await this.categoryRepository.find({
       where: { user: { id: 1 } },
     });
+    return category
   }
 
   async deleteCategory(id: number, user: User): Promise<{ message: string }> {
