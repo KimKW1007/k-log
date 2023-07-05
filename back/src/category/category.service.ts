@@ -3,31 +3,39 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CategoryRepository } from './category.repository';
+import { CategoryRepository, SubCategoryRepository } from './category.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 import { User } from 'src/auth/user.entity';
 import { Category } from './category.entity';
+import { CreateSubCategoryDto } from './dto/createSubCategory.dto';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(CategoryRepository)
     private categoryRepository: CategoryRepository,
+    private subCategoryRepository: SubCategoryRepository,
   ) {}
 
   createCategory(
     createCategoryDto: CreateCategoryDto,
     user: User,
-  ): Promise<{message: string}> {
+  ): Promise<{ message: string }> {
     return this.categoryRepository.createCategory(createCategoryDto, user);
+  }
+  createSubCategory(
+    createSubCategoryDto : CreateSubCategoryDto,
+    category: Category, user: User
+  ): Promise<{ message: string }> {
+    return this.subCategoryRepository.createSubCategory(createSubCategoryDto,  category, user);
   }
 
   async getAllCategory(): Promise<Category[]> {
     const category = await this.categoryRepository.find({
       where: { user: { id: 1 } },
     });
-    return category
+    return category;
   }
 
   async deleteCategory(id: number, user: User): Promise<{ message: string }> {
@@ -45,14 +53,13 @@ export class CategoryService {
     createCategoryDto: CreateCategoryDto,
     user: User,
   ): Promise<{ message: string }> {
-    const {categoryTopTitle, categoryTitle} = createCategoryDto;
+    const { categoryTitle } = createCategoryDto;
     if (user.id > 1)
       throw new ConflictException('관리자만 수정 할 수 있습니다.');
-    const category = await this.categoryRepository.findOneBy({id})
+    const category = await this.categoryRepository.findOneBy({ id });
     category.categoryTitle = categoryTitle;
-    category.categoryTopTitle = categoryTopTitle;
 
-    await this.categoryRepository.save(category)
+    await this.categoryRepository.save(category);
     return { message: '카테고리가 수정 되었습니다.' };
   }
 }
