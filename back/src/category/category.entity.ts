@@ -7,10 +7,10 @@ export class Category extends BaseEntity{
   id: number;
 
   @Column()
-  categoryTitle : string;
+  categoryTopTitle : string;
 
   @Column()
-  boardTitle : string;
+  categoryTitle : string;
 
   @CreateDateColumn()
   createdAt: Date

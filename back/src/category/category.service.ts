@@ -44,12 +44,12 @@ export class CategoryService {
     createCategoryDto: CreateCategoryDto,
     user: User,
   ): Promise<{ message: string }> {
-    const {boardTitle, categoryTitle} = createCategoryDto;
+    const {categoryTopTitle, categoryTitle} = createCategoryDto;
     if (user.id > 1)
       throw new ConflictException('관리자만 수정 할 수 있습니다.');
     const category = await this.categoryRepository.findOneBy({id})
-    category.boardTitle = boardTitle;
     category.categoryTitle = categoryTitle;
+    category.categoryTopTitle = categoryTopTitle;
 
     await this.categoryRepository.save(category)
     return { message: '카테고리가 수정 되었습니다.' };

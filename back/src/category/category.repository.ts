@@ -15,11 +15,11 @@ export class CategoryRepository extends Repository<Category> {
   }
 
   async createCategory(createCategoryDto: CreateCategoryDto, user: User) :Promise<{message: string}> {
-    const { boardTitle, categoryTitle } = createCategoryDto;
+    const { categoryTopTitle, categoryTitle } = createCategoryDto;
     console.log({user})
     if(user.id > 1) throw new ConflictException('관리자만 생성 할 수 있습니다.'); 
     const category = this.create({
-      boardTitle,
+      categoryTopTitle,
       categoryTitle,
       user
     });

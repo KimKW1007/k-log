@@ -15,6 +15,6 @@ export class CreateCategoryDto extends Repository<Category> {
 
   @IsNotEmpty()
   @IsString()
-  boardTitle : string;
+  categoryTopTitle : string;
   
 }
