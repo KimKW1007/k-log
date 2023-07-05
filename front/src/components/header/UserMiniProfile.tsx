@@ -17,7 +17,7 @@ const UserMiniProfile = () => {
   const MenuItemList: MenuItemsType[] = [
     {
       title: 'accountSetting',
-      link: '/',
+      link: 'accountSetting',
       text: '계정 설정'
     },
     /* {
@@ -27,7 +27,7 @@ const UserMiniProfile = () => {
     }, */
     {
       title: 'logOut',
-      link: '/',
+      link: '',
       text: '로그아웃'
     }
   ];
@@ -58,7 +58,7 @@ const UserMiniProfile = () => {
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text }: MenuItemsType, idx) => (
             <PlMeunItem key={Date.now() + 'salt' + idx}>
-              <Link href={link} onClick={logoutFn}>
+              <Link href={`/${link}`} onClick={()=> text === 'logOut' && logoutFn} title={text}>
                 {text}
               </Link>
             </PlMeunItem>
