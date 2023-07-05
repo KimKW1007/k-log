@@ -12,9 +12,6 @@ export class Category extends BaseEntity{
   @Column()
   categoryTitle : string;
 
-  @CreateDateColumn()
-  createdAt: Date
-
   @ManyToOne(type => User, user => user.categories, {eager: false})
   user: User;
 
