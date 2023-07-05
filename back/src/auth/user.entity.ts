@@ -1,4 +1,5 @@
 import { Exclude } from "class-transformer";
+import { Category } from "src/category/category.entity";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
@@ -19,4 +20,6 @@ export class User extends BaseEntity{
   @Column({select:false})
   password: string;
 
+  @OneToMany(type => Category, category => category.user, {eager: true})
+  categories: Category[]
 }
