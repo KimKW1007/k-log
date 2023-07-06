@@ -5,8 +5,10 @@ import { currentBanner } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import {banner} from '@utils/bannerList';
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
+import {useRouter} from "next/router";
 
 const Banner = () => {
+  const router= useRouter();
   const innerBoxRef = useRef<HTMLDivElement>(null);
   const [innerBoxWidth, setInnerBoxWidth] = useState(0);
   const [innerBoxHeight, setInnerBoxHeight] = useState(0);
@@ -23,7 +25,7 @@ const Banner = () => {
   // 배너 배경 animation
  /*  useEffect(() => {
     const turnTimer = setInterval(() => {
-      if(document.hasFocus()){
+      if(document.hasFocus() && router.pathname === '/'){
         setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
         setCurrentRotate((prev) => prev - 120);
       }
