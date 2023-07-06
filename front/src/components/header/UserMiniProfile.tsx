@@ -26,7 +26,7 @@ const UserMiniProfile = () => {
       text: '나의 활동'
     }, */
     {
-      title: 'logOut',
+      title: 'logout',
       link: '',
       text: '로그아웃'
     }
@@ -42,10 +42,10 @@ const UserMiniProfile = () => {
     }
   });
   const logoutFn = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
     setUserInfo(null);
     sessionStorage.removeItem('jwtToken');
     mutate({});
+    return e.preventDefault();
   };
 
   return (
@@ -56,9 +56,9 @@ const UserMiniProfile = () => {
       </UserPlInnerBox>
       <UserPlMenuBox>
         <PlMenuInnerBox>
-          {MenuItemList.map(({ link, text }: MenuItemsType, idx) => (
+          {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
             <PlMeunItem key={Date.now() + 'salt' + idx}>
-              <Link href={`/${link}`} onClick={()=> text === 'logOut' && logoutFn} title={text}>
+              <Link href={`/${link}`} onClick={(e)=> title === 'logout' && logoutFn(e)} title={text}>
                 {text}
               </Link>
             </PlMeunItem>
