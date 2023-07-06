@@ -41,6 +41,7 @@ export class AuthService {
     }
     // 유저 토큰 생성( Secret + Payload)
     delete user.password
+    delete user.categories
     const payload = { ...user };
     const accessToken = this.jwtService.sign(payload);
     return {accessToken};
