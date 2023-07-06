@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 import { GetCategories, GetUser } from 'src/auth/get-user.decorator';
@@ -6,24 +6,12 @@ import { User } from 'src/auth/user.entity';
 import { Category } from './category.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSubCategoryDto } from './dto/createSubCategory.dto';
+import { TestDto } from './dto/test.dto';
 
 @Controller('category')
 
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
-
-  @Post("/createCategory")
-  @UseGuards(AuthGuard())
-  @UsePipes(ValidationPipe)
-  createCategory(@Body() createCategoryDto : CreateCategoryDto , @GetUser() user: User):Promise<{message: string}>{
-    return this.categoryService.createCategory(createCategoryDto, user);
-  }
-  @Post("/createSubCategory")
-  @UseGuards(AuthGuard())
-  @UsePipes(ValidationPipe)
-  createSubCategory(@Body() createSubCategoryDto : CreateSubCategoryDto ,  @GetCategories() category: Category , @GetUser() user: User):Promise<{message: string}>{
-    return this.categoryService.createSubCategory(createSubCategoryDto,  category, user);
-  }
 
   @Get("/")
   getCurrentUserCategory(): Promise<Category[]>{
@@ -35,15 +23,20 @@ export class CategoryController {
   deleteCategory(@Param('id', ParseIntPipe) id:number,@GetUser() user: User): Promise<{message:string}>{
     return this.categoryService.deleteCategory(id, user);
   }
+  @Delete("/subCategory/:id")
+  @UseGuards(AuthGuard())
+  deletesSubCategory(@Param('id', ParseIntPipe) id:number,@GetUser() user: User): Promise<{message:string}>{
+    return this.categoryService.deletesSubCategory(id, user);
+  }
 
-  @Patch("/:id")
+
+  @Put('/updateCategories')
   @UseGuards(AuthGuard())
   updateTitles(
-    @Param('id', ParseIntPipe) id:number,
-    @Body() createCategoryDto : CreateCategoryDto,
+    @Body() testDto : Category[],
     @GetUser() user: User
-  ){
-    return this.categoryService.updateTitles(id, createCategoryDto, user)
+  ): Promise<void>{
+    return this.categoryService.updateTitles(testDto, user)
   }
 
 
