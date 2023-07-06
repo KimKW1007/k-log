@@ -9,10 +9,9 @@ import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
 import UserMiniProfile from './UserMiniProfile';
-import CategoryBox from '@components/common/CategoryBox';
+import CategoryBox from '@components/category/CategoryBox';
 
 export const Header = () => {
-  const [isCategoryOn, setIsCategoryOn] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isMount, setIsMount] = useState<boolean>(false);
   useEffect(() => {
@@ -23,7 +22,7 @@ export const Header = () => {
     <HeaderBox>
       <HeaderInnerBox>
         <LogoAndCategoryBox>
-          <CategoryBox setIsCategoryOn={setIsCategoryOn} isCategoryOn={isCategoryOn}></CategoryBox>
+          <CategoryBox></CategoryBox>
           <LogoBox>
             <Link href={'/'} title="K - Blog">
               <Image src={logo_white} alt={'로고'}></Image>
@@ -41,9 +40,9 @@ const KlogText = styled.h2`
   position: absolute;
   left: 50%;
   top: 50%;
-  transform : translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-`
+`;
 
 const HeaderBox = styled.header`
   position: relative;
@@ -53,10 +52,10 @@ const HeaderBox = styled.header`
   padding: 0 ${({ theme }) => theme.rem.p30};
   box-shadow: 0 0 20px #eee;
   background: #111111;
-  color:#fff;
+  color: #fff;
 `;
 const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
-  position :relative;
+  position: relative;
   width: 100%;
   height: 100%;
   padding: 0 ${({ theme }) => theme.rem.p30};
