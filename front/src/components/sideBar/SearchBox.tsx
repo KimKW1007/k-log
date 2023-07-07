@@ -1,13 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 import React from 'react'
 import {Search} from "@styled-icons/fluentui-system-filled/Search"
-const SearchBox = () => {
+  const SearchBox = ({isEdit = false} :{isEdit?: boolean}) => {
   return (
     <SearchForm>
-      <SearchInputBox>
-        <SearchInput placeholder='검색어를 입력하세요'/>
+      <SearchInputBox >
+        <SearchInput isEdit={isEdit} placeholder='검색어를 입력하세요'/>
         <SubmitBtnBox>
-          <SubmitBtn>
+          <SubmitBtn isEdit={isEdit}>
             <Search />
           </SubmitBtn>
         </SubmitBtnBox>
@@ -19,6 +19,8 @@ const SearchBox = () => {
 export default SearchBox
 
 const SearchForm = styled.form`
+  position: relative;
+  z-index : 2;
   width:100%;
 `
 
@@ -28,7 +30,7 @@ const SearchInputBox = styled.div`
   padding: 0 30px;
 `
 
-const SearchInput = styled.input`
+const SearchInput = styled.input<{isEdit?: boolean}>`
   width:100%;
   line-height: 30px;
   font-size: 13px;
@@ -43,19 +45,23 @@ const SearchInput = styled.input`
     font-weight:bold;
     letter-spacing: -1px;
   }
+  ${({isEdit}) => isEdit &&`
+    pointer-events:none;
+    background: #454545a1;
+  `}
 `
 
 const SubmitBtnBox = styled.div`
   position: absolute;
   right: 30px;
   top:0;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 30px;
   overflow:hidden;
 `
 
-const SubmitBtn=  styled.button`
+const SubmitBtn=  styled.button<{isEdit?: boolean}>`
   width:100%;
   height:100%;
   padding: 8px;
@@ -64,5 +70,11 @@ const SubmitBtn=  styled.button`
     width:100%;
     color: #fff;
   }
+  ${({isEdit}) => isEdit &&`
+    pointer-events:none;
+    svg{
+      color: #898989;
+    }
+  `}
 
 `
