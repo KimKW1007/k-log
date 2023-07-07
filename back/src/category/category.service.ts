@@ -73,11 +73,6 @@ export class CategoryService {
         `중복된 카테고리가 있습니다. 값을 확인해주세요.`,
       );
 
-     /*  const check = testDto.filter(x => foundCategory.filter(i => x.id === i.id && x.categoryTitle === i.categoryTitle && x.subCategories.filter(y=> i.subCategories.filter(z=> y === z))))
-      if(foundCategory === testDto) throw new ConflictException(
-        `이전 값과 동일하여 변경되지 않습니다.`,
-      ); 
-      console.log({check}) */
 
     // client 에서 받은  arr와 database arr 중복확인(categoryTitle)
     const filteredCategory = testDto.filter(
