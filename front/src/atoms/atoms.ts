@@ -25,3 +25,8 @@ export const currentBanner = atom<number>({
   key: 'currentBannerKey',
   default: 1
 })
+
+export const currentCategoryData = atom<any[]>({
+  key: 'currentCategoryDataKey',
+  default: []
+})
