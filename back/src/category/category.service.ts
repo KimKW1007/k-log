@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import {
   CategoryRepository,
   SubCategoryRepository,
@@ -12,8 +8,7 @@ import { CreateCategoryDto } from './dto/createCategory.dto';
 import { User } from 'src/auth/user.entity';
 import { Category } from './category.entity';
 import { CreateSubCategoryDto } from './dto/createSubCategory.dto';
-import { TestDto } from './dto/test.dto';
-import { Not } from 'typeorm';
+
 
 @Injectable()
 export class CategoryService {
@@ -30,71 +25,39 @@ export class CategoryService {
     return category;
   }
 
-  async deleteCategory(id: number, user: User): Promise<{ message: string }> {
-    if (user.id > 1)
-      throw new ConflictException('관리자만 삭제 할 수 있습니다.');
-    const subCategoryResult = await this.subCategoryRepository.delete({
-      category: { id },
-    });
-    const result = await this.categoryRepository.delete({ id });
-    if (result.affected === 0 || subCategoryResult.affected === 0) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
-    }
-    return { message: '카테고리가 삭제 되었습니다.' };
-  }
-  async deletesSubCategory(
-    id: number,
-    user: User,
-  ): Promise<{ message: string }> {
-    if (user.id > 1)
-      throw new ConflictException('관리자만 삭제 할 수 있습니다.');
-    const result = await this.subCategoryRepository.delete({ id });
-    if (result.affected === 0) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
-    }
-    return { message: '카테고리가 삭제 되었습니다.' };
-  }
 
-  async updateTitles(testDto: Category[], user: User): Promise<void> {
-    if (user.id > 1) throw new ConflictException('관리자 권한이 없습니다.');
+
+  async updateTitles(categoryDto: Category[], user: User): Promise<any> {
+    if (user.id > 1) throw new UnauthorizedException("관리자 권한이 없습니다.", { cause: new Error()})
     const foundCategory = await this.categoryRepository.find({
       where: { user: { id: user.id } },
     });
+    // client 에서 받은 arr categoryTitle 중복값 확인
+      const categoryTitleMap = categoryDto.map((ele) => ele.categoryTitle);
+      const chackSameCategoryTitle = categoryTitleMap.some(
+        (x, i) => categoryTitleMap.indexOf(x) !== i,
+      );
+      if (chackSameCategoryTitle) throw new BadRequestException(`상위 카테고리 중 중복된 값이 있습니다.`, { cause: new Error()})
+    //client 에서 받은 arr sub 중복값 확인
+    const subCategoryTitleMap = categoryDto.map(({subCategories}) =>{
+      const subCategoriesMap = subCategories.map(({categorySubTitle}, i) => categorySubTitle);
+      const chackSameSubCategoryTitle = subCategoriesMap.some(
+        (x, i) => subCategoriesMap.indexOf(x) !== i,
+      );
+      if (chackSameSubCategoryTitle) throw new BadRequestException(`하위 카테고리 중 중복된 값이 있습니다1.`, { cause: new Error()})
+    });
+    
 
 
 
-    // client 에서 받은 arr 중복값 확인
-    const testMap = testDto.map((ele) => ele.categoryTitle);
-    const chackSameCategoryTitle = testMap.some(
-      (x, i) => testMap.indexOf(x) !== i,
-    );
-    if (chackSameCategoryTitle)
-      throw new ConflictException(
-        `중복된 카테고리가 있습니다. 값을 확인해주세요.`,
+    //create categoryTitle or all
+    if (foundCategory.length < categoryDto.length) {
+      // client 에서 받은  arr와 database arr 중복확인(categoryTitle)
+      const filteredCategory = categoryDto.filter(
+        (x) => !foundCategory.some((i) => i.categoryTitle === x.categoryTitle),
       );
 
-
-    // client 에서 받은  arr와 database arr 중복확인(categoryTitle)
-    const filteredCategory = testDto.filter(
-      (x) => !foundCategory.some((i) => i.categoryTitle === x.categoryTitle),
-    );
-    // client 에서 받은  arr와 database arr 중복확인(subCategories.length)
-    const filteredSubCategory = testDto.filter(
-      (x) =>
-        !foundCategory.some(
-          (i) => i.subCategories.length === x.subCategories.length,
-        ),
-    );
-    //create categoryTitle or all
-    if (foundCategory.length < testDto.length) {
       filteredCategory.map(async ({ id, categoryTitle, subCategories }) => {
-        const checkCategory = foundCategory.find(
-          (x) => x.categoryTitle === categoryTitle,
-        );
-        if (checkCategory)
-          throw new ConflictException(
-            `${categoryTitle}은(는) 중복된 카테고리 입니다.`,
-          );
         const newCategory = this.categoryRepository.create({
           categoryTitle,
           user,
@@ -112,8 +75,16 @@ export class CategoryService {
       });
     }
     // create SubCategory
-    if (foundCategory.length === testDto.length && foundCategory.length >= 1) {
+    if (foundCategory.length === categoryDto.length && foundCategory.length >= 1) {
+      // client 에서 받은  arr와 database arr 중복확인(subCategories.length)
+      const filteredSubCategory = categoryDto.filter(
+        (x) =>
+          !foundCategory.some(
+            (i) => i.subCategories.length === x.subCategories.length,
+          ),
+      );
       filteredSubCategory.map(async (ele) => {
+    
         const category = await this.categoryRepository.findOneBy({
           categoryTitle: ele.categoryTitle,
         });
@@ -127,14 +98,11 @@ export class CategoryService {
             ),
         );
         secondFilter.map(async ({ id, categorySubTitle }) => {
-          const foundSubCategory = await this.subCategoryRepository.findOneBy({
+          /* const foundSubCategory = await this.subCategoryRepository.findOneBy({
             category: { categoryTitle: ele.categoryTitle },
             categorySubTitle,
           });
-          if (foundSubCategory)
-            throw new ConflictException(
-              `${categorySubTitle}은(는) 중복된 카테고리 입니다.`,
-            );
+          if (foundSubCategory) throw new BadRequestException(`하위 카테고리 중 중복된 값이 있습니다.`, { cause: new Error()}) */
           const newSubCategory = this.subCategoryRepository.create({
             categorySubTitle,
             category,
@@ -144,51 +112,67 @@ export class CategoryService {
       });
     }
 
-    // 수정
-    const isSameLength = testDto.filter(
-      (x) =>
-        foundCategory.filter((i) => {
-          if (x.categoryTitle === i.categoryTitle) {
-            return x.subCategories.length !== i.subCategories.length;
-          }
-        }).length > 0,
-    );
-    
-    if(foundCategory.length === testDto.length && isSameLength){
-      testDto.map(async ({ id, categoryTitle, subCategories }) => {
-        const found = await this.categoryRepository.findOneBy({ id });
-        if (!found) throw new ConflictException(`카테고리 아이디를 확인해주세요`);
-        if (found.categoryTitle !== categoryTitle) {
-          found.categoryTitle = categoryTitle;
-        }
-        await this.categoryRepository.save(found).then((res) => {
-          if (isSameLength.length === 0) {
-            const newOne = subCategories.map((ele) => ele.categorySubTitle);
-            const chackDuplicate = newOne.some((x, i) => newOne.indexOf(x) !== i);
-            if (chackDuplicate)
-              throw new ConflictException(
-                `중복된 서브카테고리가 있습니다1. 값을 확인해주세요.`,
-              );
-            subCategories.map(async ({ id: subId, categorySubTitle }) => {
-              const checkSameSubCate = await this.subCategoryRepository.find({
-                where: { category: { id: res.id }, categorySubTitle },
-              });
-              if (checkSameSubCate)
-                throw new ConflictException(
-                  `${id}/${categorySubTitle}중복된 서브카테고리가 있습니다2. 값을 확인해주세요.`,
-                );
-              const foundSubCategory = await this.subCategoryRepository.findOneBy(
-                { id: subId },
-              );
-              if (foundSubCategory.categorySubTitle !== categorySubTitle) {
-                foundSubCategory.categorySubTitle = categorySubTitle;
-              }
-              await this.subCategoryRepository.save(foundSubCategory);
-            });
-          }
+    // client 에서 받은  arr와 database arr 중복확인(categoryTitle)
+
+    if (foundCategory.length > categoryDto.length) {
+      const filteredCategory = foundCategory.filter(
+        (x) => !categoryDto.some((i) => i.categoryTitle === x.categoryTitle),
+      );
+      filteredCategory.map(async ({ id, categoryTitle, subCategories }) => {
+        const deleteSubCategory = await this.subCategoryRepository.delete({
+          category: { id },
         });
+        const deleteCategory = await this.categoryRepository.delete({ id });
+        if (deleteSubCategory.affected === 0) {
+          throw new NotFoundException(
+            `Can't find subCategories with categoryTitle ${categoryTitle}`,
+          );
+        }
+        if (deleteCategory.affected === 0) {
+          throw new NotFoundException(`Can't find categoryTitle with id ${id}`);
+        }
       });
     }
-    
+
+    // 수정
+    if (foundCategory.length === categoryDto.length) {
+      const isSameLength = categoryDto.filter(
+        (x) =>
+          foundCategory.filter((i) => {
+            if (x.categoryTitle === i.categoryTitle) {
+              return x.subCategories.length !== i.subCategories.length;
+            }
+          }).length > 0,
+      );
+      if (isSameLength) {
+        
+        categoryDto.map(async ({ id, categoryTitle, subCategories }) => {
+          const found = await this.categoryRepository.findOneBy({ id });
+          if (!found)  throw new BadRequestException(`상위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error()})
+          if (found.categoryTitle !== categoryTitle) {
+            found.categoryTitle = categoryTitle;
+          }
+          await this.categoryRepository.save(found).then((res) => {
+            if (isSameLength.length === 0) {
+              const newOne = subCategories.map((ele) => ele.categorySubTitle);
+              const chackDuplicate = newOne.some(
+                (x, i) => newOne.indexOf(x) !== i,
+              );
+              if (chackDuplicate)  throw new BadRequestException(`하위 카테고리 중 중복된 값이 있습니다.`, { cause: new Error()})
+              subCategories.map(async ({ id: subId, categorySubTitle }) => {
+                const foundSubCategory =
+                  await this.subCategoryRepository.findOneBy({ id: subId });
+                  if (!foundSubCategory)  throw new BadRequestException(`하위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error()})
+                if (foundSubCategory.categorySubTitle !== categorySubTitle) {
+                  foundSubCategory.categorySubTitle = categorySubTitle;
+                }
+                await this.subCategoryRepository.save(foundSubCategory);
+              });
+            }
+          });
+        });
+      }
+    }
+    return {message : "success"}
   }
 }
