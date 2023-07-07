@@ -39,7 +39,7 @@ const SignupForm = () => {
   const [isPassCertificate, setIsPassCertificate] = useState(false);
 
   // 현재 단계
-  const [currentLevel, setCurrentLevel] = useState<string>('third');
+  const [currentLevel, setCurrentLevel] = useState<string>('first');
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
   // 해당 이메일로 가입되어있는 아이디들
