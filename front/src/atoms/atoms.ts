@@ -1,3 +1,4 @@
+import { CategoryBackProps } from '@components/category/CategoryList';
 import { User } from '@src/types/user';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
@@ -26,7 +27,7 @@ export const currentBanner = atom<number>({
   default: 1
 })
 
-export const currentCategoryData = atom<any[]>({
+export const currentCategoryData = atom<CategoryBackProps[]>({
   key: 'currentCategoryDataKey',
   default: []
 })
