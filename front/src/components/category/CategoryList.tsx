@@ -6,12 +6,12 @@ import { useQuery } from '@tanstack/react-query';
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 
 export interface CategoryBackProps {
-  id: number;
+  id ?: number;
   categoryTitle: string;
   subCategories: SubCategoryBackProps[];
 }
 export  interface SubCategoryBackProps {
-  id: number;
+  id ?: number;
   categorySubTitle: string;
 }
 const CategoryList = () => {
