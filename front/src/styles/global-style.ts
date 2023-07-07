@@ -150,6 +150,7 @@ main,header,footer,section,nav,article{
 }
 
 .certified{
+  position:relative;
   pointer-events: none;
   &::after{
     content:"";
