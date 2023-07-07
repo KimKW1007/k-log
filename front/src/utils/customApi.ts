@@ -33,15 +33,27 @@ export default function customApi<T = any>(url: string) {
   };
 
   const deleteApi = async (data: T) => {
-    const result = await baseApi().delete(url, { data });
+    const result = await baseApi().delete(url, { data,
+      headers:{
+        "Authorization" : `Bearer ${sessionStorage.getItem("jwtToken")}`
+      }
+    });
     return result.data;
   };
   const putApi = async (data: T) => {
-    const result = await baseApi().put(url, data);
+    const result = await baseApi().put(url, data,{
+      headers:{
+        "Authorization" : `Bearer ${sessionStorage.getItem("jwtToken")}`
+      }
+    });
     return result.data;
   };
   const patchApi = async (data: T) => {
-    const result = await baseApi().patch(url, data);
+    const result = await baseApi().patch(url, data,{
+      headers:{
+        "Authorization" : `Bearer ${sessionStorage.getItem("jwtToken")}`
+      }
+    });
     return result.data;
   };
   return { postApi, getApi, deleteApi, putApi, patchApi };
