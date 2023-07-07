@@ -3,65 +3,61 @@ import { CategoryBackProps } from './CategoryList'
 import styled, { keyframes } from 'styled-components';
 import EditCategoryInput from './EditCategoryInput';
 import EditSubCategoryItems from './EditSubCategoryItems';
-import { useForm } from 'react-hook-form';
+import { UseFieldArrayRemove, useFieldArray, useForm, useFormContext, useWatch } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { currentCategoryData } from '@atoms/atoms';
-
-interface CategoryItemProps extends  Omit<CategoryBackProps , 'id'>{
+/* interface CategoryItemProps extends  Omit<CategoryBackProps , 'id'>{
   idx : number;
   id ?:number;
 
-}
+} */
 
-const EditCategoryItemBox = ({ categoryTitle, subCategories, idx, id }: CategoryItemProps) => {
+
+
+const EditCategoryItemBox = ({categoryIndex, remove} :{ categoryIndex: number; remove: UseFieldArrayRemove}) => {
   const [currentData , setCurrentDate] = useRecoilState(currentCategoryData);
-  const [categoryTitleValue , setCategoryTitleValue] = useState("")
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors }
-  } = useForm({
-    mode: 'onChange'
-  });
-  const onSubmit = (data: any) => {
-    console.log({data})
-  };
-  console.log(typeof categoryTitle)
+  const { control } = useFormContext();
+
 
   return (
-    <CategoryForm onSubmit={handleSubmit(onSubmit)}>
       <CategoryItemBox>
         <CategoryTitle>
-          <EditCategoryInput defaultValue={categoryTitle} register={register} resgisterName={'categoryTitle'} setCategoryTitleValue={setCategoryTitleValue} />
+          <EditCategoryInput categoryIndex={categoryIndex} name={`category.${categoryIndex}.categoryTitle`} remove={remove} />
         </CategoryTitle>
-        <EditSubCategoryItems subCategories={subCategories} register={register} resgisterName={'categorySubTitle'} categoryTitle={categoryTitle!} idx={idx} ></EditSubCategoryItems>
+        <EditSubCategoryItems categoryIndex={categoryIndex} ></EditSubCategoryItems>
       </CategoryItemBox>
-    </CategoryForm>
   )
 }
 
 export default EditCategoryItemBox
+/* 
+const EditCategoryItemBox = ({ categoryTitle, subCategories, idx, id }: CategoryItemProps) => {
+  const [currentData , setCurrentDate] = useRecoilState(currentCategoryData);
 
-const CategoryForm = styled.form`
 
-`
+  return (
+      <CategoryItemBox>
+        <CategoryTitle>
+          <EditCategoryInput idx={idx} defaultValue={categoryTitle} categoryTitle={categoryTitle}  />
+        </CategoryTitle>
+        <EditSubCategoryItems subCategories={subCategories} categoryTitle={categoryTitle!} categoryTitleIdx={idx} ></EditSubCategoryItems>
+      </CategoryItemBox>
+  )
+}
+
+export default EditCategoryItemBox */
+
+
 
 
 const CategoryItemBox =styled.div`
-  margin-left: 10px;
-  margin-bottom: 20px;
+  padding-bottom: 8px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #999;
 `
 
 
-const CategoryTitle = styled.dt`
+const CategoryTitle = styled.div`
 font-size: ${({ theme }) => theme.rem.p14};
-margin-bottom: 2px;
-
-`;
-
-const CategoryItem = styled.dd`
-position: relative;
-margin-bottom: 2px;
-
+padding: 0 10px;
 `;

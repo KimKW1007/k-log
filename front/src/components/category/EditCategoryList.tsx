@@ -1,33 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import customApi from '@utils/customApi';
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import EditSubCategoryItems from './EditSubCategoryItems';
 import AddCategoryBtn from './AddCategoryBtn';
 import EditCategoryInput from './EditCategoryInput';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import EditCategoryItemBox from './EditCategoryItemBox';
-import { useRecoilState } from 'recoil';
+import { DefaultValue, useRecoilState } from 'recoil';
 import { currentCategoryData } from '@atoms/atoms';
 
-interface TestProps {
-  id ?: number;
-  categoryTitle : string;
-  subCategories: SubCategoryBackProps[];
-}
+
 
 const EditCategoryList = () => {
-  const [isClickAddBtn , setIsClickAddBtn] = useState(false);
-  const [currentData , setCurrentDate] = useRecoilState(currentCategoryData);
-  const [test, setTest] = useState<any[]>([{categoryTitle:"",subCategories:[]}]);
+  /* const [currentData , setCurrentDate] = useRecoilState(currentCategoryData); */
   const [isMount, setIsMount] = useState(false);
-  const { getApi } = customApi('/category');
-  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
 
-
-  const addCategoryInput= ()=>{
+  /* const addCategoryInput= ()=>{
     const filtered = currentData.filter(x=> x.categoryTitle === "");
     if(filtered.length >= 1){
       alert("빈 카테고리가 있습니다.")
@@ -36,29 +27,66 @@ const EditCategoryList = () => {
     let addCategory= [...currentData, {categoryTitle:"",subCategories:[]}];
     setCurrentDate(addCategory)
   }
+ */
+  const [currentData , setCurrentDate] = useState<CategoryBackProps[]>([]);
+  const { getApi } = customApi('/category');
+  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
+  const test = currentData.map(({categoryTitle, subCategories})=>({categoryTitle,subCategories}))
+  const defaultValues = {
+    category: currentData
+  }
+  const methods = useForm({
+    mode: 'all',
+    defaultValues : useMemo(()=>{
+      return {category: data}
+    },[data])
+  });
+  console.log("{currentData}",currentData.map(({categoryTitle, subCategories})=>({categoryTitle,subCategories})))
+  const { control, handleSubmit, reset } = methods;
+  const { append, remove, fields } = useFieldArray({
+    control,
+    name: "category",
+  });
 
+  const onSubmit = (data: any) => {
+    console.log({data})
+  }
 
-  useEffect(()=>{
-    if(data){
-      setCurrentDate(data)
-    }
-  },[data])
   useEffect(()=>{
     setIsMount(true)
   },[])
+
+
+  useEffect(()=>{
+    reset({category : data})
+  },[data])
+  
+
   return (
     <CategoryNav>
       <CategoryListBox >
         <h3>카테고리 목록</h3>
-          {isMount &&
-            currentData?.map(({ categoryTitle,subCategories}: TestProps, idx:number) => (
+        <FormProvider {...methods}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            {fields.map((category, index)=>(
+              <EditCategoryItemBox
+                categoryIndex = {index}
+                key={category.id}
+                remove={remove}
+              />
+            ))}
+            <AddCategoryBtn onClick={()=>{append({categoryTitle:"",subCategories:[]})}}></AddCategoryBtn>
+            <button type='submit'> 테스트 </button>
+          </Form>
+        </FormProvider>
+          {/* {isMount &&
+            currentData.map(({ categoryTitle,subCategories}: CategoryBackProps, idx:number) => (
               <EditCategoryItemBox
                 idx={idx}
                 categoryTitle={categoryTitle}
                 subCategories={subCategories}
                 ></EditCategoryItemBox>
-            ))}
-            <AddCategoryBtn onClick={()=>{addCategoryInput()}}></AddCategoryBtn>
+            ))} */}
       </CategoryListBox>
     </CategoryNav>
   )
@@ -66,18 +94,23 @@ const EditCategoryList = () => {
 
 export default EditCategoryList
 
+const Form = styled.form`
+
+`
+
 
 
 const CategoryNav = styled.nav`
+position: relative;
+z-index : 3;
   width:100%;
 margin-top: 2px;
-overflow: hidden;
 padding: 20px 30px ;
 `;
 
 
 
-const CategoryListBox = styled.dl`
+const CategoryListBox = styled.div`
 display: flex;
 flex-direction: column;
 color: #232323;
