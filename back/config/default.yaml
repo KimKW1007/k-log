@@ -7,4 +7,4 @@ db:
   database: 'blog-data'
 
 jwt:
-  expiresIn: 10800
+  expiresIn: 25200
