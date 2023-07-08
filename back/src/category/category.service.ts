@@ -21,6 +21,7 @@ export class CategoryService {
   async getAllCategory(): Promise<Category[]> {
     const category = await this.categoryRepository.find({
       where: { user: { id: 1 } },
+      order: { id: 'ASC' },
     });
     return category;
   }
