@@ -21,11 +21,10 @@ export default AccountSettingPage;
 
 const SettingWrap = styled(AllCenterFlex)`
   width:100%;
-  padding: 100px 30px 0;
+  padding: 100px 30px;
 `;
 const SettingInnerBox = styled.div`
-  width: 1200px;
-  height: 500px;
+  width: 1300px;
 `;
 
 const UserInfoSettingBox = styled.div`
