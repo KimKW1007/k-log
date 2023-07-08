@@ -1,109 +1,11 @@
 import React, { useState } from 'react';
-import { FieldValues, UseFieldArrayRemove, UseFormRegister, useFormContext } from 'react-hook-form';
+import {  UseFieldArrayRemove,  useFormContext } from 'react-hook-form';
 import styled, { keyframes, css } from 'styled-components';
 import { Trash } from '@styled-icons/bootstrap/Trash';
-import { currentCategoryData } from '@atoms/atoms';
-import { useRecoilState } from 'recoil';
+
 import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
-import { removeTwoMoreEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 
-/* export interface CategoryInputProps {
-  defaultValue?: string;
-  sub?: boolean;
-  categoryTitle: string;
-  categorySubTitle?: string;
-  idx ?: number;
-  categoryTitleIdx ?: number;
-}
 
-const EditCategoryInput = ({ defaultValue, sub = false, categoryTitle, categorySubTitle, idx, categoryTitleIdx }: CategoryInputProps) => {
-  const [isOnDeleteBtn, setIsOnDeleteBtn] = useState(false);
-  const [isOnDeleteTip, setIsOnDeleteTip] = useState(false);
-  const [currentData, setCurrentDate] = useRecoilState(currentCategoryData);
-
-  const checkedDeleteFn = () => {
-    let copiedCategory = [...currentData];
-    console.log({copiedCategory})
-    if (!sub) {
-      const filered = copiedCategory.filter((x, i) => {console.log("i, idx",x,i,idx);return i !== idx});
-      console.log(filered, idx)
-      setCurrentDate(filered);
-    } else {
-      let findIdx = currentData.findIndex((v, i) => i === categoryTitleIdx);
-      
-      const filered = copiedCategory[findIdx].subCategories.filter((x , i) => i !== idx);
-      console.log({filered})
-      copiedCategory[findIdx] = { ...copiedCategory[findIdx], subCategories: filered };
-      setCurrentDate(copiedCategory);
-    }
-  };
-
-  const onClickDeleteInput = () => {
-    console.log({idx})
-    if (!isOnDeleteBtn) setIsOnDeleteBtn(true);
-    else {
-      checkedDeleteFn();
-    }
-  };
-
-  const DeleteTipText = () => {
-    if (!sub) {
-      return (
-        <>
-        해당 카테고리 삭제 시<br />하위 카테고리는 모두 삭제됩니다.<br />삭제하시려면 한번 더 눌러주세요.
-        </>
-      );
-    } else {
-      return (
-        <>
-        해당 카테고리를<br />삭제 하시겠습니까?<br />삭제하시려면 한번 더 눌러주세요.
-        </>
-      );
-    }
-  };
-
-  const onChaneValues = (value: string, idx: number) => {
-    let copiedItem = [...currentData];
-    if (!sub) {
-      let findIdx = currentData.findIndex((v, i) => i === idx);
-      copiedItem[findIdx] = { ...copiedItem[findIdx], categoryTitle: value };
-    } else {
-      let findIdx = currentData.findIndex((v, i) => i === categoryTitleIdx);
-      let copiedCategory = [...copiedItem[findIdx].subCategories]
-      let findSubCategoriesIndex = copiedCategory.findIndex((v: any, i: number) => i === idx);
-      copiedCategory[findSubCategoriesIndex] = {...copiedCategory[findSubCategoriesIndex], categorySubTitle : value}
-      copiedItem[findIdx] =  { ...copiedItem[findIdx], subCategories: copiedCategory };
-    }
-    setCurrentDate(copiedItem);
-  };
-
-  return (
-    <EditInputBox>
-      <EditInput
-        onChange={(e) => {
-          onChaneValues(e.target.value, idx!);
-        }}
-        defaultValue={defaultValue}
-        placeholder="카테고리를 입력해주세요"></EditInput>
-      <DeleteBox>
-        <DeleteBtn type="button" onClick={onClickDeleteInput} onBlur={() => setIsOnDeleteBtn(false)} isOnDeleteBtn={isOnDeleteBtn}>
-          <Trash></Trash>
-        </DeleteBtn>
-        {isOnDeleteBtn && (
-          <DeleteTip isOnDeleteBtn={isOnDeleteBtn}>
-            <DeleteTipTextBox>
-              <ExclamationCircleFill />
-              <span>{DeleteTipText()}</span>
-            </DeleteTipTextBox>
-          </DeleteTip>
-        )}
-      </DeleteBox>
-    </EditInputBox>
-  );
-};
-
-export default EditCategoryInput;
- */
 export interface CategoryInputProps {
   subCategoriesIndex ?: number;
   categoryIndex ?: number;
@@ -114,7 +16,7 @@ export interface CategoryInputProps {
 
 const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name, remove} :  CategoryInputProps) => {
   const [isOnDeleteBtn, setIsOnDeleteBtn] = useState(false);
-  const { register, watch } = useFormContext();
+  const { register } = useFormContext();
 
   const onClickDeleteInput =()=> {
     setIsOnDeleteBtn(true);

@@ -1,62 +1,92 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import customApi from '@utils/customApi';
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
-import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
-import EditSubCategoryItems from './EditSubCategoryItems';
+import { CategoryBackProps } from './CategoryList';
 import AddCategoryBtn from './AddCategoryBtn';
-import EditCategoryInput from './EditCategoryInput';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import EditCategoryItemBox from './EditCategoryItemBox';
-import { DefaultValue, useRecoilState } from 'recoil';
-import { currentCategoryData } from '@atoms/atoms';
+import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 
 
 
 const EditCategoryList = () => {
-  /* const [currentData , setCurrentDate] = useRecoilState(currentCategoryData); */
   const [isMount, setIsMount] = useState(false);
 
-  /* const addCategoryInput= ()=>{
-    const filtered = currentData.filter(x=> x.categoryTitle === "");
-    if(filtered.length >= 1){
-      alert("빈 카테고리가 있습니다.")
-      return
-    }
-    let addCategory= [...currentData, {categoryTitle:"",subCategories:[]}];
-    setCurrentDate(addCategory)
-  }
- */
-  const [currentData , setCurrentDate] = useState<CategoryBackProps[]>([]);
+  // mutate - putApi 관련
+  const [isError, setIsError] = useState(false);
+  const [isChangeValue, setIsChangeValue] = useState(false);
+  const queryClient = useQueryClient();
+  const {putApi} = customApi("category/updateCategories");
+  const {mutate} = useMutation(putApi,{
+    onError(error : any) {
+      setIsError(true);
+        alert(error.response.data.message)
+    },
+    onSuccess(data) {
+      queryClient.invalidateQueries([GET_ALL_CATEGORY]);
+      console.log({data})
+    },
+  })
+
+  // getAPI 관련
   const { getApi } = customApi('/category');
-  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
-  const test = currentData.map(({categoryTitle, subCategories})=>({categoryTitle,subCategories}))
-  const defaultValues = {
-    category: currentData
-  }
+  const { data, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
+
+
+  // useForm
   const methods = useForm({
     mode: 'all',
     defaultValues : useMemo(()=>{
       return {category: data}
     },[data])
   });
-  console.log("{currentData}",currentData.map(({categoryTitle, subCategories})=>({categoryTitle,subCategories})))
-  const { control, handleSubmit, reset } = methods;
+
+  const { control, handleSubmit, reset, watch, formState:{isDirty } } = methods;
   const { append, remove, fields } = useFieldArray({
     control,
     name: "category",
   });
 
   const onSubmit = (data: any) => {
-    console.log({data})
+    const result = data.category;
+    const filteredCategory = result.filter((x :CategoryBackProps) => x.categoryTitle === '');
+    const filteredSubCategory = result.map((x :CategoryBackProps) => x.subCategories.filter(v => v.categorySubTitle === '')).flat();
+    if(filteredCategory.length >= 1 ){
+      alert("상위 카테고리 중 비어있는 카테고리가 있습니다")
+      return 
+    }
+    if(filteredSubCategory.length >= 1){
+      alert("하위 카테고리 중 비어있는 카테고리가 있습니다")
+      return 
+    }
+    mutate(result)
   }
+
+
+  // 기본과 일치한지 아닌지
+  useEffect(()=>{
+      if (isDirty) {
+        setIsChangeValue(true);
+      } else {
+        setIsChangeValue(false);
+      }
+  },[isDirty])
+
+  // input에 변화가 일어나면 error false
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>{
+      if(type === 'change') setIsError(false);
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(()=>{
     setIsMount(true)
   },[])
 
-
+  // 기본값
   useEffect(()=>{
     reset({category : data})
   },[data])
@@ -76,17 +106,13 @@ const EditCategoryList = () => {
               />
             ))}
             <AddCategoryBtn onClick={()=>{append({categoryTitle:"",subCategories:[]})}}></AddCategoryBtn>
-            <button type='submit'> 테스트 </button>
+                <EditBtnBox>
+            <EditBtn disabled={!isChangeValue} isError={isError} isChangeValue={isChangeValue}>
+              {isChangeValue ? "수정하기" : "수정완료"}
+            </EditBtn>
+          </EditBtnBox>
           </Form>
         </FormProvider>
-          {/* {isMount &&
-            currentData.map(({ categoryTitle,subCategories}: CategoryBackProps, idx:number) => (
-              <EditCategoryItemBox
-                idx={idx}
-                categoryTitle={categoryTitle}
-                subCategories={subCategories}
-                ></EditCategoryItemBox>
-            ))} */}
       </CategoryListBox>
     </CategoryNav>
   )
@@ -94,6 +120,33 @@ const EditCategoryList = () => {
 
 export default EditCategoryList
 
+const EditBtnBox = styled(OnlyJustifyCenterFlex)`
+  width: 100%;
+  margin-top: 20px;
+`;
+const EditBtn = styled.button<{ isChangeValue: boolean; isError:boolean; }>`
+  padding: 10px 30px;
+  border-radius: 6px;
+  color: #fff;
+  background: #454545;
+  transition: 0.3s;
+  &:disabled {
+    background: #888;
+    pointer-events: none;
+  }
+  ${({ isError,isChangeValue }) =>
+    !isError&&isChangeValue &&
+    `
+    background: #62afb2;
+    &:hover{
+      background: #408E91;
+    }
+  `}
+  ${({ isError, theme }) =>
+    isError && `
+    background: ${theme.color.err};
+  `}
+`;
 const Form = styled.form`
 
 `

@@ -3,20 +3,12 @@ import { CategoryBackProps } from './CategoryList'
 import styled, { keyframes } from 'styled-components';
 import EditCategoryInput from './EditCategoryInput';
 import EditSubCategoryItems from './EditSubCategoryItems';
-import { UseFieldArrayRemove, useFieldArray, useForm, useFormContext, useWatch } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
-import { currentCategoryData } from '@atoms/atoms';
-/* interface CategoryItemProps extends  Omit<CategoryBackProps , 'id'>{
-  idx : number;
-  id ?:number;
+import { UseFieldArrayRemove } from 'react-hook-form';
 
-} */
 
 
 
 const EditCategoryItemBox = ({categoryIndex, remove} :{ categoryIndex: number; remove: UseFieldArrayRemove}) => {
-  const [currentData , setCurrentDate] = useRecoilState(currentCategoryData);
-  const { control } = useFormContext();
 
 
   return (
@@ -30,24 +22,6 @@ const EditCategoryItemBox = ({categoryIndex, remove} :{ categoryIndex: number; r
 }
 
 export default EditCategoryItemBox
-/* 
-const EditCategoryItemBox = ({ categoryTitle, subCategories, idx, id }: CategoryItemProps) => {
-  const [currentData , setCurrentDate] = useRecoilState(currentCategoryData);
-
-
-  return (
-      <CategoryItemBox>
-        <CategoryTitle>
-          <EditCategoryInput idx={idx} defaultValue={categoryTitle} categoryTitle={categoryTitle}  />
-        </CategoryTitle>
-        <EditSubCategoryItems subCategories={subCategories} categoryTitle={categoryTitle!} categoryTitleIdx={idx} ></EditSubCategoryItems>
-      </CategoryItemBox>
-  )
-}
-
-export default EditCategoryItemBox */
-
-
 
 
 const CategoryItemBox =styled.div`

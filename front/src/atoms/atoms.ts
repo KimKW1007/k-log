@@ -27,7 +27,3 @@ export const currentBanner = atom<number>({
   default: 1
 })
 
-export const currentCategoryData = atom<CategoryBackProps[]>({
-  key: 'currentCategoryDataKey',
-  default: []
-})

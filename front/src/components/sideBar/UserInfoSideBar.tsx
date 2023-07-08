@@ -1,16 +1,11 @@
-import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import profileImg from "@images/500_94.jpg"
 import Image from 'next/image';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import SearchBox from './SearchBox';
 import EditCategoryList from '@components/category/EditCategoryList';
-import EditButtonBox from '@components/category/EditButtonBox';
-import { useQuery } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
-import { GET_ALL_CATEGORY } from '@utils/queryKeys';
-import { useRecoilState } from 'recoil';
-import { currentCategoryData } from '@atoms/atoms';
+
 
 
 
@@ -28,7 +23,6 @@ const UserInfoSideBar = () => {
       </SidebarHeader>
       <SearchBox isEdit></SearchBox>
       <EditCategoryList ></EditCategoryList>
-      {/* <EditButtonBox data={data && data}></EditButtonBox> */}
     </SidebarBox>
   );
 };
