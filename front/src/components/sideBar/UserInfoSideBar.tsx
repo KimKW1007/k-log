@@ -31,7 +31,6 @@ export default UserInfoSideBar;
 
 const SidebarBox = styled(OnlyAlignCenterFlex)`
   width: 100%;
-  padding: 20px;
   flex-direction : column;
 
 `;
