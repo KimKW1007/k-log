@@ -1,4 +1,4 @@
-import { UseFormRegisterReturn } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, Merge, UseFormRegisterReturn } from "react-hook-form";
 
 export interface User {
   id?: string;
@@ -27,5 +27,5 @@ export interface UserInfoInputProps {
   bold?: boolean;
   small?: boolean;
   errColor?: boolean;
-  errors?: string;
+  errors?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
