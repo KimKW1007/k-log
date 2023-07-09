@@ -6,11 +6,12 @@ import { OnlyAlignCenterFlex } from '../CommonFlex';
 interface ErrorProps {
   errColor?: boolean;
   errors?: string;
+  isSettingPage ?: boolean;
 }
 
-const ErrorMsgBox = ({errColor, errors}:ErrorProps) => {
+const ErrorMsgBox = ({errColor, errors, isSettingPage}:ErrorProps) => {
   return (
-    <ErrMsgBox errColor={errColor}>
+    <ErrMsgBox errColor={errColor} isSettingPage={isSettingPage}>
       {errColor ? <ExclamationDiamondFill /> : <ExclamationCircleFill />}
       <ErrMsg>{errors}</ErrMsg>
     </ErrMsgBox>
@@ -19,7 +20,7 @@ const ErrorMsgBox = ({errColor, errors}:ErrorProps) => {
 
 export default ErrorMsgBox
 
-export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
+export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean; isSettingPage ?: boolean }>`
   margin: 6px 0 30px;
   svg {
     width: 1em;
@@ -34,5 +35,9 @@ export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
         color: inherit;
       }
     `}
+
+  ${({isSettingPage}) => isSettingPage && `
+    margin: 6px 0 ;
+  `}
 `;
 export const ErrMsg = styled.div``;
