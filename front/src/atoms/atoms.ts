@@ -27,3 +27,7 @@ export const currentBanner = atom<number>({
   default: 1
 })
 
+export const NotFoundByEmail = atom<boolean>({
+  key : "NotFoundByEmailKey",
+  default : false
+})
