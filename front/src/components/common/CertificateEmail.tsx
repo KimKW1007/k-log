@@ -1,26 +1,25 @@
 import Certificate from '@components/common/Certificate';
 import { InputListBox } from '@components/login/LoginForm';
 import EmailInput from '@components/common/EmailInput';
-import { RegisterPagesProps } from '@src/types/register';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import customApi from '@utils/customApi';
-import { CertificateEmailProps } from '@src/types/certificateEmail';
-import { inputResetBoolean } from '@atoms/atoms';
+import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
+import { useFormContext } from 'react-hook-form';
+import { CertificateEmailProps } from '@src/types/certificateEmail';
+
+
 
 const CertificateEmail = ({
   small,
-  register,
-  watch,
-  errors,
-  setError,
-  setValue,
-  clearErrors,
   setIsPassCertificate,
   isPassCertificate
 }: CertificateEmailProps) => {
+  const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
+
+
   const [isComplete, setIsComplete] = useState(false);
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
 
@@ -33,6 +32,7 @@ const CertificateEmail = ({
       setIsComplete(true);
     }
   });
+  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
 
   const certificateEmail = () => {
     if (!watch('userEmail')) {
@@ -50,6 +50,20 @@ const CertificateEmail = ({
     clearErrors('token');
   };
 
+
+
+  useEffect(()=>{
+    setIsFailed(false)
+  },[watch(['userName','userEmail'])])
+
+  useEffect(() => {
+    if(isFailed){
+      setIsPassCertificate(false)
+      setIsComplete(false)
+      setValue!('token', '');
+    }
+  }, [isFailed]);
+
   useEffect(() => {
     setIsComplete(false);
   }, [resetState]);
@@ -58,7 +72,6 @@ const CertificateEmail = ({
     <>
       <EmailInput
         small={small}
-        register={register}
         watch={watch('userEmail')}
         errors={errors?.userEmail?.message}
         errColor={Boolean(errors?.userEmail?.message)}
@@ -67,16 +80,7 @@ const CertificateEmail = ({
         isPassCertificate={isPassCertificate}
         isComplete={isComplete}
       />
-      {isComplete && (
-        <Certificate
-          register={register}
-          watch={watch}
-          isPassCertificate={isPassCertificate}
-          setIsPassCertificate={setIsPassCertificate}
-          errors={errors}
-          setError={setError}
-          clearErrors={clearErrors}></Certificate>
-      )}
+      {isComplete && <Certificate isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} ></Certificate>}
     </>
   );
 };
