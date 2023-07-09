@@ -6,6 +6,7 @@ import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePas
 import { errorFn } from '@utils/singupErrorFn';
 import { RegisterPagesProps } from '@src/types/register';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
+import ErrorMsgBox from './error/ErrorMsgBox';
 
 const BundleOfPasswords = ({ register, watch, errors, setError, clearErrors }: Omit<RegisterPagesProps, 'setIsAllChecked'>) => {
   const Is_ErrColor = Boolean(errors?.password?.message) || Boolean(errors?.confirmPassword?.message);
@@ -48,12 +49,7 @@ const BundleOfPasswords = ({ register, watch, errors, setError, clearErrors }: O
         watch={watch('confirmPassword')}
         errColor={Boolean(errors?.confirmPassword?.message)}
       />
-      {errors && (
-        <ErrMsgBox errColor={Is_ErrColor}>
-          {Is_ErrColor ? <ExclamationDiamondFill /> : <ExclamationCircleFill />}
-          <ErrMsg>{checkSamePassword(watch) || errorFn(errMsg['passwordRegexMsg'], errors?.password, errors?.confirmPassword)}</ErrMsg>
-        </ErrMsgBox>
-      )}
+      {errors && <ErrorMsgBox errColor={Is_ErrColor} errors={checkSamePassword(watch) || errorFn(errMsg['passwordRegexMsg'], errors?.password, errors?.confirmPassword)} />}
     </>
   );
 };

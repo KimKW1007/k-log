@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
 import { OnlyAlignCenterFlex } from './CommonFlex';
 import { UserInfoInputProps } from '@src/types/user';
+import ErrorMsgBox from './error/ErrorMsgBox';
 
 const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors }: UserInfoInputProps) => {
   const [isFocus, setIsFocus] = useState(false);
@@ -29,12 +30,7 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
           }}
         />
       </InputBox>
-      {errors && (
-        <ErrMsgBox errColor={errColor}>
-          {errColor ? <ExclamationDiamondFill /> : <ExclamationCircleFill />}
-          <ErrMsg>{errors}</ErrMsg>
-        </ErrMsgBox>
-      )}
+      {errors && (<ErrorMsgBox errColor={errColor} errors={errors}/> )}
     </React.Fragment>
   );
 };
