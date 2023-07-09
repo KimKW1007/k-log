@@ -1,20 +1,20 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { CertificateBtn, CertificateBtnBox, ErrMsg, ErrMsgBox } from './UserInfoInput';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import customApi from '@utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
-import { RegisterPagesProps } from '@src/types/register';
+import { CertificateEmailProps } from '@src/types/certificateEmail';
+import { useRecoilState } from 'recoil';
+import { inputResetBoolean } from '@atoms/atoms';
 
 const Certificate = ({
-  register,
-  watch,
   setIsPassCertificate,
   isPassCertificate,
-  errors,
-  setError,
-  clearErrors
-}: Omit<RegisterPagesProps, 'setIsAllChecked'>) => {
+}: CertificateEmailProps) => {
+  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
+  const [resetState, setResetState] = useRecoilState(inputResetBoolean);
+
   const { postApi } = customApi('/find/certificate');
   const certificateToken = async () => {
     if (!watch('token')) {
@@ -45,6 +45,7 @@ const Certificate = ({
                 checkRegex: (value) => /^[0-9]{4,6}$/.test(value!) || '4~6자리 숫자만 입력하세요.'
               }
             })}
+            autoComplete="off"
           />
           <CertificateBtnBox>
             <CertificateBtn type="button" onClick={certificateToken}>
@@ -56,7 +57,7 @@ const Certificate = ({
       {(errors?.token?.message || isPassCertificate) && (
         <ErrMsgBox errColor={Boolean(errors?.token?.message)}>
           {(errors?.token?.message && <ExclamationDiamondFill />) || (isPassCertificate && <ExclamationCircleFill />)}
-          <ErrMsg>{errors?.token?.message || (isPassCertificate && '인증되었습니다')}</ErrMsg>
+          <ErrMsg>{errors?.token?.message ? `${errors?.token?.message}` : (isPassCertificate && '인증되었습니다')}</ErrMsg>
         </ErrMsgBox>
       )}
     </>
