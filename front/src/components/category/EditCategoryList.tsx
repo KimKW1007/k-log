@@ -42,7 +42,7 @@ const EditCategoryList = () => {
     },[data])
   });
 
-  const { control, handleSubmit, reset, watch,  } = methods;
+  const { control, handleSubmit, reset, watch, formState:{isDirty}  } = methods;
   const { append, remove, fields } = useFieldArray({
     control,
     name: "category",
@@ -74,6 +74,11 @@ const EditCategoryList = () => {
   }
 
 
+  useEffect(()=>{
+    if(isDirty){
+      setIsChangeValue(true);
+    }
+  },[isDirty])
   
   // input에 변화가 일어나면 error false
   useEffect(() => {
@@ -81,7 +86,6 @@ const EditCategoryList = () => {
       if(type === 'change'){
         setIsError(false);
         setIsChangeValue(true);
-        console.log({value, name, type })
       }
     })
     return () => subscription.unsubscribe()
