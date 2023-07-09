@@ -1,9 +1,6 @@
-import { RegisterPagesProps } from "./register";
-import { User } from "./user";
+import { RegisterPageProps } from "./register";
 
-export interface CertificateEmailProps extends Omit<RegisterPagesProps, 'setIsAllChecked'> {
+export interface CertificateEmailProps extends Omit<RegisterPageProps, "setIsAllChecked"> {
   small?: boolean;
-  isClickFindBtn ?:boolean;
-  isSuccessChangePassword ?:boolean;
-  userIds ?: User[];
+
 }
