@@ -50,10 +50,10 @@ const CategoryWrap = styled.div<{ currentScroll: number }>`
   position: fixed;
   z-index: 44;
   transition: 0.4s ease-in-out;
-  ${({ currentScroll }) =>
+  ${({ currentScroll,theme }) =>
     currentScroll >= 70 &&
     `
-    margin-top: 30px;
+    margin-top: ${theme.rem.p30}
   `}
 `;
 
@@ -68,7 +68,7 @@ const CategoryBtn = styled.button<{ currentScroll: number }>`
   border-bottom: 2px solid #f5f5f5;
   padding-left: ${({ theme }) => theme.rem.p10};
   text-align: left;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.rem.p12};
   font-family: 'Pretendard-Regular';
   font-weight: bold;
   background: #232323;

@@ -124,8 +124,8 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
   `}
 `;
 const DeleteBtn = styled.button<{ isOnDeleteBtn: boolean }>`
-  width: 28px;
-  height: 28px;
+  width: ${({ theme }) => theme.rem.p28};
+  height: ${({ theme }) => theme.rem.p28};
   padding: 5px;
   margin-left: 2px;
   border-radius: 5px;

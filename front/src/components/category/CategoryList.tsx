@@ -71,13 +71,13 @@ const CategoryListBox = styled.dl`
   flex-direction: column;
   min-width: 230px;
   background: #292929;
-  padding: 20px 15px 25px;
+  padding: ${({ theme }) => theme.rem.p20} 0.938rem 1.563rem;
   color: #fff;
   h3 {
     font-size: ${({ theme }) => theme.rem.p14};
     border-bottom: 1px solid #858585;
-    padding: 0 5px 8px;
-    margin-bottom: 10px;
+    padding: 0 0.313rem .5rem;
+    margin-bottom: ${({ theme }) => theme.rem.p10};
     pointer-events: none;
   }
 `;

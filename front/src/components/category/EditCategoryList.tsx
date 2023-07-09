@@ -148,7 +148,7 @@ const OnErrorShakeAni = keyframes`
 
 const EditBtnBox = styled(OnlyJustifyCenterFlex)`
   width: 100%;
-  margin-top: 20px;
+  margin-top: ${({ theme }) => theme.rem.p20};
 `;
 const EditBtn = styled.button<{ isChangeValue: boolean; isError:boolean; }>`
   width: 114px;
