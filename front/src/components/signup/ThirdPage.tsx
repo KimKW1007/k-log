@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import UserInfoInput from '@components/common/UserInfoInput';
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@constant/regex';
-import { FieldError, UseFormClearErrors, UseFormSetError } from 'react-hook-form';
+import { ACCOUNT_ID_REGEX } from '@constant/regex';
 import { InputListBox } from '@components/login/LoginForm';
-import { RegisterPagesProps } from '@src/types/register';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { errorFn } from '@utils/singupErrorFn';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import BundleOfPasswords from '@components/common/BundleOfPasswords';
+import { RegisterPageProps } from '@src/types/register';
+import { useFormContext } from 'react-hook-form';
 
-const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearErrors }: RegisterPagesProps) => {
+const ThirdPage = ({  setIsAllChecked }: {setIsAllChecked : React.Dispatch<React.SetStateAction<boolean>>}) => {
+
+  const {watch, register, formState: { errors },} = useFormContext();
+
+
   useEffect(() => {
     if (watch('userId') && watch('password') && watch('confirmPassword')) {
       setIsAllChecked(true);
@@ -38,7 +41,7 @@ const ThirdPage = ({ register, watch, setIsAllChecked, errors, setError, clearEr
         errors={errorFn(errMsg['userIdRegexMsg'], errors?.userId)}
         errColor={Boolean(errors?.userId?.message)}
       />
-      <BundleOfPasswords register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors} />
+      <BundleOfPasswords />
     </InputListBox>
   );
 };

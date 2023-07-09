@@ -3,7 +3,7 @@ import { EMAIL_REGEX } from '@constant/regex';
 import { RegisterInputs, UserInfoInputProps } from '@src/types/user';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import React, { useEffect, useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, useFormContext } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import ErrorMsgBox from './error/ErrorMsgBox';
 
@@ -13,11 +13,11 @@ interface EmailProps extends Omit<UserInfoInputProps, 'register' | 'type' | 'inp
   isLoading: boolean;
   certificateEmail: () => void;
   isPassCertificate?: boolean;
-  register: UseFormRegister<RegisterInputs>;
 }
 
-const EmailInput = ({ inputName = '이메일', watch, register, small = false, errColor, errors, isComplete, isLoading = false, certificateEmail, isPassCertificate }: EmailProps) => {
+const EmailInput = ({ inputName = '이메일', watch,  small = false, errColor, errors, isComplete, isLoading = false, certificateEmail, isPassCertificate }: EmailProps) => {
   const [isFocus, setIsFocus] = useState(false);
+  const { register } = useFormContext();
 
   useEffect(() => {
     watch ? setIsFocus(true) : setIsFocus(false);
@@ -46,6 +46,7 @@ const EmailInput = ({ inputName = '이메일', watch, register, small = false, e
             onBlur={() => {
               !watch && setIsFocus(false);
             }}
+            autoComplete="off"
           />
         </InputBox>
         {isPassCertificate || (

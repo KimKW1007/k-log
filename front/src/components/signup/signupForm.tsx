@@ -1,7 +1,7 @@
 import { Form } from '@components/login/LoginForm';
 import React, { useEffect, useState } from 'react';
 import Title from '@components/common/TitleBox';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import SecondPage from './SecondPage';
 import ThirdPage from './ThirdPage';
@@ -16,17 +16,10 @@ import { RegisterInputs, User } from '@src/types/user';
 import { CurrentTitle } from '@utils/signupList';
 
 const SignupForm = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setError,
-    clearErrors,
-    setValue
-  } = useForm<RegisterInputs>({
+  const methods  = useForm<RegisterInputs>({
     mode: 'all'
   });
+  const {handleSubmit} = methods;
 
   const router = useRouter();
 
@@ -56,6 +49,7 @@ const SignupForm = () => {
   // 버튼 타입 설정
   const checkSubmitType = currentLevel !== 'second' && currentLevel !== 'third';
 
+  // 아이디 중복확인
   const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
     onError(error: any) {
       console.log({ error: error.config.data.userId });
@@ -66,6 +60,7 @@ const SignupForm = () => {
       setCurrentLevel('finally');
     }
   });
+  // 이메일 인증
   const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
     onError(error: any) {
       console.log({ error });
@@ -80,6 +75,7 @@ const SignupForm = () => {
     }
   });
 
+  // 회원가입 완료 버튼
   const onSubmit = (data: RegisterInputs) => {
     if (currentLevel === 'second') {
       if (isPassCertificate) {
@@ -94,6 +90,7 @@ const SignupForm = () => {
     }
   };
 
+  // 다음 페이지 버튼
   const onClickNextPage = () => {
     if (checkSubmitType) {
       setIsAllChecked((prev) => !prev);
@@ -107,45 +104,36 @@ const SignupForm = () => {
 
   
   return (
-    <SignUpForm onSubmit={handleSubmit(onSubmit)}>
-      <Title>{title}</Title>
-      {isOpenModal && (
-        <CommonModal setIsOpenModal={setIsOpenModal}>
-          &#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}
-        </CommonModal>
-      )}
-      {isOpenCheckErrIdModal && <CommonModal setIsOpenModal={setIsOpenCheckErrIdModal}>{checkErrMsg}</CommonModal>}
-      {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
-      {currentLevel === 'second' && (
-        <SecondPage
-          setIsAllChecked={setIsAllChecked}
-          register={register}
-          watch={watch}
-          errors={errors}
-          isPassCertificate={isPassCertificate}
-          setIsPassCertificate={setIsPassCertificate}
-          setValue={setValue}
-          setError={setError}
-          clearErrors={clearErrors}></SecondPage>
-      )}
-      {currentLevel === 'idListByEmail' && <IdListByEmail userIds={userIds}></IdListByEmail>}
-      {currentLevel === 'third' && (
-        <ThirdPage
-          setIsAllChecked={setIsAllChecked}
-          register={register}
-          watch={watch}
-          errors={errors}
-          setError={setError}
-          clearErrors={clearErrors}></ThirdPage>
-      )}
-      {currentLevel === 'finally' && <FinallPage isSignupFinal></FinallPage>}
-      <FlexEmptyBox />
-      <SubmitBox>
-        <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
-          {submitText}
-        </SubmitBtn>
-      </SubmitBox>
-    </SignUpForm>
+    <FormProvider {...methods}>
+      <SignUpForm onSubmit={handleSubmit(onSubmit)}>
+        <Title>{title}</Title>
+        {isOpenModal && (
+          <CommonModal setIsOpenModal={setIsOpenModal}>
+            &#34;{currentUserId}&#34;은&#40;는&#41; {modalErrMsg}
+          </CommonModal>
+        )}
+        {isOpenCheckErrIdModal && <CommonModal setIsOpenModal={setIsOpenCheckErrIdModal}>{checkErrMsg}</CommonModal>}
+        {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
+        {currentLevel === 'second' && (
+          <SecondPage
+            setIsAllChecked={setIsAllChecked}
+            isPassCertificate={isPassCertificate}
+            setIsPassCertificate={setIsPassCertificate}></SecondPage>
+        )}
+        {currentLevel === 'idListByEmail' && <IdListByEmail userIds={userIds}></IdListByEmail>}
+        {currentLevel === 'third' && (
+          <ThirdPage
+            setIsAllChecked={setIsAllChecked}></ThirdPage>
+        )}
+        {currentLevel === 'finally' && <FinallPage isSignupFinal></FinallPage>}
+        <FlexEmptyBox />
+        <SubmitBox>
+          <SubmitBtn type={!checkSubmitType ? 'submit' : 'button'} currentLevel={currentLevel} disabled={!isAllChecked} onClick={onClickNextPage}>
+            {submitText}
+          </SubmitBtn>
+        </SubmitBox>
+      </SignUpForm>
+    </FormProvider>
   );
 };
 

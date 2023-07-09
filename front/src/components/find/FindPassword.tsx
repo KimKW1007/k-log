@@ -3,31 +3,27 @@ import CertificateEmail from '@components/common/CertificateEmail';
 import FinallPage from '@components/common/FinallPage';
 import UserInfoInput from '@components/common/UserInfoInput';
 import { InputListBox } from '@components/login/LoginForm';
-import { ACCOUNT_ID_REGEX, PASSWORD_REGEX } from '@constant/regex';
-import { CertificateEmailProps } from '@src/types/certificateEmail';
+import { ACCOUNT_ID_REGEX } from '@constant/regex';
 import React from 'react';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import { errorFn } from '@utils/singupErrorFn';
 import { errMsg } from '@utils/singupThirdErrMsg';
+import { FindPasswordProps } from '@src/types/find';
+import { useFormContext } from 'react-hook-form';
 
 const FindPassword = ({
-  register,
-  watch,
-  errors,
-  setError,
-  setValue,
-  clearErrors,
   setIsPassCertificate,
   isPassCertificate,
   isClickFindBtn,
   isSuccessChangePassword
-}: CertificateEmailProps) => {
+}: FindPasswordProps) => {
+  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
+
   return (
     <InputListBox>
       {isSuccessChangePassword && <FinallPage />}
       {isSuccessChangePassword ||
         (isClickFindBtn ? (
-          <BundleOfPasswords register={register} watch={watch} errors={errors} setError={setError} clearErrors={clearErrors} />
+          <BundleOfPasswords />
         ) : (
           <>
             <UserInfoInput
@@ -46,17 +42,11 @@ const FindPassword = ({
                 }
               })}
               watch={watch('userId')}
-              errors={errorFn(errMsg['userIdRegexMsg'], errors?.userId)}
+              errors={`${errorFn(errMsg['userIdRegexMsg'], errors?.userId)}`}
               errColor={Boolean(errors?.userId?.message)}
             />
             <CertificateEmail
               small
-              register={register}
-              watch={watch}
-              errors={errors}
-              setError={setError}
-              setValue={setValue}
-              clearErrors={clearErrors}
               setIsPassCertificate={setIsPassCertificate}
               isPassCertificate={isPassCertificate}
             />

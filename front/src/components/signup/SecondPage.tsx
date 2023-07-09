@@ -4,20 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { InputListBox } from '@components/login/LoginForm';
 import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { RegisterPagesProps } from '@src/types/register';
 import CertificateEmail from '@components/common/CertificateEmail';
+import { useFormContext } from 'react-hook-form';
+import { RegisterPageProps } from '@src/types/register';
+
+
 
 const SecondPage = ({
-  register,
-  watch,
   setIsAllChecked,
-  errors,
   setIsPassCertificate,
   isPassCertificate,
-  setValue,
-  setError,
-  clearErrors
-}: RegisterPagesProps) => {
+}: RegisterPageProps) => {
   const [isComplete, setIsComplete] = useState(false);
 
   const { postApi: certificatePostApi } = customApi('/find/sendEmail');
@@ -30,6 +27,8 @@ const SecondPage = ({
       setIsPassCertificate!(false);
     }
   });
+
+  const {watch, register, formState: { errors },} = useFormContext();
 
   useEffect(() => {
     if (watch('userName') && watch('userEmail') && watch('token') && isPassCertificate) {
@@ -58,12 +57,6 @@ const SecondPage = ({
         />
         <CertificateEmail
           small
-          register={register}
-          watch={watch}
-          errors={errors}
-          setError={setError}
-          setValue={setValue}
-          clearErrors={clearErrors}
           setIsPassCertificate={setIsPassCertificate}
           isPassCertificate={isPassCertificate}
         />
