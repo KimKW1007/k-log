@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { Form, InputListBox } from '@components/login/LoginForm';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { RegisterInputs, User } from '@src/types/user';
 import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
 import customApi from '@utils/customApi';
@@ -11,12 +11,12 @@ import FindPassword from './FindPassword';
 import { ListTypes } from '@utils/mapList';
 import { useRouter } from 'next/router';
 import CommonModal from '@components/modal/CommonModal';
-import { inputResetBoolean } from '@atoms/atoms';
+import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 
 const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; textById?: ListTypes }) => {
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
-
+  const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
   const router = useRouter();
 
   const [isPassCertificate, setIsPassCertificate] = useState<boolean>(false);
@@ -35,6 +35,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     onError(error: any) {
       setErrMsg(error.response.data.message);
       setIsOpenModal(true);
+      setIsFailed(true);
     },
     onSuccess(data) {
       console.log(data);
@@ -49,6 +50,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     onError(error: any) {
       setErrMsg(error.response.data.message);
       setIsOpenModal(true);
+      setIsFailed(true);
     },
     onSuccess(data) {
       setIsClickFindBtn(true);
@@ -104,6 +106,10 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     setSubmitText(currentSubmitText());
   }, [currentSubmitText]);
   // ================================================
+  const methods = useForm<RegisterInputs>({
+    mode: 'all'
+  });
+
   const {
     register,
     handleSubmit,
@@ -113,9 +119,8 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     setValue,
     clearErrors,
     reset
-  } = useForm<RegisterInputs>({
-    mode: 'all'
-  });
+  } = methods;
+
   console.log(watch(['userId', 'password']));
 
   const onSubmit = ({ userEmail, userId, password }: RegisterInputs) => {
@@ -145,31 +150,18 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
   }, [resetState]);
 
   return (
-    <>
+    <FormProvider {...methods}>
       <FindBoxForm onSubmit={handleSubmit(onSubmit)}>
         {!isOnPasswordTab ? (
           <FindId
             isClickFindBtn={isClickFindBtn}
             userIds={userIds}
-            register={register}
-            watch={watch}
-            errors={errors}
-            setError={setError}
-            setValue={setValue}
-            clearErrors={clearErrors}
             setIsPassCertificate={setIsPassCertificate}
             isPassCertificate={isPassCertificate}
           />
         ) : (
           <FindPassword
             isClickFindBtn={isClickFindBtn}
-            userIds={userIds}
-            register={register}
-            watch={watch}
-            errors={errors}
-            setError={setError}
-            setValue={setValue}
-            clearErrors={clearErrors}
             setIsPassCertificate={setIsPassCertificate}
             isPassCertificate={isPassCertificate}
             isSuccessChangePassword={isSuccessChangePassword}
@@ -183,7 +175,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
         </SubmitBox>
       </FindBoxForm>
       {isOpenModal && <CommonModal setIsOpenModal={setIsOpenModal}>{errMsg}</CommonModal>}
-    </>
+    </FormProvider>
   );
 };
 
