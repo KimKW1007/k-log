@@ -2,10 +2,11 @@ import React from 'react'
 import styled, { css } from 'styled-components';
 import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
 import { OnlyAlignCenterFlex } from '../CommonFlex';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
 interface ErrorProps {
   errColor?: boolean;
-  errors?: string;
+  errors?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   isSettingPage ?: boolean;
 }
 
@@ -13,7 +14,7 @@ const ErrorMsgBox = ({errColor, errors, isSettingPage}:ErrorProps) => {
   return (
     <ErrMsgBox errColor={errColor} isSettingPage={isSettingPage}>
       {errColor ? <ExclamationDiamondFill /> : <ExclamationCircleFill />}
-      <ErrMsg>{errors}</ErrMsg>
+      <ErrMsg>{`${errors}`}</ErrMsg>
     </ErrMsgBox>
   )
 }
