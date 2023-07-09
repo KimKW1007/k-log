@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
-import UserMiniProfile from './UserMiniProfile';
+import HeaderUserMenu from './HeaderUserMenu';
 import CategoryBox from '@components/category/CategoryBox';
 
 export const Header = () => {
@@ -30,7 +30,7 @@ export const Header = () => {
           </LogoBox>
         </LogoAndCategoryBox>
         <KlogText>K - Log</KlogText>
-        <BtnBox>{isMount && userInfo ? <UserMiniProfile /> : <LoginSignUpBox />}</BtnBox>
+        <BtnBox>{isMount && userInfo ? <HeaderUserMenu /> : <LoginSignUpBox />}</BtnBox>
       </HeaderInnerBox>
     </HeaderBox>
   );

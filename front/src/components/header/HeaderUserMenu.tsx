@@ -13,7 +13,7 @@ interface MenuItemsType {
   text: string;
 }
 
-const UserMiniProfile = () => {
+const HeaderUserMenu = () => {
   const MenuItemList: MenuItemsType[] = [
     {
       title: 'accountSetting',
@@ -41,11 +41,11 @@ const UserMiniProfile = () => {
       console.log({ data });
     }
   });
-  const logoutFn = (e: React.MouseEvent<HTMLElement>) => {
+  const logoutFn = (title : string) => () => {
+    if(title !== 'logout') return
     setUserInfo(null);
     sessionStorage.removeItem('jwtToken');
     mutate({});
-    return e.preventDefault();
   };
 
   return (
@@ -58,7 +58,7 @@ const UserMiniProfile = () => {
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
             <PlMeunItem key={Date.now() + 'salt' + idx}>
-              <Link href={`/${link}`} onClick={(e)=> title === 'logout' && logoutFn(e)} title={text}>
+              <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
                 {text}
               </Link>
             </PlMeunItem>
@@ -69,7 +69,7 @@ const UserMiniProfile = () => {
   );
 };
 
-export default UserMiniProfile;
+export default HeaderUserMenu;
 
 const MenuAni = keyframes`
   0%{
