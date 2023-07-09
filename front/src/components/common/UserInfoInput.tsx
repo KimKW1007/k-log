@@ -28,6 +28,7 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
           onBlur={() => {
             !watch && setIsFocus(false);
           }}
+          autoComplete="off"
         />
       </InputBox>
       {errors && (<ErrorMsgBox errColor={errColor} errors={errors}/> )}
