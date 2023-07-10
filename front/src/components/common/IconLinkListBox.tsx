@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { LinkTypes, iconLinks } from '@utils/iconLinkList';
 import IconButtonBox from './IconLinkBox';
 import { useRouter } from 'next/router';
-const IconLinkListBox = () => {
+const IconLinkListBox = ({popupPage}:{popupPage: boolean}) => {
   const [currentLinkRemoveList, setCurrentLinkRemoveList] = useState<LinkTypes[]>([]);
   const router = useRouter();
+
 
   useEffect(() => {
     const filterdCntPath = iconLinks.filter((x) => x.link !== router.pathname);
@@ -14,7 +15,7 @@ const IconLinkListBox = () => {
 
   return (
     <ListBox>
-      {router.pathname.includes('/identity/find') ||
+      {popupPage ||
         currentLinkRemoveList.map(({ link, title, icon, color }) => (
             <IconButtonBox key={link + title} link={link} title={title} color={color}>
               {icon}
