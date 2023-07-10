@@ -1,19 +1,19 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { CertificateBtn, CertificateBtnBox, ErrMsg, ErrMsgBox } from './UserInfoInput';
+import {   ErrMsg, ErrMsgBox } from './UserInfoInput';
 import { useForm, useFormContext } from 'react-hook-form';
 import customApi from '@utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
 import { useRecoilState } from 'recoil';
 import { inputResetBoolean } from '@atoms/atoms';
+import CertificateBtnBox from './CertificateBtnBox';
 
 const Certificate = ({
   setIsPassCertificate,
   isPassCertificate,
 }: CertificateEmailProps) => {
-  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
-  const [resetState, setResetState] = useRecoilState(inputResetBoolean);
+  const { register, watch, formState:{errors}, setError } = useFormContext();
 
   const { postApi } = customApi('/find/certificate');
   const certificateToken = async () => {
@@ -25,7 +25,7 @@ const Certificate = ({
     await postApi({ userEmail: watch('userEmail'), token: watch('token') })
       .then((res) => {
         console.log({ res });
-        setIsPassCertificate!(true);
+        setIsPassCertificate(true);
       })
       .catch((e) => {
         console.log({ e });
@@ -42,15 +42,13 @@ const Certificate = ({
             {...register('token', {
               required: '값을 입력해주세요',
               validate: {
-                checkRegex: (value) => /^[0-9]{4,6}$/.test(value!) || '4~6자리 숫자만 입력하세요.'
+                checkRegex: (value) => /^[0-9]{4,7}$/.test(value!) || '4~7자리 숫자만 입력하세요.'
               }
             })}
             autoComplete="off"
           />
-          <CertificateBtnBox>
-            <CertificateBtn type="button" onClick={certificateToken}>
+          <CertificateBtnBox onClick={certificateToken}>
               인증하기
-            </CertificateBtn>
           </CertificateBtnBox>
         </CertBox>
       )}
