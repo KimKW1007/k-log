@@ -21,12 +21,12 @@ const FinallPage = ({ isSignupFinal = false }: { isSignupFinal?: boolean }) => {
 
 export default FinallPage;
 
-const FinalBox = styled.div`
+export const FinalBox = styled.div`
   width: 100%;
   margin: 30px 0 0;
 `;
 
-const FinalText = styled.div`
+export const FinalText = styled.div`
   font-size:22px;
   text-align:center;
   p{
