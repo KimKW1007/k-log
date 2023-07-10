@@ -50,17 +50,19 @@ const CertificateEmail = ({
     clearErrors('token');
   };
 
-
+  const onClickRewrite = ()=>{
+    setIsPassCertificate(false)
+    setIsComplete(false)
+    setValue!('token', '');
+  }
 
   useEffect(()=>{
     setIsFailed(false)
   },[watch(['userName','userEmail'])])
-
+  
   useEffect(() => {
     if(isFailed){
-      setIsPassCertificate(false)
-      setIsComplete(false)
-      setValue!('token', '');
+      onClickRewrite()
     }
   }, [isFailed]);
 
@@ -79,6 +81,7 @@ const CertificateEmail = ({
         certificateEmail={certificateEmail}
         isPassCertificate={isPassCertificate}
         isComplete={isComplete}
+        onClickRewrite={onClickRewrite}
       />
       {isComplete && <Certificate isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} ></Certificate>}
     </>
