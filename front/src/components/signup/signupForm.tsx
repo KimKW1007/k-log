@@ -153,9 +153,9 @@ const SignUpForm = styled(Form)`
 export const SubmitBox = styled.div`
   width: 70%;
   height: 50px;
-  margin-top: 50px;
   border-radius: 10px;
   overflow: hidden;
+  margin : 50px auto 0;
 `;
 
 export const SubmitBtn = styled.button<{ currentLevel?: string }>`
