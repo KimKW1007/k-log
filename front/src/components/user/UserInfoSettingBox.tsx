@@ -1,10 +1,12 @@
-import { userInfomation } from '@atoms/atoms';
+import { isPopup, userInfomation } from '@atoms/atoms';
 import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
 import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX } from '@constant/regex';
 import { User } from '@src/types/user';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
+import { handleOpenPopup } from '@utils/handleOpenPopup';
+import { GET_USER } from '@utils/queryKeys';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { vaildaters } from '@utils/userInfoSetting';
 import React, { useEffect, useState } from 'react';
@@ -18,10 +20,11 @@ interface UserInfoSettingBoxProps {
 
 const UserInfoSettingBox = ({ name, title }: UserInfoSettingBoxProps) => {
   const [currentUserInfo, setCurrentUserInfo] = useState<any>({});
+  const queryClient = useQueryClient();
 
   const { getApi } = customApi('/auth/authenticate');
-  const { data } = useQuery(['getUser'], getApi);
-  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const { data } = useQuery([GET_USER], getApi);
+  const [isOnPopup, setIsOnPopup] = useRecoilState(isPopup);
   const {
     register,
     handleSubmit,
@@ -32,23 +35,35 @@ const UserInfoSettingBox = ({ name, title }: UserInfoSettingBoxProps) => {
     setValue
   } = useForm({ mode: 'all' });
 
-  console.log({ errors });
+  useEffect(() => {
+    if (isDirty) clearErrors(name);
+  }, [isDirty, watch(name)]);
 
-  useEffect(()=>{
-    if(isDirty) clearErrors(name)
-  },[isDirty,watch(name)])
 
   const onSubmit = (data: any) => {
+    if (name === 'userEmail') {
+      handleOpenPopup('/accountSetting/changeEmail', '이메일 변경', 546, 588)
+      setIsOnPopup(true);
+      return;
+    };
+    if(errors[name] && name !== 'userEmail'){
+      console.log('hio')
+    }
     if (!isDirty || data[name] === currentUserInfo[name]) {
-      setError(name, { type: 'custom', message: '변경된 값이 없습니다.' });
-      alert(`"${title}"란의 변경된 값이 없습니다.`)
+      alert(`"${title}"의 변경된 값이 없습니다.`);
       return;
     }
-    if (name === 'userEmail') return;
   };
 
+  useEffect(()=>{
+    queryClient.invalidateQueries([GET_USER]);
+  },[document.hasFocus()])
+
+
   useEffect(() => {
-    if (data) setCurrentUserInfo(data);
+    if (data) {
+      setCurrentUserInfo(data);
+    }
   }, [data]);
 
   return (
@@ -64,21 +79,25 @@ const UserInfoSettingBox = ({ name, title }: UserInfoSettingBoxProps) => {
                 defaultValue={data && data[name]}
                 type="text"
                 {...register(name, {
-                  required: '값을 입력해주세요',
+                  required: name !== 'userEmail' && '값을 입력해주세요',
                   validate: {
                     currentVaildate: (value) => {
-                      return vaildaters[name](value);
+                      if(vaildaters[name])
+                        return vaildaters[name](value)
                     }
                   }
                 })}
                 isError={Boolean(errors[name])}
+                disabled={name === 'userEmail'}
               />
             </SettingInputInnerBox>
             <SubmitBtnBox>
-              <SubmitBtn>{name === 'userName' ? "개명" : "변경"}</SubmitBtn>
+              <SubmitBtn>{name === 'userName' ? '개명' : '변경'}</SubmitBtn>
             </SubmitBtnBox>
           </SettingInputBox>
-          {/* {errors[name] && name !== 'userEmail' && <ErrorMsgBox errColor errors={`${errors[name]?.message}`}  isSettingPage/>} */}
+          <AbsoluteBox>
+          {errors[name] && name !== 'userEmail' && <ErrorMsgBox errColor errors={`${errors[name]?.message}`}  isSettingPage/>}
+          </AbsoluteBox>
         </SettingInputInnerArea>
       </SettingInputArea>
     </SettingForm>
@@ -86,14 +105,20 @@ const UserInfoSettingBox = ({ name, title }: UserInfoSettingBoxProps) => {
 };
 
 export default UserInfoSettingBox;
+
+const AbsoluteBox = styled.div`
+  position: absolute;
+  width:100%;
+  left:18%;
+`
+
 const SettingForm = styled.form`
-  &+&{
-    border-top : 1px solid #e5e5e5a1;
+  & + & {
+    border-top: 1px solid #e5e5e5a1;
   }
 `;
 export const SettingInputArea = styled(OnlyJustifyCenterFlex)`
   padding: 30px 30px;
-  
 `;
 export const SettingInputBox = styled(OnlyAlignCenterFlex)`
   column-gap: 10px;
@@ -102,7 +127,9 @@ export const SettingInputInnerBox = styled(OnlyAlignCenterFlex)`
   column-gap: 20px;
 `;
 
-export const SettingInputInnerArea = styled.div``;
+export const SettingInputInnerArea = styled.div`
+  position:relative;
+`;
 
 export const SettingInputTitleBox = styled.div<{ isPassword?: boolean }>`
   width: 80px;
@@ -116,7 +143,7 @@ export const SettingInputTitleBox = styled.div<{ isPassword?: boolean }>`
   }
 `;
 
-export const SettingInput = styled.input<{isError ?: boolean;}>`
+export const SettingInput = styled.input<{ isError?: boolean ;}>`
   border: 2px solid #a5a5a5;
   width: 280px;
   line-height: ${({ theme }) => theme.rem.p26};
@@ -131,13 +158,20 @@ export const SettingInput = styled.input<{isError ?: boolean;}>`
     border: 2px solid #000;
     background: #fff;
   }
-  ${({isError, theme}) => isError &&`
+  ${({ isError, theme }) =>
+    isError &&
+    `
   background: ${theme.color.err}1a;
   border: 2px solid ${theme.color.err}1a;
   &:focus {
     border: 2px solid ${theme.color.err}cc;
   }
   `}
+  &:disabled{
+    color: #454545;
+    background: #898989;
+    pointer-events: none;
+  }
 `;
 
 const SubmitBtnBox = styled.div``;
