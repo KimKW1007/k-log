@@ -22,6 +22,10 @@ export default UserInfoSetting
 
 const SettingWrap = styled.div`
   width:100%;
+  border : 1px solid #DDE6ED;
+  border-radius: 30px;
+  overflow:hidden;
+  padding: ${({theme}) => theme.rem.p60} ${({theme}) => theme.rem.p20};
 `
 
 const SettingTitleBox = styled.div`
