@@ -45,7 +45,7 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
     <EditInputBox>
       <EditInput {...register(name)} name={name} placeholder="카테고리를 입력해주세요"></EditInput>
       <DeleteBox>
-        <DeleteBtn type="button" onClick={onClickDeleteInput} onBlur={() => setIsOnDeleteBtn(false)}   isOnDeleteBtn={false}>
+        <DeleteBtn type="button" onClick={onClickDeleteInput} onBlur={() => setIsOnDeleteBtn(false)}   isOnDeleteBtn={isOnDeleteBtn}>
           <Trash></Trash>
         </DeleteBtn>
         {isOnDeleteBtn && (
