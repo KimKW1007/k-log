@@ -102,7 +102,6 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     }
   };
   useEffect(() => {
-    console.log({ submitText });
     setSubmitText(currentSubmitText());
   }, [currentSubmitText]);
   // ================================================
@@ -121,7 +120,6 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     reset
   } = methods;
 
-  console.log(watch(['userId', 'password']));
 
   const onSubmit = ({ userEmail, userId, password }: RegisterInputs) => {
     if (submitText?.includes('아이디')) {
