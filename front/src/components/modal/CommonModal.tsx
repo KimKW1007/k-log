@@ -63,6 +63,8 @@ const ModalBox = styled(AllCenterFlex)`
 const ModalInnerText = styled.div`
   font-size: ${({ theme }) => theme.rem.p24};
   margin: 0 0 ${({ theme }) => theme.rem.p30};
+  word-break:keep-all;
+  text-align:center;
 `;
 
 const ModalTitle = styled.h2`
