@@ -147,26 +147,5 @@ export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
 `;
 export const ErrMsg = styled.div``;
 
-export const CertificateBtn = styled.button`
-  width: 100%;
-  height: 100%;
-  font-size: 12px;
-  background: #787878;
-  color: #fff;
-  transition: 0.3s;
-  &:hover {
-    background: #454545;
-  }
-`;
 
-export const CertificateBtnBox = styled.div`
-  position: absolute;
-  z-index: 4;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: ${({ theme }) => theme.rem.p90};
-  height: ${({ theme }) => theme.rem.p40};
-  border-radius: 8px;
-  overflow: hidden;
-`;
+
