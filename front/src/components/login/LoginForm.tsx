@@ -14,6 +14,7 @@ import LoginErrBox from './LoginErrBox';
 import Loading from '@components/common/Loading';
 import { AllCenterFlex } from '@components/common/CommonFlex';
 import { RegisterInputs } from '@src/types/user';
+import { handleOpenPopup } from '@utils/handleOpenPopup';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -47,11 +48,7 @@ const LoginForm = () => {
   };
 
   const onClickFindIdOrPassword = (e: React.MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
-    window.open(
-      '/identity/find',
-      '아이디/비밀번호 찾기',
-      'top=20px, left=20px, width=545px, height=560px, scrollbars=no , toolbar=no, staus=no, memubar=no, location=no, directoryies=no, resizable=no'
-    );
+    handleOpenPopup('/identity/find','아이디/비밀번호 찾기', 545, 560 )
     return e.preventDefault();
   };
 
