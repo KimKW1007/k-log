@@ -45,13 +45,14 @@ const FindPage: NextPage = () => {
 
 export default FindPage;
 
-const FindPageWrap = styled(AllCenterFlex)`
-  width: 100%;
+const FindPageWrap = styled.div`
+  width: 33rem;
   height: 100%;
+  margin : 0 auto;
 `;
 
 const FindInnerBox = styled.div`
-  width: 33rem;
+width: 100%; 
 `;
 
 const SelectTabBox = styled.div`
