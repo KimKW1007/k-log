@@ -1,14 +1,12 @@
 import { DataSource, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
-import {
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common/exceptions';
+import { ConflictException, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common/exceptions';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcryptjs';
 import { AuthRegistrationDto } from './dto/auth-registration.dto';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
+import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -36,5 +34,38 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  async changeThings(authChangeThingsDto: AuthChangeThingsDto, user: User): Promise<{ message: string }> {
+    const { userId, userEmail, userName } = authChangeThingsDto;
+    const foundUser = await this.findOneBy({ id: user.id });
+    if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
+    if (foundUser.userId === userId || foundUser.userName === userName) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
+    if (userId) {
+      foundUser.userId = userId;
+    }
+    if (userEmail) {
+      foundUser.userEmail = userEmail;
+    }
+    if (userName) {
+      foundUser.userName = userName;
+    }
+
+    await this.save(foundUser);
+
+    return { message: 'success' };
+  }
+  async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto, userData: User): Promise<User[] | {user: User[], message: string}> {
+    const { userEmail } = authChangeThingsDto;
+    const foundUser = await this.findOneBy({ id: userData.id });
+    if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
+    if (foundUser.userEmail === userEmail) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
+    const user = await this.find({ where: { userEmail } });
+
+    if (user.length >= 5) {
+        return {user : user, message:'한개의 이메일은 최대 5개의 아이디만 생성할 수 있습니다.'}
+    }
+
+    return user;
   }
 }

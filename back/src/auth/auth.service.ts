@@ -4,10 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcryptjs';
-import { ConflictException, UnauthorizedException } from '@nestjs/common/exceptions';
+import { ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
 import { AuthRegistrationDto } from './dto/auth-registration.dto';
 import { User } from './user.entity';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
+import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,4 +47,15 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
     return {accessToken};
   }
+
+
+  async changeThings(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<{message : string}>{
+    return await this.userRepository.changeThings(authChangeThingsDto, user)
+  }
+  
+  async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<User[] | {user: User[], message: string}>{
+    return await this.userRepository.checkChangeEmail(authChangeThingsDto, user)
+  }
+
+
 }

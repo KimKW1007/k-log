@@ -7,6 +7,7 @@ import {
   UseGuards,
   Res,
   Get,
+  Patch,
 } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import { AuthService } from './auth.service';
@@ -16,6 +17,8 @@ import { User } from './user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
+import {  GetUser } from 'src/auth/get-user.decorator';
+
 
 @Controller('auth')
 export class AuthController {
@@ -58,8 +61,27 @@ export class AuthController {
     @Res() res: any,
   ): Promise<User[] | {user: User[], message: string}> {
     return res.json(await this.authService.checkEmail(authCheckEmailDto));
-    
   }
+
+  @Patch('/changeThings')
+  @UseGuards(AuthGuard())
+  async changeUserEmail(
+    @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
+    @GetUser() user : User
+  ) : Promise<any>{
+    return this.authService.changeThings(authCheckEmailDto , user)
+  }
+
+  @Post('/checkChangeEmail')
+  @UseGuards(AuthGuard())
+  async checkChangeEmail(
+    @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
+    @Res() res: any,
+    @GetUser() user : User
+  ): Promise<User[] | {user: User[], message: string}> {
+    return res.json(await this.authService.checkChangeEmail(authCheckEmailDto, user));
+  }
+
 
   @Get('/cookies')
   getCookies(@Req() req: Request, @Res() res: Response): any {
