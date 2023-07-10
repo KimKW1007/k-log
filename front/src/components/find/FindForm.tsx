@@ -128,10 +128,12 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       checkEmailMutate({ userEmail });
     }
     if (submitText?.includes('로그인')) {
-      router.push('/login');
+      opener.location.replace('/login')
+      window.close();
     }
     if (submitText?.includes('회원가입')) {
-      router.push('/signup');
+      opener.location.replace('/signup')
+      window.close();
     }
     if (submitText?.includes('비밀번호 찾기')) {
       checkIdEmailMutate({ userEmail, userId });
