@@ -14,7 +14,7 @@ export class FindRepository extends Repository<FindId> {
   }
   async createPayload(sendEmaildDto: SendEmaildDto): Promise<void> {
     const { userEmail } = sendEmaildDto;
-    const payload = String(Math.floor(10000 + Math.random() * 1000000));
+    const payload = String(Math.floor(Math.random() * 899999 + 100000));
     const checkEmail = await this.find({where: {userEmail}})
     if(checkEmail){
       await this.delete({userEmail})
@@ -24,13 +24,13 @@ export class FindRepository extends Repository<FindId> {
       token: payload,
     });
     try{
-      await this.mailerService
+     /*  await this.mailerService
       .sendMail({
         from: process.env.MAIL_USER,
         to: `${userEmail}`,
         subject: 'K-log 인증번호',
         html: `<b>인증번호 : ${payload}</b>`,
-      })
+      }) */
       await this.save(certification);
       console.log('전송완료/ 인증번호', payload)
     }catch(e){
