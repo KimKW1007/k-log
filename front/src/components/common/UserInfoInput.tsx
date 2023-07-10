@@ -14,9 +14,6 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
   return (
     <React.Fragment>
       <InputBox errColor={errColor}>
-        <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
-          {inputName}
-        </CurrentInputName>
         <Input
           small={small}
           bold={bold}
@@ -30,6 +27,9 @@ const UserInfoInput = ({ type, inputName, watch, register, bold = false, small =
           }}
           autoComplete="off"
         />
+        <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
+          {inputName}
+        </CurrentInputName>
       </InputBox>
       {errors && (<ErrorMsgBox errColor={errColor} errors={errors}/> )}
     </React.Fragment>
@@ -110,18 +110,17 @@ export const CurrentInputName = styled.span<{ small: boolean }>`
   transition: 0.3s;
   font-weight: bold;
   color: #acacac;
+  pointer-events: none;
   ${({ small }) =>
     small &&
     css`
       font-size: 14px;
     `}
-  &.high {
+  input:focus + &, &.high {
     z-index: 3;
     top: 25%;
     left: 3%;
     font-size: 13px;
-    pointer-events: none;
-    color: #232323;
     ${({ small }) =>
       small &&
       css`

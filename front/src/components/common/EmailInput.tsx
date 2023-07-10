@@ -26,9 +26,6 @@ const EmailInput = ({ inputName = '이메일', watch,  small = false, errColor, 
     <React.Fragment>
       <OuterBox>
         <InputBox errColor={errColor} className={isLoading || isComplete ? 'certified' : ''}>
-          <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
-            {inputName}
-          </CurrentInputName>
           <Input
             small={small}
             bold={true}
@@ -48,6 +45,9 @@ const EmailInput = ({ inputName = '이메일', watch,  small = false, errColor, 
             }}
             autoComplete="off"
           />
+          <CurrentInputName className={isFocus ? 'high' : ''} small={small}>
+            {inputName}
+          </CurrentInputName>
         </InputBox>
         {isPassCertificate || (
           <CertificateBtnBox>
