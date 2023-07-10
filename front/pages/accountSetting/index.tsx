@@ -13,7 +13,7 @@ const AccountSettingPage: NextPage = () => {
           <UserInfoSideBar></UserInfoSideBar>
         </SideProfileSettingBox>
         <UserInfoSettingBox>
-          {<UserInfoSetting></UserInfoSetting>}
+          <UserInfoSetting></UserInfoSetting>
         </UserInfoSettingBox>
       </SettingInnerBox>
     </SettingWrap>
@@ -34,10 +34,7 @@ const SettingInnerBox = styled.div`
 
 const UserInfoSettingBox = styled.div`
   flex-grow: 1;
-  border : 1px solid #DDE6ED;
-  border-radius: 30px;
-  overflow:hidden;
-  padding: ${({theme}) => theme.rem.p60} ${({theme}) => theme.rem.p20};
+
 `;
 const SideProfileSettingBox = styled.div`
   width: 360px;
