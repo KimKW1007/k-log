@@ -126,7 +126,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       checkEmailMutate({ userEmail });
     }
     if (submitText?.includes('로그인')) {
-      opener.location.replace('/login')
+      opener.location.reload();
       window.close();
     }
     if (submitText?.includes('회원가입')) {
