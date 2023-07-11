@@ -7,7 +7,7 @@
  * @param height 
  */
 export const handleOpenPopup = (url:string, target: string, width:number, height:number)=>{
-  const left = window.screenX + (window.outerWidth - width) / 2;
+  const left = window.screenX + (window.outerWidth - width) / 2 -17;
   const top = window.screenY + (window.outerHeight - height) / 2;
   window.open(
     `${url}`,
