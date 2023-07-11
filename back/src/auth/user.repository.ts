@@ -59,8 +59,8 @@ export class UserRepository extends Repository<User> {
 
     return foundUser;
   }
-  async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto, userData: User): Promise<User[] | {user: User[], message: string}> {
-    const { userEmail } = authChangeThingsDto;
+  async checkChangeEmail(authCheckEmailDto: AuthCheckEmailDto, userData: User): Promise<User[] | {user: User[], message: string}> {
+    const { userEmail } = authCheckEmailDto;
     const foundUser = await this.findOneBy({ id: userData.id });
     if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
     if (foundUser.userEmail === userEmail) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
@@ -71,5 +71,19 @@ export class UserRepository extends Repository<User> {
     }
 
     return user;
+  }
+  async changePassword(authChangeThingsDto: AuthChangeThingsDto, user: User): Promise<{ message: string}> {
+    const { password } = authChangeThingsDto;
+    const foundUser = await this.findOneBy({id: user.id});
+    if(!foundUser){
+      throw new ConflictException('계정을 확인해주세요');
+    }
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    foundUser.password = hashedPassword
+    await this.save(foundUser)
+
+    return {message : "success"}
   }
 }

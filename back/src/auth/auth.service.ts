@@ -58,9 +58,12 @@ export class AuthService {
 
   }
   
-  async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<User[] | {user: User[], message: string}>{
-    return await this.userRepository.checkChangeEmail(authChangeThingsDto, user)
+  async checkChangeEmail(authCheckEmailDto: AuthCheckEmailDto , user: User): Promise<User[] | {user: User[], message: string}>{
+    return await this.userRepository.checkChangeEmail(authCheckEmailDto, user)
   }
 
+  async changePassword(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<{ message: string}>{
+    return await this.userRepository.changePassword(authChangeThingsDto, user)
+  }
 
 }

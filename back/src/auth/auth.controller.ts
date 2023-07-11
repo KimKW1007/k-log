@@ -18,6 +18,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import {  GetUser } from 'src/auth/get-user.decorator';
+import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 
 
 @Controller('auth')
@@ -66,11 +67,11 @@ export class AuthController {
   @Patch('/changeThings')
   @UseGuards(AuthGuard())
   async changeThings(
-    @Body() authCheckEmailDto: AuthCheckEmailDto,
+    @Body() authChangeThingsDto: AuthChangeThingsDto,
     @GetUser() user : User,
     @Res() res: Response,
   ) : Promise<any>{
-    const accessToken = await this.authService.changeThings(authCheckEmailDto , user)
+    const accessToken = await this.authService.changeThings(authChangeThingsDto , user)
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('jwt', accessToken, {
       httpOnly: true,
@@ -88,6 +89,15 @@ export class AuthController {
     @GetUser() user : User
   ): Promise<User[] | {user: User[], message: string}> {
     return res.json(await this.authService.checkChangeEmail(authCheckEmailDto, user));
+  }
+  @Patch('/changePassword')
+  @UseGuards(AuthGuard())
+  async changePassword(
+    @Body() authChangeThingsDto: AuthChangeThingsDto,
+    @Res() res: any,
+    @GetUser() user : User
+  ): Promise<{message: string}> {
+    return res.json(await this.authService.changePassword(authChangeThingsDto, user));
   }
 
 
