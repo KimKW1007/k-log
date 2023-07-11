@@ -43,10 +43,10 @@ const ChangeEmailPage: NextPage = () => {
         setIsFineChangeEmail(true);
       } else {
         setIsSuccess(true);
+        sessionStorage.setItem('jwtToken', data);
       }
     }
   });
-
 
 
   const methods = useForm<RegisterInputs>({
