@@ -16,8 +16,8 @@ interface MenuItemsType {
 const HeaderUserMenu = () => {
   const MenuItemList: MenuItemsType[] = [
     {
-      title: 'accountSetting',
-      link: 'accountSetting',
+      title: 'accountEdit',
+      link: 'accountEdit',
       text: '계정 설정'
     },
     /* {
