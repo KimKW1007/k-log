@@ -33,7 +33,6 @@ const ChangeEmailPage: NextPage = () => {
 
   const { mutate } = useMutation(isFineChangeEmail ? ChangeEmailPatchApi : checkFineChangePostApi, {
     onError(error : any) {
-      console.log(error.response.data.message);
       setIsFailed(true);
       setErrMsg(error.response.data.message)
       setIsOpenModal(true);
@@ -43,7 +42,6 @@ const ChangeEmailPage: NextPage = () => {
         setUserIds(data.user || data);
         setIsFineChangeEmail(true);
       } else {
-        console.log('joi')
         setIsSuccess(true);
       }
     }
@@ -101,7 +99,7 @@ const ChangeEmailPage: NextPage = () => {
         <ChangeEmailForm onSubmit={handleSubmit(onSubmit)}>
           {!isSuccess ? (
             <>
-              {isFineChangeEmail || <CertificateEmail isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate}></CertificateEmail>}
+              {isFineChangeEmail || <CertificateEmail inputName={'새 이메일'} isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate}></CertificateEmail>}
               {isFineChangeEmail && <IdListByEmail userIds={userIds}></IdListByEmail>}
             </>
           ) : (
