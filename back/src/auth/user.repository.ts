@@ -36,12 +36,15 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async changeThings(authChangeThingsDto: AuthChangeThingsDto, user: User): Promise<{ message: string }> {
+
+  async changeThings(authChangeThingsDto: AuthChangeThingsDto, user: User): Promise<User> {
     const { userId, userEmail, userName } = authChangeThingsDto;
     const foundUser = await this.findOneBy({ id: user.id });
     if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
     if (foundUser.userId === userId || foundUser.userName === userName) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
     if (userId) {
+      const checkDuplicate = await this.findOneBy({ userId });
+      if(checkDuplicate) throw new BadRequestException('이미 사용중인 아이디 입니다.', { cause: new Error() });
       foundUser.userId = userId;
     }
     if (userEmail) {
@@ -50,10 +53,11 @@ export class UserRepository extends Repository<User> {
     if (userName) {
       foundUser.userName = userName;
     }
+    
 
     await this.save(foundUser);
 
-    return { message: 'success' };
+    return foundUser;
   }
   async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto, userData: User): Promise<User[] | {user: User[], message: string}> {
     const { userEmail } = authChangeThingsDto;
