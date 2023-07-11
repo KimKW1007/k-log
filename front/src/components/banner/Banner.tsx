@@ -65,7 +65,8 @@ const Banner = () => {
     return()=>{}
   }, [innerBoxRef.current]);
   return (
-    <BannerWrap currentBg={currentBg}>
+    <BannerWrap>
+      <BannerBg currentBg={currentBg} className='banner-background-image'></BannerBg>
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele) => (
@@ -78,16 +79,23 @@ const Banner = () => {
 };
 
 export default Banner;
-/* ${({ currentBannerNum }) => } */
-const BannerWrap = styled(AllCenterFlex)<{ currentBg: string }>`
+const BannerWrap = styled(AllCenterFlex)`
   position: relative;
   height: 500px;
   width: 100%;
   padding: 30px 0;
+`;
+
+const BannerBg = styled.div<{ currentBg: string }>`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width:100%;
+  height:100%;
   background: url(${({currentBg}) => currentBg}) no-repeat center
     bottom/cover fixed;
   transition: background 3s 3s;
-`;
+`
 
 const BannerInnerBox = styled.div`
   position: relative;
@@ -98,6 +106,7 @@ const BannerInnerBox = styled.div`
 
 const BannerSlideBox = styled.div`
   position: relative;
+  z-index: 4;
   transform-style: preserve-3d;
   display: flex;
   height: 106.5%;
