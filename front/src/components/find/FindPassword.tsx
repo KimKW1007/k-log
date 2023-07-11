@@ -23,7 +23,7 @@ const FindPassword = ({
       {isSuccessChangePassword && <FinallPage />}
       {isSuccessChangePassword ||
         (isClickFindBtn ? (
-          <BundleOfPasswords />
+          <BundleOfPasswords isNew />
         ) : (
           <>
             <UserInfoInput
