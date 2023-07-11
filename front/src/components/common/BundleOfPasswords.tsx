@@ -7,7 +7,7 @@ import { errorFn } from '@utils/singupErrorFn';
 import ErrorMsgBox from './error/ErrorMsgBox';
 import { useFormContext } from 'react-hook-form';
 
-const BundleOfPasswords = () => {
+const BundleOfPasswords = ({isNew = false}:{isNew ?: boolean}) => {
   const {watch, register, formState: { errors }, setError, clearErrors} = useFormContext();
 
   const Is_ErrColor = Boolean(errors?.password?.message) || Boolean(errors?.confirmPassword?.message);
@@ -16,7 +16,7 @@ const BundleOfPasswords = () => {
       <UserInfoInput
         small
         type="password"
-        inputName="비밀번호"
+        inputName={isNew ? "새 비밀번호" : "비밀번호"}
         register={register('password', {
           required: errMsg['passwordMinLength'],
           minLength: {
@@ -34,7 +34,7 @@ const BundleOfPasswords = () => {
       <UserInfoInput
         small
         type="password"
-        inputName="비밀번호 확인"
+        inputName={isNew ? "새 비밀번호 확인" : "비밀번호 확인"}
         register={register('confirmPassword', {
           required: errMsg['passwordMinLength'],
           minLength: {
