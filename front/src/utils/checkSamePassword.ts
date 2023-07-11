@@ -1,12 +1,12 @@
 import { PASSWORD_REGEX } from '@constant/regex';
 import { RegisterInputs } from '@src/types/user';
-import { UseFormClearErrors, UseFormSetError, UseFormWatch } from 'react-hook-form';
+import { FieldValues, UseFormClearErrors, UseFormSetError, UseFormWatch } from 'react-hook-form';
 import { errMsg } from './singupThirdErrMsg';
 
 interface PasswordOnChangeValidateProps {
-  watch: UseFormWatch<RegisterInputs>;
-  setError: UseFormSetError<RegisterInputs>;
-  clearErrors: UseFormClearErrors<RegisterInputs>;
+  watch: UseFormWatch<FieldValues>;
+  setError: UseFormSetError<FieldValues>;
+  clearErrors: UseFormClearErrors<FieldValues>;
 }
 
 export const checkSamePassword = (watch: UseFormWatch<RegisterInputs>) => {
