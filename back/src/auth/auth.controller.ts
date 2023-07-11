@@ -41,7 +41,7 @@ export class AuthController {
     res.cookie('jwt', jwt.accessToken, {
       httpOnly: true,
       secure: true,
-      maxAge: 60 * 60 * 1000,
+      maxAge: 420 * 60 * 1000,
     });
     return res.json({
       accessToken: jwt.accessToken,
@@ -65,11 +65,19 @@ export class AuthController {
 
   @Patch('/changeThings')
   @UseGuards(AuthGuard())
-  async changeUserEmail(
-    @Body(ValidationPipe) authCheckEmailDto: AuthCheckEmailDto,
-    @GetUser() user : User
+  async changeThings(
+    @Body() authCheckEmailDto: AuthCheckEmailDto,
+    @GetUser() user : User,
+    @Res() res: Response,
   ) : Promise<any>{
-    return this.authService.changeThings(authCheckEmailDto , user)
+    const accessToken = await this.authService.changeThings(authCheckEmailDto , user)
+    res.setHeader('Authorization', 'Bearer ' + accessToken);
+    res.cookie('jwt', accessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 420 * 60 * 1000,
+    });
+    return res.json(accessToken)
   }
 
   @Post('/checkChangeEmail')

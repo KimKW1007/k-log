@@ -36,7 +36,6 @@ export class AuthService {
   async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken : string}> {
     const { userId, password } = authCredentialsDto;
     const user = await this.userRepository.findOneBy({ userId });
-    
     if (!user && !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('login failed');
     }
@@ -49,8 +48,14 @@ export class AuthService {
   }
 
 
-  async changeThings(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<{message : string}>{
-    return await this.userRepository.changeThings(authChangeThingsDto, user)
+  async changeThings(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<string>{
+    const foundUser = await this.userRepository.changeThings(authChangeThingsDto, user)
+    delete foundUser.password
+    delete foundUser.categories
+    const payload = { ...foundUser };
+    const accessToken = this.jwtService.sign(payload);
+    return accessToken
+
   }
   
   async checkChangeEmail(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<User[] | {user: User[], message: string}>{
