@@ -3,40 +3,41 @@ import styled, { keyframes } from 'styled-components';
 import type { NextPage } from 'next';
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import UserInfoSideBar from '@components/sideBar/UserInfoSideBar';
-import UserInfoSetting from '@components/user/UserInfoSetting';
+import AccountEdit from '@components/accountEdit/AccountEdit';
 
-const AccountSettingPage: NextPage = () => {
+const AccountEditPage: NextPage = () => {
   return (
-    <SettingWrap>
-      <SettingInnerBox>
-        <SideProfileSettingBox>
+    <EditWrap>
+      <EditInnerBox>
+        <SideProfileEditBox>
           <UserInfoSideBar></UserInfoSideBar>
-        </SideProfileSettingBox>
-        <UserInfoSettingBox>
-          <UserInfoSetting></UserInfoSetting>
-        </UserInfoSettingBox>
-      </SettingInnerBox>
-    </SettingWrap>
+        </SideProfileEditBox>
+        <AccountEditArea>
+          <AccountEdit></AccountEdit>
+        </AccountEditArea>
+      </EditInnerBox>
+    </EditWrap>
   );
 };
 
-export default AccountSettingPage;
+export default AccountEditPage;
 
-const SettingWrap = styled(OnlyJustifyCenterFlex)`
+const EditWrap = styled(OnlyJustifyCenterFlex)`
   width:100%;
   padding: ${({theme}) => theme.rem.p100} ${({theme}) => theme.rem.p30};
 `;
-const SettingInnerBox = styled.div`
+const EditInnerBox = styled.div`
   width: 1300px;
   display:flex;
   column-gap: ${({theme}) => theme.rem.p30};
 `;
 
-const UserInfoSettingBox = styled.div`
+const AccountEditArea = styled.div`
+  position:relative;
   flex-grow: 1;
 
 `;
-const SideProfileSettingBox = styled.div`
+const SideProfileEditBox = styled.div`
   width: 360px;
   border : 1px solid #DDE6ED;
   border-radius: 30px;

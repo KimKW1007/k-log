@@ -10,7 +10,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import IdListByEmail from '@components/common/IdListByEmail';
 import { FinalBox, FinalText } from '@components/common/FinallPage';
 import CommonModal from '@components/modal/CommonModal';
-import { GET_USER } from '@utils/queryKeys';
 import { useRecoilState } from 'recoil';
 import { NotFoundByEmail, isPopup } from '@atoms/atoms';
 

@@ -1,13 +1,14 @@
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX } from "@constant/regex";
+import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX } from "@constant/regex";
 import { errMsg } from "./singupThirdErrMsg";
 import { User } from "@src/types/user";
 
-interface test{
-  name: string,
-  title : string
+
+
+export interface accountEditInputListProps{
+  [key: string] : string
 }
 
-export const userInfoSettingInputList: test[] = [
+export const accountEditInputList: accountEditInputListProps[] = [
   {
     name : 'userId',
     title : "아이디"
@@ -40,3 +41,16 @@ export const currentTipText ={
   userId: errMsg['userIdRegexMsg'],
   userName : '2~4자의 한글,영문만 입력해주세요.',
 }
+
+
+export const changeNewPasswordInputList : accountEditInputListProps[] = [
+  {
+    name : 'password',
+    title : "새 비밀번호"
+  },
+  {
+    name : 'confirmPassword',
+    title : "새 비밀번호 확인"
+  },
+];
+
