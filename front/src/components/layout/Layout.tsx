@@ -12,7 +12,7 @@ const Layout = ({ children }: ChildrenProps) => {
   const routerPathCheck = (value: string) => {
     return router.pathname.includes(value);
   };
-  const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountSetting/changeEmail')
+  const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail')
   useEffect(() => {
     if (routerPathCheck('login') || routerPathCheck('signup') || popupPage) {
       setIsAboutAuth(true);
