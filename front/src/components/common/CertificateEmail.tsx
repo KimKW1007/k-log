@@ -14,6 +14,7 @@ import { CertificateEmailProps } from '@src/types/certificateEmail';
 
 const CertificateEmail = ({
   small,
+  inputName,
   setIsPassCertificate,
   isPassCertificate
 }: CertificateEmailProps) => {
@@ -74,6 +75,7 @@ const CertificateEmail = ({
     <>
       <EmailInput
         small={small}
+        inputName={inputName}
         watch={watch('userEmail')}
         errors={errors?.userEmail?.message}
         errColor={Boolean(errors?.userEmail?.message)}
