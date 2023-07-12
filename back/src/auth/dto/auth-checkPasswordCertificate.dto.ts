@@ -9,22 +9,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class AuthChangeThingsDto extends Repository<User> {
-  @IsNotEmpty()
-  @IsString()
-  @Matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{4,24}$/, {
-    message: '아이디를 확인해주세요.',
-  })
-  userId ?: string;
-  
-  @IsNotEmpty()
-  @IsString()
-  userName ?: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  userEmail ?: string;
+export class AuthPasswordCertificateDto extends Repository<User> {
 
   @IsNotEmpty()
   @IsString()
@@ -32,5 +17,5 @@ export class AuthChangeThingsDto extends Repository<User> {
   @Matches(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/, {
     message: '비밀번호를 확인해주세요.',
   })
-  password ?: string;
+  password : string;
 }
