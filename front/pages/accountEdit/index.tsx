@@ -7,18 +7,26 @@ import AccountEdit from '@components/accountEdit/AccountEdit';
 import AccountCertificate from '@components/accountEdit/AccountCertificate';
 import {ShieldLock} from "@styled-icons/bootstrap/ShieldLock"
 import { FlexEmptyBox } from '@components/signup/signupForm';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
 const AccountEditPage: NextPage = () => {
   const [ isCertificated, setIsCertificated ] = useState(false);
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const [isMount, setIsMount] = useState(false);
+
+  useEffect(()=>{
+    setIsMount(true);
+  },[])
   return (
     <EditWrap>
       <EditInnerBox>
         <SideProfileEditBox>
-          {isCertificated || <LockIconBox>
+          {(isMount &&  isCertificated && currentUser?.id === 1) || <LockIconBox>
             <FlexEmptyBox/>
               <ShieldLock/>
             <FlexEmptyBox/>
           </LockIconBox>}
-          {isCertificated && <UserInfoSideBar></UserInfoSideBar>}
+          {isMount && isCertificated && currentUser?.id === 1 && <UserInfoSideBar></UserInfoSideBar>}
         </SideProfileEditBox>
         <AccountEditArea>
           {isCertificated && <AccountEdit></AccountEdit>}
