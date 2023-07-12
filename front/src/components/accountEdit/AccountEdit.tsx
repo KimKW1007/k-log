@@ -72,7 +72,7 @@ const EditWrap = styled.div`
   padding: ${({theme}) => theme.rem.p60} ${({theme}) => theme.rem.p20};
 `
 
-const EditTitleBox = styled.div`
+export const EditTitleBox = styled.div`
   margin-bottom: ${({theme}) => theme.rem.p50};
   padding: 0 ${({theme}) => theme.rem.p50};
   h2{
