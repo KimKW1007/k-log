@@ -4,16 +4,25 @@ import type { NextPage } from 'next';
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import UserInfoSideBar from '@components/sideBar/UserInfoSideBar';
 import AccountEdit from '@components/accountEdit/AccountEdit';
-
+import AccountCertificate from '@components/accountEdit/AccountCertificate';
+import {ShieldLock} from "@styled-icons/bootstrap/ShieldLock"
+import { FlexEmptyBox } from '@components/signup/signupForm';
 const AccountEditPage: NextPage = () => {
+  const [ isCertificated, setIsCertificated ] = useState(false);
   return (
     <EditWrap>
       <EditInnerBox>
         <SideProfileEditBox>
-          <UserInfoSideBar></UserInfoSideBar>
+          {isCertificated || <LockIconBox>
+            <FlexEmptyBox/>
+              <ShieldLock/>
+            <FlexEmptyBox/>
+          </LockIconBox>}
+          {isCertificated && <UserInfoSideBar></UserInfoSideBar>}
         </SideProfileEditBox>
         <AccountEditArea>
-          <AccountEdit></AccountEdit>
+          {isCertificated && <AccountEdit></AccountEdit>}
+          {isCertificated || <AccountCertificate setIsCertificated={setIsCertificated}></AccountCertificate>}
         </AccountEditArea>
       </EditInnerBox>
     </EditWrap>
@@ -44,3 +53,13 @@ const SideProfileEditBox = styled.div`
   overflow:hidden;
   padding: ${({theme}) => theme.rem.p20};
 `;
+
+const LockIconBox = styled.div`
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  height:100%;
+  svg{
+    width: 50%;
+  }
+`
