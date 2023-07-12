@@ -19,6 +19,7 @@ import { Response, Request } from 'express';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import {  GetUser } from 'src/auth/get-user.decorator';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
+import { AuthPasswordCertificateDto } from './dto/auth-checkPasswordCertificate.dto';
 
 
 @Controller('auth')
@@ -100,6 +101,15 @@ export class AuthController {
     return res.json(await this.authService.changePassword(authChangeThingsDto, user));
   }
 
+
+  @Post('/checkCertificate')
+  @UseGuards(AuthGuard())
+  async checkCertificate(
+    @Body(ValidationPipe) authPasswordCertificateDto: AuthPasswordCertificateDto,
+    @GetUser() user : User
+  ): Promise<{message: string}> {
+    return await this.authService.checkCertificate(authPasswordCertificateDto, user);
+  }
 
   @Get('/cookies')
   getCookies(@Req() req: Request, @Res() res: Response): any {
