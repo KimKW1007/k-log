@@ -13,6 +13,15 @@ export class UserRepository extends Repository<User> {
   constructor(private dataSource: DataSource) {
     super(User, dataSource.createEntityManager());
   }
+
+  deletePasswordInUsers(user : User[]){
+    const deletePasswordUser = user.map(ele => {
+      delete ele.password
+      return ele
+    })
+    return deletePasswordUser
+  }
+
   async createUser(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     const { userId, password, userName, userEmail } = authRegistrationDto;
 
@@ -65,12 +74,12 @@ export class UserRepository extends Repository<User> {
     if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
     if (foundUser.userEmail === userEmail) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
     const user = await this.find({ where: { userEmail } });
-
+    const deletePasswordUser = this.deletePasswordInUsers(user)
     if (user.length >= 5) {
-        return {user : user, message:'한개의 이메일은 최대 5개의 아이디만 생성할 수 있습니다.'}
+        return {user : deletePasswordUser, message:'한개의 이메일은 최대 5개의 아이디만 생성할 수 있습니다.'}
     }
 
-    return user;
+    return deletePasswordUser;
   }
   async changePassword(authChangeThingsDto: AuthChangeThingsDto, user: User): Promise<{ message: string}> {
     const { password } = authChangeThingsDto;
