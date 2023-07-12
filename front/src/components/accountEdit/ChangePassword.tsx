@@ -85,7 +85,7 @@ export default ChangePassword;
 
 const ChangePasswordSubmitBox = styled(SubmitBox)`
   width: 50%;
-  margin: 100px auto 0;
+  margin: 62px auto 0;
 `;
 
 const ChangePasswordSubmitBtn = styled(SubmitBtn)`
