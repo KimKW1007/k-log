@@ -25,13 +25,6 @@ export class FindController {
     return this.findService.certificate(certificateEmailDto);
   }
 
-  @Post('/findId')
-  findId(
-    @Body(ValidationPipe) certificateEmailDto: CertificateEmailDto,
-  ): Promise<User[]> {
-    return this.findService.findId(certificateEmailDto);
-  }
-
   @Post("/checkUser")
   findUserbyIdEmail(@Body(ValidationPipe) checkUserDto: CheckUserDto): Promise<{ message: string }> {
     return this.findService.checkUserIdByUserIdEmail(checkUserDto);

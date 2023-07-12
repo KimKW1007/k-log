@@ -47,18 +47,6 @@ export class FindService {
     return { message: 'success' };
   }
 
-  async findId(certificateEmailDto: CertificateEmailDto): Promise<User[]> {
-    const { userEmail } = certificateEmailDto;
-    const certificatEmail = await this.getOneUserByEmail(certificateEmailDto)
-    const foundUser = await this.userRepository.find({
-      where: { userEmail: certificatEmail.userEmail },
-    });
-    if (foundUser.length <= 0) {
-      throw new ConflictException('해당 이메일로 가입된 아이디가 없습니다.');
-    }
-    await this.findRepository.delete({ userEmail });
-    return foundUser;
-  }
 
   async checkUserIdByUserIdEmail(checkUserDto: CheckUserDto): Promise<{ message: string }>{
     const { userEmail, userId } = checkUserDto;
