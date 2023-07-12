@@ -95,7 +95,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
           <EditInput
             title={title}
             name={name}
-            defaultValue={data && data[name]}
+            defaultValue={currentUserInfo && currentUserInfo[name]}
             register={register(name, {
               required: name !== 'userEmail' && '값을 입력해주세요',
               validate: {
