@@ -1,7 +1,7 @@
 import { FieldError, FieldErrorsImpl, Merge, UseFormRegisterReturn } from "react-hook-form";
 
 export interface User {
-  id?: string;
+  id?: number;
   userId?: string;
   userEmail?: string;
   userName?: string;
