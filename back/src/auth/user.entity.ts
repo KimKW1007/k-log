@@ -17,7 +17,7 @@ export class User extends BaseEntity{
   @Column()
   userEmail?: string;
 
-  @Column({select:false})
+  @Column()
   password: string;
 
   @OneToMany(type => Category, category => category.user, {eager: true})
