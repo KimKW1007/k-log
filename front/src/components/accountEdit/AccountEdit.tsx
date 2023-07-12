@@ -18,7 +18,7 @@ const AccountEdit = () => {
         </Tab>
       ))}
     </TabBox>
-    <EditWrap>
+    <EditAreaBox>
       <EditTitleBox>
         <h2>{currentTab}</h2>
       </EditTitleBox>
@@ -27,7 +27,7 @@ const AccountEdit = () => {
           <AccountEditInputsBox currentTab={currentTab}></AccountEditInputsBox>
         </EditInnerBox>
       </EditBox>
-    </EditWrap>
+    </EditAreaBox>
     </>
   )
 }
@@ -61,7 +61,7 @@ const Tab = styled.button<{isCurrent : boolean;}>`
   `}
   `
 
-const EditWrap = styled.div`
+const EditAreaBox = styled.div`
   position:relative;
   z-index: 3;
   width:100%;
