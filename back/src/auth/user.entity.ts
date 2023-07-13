@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer";
 import { Category } from "src/category/category.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { FileEntity } from "src/file/file.entity";
+import { BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
 @Unique(['userId'])
@@ -22,4 +23,7 @@ export class User extends BaseEntity{
 
   @OneToMany(type => Category, category => category.user, {eager: true})
   categories: Category[]
+
+  @OneToOne(type => FileEntity, file => file.user, {eager: true})
+  location : FileEntity
 }
