@@ -2,12 +2,14 @@ import type { NextPage } from 'next';
 import Banner from '@components/banner/Banner';
 import styled, { keyframes, css } from 'styled-components';
 import { useEffect } from 'react';
+import SidebarHeader from '@components/sideBar/SidebarHeader';
 
 const Home: NextPage = () => {
 
   return (
     <HomeWrap>
       <Banner></Banner>
+      <SidebarHeader></SidebarHeader>
       <EmptyBox></EmptyBox>
     </HomeWrap>
   );
