@@ -23,6 +23,6 @@ const SidebarBox = styled(OnlyAlignCenterFlex)`
   border-radius: 30px;
   overflow:hidden;
   padding: ${({theme}) => theme.rem.p20} ${({theme}) => theme.rem.p50};
-  background: #232323;
+  background: #343434;
   row-gap: 40px;
 `;
