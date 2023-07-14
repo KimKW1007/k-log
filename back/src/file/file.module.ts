@@ -8,7 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 
 
 @Module({
-  imports: [],
+  imports: [TypeOrmModule.forFeature([FileRepository]),AuthModule],
   controllers: [FileController],
   providers: [FileService, FileRepository],
 })
