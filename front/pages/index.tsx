@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   return (
     <HomeWrap>
       <Banner></Banner>
-      <SidebarHeader></SidebarHeader>
       <EmptyBox></EmptyBox>
     </HomeWrap>
   );
