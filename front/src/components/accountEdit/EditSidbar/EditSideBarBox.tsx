@@ -10,18 +10,17 @@ import EditCategoryList from '@components/accountEdit/EditCategory/EditCategoryL
 
 
 
-const UserInfoSideBar = () => {
+const EditSideBar = () => {
 
   return (
     <SidebarBox>
       <EditSidebarHeader></EditSidebarHeader>
-      <SearchBox isEdit></SearchBox>
       <EditCategoryList ></EditCategoryList>
     </SidebarBox>
   );
 };
 
-export default UserInfoSideBar;
+export default EditSideBar;
 
 const SidebarBox = styled(OnlyAlignCenterFlex)`
   width: 100%;
