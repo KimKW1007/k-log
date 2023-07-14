@@ -66,6 +66,7 @@ const SubmitBtn=  styled.button<{isEdit?: boolean}>`
   height:100%;
   padding: 8px;
   background:#454545;
+  transition: .2s;
   svg{
     width:100%;
     color: #fff;
@@ -76,5 +77,8 @@ const SubmitBtn=  styled.button<{isEdit?: boolean}>`
       color: #898989;
     }
   `}
+  &:hover{
+    background:#232323;
+  }
 
 `
