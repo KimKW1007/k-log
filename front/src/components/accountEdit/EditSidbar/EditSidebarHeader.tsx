@@ -104,7 +104,7 @@ const EditSidebarHeader = () => {
 
   return (
     <EditSidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-      <EditSidebarHeaderBox>
+      <SidebarHeaderBox>
         <ImgBox>
           <Image src={image || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
           <InputLabelBox>
@@ -118,7 +118,7 @@ const EditSidebarHeader = () => {
           <TextArea {...register('description')}></TextArea>
         </DescBox>
         <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue} >저장</EditBtn>
-      </EditSidebarHeaderBox>
+      </SidebarHeaderBox>
     </EditSidebarHeaderForm>
   );
 };
@@ -127,16 +127,18 @@ export default EditSidebarHeader;
 
 const EditSidebarHeaderForm = styled.form`
   width:100%;
+  border-bottom: 1px solid #b8b8b8a1;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
 `
 
-const EditSidebarHeaderBox = styled(OnlyAlignCenterFlex)`
+export const SidebarHeaderBox = styled(OnlyAlignCenterFlex)`
   padding: 20px 0;
   flex-direction: column;
   row-gap: 30px;
-  margin-bottom: 30px;
 `;
 
-const ImgBox = styled.div`
+export const ImgBox = styled.div<{isBgBlack ?: boolean;}>`
   position: relative;
   width: 120px;
   height: 120px;
@@ -148,6 +150,9 @@ const ImgBox = styled.div`
     z-index: 1;
     max-width: 100%;
   }
+  ${({isBgBlack}) => isBgBlack && `
+    box-shadow: 4px 4px 0px 2px #898989;
+  `}
 `;
 
 const TextArea = styled.textarea`
@@ -198,7 +203,7 @@ const InputLabelBox = styled.div`
   }
 `;
 
-const DescBox = styled.div`
+export const DescBox = styled.div`
   width:100%;
   padding: 0 30px;
 `;
