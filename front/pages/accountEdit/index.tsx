@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import type { NextPage } from 'next';
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
-import UserInfoSideBar from '@components/sideBar/UserInfoSideBar';
 import AccountEdit from '@components/accountEdit/AccountEdit';
 import AccountCertificate from '@components/accountEdit/AccountCertificate';
 import {ShieldLock} from "@styled-icons/bootstrap/ShieldLock"
 import { FlexEmptyBox } from '@components/signup/signupForm';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
+import EditSideBar from '@components/accountEdit/EditSidbar/EditSideBarBox';
 const AccountEditPage: NextPage = () => {
   const [ isCertificated, setIsCertificated ] = useState(false);
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
@@ -26,7 +26,7 @@ const AccountEditPage: NextPage = () => {
               <ShieldLock/>
             <FlexEmptyBox/>
           </LockIconBox>}
-          {isMount && isCertificated && currentUser?.id === 1 && <UserInfoSideBar></UserInfoSideBar>}
+          {isMount && isCertificated && currentUser?.id === 1 && <EditSideBar></EditSideBar>}
         </SideProfileEditBox>
         <AccountEditArea>
           {isCertificated && <AccountEdit></AccountEdit>}
