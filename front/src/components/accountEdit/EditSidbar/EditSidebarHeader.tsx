@@ -21,7 +21,7 @@ const getBase64 = (file: any) => {
   });
 };
 
-const SidebarHeader = () => {
+const EditSidebarHeader = () => {
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
   const { data } = useQuery(['GET_USER_MINI_PL'], getApi);
@@ -103,8 +103,8 @@ const SidebarHeader = () => {
   },[watch])
 
   return (
-    <SidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-      <SidebarHeaderBox>
+    <EditSidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <EditSidebarHeaderBox>
         <ImgBox>
           <Image src={image || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
           <InputLabelBox>
@@ -118,18 +118,18 @@ const SidebarHeader = () => {
           <TextArea {...register('description')}></TextArea>
         </DescBox>
         <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue} >저장</EditBtn>
-      </SidebarHeaderBox>
-    </SidebarHeaderForm>
+      </EditSidebarHeaderBox>
+    </EditSidebarHeaderForm>
   );
 };
 
-export default SidebarHeader;
+export default EditSidebarHeader;
 
-const SidebarHeaderForm = styled.form`
+const EditSidebarHeaderForm = styled.form`
   width:100%;
 `
 
-const SidebarHeaderBox = styled(OnlyAlignCenterFlex)`
+const EditSidebarHeaderBox = styled(OnlyAlignCenterFlex)`
   padding: 20px 0;
   flex-direction: column;
   row-gap: 30px;
