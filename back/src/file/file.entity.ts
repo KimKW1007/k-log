@@ -9,6 +9,8 @@ export class FileEntity extends BaseEntity{
   @Column()
   imageUrl : string;
 
+  @Column()
+  description : string;
 
   @OneToOne((type) => User, (user) => user.location, { eager: false })
   @JoinColumn()
