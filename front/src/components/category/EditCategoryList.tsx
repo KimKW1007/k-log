@@ -77,6 +77,8 @@ const EditCategoryList = () => {
   useEffect(()=>{
     if(isDirty){
       setIsChangeValue(true);
+    }else{
+      setIsChangeValue(false);
     }
   },[isDirty])
   
@@ -150,7 +152,7 @@ const EditBtnBox = styled(OnlyJustifyCenterFlex)`
   width: 100%;
   margin-top: ${({ theme }) => theme.rem.p20};
 `;
-const EditBtn = styled.button<{ isChangeValue: boolean; isError:boolean; }>`
+export const EditBtn = styled.button<{ isChangeValue: boolean; isError ?:boolean; }>`
   width: 114px;
   padding: 10px 30px;
   border-radius: 6px;
