@@ -29,7 +29,7 @@ export const Header = () => {
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
-        <KlogText>K - Log</KlogText>
+        <KlogText>K : Log</KlogText>
         <BtnBox>{isMount && userInfo ? <HeaderUserMenu /> : <LoginSignUpBox />}</BtnBox>
       </HeaderInnerBox>
     </HeaderBox>

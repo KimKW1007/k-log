@@ -67,14 +67,13 @@ const FindBtn = styled.button<{ currentId: string; textById?: string }>`
   font-size: 18px;
   border-radius: 8px 8px 0 0;
   border-bottom: 1px solid transparent;
-  background: #232323;
-  color: #e5e5e5;
+  background: #fff;
   transform: scale(1);
   transition: 0.3s;
   ${({ currentId, textById }) =>
     currentId !== textById &&`
       transform: scale(0.99);
-      background: #f5f5f5;
+      background: #232323;
       color: #bbb;
       border-bottom: 1px solid #b5b5b5;
     `}

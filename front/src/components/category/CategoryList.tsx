@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import CategoryItems from './CategoryItems';
 
 export interface CategoryBackProps {
@@ -11,13 +11,12 @@ export  interface SubCategoryBackProps {
   id ?: number;
   categorySubTitle: string;
 }
-const CategoryList = () => {
-
+const CategoryList = ({isScroll} : {isScroll :boolean}) => {
   return (
     <CategoryNav>
-      <CategoryListBox>
+      <CategoryListBox isScroll={isScroll}>
         <h3>카테고리 목록</h3>
-        <CategoryItems/>
+        <CategoryItems isScroll={isScroll}/>
       </CategoryListBox>
     </CategoryNav>
   );
@@ -37,21 +36,23 @@ const DropAni = keyframes`
 
 const CategoryNav = styled.nav`
   position: absolute;
-  border: 1px solid #565656;
   margin-top: 2px;
   animation: ${DropAni} 0.4s forwards;
-  border-top: 4px solid ${({ theme }) => theme.color.err};
-  border-radius: 0 0 20px 20px;
-  overflow: hidden;
+
 `;
 
-const CategoryListBox = styled.dl`
+const CategoryListBox = styled.div<{isScroll : boolean}>`
   display: flex;
   flex-direction: column;
   min-width: 230px;
   background: #292929;
-  padding: ${({ theme }) => theme.rem.p20} 0.938rem 1.563rem;
   color: #fff;
+  padding: ${({ theme }) => theme.rem.p20} 0.938rem 1.563rem;
+  transition: 0.4s ease-in-out;
+  border: 1px solid #565656;
+  border-top: 4px solid ${({ theme }) => theme.color.err};
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
   h3 {
     font-size: ${({ theme }) => theme.rem.p14};
     border-bottom: 1px solid #858585;
@@ -59,4 +60,9 @@ const CategoryListBox = styled.dl`
     margin-bottom: ${({ theme }) => theme.rem.p10};
     pointer-events: none;
   }
+  ${({isScroll, theme}) => isScroll && `
+    background: #fff;
+    color:#232323;
+    border-top: 4px solid ${theme.color.success};
+  `}
 `;

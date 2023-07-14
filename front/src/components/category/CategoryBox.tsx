@@ -39,7 +39,7 @@ const CategoryBox = () => {
         CATEGORY
         {isCategoryOn ? <UpDirection /> : <DownDirection />}
       </CategoryBtn>
-      {isCategoryOn && <CategoryList />}
+      {isCategoryOn && <CategoryList isScroll={Boolean(currentScroll >= 70)} />}
     </CategoryWrap>
   );
 };

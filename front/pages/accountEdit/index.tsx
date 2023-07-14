@@ -42,6 +42,7 @@ export default AccountEditPage;
 const EditWrap = styled(OnlyJustifyCenterFlex)`
   width:100%;
   padding: ${({theme}) => theme.rem.p100} ${({theme}) => theme.rem.p30};
+  color:#232323;
 `;
 const EditInnerBox = styled.div`
   width: 1300px;
@@ -60,6 +61,7 @@ const SideProfileEditBox = styled.div`
   border-radius: 30px;
   overflow:hidden;
   padding: ${({theme}) => theme.rem.p20};
+  background:#fff;
 `;
 
 const LockIconBox = styled.div`
@@ -69,5 +71,6 @@ const LockIconBox = styled.div`
   height:100%;
   svg{
     width: 50%;
+    color:${({theme}) => theme.color.success};
   }
 `

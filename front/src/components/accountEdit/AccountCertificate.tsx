@@ -88,6 +88,7 @@ const AccountCertificateForm = styled.form`
 `
 
 const AccountCertificateArea = styled.div`
+  background: #fff;
   height: 650px;
   border : 1px solid #DDE6ED;
   border-radius: 30px;

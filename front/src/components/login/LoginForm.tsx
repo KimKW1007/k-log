@@ -99,6 +99,7 @@ export const Form = styled.form`
   flex-flow: column;
   display: flex;
   align-items: center;
+  color:#232323;
 `;
 
 const SubmitBox = styled(AllCenterFlex)`

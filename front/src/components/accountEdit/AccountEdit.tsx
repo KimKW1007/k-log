@@ -47,17 +47,18 @@ const Tab = styled.button<{isCurrent : boolean;}>`
   padding: 50px 25px 50px 35px;
   font-weight: 900;
   border-radius: 0 20px 20px 0;
-  background: #f5f5f5;
   color: #bbb;
+  background: #656565;
   border-bottom: 1px solid rgba(0,0,0,.2);
   box-shadow: 5px 12px 5px 3px rgba(0,0,0,.2);
-  transition: 0.3s;
+  transition: 0.2s;
   writing-mode: vertical-lr;
   transform :translateX(-20px);
   ${({isCurrent}) => isCurrent && `
-    background: #232323;
-    color: #e5e5e5;
-    transform :translateX(0px);
+    color: #232323;
+    background: #fff;
+    padding: 50px 25px 50px 25px;
+    transform :translateX(-10px);
   `}
   `
 
@@ -65,7 +66,6 @@ const EditAreaBox = styled.div`
   position:relative;
   z-index: 3;
   width:100%;
-  border : 1px solid #DDE6ED;
   background: #fff;
   border-radius: 30px;
   overflow:hidden;
