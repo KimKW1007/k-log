@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import profileImg from "@images/500_94.jpg"
 import Image from 'next/image';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import SearchBox from './SearchBox';
-import EditCategoryList from '@components/category/EditCategoryList';
-import SidebarHeader from './SidebarHeader';
+import SearchBox from '../../sideBar/SearchBox';
+import SidebarHeader from './EditSidebarHeader';
+import EditCategoryList from '@components/accountEdit/EditCategory/EditCategoryList';
 
 
 

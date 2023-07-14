@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import defaultImage from '@assets/images/500_94.jpg';
 import { PlusSquareDotted } from '@styled-icons/bootstrap/PlusSquareDotted';
-import { EditBtn } from '@components/category/EditCategoryList';
+import { EditBtn } from '../EditCategory/EditCategoryList';
 
 const getBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
