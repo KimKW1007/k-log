@@ -25,7 +25,6 @@ const SidebarHeader = () => {
     if (data) {
       setImageUrl(data?.imageUrl);
       setDescription(data?.description);
-      console.log(data?.description.split("\r\n"))
     }
   }, [data]);
 
