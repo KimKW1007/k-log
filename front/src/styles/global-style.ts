@@ -106,9 +106,9 @@ body,
 }
 
 body{
-    font: normal 16px/1 ;
+    font: normal 16px/1 'Pretendard-Regular';
     font-family :  'Pretendard-Regular', 'Noto Sans KR',-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background:#232323;
+    background:#23262d;
     color: #fff;
 }
 
