@@ -34,4 +34,6 @@ const ContentsContainer = styled.div`
   padding: 50px 30px;
   border : 1px solid #444;
   display:flex;
+  background: #2a2a2a;
+  column-gap: 40px;
 `
