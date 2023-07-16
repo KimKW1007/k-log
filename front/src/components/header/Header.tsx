@@ -10,8 +10,10 @@ import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
 import HeaderUserMenu from './HeaderUserMenu';
 import CategoryBox from '@components/category/CategoryBox';
+import { useRouter } from 'next/router';
 
 export const Header = () => {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isMount, setIsMount] = useState<boolean>(false);
   useEffect(() => {
@@ -19,7 +21,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <HeaderBox>
+    <HeaderBox isHome={router.pathname === '/'}>
       <HeaderInnerBox>
         <LogoAndCategoryBox>
           <CategoryBox></CategoryBox>
@@ -44,15 +46,17 @@ const KlogText = styled.h2`
   pointer-events: none;
 `;
 
-const HeaderBox = styled.header`
+const HeaderBox = styled.header<{isHome : boolean;}>`
   position: relative;
   z-index: 16;
   width: 100%;
   height: ${({ theme }) => theme.rem.p70};
   padding: 0 ${({ theme }) => theme.rem.p30};
-  box-shadow: 0 0 20px #eee;
   background: #111111;
   color: #fff;
+  ${({isHome}) => isHome &&`
+    box-shadow: 0 10px 30px 1px #333;
+  `}
 `;
 const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
   position: relative;
