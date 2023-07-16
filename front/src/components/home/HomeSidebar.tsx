@@ -25,4 +25,5 @@ const SidebarBox = styled(OnlyAlignCenterFlex)`
   padding: ${({theme}) => theme.rem.p20} ${({theme}) => theme.rem.p50};
   background: #343434;
   row-gap: 40px;
+  flex-shrink: 0;
 `;
