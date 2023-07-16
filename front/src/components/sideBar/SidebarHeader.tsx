@@ -16,7 +16,7 @@ const SidebarHeader = () => {
   const descriptionMapping = ()=>{
     if(description){
       return description.split("\r\n").map(ele=>(
-        <p>{ele}</p>
+        <p key={`${Date.now() + 'salt' + ele}`}>{ele}</p>
       ))
     }
   }
