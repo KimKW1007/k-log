@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { CategoryBackProps } from './CategoryList'
 import styled, { keyframes } from 'styled-components';
 import EditCategoryInput from './EditCategoryInput';
 import EditSubCategoryItems from './EditSubCategoryItems';
