@@ -21,7 +21,7 @@ position: relative;
 min-height: 1000px;
 width: 100%;
 transform-style: preserve-3d;
-box-shadow: 0 -5px 50px #333;
+box-shadow: 0 -30px 60px 1px #333;
 z-index: 1;
 padding: 100px 30px;
 `
