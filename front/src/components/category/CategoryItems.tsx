@@ -6,22 +6,22 @@ import { useQuery } from '@tanstack/react-query';
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 
-const CategoryItems = ({isScroll} : {isScroll :boolean}) => {
+const CategoryItems = ({isScroll} : {isScroll ?:boolean}) => {
   const { getApi } = customApi('/category');
   const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
   return (
     <>
       {data &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-          <CategoryItmeList isScroll={isScroll}>
+          <CategoryItmeList isScroll={isScroll} key={categoryTitle}>
             <CategoryTitle>
-              <Link prefetch href={`/category/${categoryTitle}`}>
+              <Link href={`/category/${categoryTitle}`}>
                 {categoryTitle}
               </Link>
             </CategoryTitle>
             {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
-              <CategoryItem>
-                <Link prefetch href={`/category/${categoryTitle}/${categorySubTitle}`}>
+              <CategoryItem key={categorySubTitle}>
+                <Link href={`/category/${categoryTitle}/${categorySubTitle}`}>
                   {categorySubTitle}
                 </Link>
               </CategoryItem>
@@ -39,9 +39,7 @@ const CategoryItmeList = styled.dl<{isScroll ?: boolean}>`
   margin-top: 10px;
 }
 ${({isScroll, theme}) => isScroll &&`
-  a{
-    
-  }
+
   dt, dd{
     a{
       color:#232323;
