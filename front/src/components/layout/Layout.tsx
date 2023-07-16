@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { Header } from '@components/header/Header';
 import IconLinkListBox from '@components/common/IconLinkListBox';
+import Footer from '@components/footer/Footer';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isAboutAuth, setIsAboutAuth] = useState(false);
@@ -25,6 +26,7 @@ const Layout = ({ children }: ChildrenProps) => {
     <Root>
       {isAboutAuth ? <IconLinkListBox popupPage={popupPage} /> : <Header />}
       {children}
+      <Footer />
     </Root>
   );
 };
