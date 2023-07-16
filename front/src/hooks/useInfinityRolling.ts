@@ -24,12 +24,12 @@ const useInfinityRolling = () => {
     }
     ref1.current?.style.setProperty('left', `${ref1OffsetLeft}px`)
     ref2.current?.style.setProperty('left', `${ref2OffsetLeft}px`)
-    setRef1OffsetLeft(prev => prev - 1)
-    setRef2OffsetLeft(prev => prev - 1)
+    setRef1OffsetLeft(prev => prev - .2)
+    setRef2OffsetLeft(prev => prev - .2)
   }
 
   const handleRestart = ()=>{
-    interval =  setInterval(rolling,4)
+    interval =  setInterval(rolling,3)
   }
 
 
@@ -41,7 +41,7 @@ const useInfinityRolling = () => {
   const onMouseLeave = ()=>setIsMouseOn(false)
 
 
-  useEffect(()=>{
+/*   useEffect(()=>{
       if(!isMouseOn) {
         handleRestart()
       }else{
@@ -49,7 +49,7 @@ const useInfinityRolling = () => {
       }
     return ()=> clearInterval(interval)
   })
-  
+   */
   useEffect(()=>{
     if(ref1.current && ref2.current){
       ref2.current?.style.setProperty('left', `${ref1.current?.clientWidth}px`)
