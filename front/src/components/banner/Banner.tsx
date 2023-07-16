@@ -81,7 +81,8 @@ const Banner = () => {
 export default Banner;
 const BannerWrap = styled(AllCenterFlex)`
   position: relative;
-  height: 500px;
+  z-index: 1;
+  height: 600px;
   width: 100%;
   padding: 30px 0;
 `;
@@ -99,9 +100,11 @@ const BannerBg = styled.div<{ currentBg: string }>`
 
 const BannerInnerBox = styled.div`
   position: relative;
-  height: 100%;
+  height: 80%;
   width: 937px;
   overflow: hidden;
+  outline : 10px solid #435B66;
+  outline-offset: -3px;
 `;
 
 const BannerSlideBox = styled.div`
