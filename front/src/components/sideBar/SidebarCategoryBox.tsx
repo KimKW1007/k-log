@@ -11,7 +11,7 @@ const SidebarCategoryBox = () => {
 
 export default SidebarCategoryBox
 
-const CategoryBox = styled.dl`
+const CategoryBox = styled.div`
   width:100%;
   padding:  0 0 20px;
   
