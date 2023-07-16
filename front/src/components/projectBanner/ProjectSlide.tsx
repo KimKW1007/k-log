@@ -16,12 +16,12 @@ const ProjectSlide = () => {
       <SlideWrap >
         <SlideContainer ref={ref1} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
         {bannerList.map(ele =>(
-          <div>banner{ele + 1}</div>
+          <div key={`${Date.now() + 'salt' + ele}`}>banner{ele + 1}</div>
         ))}
         </SlideContainer>
         <SlideContainer ref={ref2} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
         {bannerList.map(ele =>(
-          <div>banner{ele + 1}</div>
+          <div key={`${Date.now() + 'salt' + (-ele)}`}>banner{ele + 1}</div>
         ))}
         </SlideContainer>
       </SlideWrap>
@@ -30,13 +30,11 @@ const ProjectSlide = () => {
 }
 
 export default ProjectSlide
-const slider = keyframes`
-  0%{translateX(0px)}
-  100%{translateX(-1170px)}
-`
+
 
 const SlideArea = styled.div`
-  width: 1170px;
+  width:100%;
+  max-width: 1170px;
   height: 80px;
   padding: 0 60px;
 `
