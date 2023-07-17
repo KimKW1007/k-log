@@ -9,14 +9,15 @@ import { FlexEmptyBox } from '@components/signup/signupForm';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
 import EditSideBar from '@components/accountEdit/EditSidbar/EditSideBarBox';
+import useIsMount from 'src/hooks/useIsMount';
+
+
 const AccountEditPage: NextPage = () => {
   const [ isCertificated, setIsCertificated ] = useState(false);
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const [isMount, setIsMount] = useState(false);
+  const {isMount} = useIsMount();
 
-  useEffect(()=>{
-    setIsMount(true);
-  },[])
+
   return (
     <EditWrap>
       <EditInnerBox>

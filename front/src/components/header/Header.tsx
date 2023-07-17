@@ -11,14 +11,14 @@ import LoginSignUpBox from './LoginSignUpBox';
 import HeaderUserMenu from './HeaderUserMenu';
 import CategoryBox from '@components/category/CategoryBox';
 import { useRouter } from 'next/router';
+import useIsMount from 'src/hooks/useIsMount';
 
 export const Header = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
-  const [isMount, setIsMount] = useState<boolean>(false);
-  useEffect(() => {
-    setIsMount(true);
-  }, []);
+  const {isMount} = useIsMount();
+
+  
 
   return (
     <HeaderBox isHome={router.pathname === '/'}>

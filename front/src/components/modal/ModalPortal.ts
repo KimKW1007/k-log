@@ -1,14 +1,11 @@
-import { ChildrenProps } from '@components/layout/Layout'
+import { ChildrenProps } from '@src/types/children';
 import React, { useEffect, useState } from 'react'
 import ReactDOM from "react-dom";
+import useIsMount from 'src/hooks/useIsMount';
 
 const ModalPortal = ({children} : ChildrenProps) => {
-  const [isMount, setIsMount] = useState(false);
+  const {isMount} = useIsMount();
 
-  useEffect(() => {
-    setIsMount(true);
-    return ()=>{setIsMount(false);}
-  }, []);
 
 
   const el = document.getElementById('modal-root') as HTMLElement;

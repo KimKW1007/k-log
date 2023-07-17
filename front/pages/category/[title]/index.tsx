@@ -2,14 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import styled,{keyframes} from 'styled-components';
 import type { NextPage } from 'next';
+import useIsMount from 'src/hooks/useIsMount';
 
 const CategoryPage: NextPage = () => {
-  const [isMount, setIsMount] = useState(false);
   const router = useRouter();
+  const {isMount} = useIsMount();
 
-  useEffect(()=>{
-    setIsMount(true)
-  },[])
   return (
     <CategoryWrap>
       <TitleBox>{isMount && router.query.title}</TitleBox>
