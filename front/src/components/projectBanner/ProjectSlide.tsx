@@ -38,6 +38,10 @@ const SlideArea = styled.div`
   height: 80px;
   padding: 0 60px;
   margin: 0 auto;
+  transition: padding .3s;
+  @media(max-width:660px){
+    padding: 0;
+  }
 `
 
 const SlideWrap = styled.div`
