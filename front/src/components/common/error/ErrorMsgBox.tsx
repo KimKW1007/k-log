@@ -42,5 +42,11 @@ export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean; isEdi
     `
     margin: 6px 0 ;
   `}
+ 
 `;
-export const ErrMsg = styled.div``;
+export const ErrMsg = styled.div`
+
+@media(max-width: 660px){
+  font-size: 14px;
+}
+`;
