@@ -142,15 +142,22 @@ const SubmitBtn = styled.button`
 `;
 
 const SignUpAskQuestionBox = styled.div`
-  margin: ${({ theme }) => theme.rem.p30} 0;
+  margin: 30px 0;
   a {
     display: block;
     text-align: center;
-    margin: ${({ theme }) => theme.rem.p10} 0;
+    margin: 10px 0;
     font-weight: bold;
     color: #666;
     &:hover {
       color: #232323;
+    }
+  }
+  @media (max-width:660px){
+    margin: 20px 0;
+    a{
+      font-size :14px;
+      margin: 14px 0;
     }
   }
 `;
