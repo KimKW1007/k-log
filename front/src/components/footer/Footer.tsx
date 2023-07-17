@@ -12,9 +12,9 @@ const Footer = () => {
             <h2>K : Log</h2>
         </FooterLogoBox>
         <FooterCopyRight>
-            COPYRIGHT &copy; 2023 Kim Kyenong Won. ALL RIGHTS RESERVED.
+            COPYRIGHT &copy; 2023 Kim Kyenong Won.<br /> ALL RIGHTS RESERVED.
         </FooterCopyRight>
-        <div></div>
+        <EmptyBox></EmptyBox>
       </FooterContainer>
     </FooterWrap>
   )
@@ -22,6 +22,11 @@ const Footer = () => {
 
 export default Footer
 
+const EmptyBox= styled.div`
+  @media(max-width: 800px){
+    display:none;
+  }
+`
 
 const FooterWrap = styled.footer`
   position: relative;
@@ -31,21 +36,47 @@ const FooterWrap = styled.footer`
 
 const FooterContainer = styled(OnlyAlignCenterFlex)`
   justify-content:space-between;
-  width: 1600px;
+  max-width: 1600px;
+  width:100%;
   margin: 0 auto;
   padding: 40px 40px;
   border-top : 1px solid rgba(128, 128, 128, 0.3);
+  @media(max-width:700px){
+    margin-right: 30px;
+    padding: 20px 20px;
+  }
 `
 
 const FooterLogoBox = styled(OnlyAlignCenterFlex)`
+  flex-shrink: 0;
+
   img{
     width: 40px;
   }
   h2{
     margin-left: 10px;
   }
+  @media(max-width:700px){
+    margin-right: 30px;
+    img{
+      width: 30px;
+    }
+    h2{
+      font-size : 20px;
+    }
+  }
 `
 
 const FooterCopyRight = styled.div`
   font-size : 15px;
+  line-height: 20px; 
+  br{
+    display:none;
+  }
+  @media(max-width:700px){
+    font-size : 13px;
+    br{
+    display:block;
+    }
+  }
 `
