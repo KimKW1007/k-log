@@ -16,17 +16,19 @@ const SignUpPage: NextPage = () => {
 };
 
 export default SignUpPage;
-const SignupWrap = styled(OnlyAlignCenterFlex)`
+const SignupWrap = styled.div`
   position: relative;
+  display:flex;
   width: 100%;
-  height: 100%;
-  padding: ${({ theme }) => theme.rem.p100} ${({ theme }) => theme.rem.p100};
+  padding:150px  50px ;
   justify-content: flex-end;
-  background : #242424;
+  @media(max-width: 660px){
+    padding: 100px   20px ;
+  }
 `;
 
 const SignupInnerBox = styled(PageInnerBox)`
   position: relative;
-  height: 100%;
+  height: 710px;
   box-shadow: 0 0px 25px 20px rgba(155, 155, 155, 0.4);
 `;
