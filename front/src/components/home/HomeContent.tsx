@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components';
 import HomeNewPoster from './HomeNewPoster';
 import HomeSidebar from './HomeSidebar';
 
 const HomeContent = () => {
+  const [isRemoveSidebar, setIsRemoveSidebar] = useState(false);
+
+  useEffect(()=>{
+    window.addEventListener("resize",()=>{
+      if(window.innerWidth <= 1600){
+        setIsRemoveSidebar(true);
+      }else{
+        setIsRemoveSidebar(false);
+      }
+    })
+  })
+
   return (
     <ContentsWrap>
       <ContentsContainer>
         <HomeNewPoster/>
-        <HomeSidebar/>
+        {isRemoveSidebar || <HomeSidebar/>}
       </ContentsContainer>
     </ContentsWrap>
   )
