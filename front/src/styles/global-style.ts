@@ -110,6 +110,18 @@ body{
     font-family :  'Pretendard-Regular', 'Noto Sans KR',-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background:#23262d;
     color: #fff;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #fff;
+      border-radius: 10px;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
+    &::-webkit-scrollbar-track {
+      margin: 10px 0;
+    }
 }
 
 a{
@@ -162,6 +174,19 @@ main,header,footer,section,nav,article{
     z-index:4;
     background: rgba(0,0,0,.4);
   }
+}
+
+.customScroll{
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  
 }
 
 `;
