@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
+
 const HomeNewPosterBigItem = () => {
   return (
     <PosterItem>
@@ -19,11 +20,14 @@ const HomeNewPosterBigItem = () => {
 
 export default HomeNewPosterBigItem;
 
+
+
+
 const PosterTop = styled.div``;
 
 const PosterItem = styled.div`
-  width: 460px;
-  height: 400px;
+  width:100%;
+  flex: 1;
   border: 1px solid #de4568;
   padding: 40px 30px;
   margin-right: 30px;
