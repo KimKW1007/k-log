@@ -29,7 +29,7 @@ const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: numbe
   transform-style: preserve-3d;
   transform: rotateY(${({ currentRotate }) => currentRotate}deg);
   left: ${({ delay }) => delay * 39}px;
-  top: -7px;
+  top: -8px;
   transition: transform 2s ${({ delay }) => delay * 0.15}s;
   ${({ resetRotate }) => resetRotate && `transition: none`};
   transform-origin: center center -8.666px;
