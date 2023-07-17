@@ -71,7 +71,7 @@ export const InputBox = styled.div<{ errColor?: boolean }>`
     `}
 `;
 
-export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?: boolean }>`
+export const Input = styled.input<{ bold?: boolean; small?: boolean; }>`
   position: relative;
   z-index: 2;
   width: 100%;
@@ -93,11 +93,16 @@ export const Input = styled.input<{ bold?: boolean; small?: boolean; isEmail?: b
       padding: ${theme.rem.p28} ${theme.rem.p12} 0.5rem;
       font-size: ${theme.rem.p16};
     `}
-  ${({ isEmail, theme }) =>
-    isEmail &&
+  ${({ theme }) =>
     css`
-      padding: ${theme.rem.p28} ${theme.rem.p100} ${theme.rem.p10} ${theme.rem.p12};
+    @media(max-width: 660px){
+      line-height: ${theme.rem.p26};
+      padding: ${theme.rem.p28} ${theme.rem.p12} 0.5rem;
+      font-size: ${theme.rem.p16};
+    }
     `}
+
+   
 `;
 
 export const CurrentInputName = styled.span<{ small: boolean }>`
@@ -126,6 +131,9 @@ export const CurrentInputName = styled.span<{ small: boolean }>`
       css`
         font-size: 12px;
       `}
+      @media(max-width: 660px){
+        font-size: 12px;
+      }
   }
 `;
 
