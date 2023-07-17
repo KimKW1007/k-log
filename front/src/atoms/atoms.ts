@@ -31,7 +31,7 @@ export const NotFoundByEmail = atom<boolean>({
   key : "NotFoundByEmailKey",
   default : false
 })
-export const isPopup = atom<boolean>({
-  key : "isPopupKey",
+export const isRemoveSidebar = atom<boolean>({
+  key : "isRemoveSidebarKey",
   default : false
 })
