@@ -2,25 +2,39 @@ import React, { useEffect, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components';
 import HomeNewPoster from './HomeNewPoster';
 import HomeSidebar from './HomeSidebar';
+import { useRecoilState } from 'recoil';
+import { isRemoveSidebar } from '@atoms/atoms';
+import useIsMount from 'src/hooks/useIsMount';
 
 const HomeContent = () => {
-  const [isRemoveSidebar, setIsRemoveSidebar] = useState(false);
+  const [isRemove, setIsRemove] = useRecoilState(isRemoveSidebar);
+  const {isMount} = useIsMount();
+
+  const checkNowWindowWidth = ()=>{
+    if(window.innerWidth <= 1600){
+      setIsRemove(true);
+    }else{
+      setIsRemove(false);
+    }
+  }
 
   useEffect(()=>{
     window.addEventListener("resize",()=>{
-      if(window.innerWidth <= 1600){
-        setIsRemoveSidebar(true);
-      }else{
-        setIsRemoveSidebar(false);
-      }
+      checkNowWindowWidth()
     })
+    return ()=>window.addEventListener("resize",()=>{})
   })
+  useEffect(()=>{
+    checkNowWindowWidth()
+  },[])
+
+
 
   return (
     <ContentsWrap>
       <ContentsContainer>
         <HomeNewPoster/>
-        {isRemoveSidebar || <HomeSidebar/>}
+        {isMount && (isRemove || <HomeSidebar/>)}
       </ContentsContainer>
     </ContentsWrap>
   )
@@ -33,7 +47,6 @@ position: relative;
 min-height: 1000px;
 width: 100%;
 transform-style: preserve-3d;
-box-shadow: 0 -30px 60px 1px #333;
 z-index: 1;
 padding: 100px 30px;
 `
