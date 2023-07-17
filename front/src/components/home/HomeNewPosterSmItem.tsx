@@ -20,7 +20,7 @@ const HomeNewPosterSmItem = () => {
           
           <Author>
           <div></div>
-            <span>인파</span>
+            <span>뭘봐</span>
           </Author>
           <CreateAt>2023.07.17</CreateAt>
         </AuthorBox>
