@@ -25,9 +25,11 @@ const HomeNewPoster = () => {
 export default HomeNewPoster;
 
 const HomeNewPosterWrap = styled.div`
-  flex: 1;
+  width:100%;
+  max-width: 1138px;
   display: flex;
   flex-direction: column;
+  margin : 0 auto;
 `;
 
 const TitleBox = styled(OnlyAlignCenterFlex)`
