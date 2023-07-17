@@ -11,12 +11,12 @@ export  interface SubCategoryBackProps {
   id ?: number;
   categorySubTitle: string;
 }
-const CategoryList = ({isScroll} : {isScroll :boolean}) => {
+const CategoryList = ({isOverHeader} : {isOverHeader :boolean}) => {
   return (
     <CategoryNav>
-      <CategoryListBox isScroll={isScroll}>
+      <CategoryListBox isOverHeader={isOverHeader}>
         <h3>카테고리 목록</h3>
-        <CategoryItems isScroll={isScroll}/>
+        <CategoryItems isOverHeader={isOverHeader}/>
       </CategoryListBox>
     </CategoryNav>
   );
@@ -41,7 +41,7 @@ const CategoryNav = styled.nav`
 
 `;
 
-const CategoryListBox = styled.div<{isScroll : boolean}>`
+const CategoryListBox = styled.div<{isOverHeader : boolean}>`
   display: flex;
   flex-direction: column;
   min-width: 230px;
@@ -60,7 +60,7 @@ const CategoryListBox = styled.div<{isScroll : boolean}>`
     margin-bottom: ${({ theme }) => theme.rem.p10};
     pointer-events: none;
   }
-  ${({isScroll, theme}) => isScroll && `
+  ${({isOverHeader, theme}) => isOverHeader && `
     background: #fff;
     color:#232323;
     border-top: 4px solid ${theme.color.success};

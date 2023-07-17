@@ -6,14 +6,14 @@ import { useQuery } from '@tanstack/react-query';
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 
-const CategoryItems = ({isScroll} : {isScroll ?:boolean}) => {
+const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
   const { getApi } = customApi('/category');
   const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
   return (
     <>
       {data &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-          <CategoryItmeList isScroll={isScroll} key={categoryTitle}>
+          <CategoryItmeList isOverHeader={isOverHeader} key={categoryTitle}>
             <CategoryTitle>
               <Link href={`/category/${categoryTitle}`}>
                 {categoryTitle}
@@ -34,11 +34,11 @@ const CategoryItems = ({isScroll} : {isScroll ?:boolean}) => {
 
 export default CategoryItems;
 
-const CategoryItmeList = styled.dl<{isScroll ?: boolean}>`
+const CategoryItmeList = styled.dl<{isOverHeader ?: boolean}>`
 & + & {
   margin-top: 10px;
 }
-${({isScroll, theme}) => isScroll &&`
+${({isOverHeader, theme}) => isOverHeader &&`
 
   dt, dd{
     a{
