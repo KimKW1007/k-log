@@ -37,6 +37,7 @@ const SlideArea = styled.div`
   max-width: 1170px;
   height: 80px;
   padding: 0 60px;
+  margin: 0 auto;
 `
 
 const SlideWrap = styled.div`
