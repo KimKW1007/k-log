@@ -16,22 +16,29 @@ const LoginPage: NextPage = () => {
 
 export default LoginPage;
 
-const LoginWrap = styled(AllCenterFlex)`
+const LoginWrap = styled.div`
   position:relative;
   z-index: 3;
   width: 100%;
-  height:100%;
-  padding:${({theme})=>theme.rem.p70}  ${({theme})=>theme.rem.p50} ;
+  padding:150px  50px ;
+  display:flex;
   // background : url(${AuthSeasonBg()}) center center no-repeat;
   // background-size:  cover;
-  background: #242424;
+  @media(max-width: 660px){
+    padding: 100px   20px ;
+  }
 `;
 
 export const PageInnerBox = styled.div`
   // 550px
   width: 36rem;
-  padding:${({theme})=>theme.rem.p80} ${({theme})=>theme.rem.p70} 0;
+  height:700px;
+  padding:80px 70px 0;
   background: #fefefe;
+  margin: auto;
+  @media(max-width: 660px){
+    padding: 60px 40px 0;
+  }
 `;
 
 const LoginInnerBox = styled(PageInnerBox)`
