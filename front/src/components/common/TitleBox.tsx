@@ -36,6 +36,15 @@ const TitleBox = styled.div<{ isLogin?: boolean; idListPage?: boolean }>`
     css`
       margin: 0 0 ${({ theme }) => theme.rem.p60};
     `}
+    @media(max-width: 660px){
+      h2 {
+        font-size: 30px;
+      }
+      h3 {
+        padding: 0 4.54545vw;
+        font-size: 16px;
+      }
+    }
 `;
 
 const TipBox = styled.div``;
