@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import { ArrowDropDown } from '@styled-icons/material-rounded';
 import Link from 'next/link';
 import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
+import { ShortLine } from './LoginSignUpBox';
 
 interface MenuItemsType {
   title: string;
@@ -13,7 +14,7 @@ interface MenuItemsType {
   text: string;
 }
 
-const HeaderUserMenu = () => {
+const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => {
   const MenuItemList: MenuItemsType[] = [
     {
       title: 'accountEdit',
@@ -41,27 +42,30 @@ const HeaderUserMenu = () => {
       console.log({ data });
     }
   });
-  const logoutFn = (title : string) => () => {
-    if(title !== 'logout') return
+  const logoutFn = (title: string) => () => {
+    if (title !== 'logout') return;
     setUserInfo(null);
     sessionStorage.removeItem('jwtToken');
     mutate({});
   };
 
   return (
-    <UserPlBox>
-      <UserPlInnerBox>
+    <UserPlBox isInSideMenu={isInSideMenu}>
+      <UserPlInnerBox isInSideMenu={isInSideMenu}>
         <span>{userInfo?.userName}</span>
-        <ArrowIcon />
+        {isInSideMenu || <ArrowIcon />}
       </UserPlInnerBox>
-      <UserPlMenuBox>
+      <UserPlMenuBox isInSideMenu={isInSideMenu}>
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
-            <PlMeunItem key={Date.now() + 'salt' + idx}>
-              <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
-                {text}
-              </Link>
-            </PlMeunItem>
+            <>
+              <PlMeunItem key={Date.now() + 'salt' + idx}>
+                <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
+                  {text}
+                </Link>
+              </PlMeunItem>
+            {idx === 0 && isInSideMenu && <ShortLine/>}
+            </>
           ))}
         </PlMenuInnerBox>
       </UserPlMenuBox>
@@ -82,28 +86,40 @@ const MenuAni = keyframes`
   }
 `;
 
-const UserPlInnerBox = styled.div`
+const UserPlInnerBox = styled.div<{ isInSideMenu: boolean }>`
   position: relative;
-  background: rgba(128, 128, 128, 0.2);
-  border-radius: ${({ theme }) => theme.rem.p10};
   font-size: ${({ theme }) => theme.rem.p14};
   overflow: hidden;
+  pointer-events: none;
+  user-select:none;
   span {
-    display: block;
-    padding: 8px ${({ theme }) => theme.rem.p34} 8px 16px;
-    pointer-events: none;
     font-weight: bold;
     letter-spacing: 0.5px;
   }
+  ${({ isInSideMenu, theme }) =>
+    isInSideMenu
+      ? css`
+      text-align:center;
+      span{
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(128, 128, 128, 0.2);
+        border-radius: 6px;
+
+      }
+      `
+      : css`
+          border-radius: ${theme.rem.p10};
+          background: rgba(128, 128, 128, 0.2);
+          span {
+            display: block;
+            padding: 8px ${theme.rem.p34} 8px 16px;
+            
+          }
+        `}
 `;
 
-const UserPlMenuBox = styled.div`
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 28px;
-  opacity: 0;
-`;
+
 
 const PlMenuInnerBox = styled.ul`
   margin-top: ${({ theme }) => theme.rem.p10};
@@ -126,7 +142,44 @@ const PlMeunItem = styled.li`
     }
   }
 `;
-
+const UserPlMenuBox = styled.div<{ isInSideMenu: boolean }>`
+  ${({ isInSideMenu, theme }) =>
+    isInSideMenu
+      ? css`
+          ${PlMenuInnerBox}{
+            margin-top: 0;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            border-right: 0;
+            margin-top : 20px;
+            display:flex;
+            align-items:center;
+            ${PlMeunItem}{
+              width: auto;
+              margin: 0;
+              a{
+                padding: 0.5rem ${({ theme }) => theme.rem.p12};
+                font-size: 15px;
+                color:rgba(255,255,255,.5);
+                border-radius: 0;
+                transition: .3s;
+                &:hover {
+                  background: transparent;
+                  color:rgba(255,255,255,1);
+                }
+              }
+            }
+          }
+        `
+      : css`
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 28px;
+          opacity: 0;
+        `}
+`;
 const ArrowIcon = styled(ArrowDropDown)`
   position: absolute;
   right: 2px;
@@ -135,17 +188,25 @@ const ArrowIcon = styled(ArrowDropDown)`
   width: 2em;
   transition: 0.3s;
 `;
-const UserPlBox = styled.div`
+const UserPlBox = styled.div<{ isInSideMenu: boolean }>`
   position: relative;
-  &:hover {
-    ${UserPlInnerBox} {
-      svg {
-        transform: translateY(-50%) rotate(180deg);
-      }
-    }
-    ${UserPlMenuBox} {
-      display: block;
-      animation: ${MenuAni} 0.4s forwards;
-    }
-  }
+
+  ${({ isInSideMenu }) =>
+    isInSideMenu
+      ? css`
+          
+        `
+      : css`
+          &:hover {
+            ${UserPlInnerBox} {
+              svg {
+                transform: translateY(-50%) rotate(180deg);
+              }
+            }
+            ${UserPlMenuBox} {
+              display: block;
+              animation: ${MenuAni} 0.4s forwards;
+            }
+          }
+        `}
 `;
