@@ -9,12 +9,9 @@ const HomeNewPosterList = () => {
     {id: 1},
     {id: 2},
     {id: 3},
-    {id: 4},
-    {id: 5},
   ])
-  const posterList = new Array(5).fill(undefined).map((val, idx) => idx)
-  const wrapRef = useRef<HTMLDivElement>(null)
-  const smListRef = useRef<HTMLDivElement>(null)
+  const [wrapList, setWrapList] = useState([])
+
 
 
 
@@ -23,16 +20,12 @@ const HomeNewPosterList = () => {
     <ListWrap>
       <ListContainer>
         <HomeNewPosterBigItem />
-        <NewPosterSmList ref={smListRef}>
+        <NewPosterSmList >
           {testList.map((ele, idx)=>(
-            <HomeNewPosterSmItem key={`${Date.now() + 'salt' + idx}`} wrapRef={wrapRef} smListRef={smListRef} id={ele.id}/>
+            <HomeNewPosterSmItem key={`${Date.now() + 'salt' + idx}`} />
           ))}
         </NewPosterSmList>
-        
       </ListContainer>
-      <NewPosterSmWrapList ref={wrapRef}>
-        
-      </NewPosterSmWrapList>
     </ListWrap>
   )
 }
@@ -47,14 +40,27 @@ const ListWrap = styled.div`
 const ListContainer = styled.div`
   width:100%;
   display:flex;
+  @media (max-width: 1020px){
+    display:block;
+  }
 `
 
 const NewPosterSmList = styled.div`
+  width:530px;
   display:flex;
+  flex-direction : column;
+  @media (max-width: 1280px){
+    width: 41.4062vw;
+  }
+  @media (max-width: 1020px){
+    width: 100%;
+    margin-top: 30px;
+  }
 `
 
 const NewPosterSmWrapList = styled.div`
   display:flex;
   flex-wrap:wrap;
   margin-top : 30px;
+
 `
