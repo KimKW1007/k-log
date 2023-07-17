@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { useRouter } from 'next/router';
 import CategoryList from './CategoryList';
+import useScrollOverHeader from 'src/hooks/useScrollOverHeader';
 
 interface CategoryBackProps {
   id: number;
@@ -16,48 +17,40 @@ interface SubCategoryBackProps {
 const CategoryBox = () => {
   const router = useRouter();
   const [isCategoryOn, setIsCategoryOn] = useState(false);
-  const [currentScroll, setCurrentScroll] = useState(0);
-
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      setCurrentScroll(window.scrollY);
-    });
-    return () => window.removeEventListener('scroll', () => {});
-  });
+  const { isOverHeader } = useScrollOverHeader();
 
   useEffect(() => {
     setIsCategoryOn(false);
   }, [router]);
 
   return (
-    <CategoryWrap currentScroll={currentScroll}>
-      <CategoryBtn
-        currentScroll={currentScroll}
-        onClick={() => {
-          setIsCategoryOn((prev) => !prev);
-        }}>
-        CATEGORY
-        {isCategoryOn ? <UpDirection /> : <DownDirection />}
-      </CategoryBtn>
-      {isCategoryOn && <CategoryList isScroll={Boolean(currentScroll >= 70)} />}
-    </CategoryWrap>
+    <>
+      {<CategoryWrap>
+        <CategoryBtn
+          isOverHeader={isOverHeader}
+          onClick={() => {
+            setIsCategoryOn((prev) => !prev);
+          }}>
+          CATEGORY
+          {isCategoryOn ? <UpDirection /> : <DownDirection />}
+        </CategoryBtn>
+        {isCategoryOn && <CategoryList isOverHeader={isOverHeader} />}
+      </CategoryWrap>}
+    </>
   );
 };
 
 export default CategoryBox;
 
-const CategoryWrap = styled.div<{ currentScroll: number }>`
+const CategoryWrap = styled.div`
   position: fixed;
   z-index: 44;
-  transition: 0.4s ease-in-out;
-  ${({ currentScroll,theme }) =>
-    currentScroll >= 70 &&
-    `
-    margin-top: ${theme.rem.p30}
-  `}
+  @media(max-width: 700px){
+    display:none;
+  }
 `;
 
-const CategoryBtn = styled.button<{ currentScroll: number }>`
+const CategoryBtn = styled.button<{ isOverHeader: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,12 +66,13 @@ const CategoryBtn = styled.button<{ currentScroll: number }>`
   font-weight: bold;
   background: #232323;
   color: #fff;
-  ${({ currentScroll }) =>
-    currentScroll >= 70 &&
+  ${({ isOverHeader, theme }) =>
+  isOverHeader &&
     `
     border: 2px solid #232323;
     background: #fff;
     color:#232323;
+    margin-top: ${theme.rem.p30}
   `}
 `;
 
