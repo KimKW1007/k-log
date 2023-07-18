@@ -8,7 +8,7 @@ const LoginSignUpBox = ({isInSideMenu} : { isInSideMenu ?: boolean}) => {
       <LoginText href={'/login'} title="로그인" isInSideMenu={isInSideMenu}>
         로그인
       </LoginText>
-      <ShortLine></ShortLine>
+      {isInSideMenu && <ShortLine></ShortLine>}
       <SignupText href={'/signup'} className="rightLine" title="회원가입" isInSideMenu={isInSideMenu}>
         회원가입
       </SignupText>
