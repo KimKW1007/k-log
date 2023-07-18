@@ -7,10 +7,11 @@ import useIsMount from 'src/hooks/useIsMount';
 const CategoryPage: NextPage = () => {
   const router = useRouter();
   const {isMount} = useIsMount();
-
   return (
     <CategoryWrap>
-      <TitleBox>{isMount && router.query.title}</TitleBox>
+      <TitleBox>
+        <span>{isMount && router.query.title}</span>
+      </TitleBox>
 
     </CategoryWrap>
   )
@@ -20,9 +21,14 @@ export default CategoryPage
 
 const CategoryWrap = styled.div`
   width:100%;
-  padding: 50px 50px;
+  padding: 100px 50px;
 `
 
 const TitleBox = styled.div`
-
+  text-align:center;
+  font-size :30px;
+  span{
+    padding: 15px 30px;
+    border-bottom: 2px solid ${({theme}) => theme.color.err};
+  }
 `
