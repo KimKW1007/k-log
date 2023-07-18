@@ -5,8 +5,9 @@ import HomeSidebar from './HomeSidebar';
 import { useRecoilState } from 'recoil';
 import { isRemoveSidebar } from '@atoms/atoms';
 import useIsMount from 'src/hooks/useIsMount';
-
+import { useRouter } from 'next/router';
 const HomeContent = () => {
+  const router = useRouter();
   const [isRemove, setIsRemove] = useRecoilState(isRemoveSidebar);
   const {isMount} = useIsMount();
 
@@ -19,13 +20,17 @@ const HomeContent = () => {
   }
 
   useEffect(()=>{
-    window.addEventListener("resize",()=>{
-      checkNowWindowWidth()
-    })
+    if(router.pathname === '/'){
+      window.addEventListener("resize",()=>{
+        checkNowWindowWidth()
+      })
+    }
     return ()=>window.addEventListener("resize",()=>{})
   })
   useEffect(()=>{
-    checkNowWindowWidth()
+    if(router.pathname === '/'){
+      checkNowWindowWidth()
+    }
   },[])
 
 
