@@ -133,7 +133,7 @@ ul,li,ol{
   list-style: none;
 }
 
-i,em,address{
+i,address{
   font-style: normal;
 }
 
