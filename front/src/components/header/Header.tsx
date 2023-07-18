@@ -15,9 +15,16 @@ import useIsMount from 'src/hooks/useIsMount';
 import SideMenu from './SideMenu';
 
 export const Header = () => {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isReactive, setIsReactive] = useRecoilState(isRemoveSidebar);
   const { isMount } = useIsMount();
+
+  useEffect(()=>{
+    if(router.pathname !== '/'){
+      setIsReactive(true);
+    }
+  },[router])
 
   return (
     <HeaderBox >
