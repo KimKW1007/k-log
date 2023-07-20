@@ -26,13 +26,13 @@ const EditSidebarHeader = () => {
   const { getApi } = customApi('/file/getUserPl');
   const { data } = useQuery(['GET_USER_MINI_PL'], getApi);
 
-  const { postApi } = imageApi('/upload');
+  const { postApi } = imageApi('upload', true);
   const { mutate } = useMutation(postApi, {
     onError(error: any) {
       console.log({ error });
     },
     onSuccess(data) {
-      console.log({ data });
+      setIsChangeValue(false);
       queryClient.invalidateQueries(['GET_USER_MINI_PL']);
     }
   });
@@ -57,21 +57,24 @@ const EditSidebarHeader = () => {
     formState: { isDirty }
   } = methods;
   const { onChange, ref } = register('image');
+  
   const [image, setImage] = useState();
+
+
   const onAvatarChange = useCallback(async (event: any) => {
     if (event.target.files?.[0]) {
       const imageFile = event.target.files[0];
       const base64 = await getBase64(imageFile).then((res: any) => {
         setImage(res);
       });
-
       setValue('image', imageFile);
+      setIsChangeValue(true);
       onChange(event);
     }
   }, []);
   const onSubmit = async ({ image, description }: any) => {
     const formData = new FormData();
-    formData.append('file', image);
+    formData.append('image', image);
     formData.append('description', description);
 
     mutate(formData);
