@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
-import { ImagesDto } from './dto/file-images.dto';
 
 
 @Controller()
@@ -18,9 +17,9 @@ export class FileController {
   constructor(private readonly fileService: FileService) {}
 
   @Post('uploads')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@Body() imagesDto , @UploadedFile() file: Express.Multer.File) {
-    return this.fileService.uploadFile(imagesDto, file);
+  @UseInterceptors(FileInterceptor('image'))
+  uploadFile(@Body() body , @UploadedFile() file: Express.Multer.File) {
+    return this.fileService.uploadFile(body, file);
   }
 
   @Get('uploads/:filename')
@@ -31,4 +30,3 @@ export class FileController {
     res.sendFile(filename, { root: 'uploads' });
   }
 }
-  
