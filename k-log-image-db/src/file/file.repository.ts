@@ -25,9 +25,10 @@ export class ImagesRepository extends Repository<Images> {
     if(!body.isProfile){
       const creatUrl = this.create({
         imageUrl : IMG_URL,
-        userId : body.userId
+        userId : body.userId,
+        subTitle : body.subTitle,
+        subTitleIdx : body.subTitleIdx,
       })
-  
       await this.save(creatUrl)
     }
     return {url : IMG_URL}
