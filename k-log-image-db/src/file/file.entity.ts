@@ -11,4 +11,10 @@ export class Images extends BaseEntity{
   @Column()
   userId : string;
 
+  @Column()
+  subTitle ?: string;
+
+  @Column()
+  subTitleIdx ?: string;
+
 }
