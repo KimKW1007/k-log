@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import useIsMount from 'src/hooks/useIsMount';
 import DOMPurify from 'dompurify';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
+import imageApi from '@utils/ImageApi';
 
 
 
@@ -31,6 +32,7 @@ const SubTitleAddForm = () => {
     console.log({contents})
     setContents(contents)
   }
+  const {postApi} = imageApi('uploads');
   const handleImage = () => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -41,7 +43,17 @@ const SubTitleAddForm = () => {
         const file = input.files[0];
         const formData = new FormData();
         formData.append("image", file);
-    
+        formData.append("userId", 'admin1');
+        try {
+          const res = await postApi(formData);
+          const IMG_URL = res.url;
+          const editor = quillRef.current?.getEditor();
+          const range = editor?.getSelection();
+          editor?.insertEmbed(range?.index!, "image", `${IMG_URL}`);
+          editor?.setSelection(range?.index! + 1, 0);
+        } catch (err) {
+          return "실패";
+        }
       }
     });
   }
@@ -61,9 +73,9 @@ const SubTitleAddForm = () => {
           ['image', 'link'],
           ['clean'] 
         ],
-        /* handlers: {
+        handlers: {
           image: handleImage,
-        } */
+        }
       },
       
     }
@@ -116,5 +128,7 @@ const TestWrap = styled.div`
 .ql-align-right{
   text-align:right;
 }
-
+img{
+  // cursor:default !important;
+}
 `
