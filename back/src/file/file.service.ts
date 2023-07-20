@@ -4,6 +4,7 @@ import * as AWS from 'aws-sdk';
 import { User } from 'src/auth/user.entity';
 import { FileRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import axios from 'axios';
 
 const S3Config = config.get('S3');
 
@@ -13,8 +14,64 @@ export class FileService {
     @InjectRepository(FileRepository)
     private fileRepository: FileRepository
   ) {}
+  private readonly DATA_URL = 'http://localhost:8000/api/uploads';
+  
+  async uploadFile(description : string, file: Express.Multer.File, user: User){
+    if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
+    const found = await this.fileRepository.findOneBy({ user: { id: user.id } });
+    if (!file) {
+      if(!found){
+        const createUserPl = this.fileRepository.create({
+          imageUrl: '',
+          description: description,
+          user,
+        });
+        await this.fileRepository.save(createUserPl);
+      }else{
+        found.description = description;
+        await this.fileRepository.save(found);
+      }
+      return { message: 'Only changed Description' };
+    }
+    
+    const formData = new FormData();
+    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+    const imageBlob = new Blob([file.buffer], { type: file.mimetype });
+    formData.append('image', imageBlob, file.originalname);
+    formData.append('userId', user.userId);
+    formData.append('isProfile', 'true');
+    try{
+      const response = await axios.post(this.DATA_URL, formData , {
+        headers:{
+          'Content-Type' : "multipart/form-data"
+        }
+      })
+      const IMG_URL = response.data.url;
+      if(!found){
+        const createUserPl = this.fileRepository.create({
+          imageUrl: IMG_URL,
+          description: description,
+          user,
+        });
+        await this.fileRepository.save(createUserPl);
+      }else{
+        found.imageUrl = IMG_URL;
+        found.description = description;
+        await this.fileRepository.save(found);
+      }
+      return { message: 'success' };
+    }catch(e){
+      console.log('오류 발생')
+    }
+  }
 
-  async uploadFile(description, file: Express.Multer.File, user: User) {
+  async getUserPl() {
+    const found = await this.fileRepository.findOneBy({ user: { id: 1 } });
+    return found;
+  }
+}
+/* AWS S3 */
+  /* async uploadFile(description, file: Express.Multer.File, user: User) {
     if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
     if (!file) {
       const found = await this.fileRepository.findOneBy({ user: { id: user.id } });
@@ -62,10 +119,4 @@ export class FileService {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  async getUserPl() {
-    const found = await this.fileRepository.findOneBy({ user: { id: 1 } });
-    return found;
-  }
-}
+  } */

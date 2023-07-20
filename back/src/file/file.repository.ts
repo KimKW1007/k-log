@@ -1,12 +1,6 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { User } from 'src/auth/user.entity';
+import { Injectable } from '@nestjs/common';
 import { FileEntity } from './file.entity';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class FileRepository extends Repository<FileEntity> {
@@ -15,6 +9,6 @@ export class FileRepository extends Repository<FileEntity> {
   }
 
 
-  
+
 }
 
