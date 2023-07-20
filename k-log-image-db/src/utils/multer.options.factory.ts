@@ -26,8 +26,10 @@ export const multerOptionsFactory = (): MulterOptions => {
       },
 
       filename(req, file, done) { // 파일의 이름을 설정합니다.
-        const ext = path.extname(file.originalname); // 파일 확장자 추출
-        const basename = path.basename(file.originalname, ext);  // 파일 이름
+        const filename = Buffer.from(file.originalname, 'latin1').toString('utf8')
+        console.log(filename)
+        const ext = path.extname(filename); // 파일 확장자 추출
+        const basename = path.basename(filename, ext);  // 파일 이름
         // 파일 이름이 중복되는 것을 막기 위해 '파일이름_날짜.확장자' 의 형식으로 파일이름을 지정합니다.
         done(null, `${basename}_${Date.now()}${ext}`);  
       },
