@@ -21,12 +21,11 @@ export class FileController {
   constructor(private readonly fileService: FileService) {}
 
   @Post('/upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   @UseGuards(AuthGuard())
-  async uploadFile(@Body() description, @UploadedFile() file : Express.Multer.File, @GetUser() user : User) {
-    return this.fileService.uploadFile(description, file, user)
+  async uploadFile(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User) {
+    return this.fileService.uploadFile(body.description, file, user)
   }
-
   @Get('/getUserPl')
   async getUserPl(){
     return this.fileService.getUserPl()
