@@ -44,6 +44,9 @@ export class FileService {
       const response = await axios.post(this.DATA_URL, formData , {
         headers:{
           'Content-Type' : "multipart/form-data"
+        },
+        params:{
+          userId : user.userId
         }
       })
       const IMG_URL = response.data.url;
