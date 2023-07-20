@@ -11,11 +11,11 @@ export class FileService {
     @InjectRepository(ImagesRepository)
     private imagesRepository: ImagesRepository,
   ) {}
-  async uploadFile(imagesDto ,file: Express.Multer.File) {
+  async uploadFile(body ,file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('파일이 존재하지 않습니다.');
     }
     
-    return this.imagesRepository.createImageUrl(imagesDto, file);
+    return this.imagesRepository.createImageUrl(body, file);
   }
 }
