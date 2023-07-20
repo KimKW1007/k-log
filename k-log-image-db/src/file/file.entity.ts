@@ -15,6 +15,6 @@ export class Images extends BaseEntity{
   subTitle ?: string;
 
   @Column()
-  subTitleIdx ?: string;
+  boardId ?: string;
 
 }

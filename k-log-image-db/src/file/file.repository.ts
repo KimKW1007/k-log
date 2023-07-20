@@ -27,7 +27,7 @@ export class ImagesRepository extends Repository<Images> {
         imageUrl : IMG_URL,
         userId : body.userId,
         subTitle : body.subTitle,
-        subTitleIdx : body.subTitleIdx,
+        boardId : body.boardId,
       })
       await this.save(creatUrl)
     }
