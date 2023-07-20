@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
+import { Board } from 'src/board/board.entity';
 
 @Entity()
 export class SubCategory extends BaseEntity {
@@ -22,6 +23,9 @@ export class SubCategory extends BaseEntity {
     eager: false,
   })
   category: Category;
+
+  @OneToMany(type => Board, board => board.subCategory, {eager: true})
+  boards : Board[];
 
 
 }
