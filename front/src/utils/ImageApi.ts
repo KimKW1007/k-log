@@ -28,5 +28,14 @@ export default function imageApi<T = any>(url: string, isOriginServer ?: boolean
     });
     return result.data;
   };
-  return { postApi };
+  const deleteApi = async (data: T) => {
+    const result = await baseApi().delete(`${isOriginServer ? `http://localhost:5000/file/` : 'http://localhost:8000/api/'}${url}`, {
+      data,
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+      }
+    });
+    return result.data;
+  };
+  return { postApi, deleteApi };
 }
