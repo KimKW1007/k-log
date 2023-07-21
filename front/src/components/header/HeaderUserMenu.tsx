@@ -77,11 +77,11 @@ export default HeaderUserMenu;
 
 const MenuAni = keyframes`
   0%{
-    top: 26px;
+    top: 20px;
     opacity: 0;
   }
   100%{
-    top: 32px;
+    top: 26px;
     opacity: 1;
   }
 `;
@@ -122,7 +122,6 @@ const UserPlInnerBox = styled.div<{ $isInSideMenu: boolean }>`
 
 
 const PlMenuInnerBox = styled.ul`
-  margin-top: ${({ theme }) => theme.rem.p10};
   background: #292929;
   border-radius: 8px 0 0 8px;
   padding: ${({ theme }) => theme.rem.p10} 0;
@@ -176,8 +175,9 @@ const UserPlMenuBox = styled.div<{ $isInSideMenu: boolean }>`
           display: none;
           position: absolute;
           right: 0;
-          top: 28px;
+          top: 0;
           opacity: 0;
+          padding-top: ${({ theme }) => theme.rem.p12};
         `}
 `;
 const ArrowIcon = styled(ArrowDropDown)`
@@ -190,23 +190,23 @@ const ArrowIcon = styled(ArrowDropDown)`
 `;
 const UserPlBox = styled.div<{ $isInSideMenu: boolean }>`
   position: relative;
-
+ 
   ${({ $isInSideMenu }) =>
   $isInSideMenu
       ? css`
           
         `
       : css`
-          &:hover {
-            ${UserPlInnerBox} {
-              svg {
-                transform: translateY(-50%) rotate(180deg);
-              }
-            }
-            ${UserPlMenuBox} {
-              display: block;
-              animation: ${MenuAni} 0.4s forwards;
-            }
+      &:hover {
+        ${UserPlInnerBox} {
+          svg {
+            transform: translateY(-50%) rotate(180deg);
           }
+        }
+        ${UserPlMenuBox} {
+          display: block;
+          animation: ${MenuAni} 0.4s forwards;
+        }
+      }
         `}
 `;
