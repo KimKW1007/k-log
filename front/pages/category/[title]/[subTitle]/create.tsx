@@ -13,8 +13,6 @@ const createPage = () => {
     if(router.query){
       const title = router.query.title;
       const subTitle = router.query.subTitle;
-      console.log(router)
-      console.log({subTitle})
       setCurrentTitle(title + '/' + subTitle)
     }
 
@@ -42,5 +40,7 @@ const CreateContainer = styled.div`
 `
 
 const CreateTitle = styled.div`
-
+  text-align: center;
+  padding: 0 0 80px;
+  font-size : 40px;
 `
