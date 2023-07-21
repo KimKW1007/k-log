@@ -18,4 +18,20 @@ export class FileService {
     
     return this.imagesRepository.createImageUrl(body, file);
   }
+
+
+  async deleteFiles(boardId : string, userId : string){
+    const found = this.imagesRepository.find({where : {boardId , userId}})
+    if(found){
+      try{
+        await this.imagesRepository.delete({boardId , userId})
+        return {message : "삭제 성공"}
+      }catch(e){
+        throw new BadRequestException('deleteFiles 오류 발생');
+      }
+    }
+    return {message : '삭제 할 board Image가 없습니다'}
+    
+  }
+
 }
