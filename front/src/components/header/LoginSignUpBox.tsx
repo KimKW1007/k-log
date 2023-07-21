@@ -5,11 +5,11 @@ import Link from 'next/link';
 const LoginSignUpBox = ({isInSideMenu} : { isInSideMenu ?: boolean}) => {
   return (
     <>
-      <LoginText href={'/login'} title="로그인" isInSideMenu={isInSideMenu}>
+      <LoginText href={'/login'} title="로그인" $isInSideMenu={isInSideMenu}>
         로그인
       </LoginText>
       {isInSideMenu && <ShortLine></ShortLine>}
-      <SignupText href={'/signup'} className="rightLine" title="회원가입" isInSideMenu={isInSideMenu}>
+      <SignupText href={'/signup'} className="rightLine" title="회원가입" $isInSideMenu={isInSideMenu}>
         회원가입
       </SignupText>
     </>
@@ -18,7 +18,7 @@ const LoginSignUpBox = ({isInSideMenu} : { isInSideMenu ?: boolean}) => {
 
 export default LoginSignUpBox;
 
-const LoginSignUpText = styled(Link)<{isInSideMenu ?: boolean}>`
+const LoginSignUpText = styled(Link)<{$isInSideMenu ?: boolean}>`
   padding: 0.5rem ${({ theme }) => theme.rem.p12};
   margin : 0 0.313em;
   transition:  .3s;
@@ -26,7 +26,7 @@ const LoginSignUpText = styled(Link)<{isInSideMenu ?: boolean}>`
   font-size: 13px;
   color:#fff;
   background: #454545;
-  ${({isInSideMenu}) => isInSideMenu &&`
+  ${({$isInSideMenu}) => $isInSideMenu &&`
     background: transparent !important;
     font-size: 15px;
     color:rgba(255,255,255,.5);

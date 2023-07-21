@@ -50,22 +50,22 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
   };
 
   return (
-    <UserPlBox isInSideMenu={isInSideMenu}>
-      <UserPlInnerBox isInSideMenu={isInSideMenu}>
+    <UserPlBox $isInSideMenu={isInSideMenu}>
+      <UserPlInnerBox $isInSideMenu={isInSideMenu}>
         <span>{userInfo?.userName}</span>
         {isInSideMenu || <ArrowIcon />}
       </UserPlInnerBox>
-      <UserPlMenuBox isInSideMenu={isInSideMenu}>
+      <UserPlMenuBox $isInSideMenu={isInSideMenu}>
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
-            <>
+            <React.Fragment key={link + title}>
               <PlMeunItem key={Date.now() + 'salt' + idx}>
                 <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
                   {text}
                 </Link>
               </PlMeunItem>
             {idx === 0 && isInSideMenu && <ShortLine/>}
-            </>
+            </React.Fragment>
           ))}
         </PlMenuInnerBox>
       </UserPlMenuBox>
@@ -86,7 +86,7 @@ const MenuAni = keyframes`
   }
 `;
 
-const UserPlInnerBox = styled.div<{ isInSideMenu: boolean }>`
+const UserPlInnerBox = styled.div<{ $isInSideMenu: boolean }>`
   position: relative;
   font-size: ${({ theme }) => theme.rem.p14};
   overflow: hidden;
@@ -96,8 +96,8 @@ const UserPlInnerBox = styled.div<{ isInSideMenu: boolean }>`
     font-weight: bold;
     letter-spacing: 0.5px;
   }
-  ${({ isInSideMenu, theme }) =>
-    isInSideMenu
+  ${({ $isInSideMenu, theme }) =>
+    $isInSideMenu
       ? css`
       text-align:center;
       span{
@@ -142,9 +142,9 @@ const PlMeunItem = styled.li`
     }
   }
 `;
-const UserPlMenuBox = styled.div<{ isInSideMenu: boolean }>`
-  ${({ isInSideMenu, theme }) =>
-    isInSideMenu
+const UserPlMenuBox = styled.div<{ $isInSideMenu: boolean }>`
+  ${({ $isInSideMenu, theme }) =>
+    $isInSideMenu
       ? css`
           ${PlMenuInnerBox}{
             margin-top: 0;
@@ -188,11 +188,11 @@ const ArrowIcon = styled(ArrowDropDown)`
   width: 2em;
   transition: 0.3s;
 `;
-const UserPlBox = styled.div<{ isInSideMenu: boolean }>`
+const UserPlBox = styled.div<{ $isInSideMenu: boolean }>`
   position: relative;
 
-  ${({ isInSideMenu }) =>
-    isInSideMenu
+  ${({ $isInSideMenu }) =>
+  $isInSideMenu
       ? css`
           
         `
