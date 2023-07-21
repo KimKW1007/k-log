@@ -1,18 +1,30 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import imageApi from './ImageApi';
 import ReactQuill from 'react-quill';
+import customApi from './customApi';
+import { useQuery } from '@tanstack/react-query';
+import useIsMount from 'src/hooks/useIsMount';
+import { useRouter } from 'next/router';
 
-/**
- * 
- * @param quillRef 
- * @param userId
- * @param currentParams 
- * @param paramsIndex 
- * @returns 
- */
-const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string , currentParams : string, paramsIndex : string) => {
+
+const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string) => {
   const {postApi} = imageApi('uploads');
-  const handleImage = () => {
+  const router = useRouter()
+  const [currentSubTitle, setCurrentSubTitle] = useState('');
+  const { getApi } = customApi("/board/lastBoardId");
+  const {isMount} = useIsMount();
+  const {data : boardLastId} = useQuery(['GET_BOARD_LAST_ID'], getApi,{
+    enabled: !!isMount
+  })
+
+  useEffect(()=>{
+    if(router.query.subTitle){
+      setCurrentSubTitle(String(router.query.subTitle).split(' ').at(-1)!)
+    }
+  },[router.query.subTitle])
+
+
+  const handleImage =  () => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
@@ -23,8 +35,8 @@ const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string 
         const formData = new FormData();
         formData.append("image", file);
         formData.append("userId", userId);
-        formData.append("subTitle", currentParams);
-        formData.append("subTitleIdx", paramsIndex);
+        formData.append("subTitle", currentSubTitle);
+        formData.append("boardId", String(boardLastId));
         try {
           const res = await postApi(formData);
           const IMG_URL = res.url;
@@ -38,18 +50,17 @@ const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string 
       }
     });
   }
-  const modules = useMemo(()=>(
-    { 
+  const modules = useMemo(()=>{
+    return { 
       blotFormatter: {},
       toolbar:{
         container:[
           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-          [{ 'font': [] }],
           [{ 'align': [] }],
           [{ 'indent': '-1'}, { 'indent': '+1' }],  
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
+          [{ 'color': [] }, { 'background': [] }],
           ['image', 'link'],
           ['clean'] 
         ],
@@ -57,9 +68,8 @@ const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string 
           image: handleImage,
         }
       },
-      
     }
-  ),[])
+  },[currentSubTitle])
   const formats = [
     'header',
     'font',
@@ -79,7 +89,7 @@ const useCustomQuill = (quillRef : React.RefObject<ReactQuill>, userId : string 
     'align',
   ]
 
-  return { formats, modules }
+  return { formats, modules, boardLastId }
 }
 
 export default useCustomQuill
