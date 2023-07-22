@@ -27,8 +27,6 @@ export class FileController {
 
   @Delete('/:boardId/:userId')
   deleteFiles(@Param('boardId', ParseIntPipe) boardId : number,@Param('userId') userId : string, ){
-    console.log('m',{boardId})
-    console.log('m',{userId})
     // return this.fileService.deleteFiles(String(boardId), userId)
   }
 
