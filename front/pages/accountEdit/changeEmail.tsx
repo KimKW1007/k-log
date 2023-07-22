@@ -11,7 +11,7 @@ import IdListByEmail from '@components/common/IdListByEmail';
 import { FinalBox, FinalText } from '@components/common/FinallPage';
 import CommonModal from '@components/modal/CommonModal';
 import { useRecoilState } from 'recoil';
-import { NotFoundByEmail, isPopup } from '@atoms/atoms';
+import { NotFoundByEmail } from '@atoms/atoms';
 
 const ChangeEmailPage: NextPage = () => {
   const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
