@@ -1,4 +1,4 @@
-import SubTitleAddForm from '@components/category/subTitlePage/SubTitleAddForm';
+import SubTitleAddForm from '@components/board/subTitlePage/SubTitleAddForm';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import useIsMount from 'src/hooks/useIsMount';
