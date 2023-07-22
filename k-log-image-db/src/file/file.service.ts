@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ImagesDto } from './dto/file-images.dto';
 import { ImagesRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as fs from 'fs';
 
 
 @Injectable()
@@ -21,9 +22,14 @@ export class FileService {
 
 
   async deleteFiles(boardId : string, userId : string){
-    const found = this.imagesRepository.find({where : {boardId , userId}})
+    const found = await this.imagesRepository.find({where : {boardId , userId}})
     if(found){
       try{
+        const files =  fs.readdirSync(`${process.cwd()}/uploads`, 'utf8');
+        const filtered = files.filter(x => found.some((v, i) => v.imageUrl.includes(x)))
+        filtered.map(deleteImageName =>{
+          fs.unlinkSync(`${process.cwd()}/uploads/${deleteImageName}`)
+        })
         await this.imagesRepository.delete({boardId , userId})
         return {message : "삭제 성공"}
       }catch(e){
