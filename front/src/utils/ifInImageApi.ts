@@ -18,10 +18,9 @@ const baseApi = () => {
 
 axiosBase.defaults.withCredentials = true;
 
-
-export default function imageApi<T = any>(url: string, isOriginServer ?: boolean) {
+export default function ifInImageApi<T = any>(url: string, isOriginServer?: boolean) {
   const postApi = async (data: T) => {
-    const result = await baseApi().post(`${isOriginServer ? `http://localhost:5000/file/` : 'http://localhost:8000/api/'}${url}`, data, {
+    const result = await baseApi().post(`${isOriginServer ? `http://localhost:5000` : 'http://localhost:8000/api/'}${url}`, data, {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
       }
@@ -29,7 +28,7 @@ export default function imageApi<T = any>(url: string, isOriginServer ?: boolean
     return result.data;
   };
   const deleteApi = async (data: T) => {
-    const result = await baseApi().delete(`${isOriginServer ? `http://localhost:5000/file/` : 'http://localhost:8000/api/'}${url}`, {
+    const result = await baseApi().delete(`${isOriginServer ? `http://localhost:5000` : 'http://localhost:8000/api/'}${url}`, {
       data,
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
