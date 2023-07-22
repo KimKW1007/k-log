@@ -16,10 +16,13 @@ export class Board extends BaseEntity {
   id: number;
 
   @Column()
-  title: string;
+  thumbnail : string;
 
   @Column()
-  subject: string;
+  boardTitle: string;
+
+  @Column()
+  contents: string;
 
   @CreateDateColumn()
   createdAt : Date;
