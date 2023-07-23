@@ -3,12 +3,12 @@ import styled,{keyframes, css} from 'styled-components';
 import customApi from '@utils/customApi';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
-import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import AddCategoryBtn from './AddCategoryBtn';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import EditCategoryItemBox from './EditCategoryItemBox';
 import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import { removeTwoMoreEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
+import { CategoryBackProps } from '@components/category/CategoryList';
 
 
 
@@ -64,7 +64,7 @@ const EditCategoryList = () => {
     const copiedCategoryData = [...categoryData];
     const result = copiedCategoryData.map((cateTitle:CategoryBackProps)=>{
       cateTitle = { ...cateTitle, categoryTitle: removeTwoMoreEmptyBetweenString(cateTitle.categoryTitle) }
-      const cateSubTitle = cateTitle.subCategories.map((cateSubTitle) =>{
+      const cateSubTitle = cateTitle.subCategories.map((cateSubTitle: { categorySubTitle: string; }) =>{
         return {...cateSubTitle, categorySubTitle : removeTwoMoreEmptyBetweenString(cateSubTitle.categorySubTitle)}
       })
       cateTitle = {...cateTitle, subCategories : cateSubTitle}

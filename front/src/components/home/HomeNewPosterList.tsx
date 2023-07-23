@@ -22,7 +22,7 @@ const HomeNewPosterList = () => {
         <HomeNewPosterBigItem />
         <NewPosterSmList >
           {testList.map((ele, idx)=>(
-            <HomeNewPosterSmItem key={`${Date.now() + 'salt' + idx}`} />
+            <HomeNewPosterSmItem key={`${ele.id +'salt' + idx}`} />
           ))}
         </NewPosterSmList>
       </ListContainer>

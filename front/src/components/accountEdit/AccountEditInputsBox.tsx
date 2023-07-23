@@ -9,7 +9,7 @@ const AccountEditInputsBox = ({currentTab} : {currentTab :string}) => {
     <InputsWrap>
       <InputsBox>
       { currentTab === '개인정보변경' && accountEditInputList.map(({ name, title }) => (
-          <AccountEditBox title={title} name={name}></AccountEditBox>
+          <AccountEditBox title={title} key={'salt' + title} name={name}></AccountEditBox>
         ))}
         {currentTab === '비밀번호변경' && <ChangePassword></ChangePassword>}
       </InputsBox>

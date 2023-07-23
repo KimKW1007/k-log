@@ -13,7 +13,7 @@ const AccountEdit = () => {
     <>
     <TabBox>
       {accountEditTabList.map((title)=>(
-        <Tab onClick={onClickTab(title)} isCurrent={title === currentTab}>
+        <Tab onClick={onClickTab(title)} key={'salt' + title} isCurrent={title === currentTab}>
           {title}
         </Tab>
       ))}

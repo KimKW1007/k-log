@@ -45,7 +45,7 @@ const ChangePassword = () => {
   return (
     <EditForm onSubmit={handleSubmit(onSubmit)}>
       {changeNewPasswordInputList.map(({ name, title }) => (
-        <EditInputArea>
+        <EditInputArea key={name + 'salt' + title}>
           <EditInputInnerArea>
             <EditInput
               title={title}

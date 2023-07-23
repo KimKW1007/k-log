@@ -16,12 +16,12 @@ const ProjectSlide = () => {
       <SlideWrap >
         <SlideContainer ref={ref1} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
         {bannerList.map(ele =>(
-          <div key={`${Date.now() + 'salt' + ele}`}>banner{ele + 1}</div>
+          <div key={`${'salt' + ele}`}>banner{ele + 1}</div>
         ))}
         </SlideContainer>
         <SlideContainer ref={ref2} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
         {bannerList.map(ele =>(
-          <div key={`${Date.now() + 'salt' + (-ele)}`}>banner{ele + 1}</div>
+          <div key={`${'salt' + (-ele)}`}>banner{ele + 1}</div>
         ))}
         </SlideContainer>
       </SlideWrap>
