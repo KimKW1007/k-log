@@ -40,7 +40,7 @@ const CompletionBox = ({handleClickMenu , isOpen, boardLastId} : CompletionProps
               <FlexEmptyBox/>
               <UrlBox>
                 <span>URL</span>
-                <span className='customScroll'>{`http://localhost:3000${currentTitle}/${boardLastId}`}</span>
+                <span className='customScroll'>{`http://localhost:3000/${boardLastId}`}</span>
               </UrlBox>
             </AboutBoardBox>
             <ImageBox>
