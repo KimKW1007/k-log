@@ -6,6 +6,12 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FindRepository } from './find.repository';
 import { UserRepository } from 'src/auth/user.repository';
+import * as config from "config"
+import { BoardModule } from 'src/board/board.module';
+import { BoardRepository } from 'src/board/board.repository';
+import { SubCategoryRepository } from 'src/category/category.repository';
+import { FileRepository } from 'src/file/file.repository';
+const mailConfig = config.get("nodeMail");
 
 @Module({
   imports: [
@@ -15,8 +21,8 @@ import { UserRepository } from 'src/auth/user.repository';
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: 'face676934@gmail.com',
-          pass: 'fspnpbybqsumdepa',
+          user: mailConfig.mailId,
+          pass: mailConfig.mailPw,
         },
       },
       template: {
@@ -26,9 +32,9 @@ import { UserRepository } from 'src/auth/user.repository';
           strict: true,
         },
       },
-    }),
+    })
   ],
   controllers: [FindController],
-  providers: [FindService, FindRepository, UserRepository],
+  providers: [FindService, FindRepository, UserRepository, BoardRepository, SubCategoryRepository, FileRepository],
 })
 export class FindModule {}
