@@ -64,9 +64,11 @@ export class UserRepository extends Repository<User> {
     }
     if (userName) {
       const foundBoards = await this.boardRepository.find({where:{subCategory :{ category :{ user: {id : user.id}}}}})
-      foundBoards.map(foundBoard =>foundBoard.author = userName)
       foundUser.userName = userName;
-      await this.boardRepository.save(foundBoards)
+      if(foundBoards){
+        foundBoards.map(foundBoard =>foundBoard.author = userName)
+        await this.boardRepository.save(foundBoards)
+      }
     }
     
 
