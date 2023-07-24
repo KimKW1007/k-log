@@ -3,7 +3,7 @@ import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
 import { handleOpenPopup } from '@utils/handleOpenPopup';
-import { GET_USER } from '@utils/queryKeys';
+import { GET_COOKIE, GET_USER } from '@utils/queryKeys';
 import { accountEditInputListProps, vaildaters } from '@utils/userInfoEdit';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -42,7 +42,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
 
   // 현재 쿠키값
   const { getApi: cookieApi } = customApi('/auth/cookies');
-  const { data: cookieData } = useQuery(['GET_COOKIE'], cookieApi);
+  const { data: cookieData } = useQuery([GET_COOKIE], cookieApi);
   const [checkCookie, setCheckCookie] = useState(false);
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
