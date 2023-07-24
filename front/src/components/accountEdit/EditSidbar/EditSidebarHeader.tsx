@@ -12,11 +12,12 @@ import { PlusSquareDotted } from '@styled-icons/bootstrap/PlusSquareDotted';
 import { EditBtn } from '../EditCategory/EditCategoryList';
 import { getBase64 } from '@utils/getBase64';
 import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
+import { GET_USER_MINI_PL } from '@utils/queryKeys';
 
 const EditSidebarHeader = () => {
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery(['GET_USER_MINI_PL'], getApi);
+  const { data } = useQuery([GET_USER_MINI_PL], getApi);
 
   const { postApi } = ifInImageApi('/file/upload', true);
   const { mutate } = useMutation(postApi, {
@@ -25,7 +26,7 @@ const EditSidebarHeader = () => {
     },
     onSuccess(data) {
       setIsChangeValue(false);
-      queryClient.invalidateQueries(['GET_USER_MINI_PL']);
+      queryClient.invalidateQueries([GET_USER_MINI_PL]);
     }
   });
 
@@ -63,7 +64,7 @@ const EditSidebarHeader = () => {
       image: data?.imageUrl ? data.imageUrl : defaultImage.src,
       description: data?.description
     });
-    queryClient.invalidateQueries(['GET_USER_MINI_PL']);
+    queryClient.invalidateQueries([GET_USER_MINI_PL]);
   }, [data]);
 
   useEffect(() => {
