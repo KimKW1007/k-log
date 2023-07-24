@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
 import Title from '@components/common/TitleBox';
 import LoginErrBox from './LoginErrBox';
-import Loading from '@components/common/Loading';
+import Loading from '@components/common/Loading/Loading';
 import { AllCenterFlex } from '@components/common/CommonFlex';
 import { RegisterInputs } from '@src/types/user';
 import { handleOpenPopup } from '@utils/handleOpenPopup';
@@ -48,7 +48,7 @@ const LoginForm = () => {
   };
 
   const onClickFindIdOrPassword = (e: React.MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
-    handleOpenPopup('/identity/find','아이디/비밀번호 찾기', 545, 560 )
+    handleOpenPopup('/identity/find', '아이디/비밀번호 찾기', 545, 560);
     return e.preventDefault();
   };
 
@@ -57,25 +57,12 @@ const LoginForm = () => {
       <Title>로그인</Title>
       {isError && <LoginErrBox></LoginErrBox>}
       <InputListBox>
-        <UserInfoInput
-          bold
-          type="text"
-          inputName="아이디"
-          register={register('userId', { required: true })}
-          watch={watch('userId')}
-          errColor={isError}
-        />
-        <UserInfoInput
-          type="password"
-          inputName="비밀번호"
-          register={register('password', { required: true })}
-          watch={watch('password')}
-          errColor={isError}
-        />
+        <UserInfoInput bold type="text" inputName="아이디" register={register('userId', { required: true })} watch={watch('userId')} errColor={isError} />
+        <UserInfoInput type="password" inputName="비밀번호" register={register('password', { required: true })} watch={watch('password')} errColor={isError} />
       </InputListBox>
       <SubmitBox>
         {isLoading ? (
-          <Loading></Loading>
+          <Loading />
         ) : (
           <SubmitBtn type="submit" title="로그인" disabled={!watch('userId') || !watch('password')}>
             <PowerIcon></PowerIcon>
@@ -99,14 +86,14 @@ export const Form = styled.form`
   flex-flow: column;
   display: flex;
   align-items: center;
-  color:#232323;
+  color: #232323;
 `;
 
 const SubmitBox = styled(AllCenterFlex)`
   position: relative;
-  width: ${({ theme }) => theme.rem.p100};
-  height: ${({ theme }) => theme.rem.p100};
-  margin-top: ${({ theme }) => theme.rem.p70};
+  width: 100px;
+  height: 100px;
+  margin-top: 70px;
 `;
 
 const PowerIcon = styled(LogIn)`
@@ -153,10 +140,10 @@ const SignUpAskQuestionBox = styled.div`
       color: #232323;
     }
   }
-  @media (max-width:660px){
+  @media (max-width: 660px) {
     margin: 20px 0;
-    a{
-      font-size :14px;
+    a {
+      font-size: 14px;
       margin: 14px 0;
     }
   }
