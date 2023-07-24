@@ -12,8 +12,8 @@ const AccountEdit = () => {
   return (
     <>
     <TabBox>
-      {accountEditTabList.map((title)=>(
-        <Tab onClick={onClickTab(title)} key={'salt' + title} isCurrent={title === currentTab}>
+      {accountEditTabList.map((title, idx)=>(
+        <Tab onClick={onClickTab(title)} key={idx + 'salt' + title} isCurrent={title === currentTab}>
           {title}
         </Tab>
       ))}

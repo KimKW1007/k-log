@@ -113,7 +113,7 @@ const Banner = () => {
       {isRemoveTurnBanner || <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele,idx) => (
-            <BannerItem key={'salt' + idx} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={idx} resetRotate={resetRotate}></BannerItem>
+            <BannerItem key={ele + 'salt' + idx} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={idx} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
       </BannerInnerBox>}

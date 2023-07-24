@@ -59,7 +59,7 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
             <React.Fragment key={link + title}>
-              <PlMeunItem key={Date.now() + 'salt' + idx}>
+              <PlMeunItem >
                 <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
                   {text}
                 </Link>

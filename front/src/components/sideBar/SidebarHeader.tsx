@@ -5,18 +5,19 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import defaultImage from '@assets/images/500_94.jpg';
+import { GET_USER_MINI_PL } from '@utils/queryKeys';
 
 const SidebarHeader = () => {
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery(['GET_USER_MINI_PL'], getApi);
+  const { data } = useQuery([GET_USER_MINI_PL], getApi);
 
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
   const descriptionMapping = ()=>{
     if(description){
-      return description.split("\r\n").map(ele=>(
-        <p key={`${'salt' + ele}`}>{ele}</p>
+      return description.split("\r\n").map((ele,idx)=>(
+        <p key={`${idx + 'salt' + ele}`}>{ele}</p>
       ))
     }
   }
