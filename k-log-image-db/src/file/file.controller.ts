@@ -9,6 +9,7 @@ import {
   Res,
   Delete,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
@@ -24,10 +25,15 @@ export class FileController {
     return this.fileService.uploadFile(body, file);
   }
 
+  @Patch('createdBoard/:userId')
+  createdBoard(@Body() body , @Param('userId') userId : string){
+    return this.fileService.createdBoard(body.boardId, userId);
+  }
+
 
   @Delete('/:boardId/:userId')
-  deleteFiles(@Param('boardId', ParseIntPipe) boardId : number,@Param('userId') userId : string, ){
-    return this.fileService.deleteFiles(String(boardId), userId)
+  deleteFiles(@Param('boardId') boardId : string,@Param('userId') userId : string, ): Promise<{ message: string; }>{
+    return this.fileService.deleteFiles(boardId, userId)
   }
 
   @Get('uploads/:filename')
