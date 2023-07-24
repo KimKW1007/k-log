@@ -9,7 +9,6 @@ import ReactQuill, { ReactQuillProps } from 'react-quill';
 import useCustomQuill from '@utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
-import customApi from '@utils/customApi';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import ifInImageApi from '@utils/ifInImageApi';
 import useConfirm from 'src/hooks/useConfirm';
@@ -18,6 +17,7 @@ import CompletionBox from './CompletionBox';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useConvert from 'src/hooks/useConvert';
 import "highlight.js/styles/rainbow.css";
+import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 /* agate / base16/dracula */
 
 interface ForwardedQuillComponent extends ReactQuillProps {
@@ -60,7 +60,6 @@ const SubTitleAddForm = () => {
   const router = useRouter();
   const quillRef = useRef<ReactQuill>(null);
   const [contents, setContents] = useState<string>('');
-  const [isCompletion, setIsCompletion] = useState(false);
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const [currentTitle, setCurrentTitle] = useState('');
@@ -72,9 +71,9 @@ const SubTitleAddForm = () => {
     setValue('contents', contents === '<p><br></p>' ? '' : convertContent(contents));
     trigger('contents');
   };
-  const { formats, modules, boardLastId } = useCustomQuill(quillRef, currentUser?.userId!);
+  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!));
 
-  const { deleteApi } = ifInImageApi(`${boardLastId}/${currentUser?.userId!}`);
+  const { deleteApi } = ifInImageApi(`작성중/${currentUser?.id!}`);
   const { mutate : deleteImageMutate } = useMutation(deleteApi, {
     onError(error) {console.log({ error }); }
   });
@@ -86,20 +85,21 @@ const SubTitleAddForm = () => {
     },
     onSuccess(data) {
       console.log({data})
+      alert("작성이 완료되었습니다.")
     },
   })
 
 
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
 
-  /* 
-  useEffect(()=>{
+  
+/*   useEffect(()=>{
       if(boardLastId){
         deleteImageMutate({})
       }
-  },[boardLastId])
+  },[boardLastId]) */
   
-  useEffect(() => {
+  /* useEffect(() => {
     window.addEventListener('beforeunload', handlePageLeave);
     router.events.on('routeChangeStart', handleRouteChangeStart);
     return () => {
@@ -114,8 +114,8 @@ const SubTitleAddForm = () => {
     formData.append("boardImage", image)
     formData.append("contents", contents)
     formData.append("categorySubTitle", currentTitle)
-    formData.append("boardId", boardLastId)
-    // createBoardMutate(formData)
+    formData.append("boardId", '작성중')
+    createBoardMutate(formData)
   }
 
   const onSubmit = ({boardTitle, image, contents}:  any) => {
