@@ -7,6 +7,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import * as config from "config"
+import { BoardRepository } from 'src/board/board.repository';
+import { SubCategoryRepository } from 'src/category/category.repository';
+import { FileRepository } from 'src/file/file.repository';
 
 
 const jwtConfig = config.get("jwt")
@@ -20,10 +23,10 @@ const jwtConfig = config.get("jwt")
         expiresIn: jwtConfig.expiresIn,
       },
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt' })
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserRepository, JwtStrategy],
+  providers: [AuthService, UserRepository, JwtStrategy, BoardRepository, SubCategoryRepository, FileRepository],
   exports:[JwtStrategy, PassportModule]
 })
 export class AuthModule {}
