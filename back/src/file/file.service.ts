@@ -5,6 +5,7 @@ import { User } from 'src/auth/user.entity';
 import { FileRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
+import { BoardRepository } from 'src/board/board.repository';
 
 const S3Config = config.get('S3');
 
@@ -12,7 +13,8 @@ const S3Config = config.get('S3');
 export class FileService {
   constructor(
     @InjectRepository(FileRepository)
-    private fileRepository: FileRepository
+    private fileRepository: FileRepository,
+    private boardRepository: BoardRepository
   ) {}
   private readonly DATA_URL = 'http://localhost:8000/api/uploads';
   
@@ -38,8 +40,9 @@ export class FileService {
     file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
     const imageBlob = new Blob([file.buffer], { type: file.mimetype });
     formData.append('image', imageBlob, file.originalname);
-    formData.append('userId', user.userId);
+    formData.append('userId', String(user.id));
     formData.append('isProfile', 'true');
+    const foundBoards = await this.boardRepository.find({where : {subCategory : {category : {user : {id : user.id}}}}})
     try{
       const response = await axios.post(this.DATA_URL, formData , {
         headers:{
@@ -62,6 +65,12 @@ export class FileService {
         found.description = description;
         await this.fileRepository.save(found);
       }
+      if(foundBoards){
+        foundBoards.map(foundBoard => foundBoard.authorImage = IMG_URL)
+        await this.boardRepository.save(foundBoards);
+      }
+
+
       return { message: 'success' };
     }catch(e){
       console.log('오류 발생')
