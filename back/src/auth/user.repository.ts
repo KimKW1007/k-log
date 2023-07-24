@@ -7,10 +7,13 @@ import * as bcrypt from 'bcryptjs';
 import { AuthRegistrationDto } from './dto/auth-registration.dto';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
+import { BoardRepository } from 'src/board/board.repository';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
-  constructor(private dataSource: DataSource) {
+    constructor(private dataSource: DataSource,
+      private boardRepository: BoardRepository
+      ) {   
     super(User, dataSource.createEntityManager());
   }
 
@@ -60,7 +63,10 @@ export class UserRepository extends Repository<User> {
       foundUser.userEmail = userEmail;
     }
     if (userName) {
+      const foundBoards = await this.boardRepository.find({where:{subCategory :{ category :{ user: {id : user.id}}}}})
+      foundBoards.map(foundBoard =>foundBoard.author = userName)
       foundUser.userName = userName;
+      await this.boardRepository.save(foundBoards)
     }
     
 
