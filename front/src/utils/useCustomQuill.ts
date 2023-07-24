@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import useIsMount from 'src/hooks/useIsMount';
 import { useRouter } from 'next/router';
 import hljs from 'highlight.js/lib/core';
+import { GET_BOARD_LAST_ID } from './queryKeys';
+import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 
 const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) => {
   const { postApi } = ifInImageApi('uploads');
@@ -13,16 +15,15 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
   const [currentSubTitle, setCurrentSubTitle] = useState('');
   const { getApi } = customApi('/board/lastBoardId');
   const { isMount } = useIsMount();
-  const { data: boardLastId } = useQuery(['GET_BOARD_LAST_ID'], getApi, {
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], getApi, {
     enabled: !!isMount
   });
 
   useEffect(() => {
     if (router.query.subTitle) {
-      setCurrentSubTitle(String(router.query.subTitle).split(' ').at(-1)!);
+      setCurrentSubTitle(String(router.query.subTitle));
     }
   }, [router.query.subTitle]);
-
   const handleImage = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -30,12 +31,12 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
     input.click();
     input.addEventListener('change', async () => {
       if (input.files) {
-        const file = input.files[0];
+        const file = new File([input.files[0]], removeEmptyBetweenString(input.files[0].name), {type : input.files[0].type});
         const formData = new FormData();
         formData.append('image', file);
         formData.append('userId', userId);
         formData.append('subTitle', currentSubTitle);
-        formData.append('boardId', String(boardLastId));
+        formData.append('boardId', '작성중');
         try {
           const res = await postApi(formData);
           const IMG_URL = res.url;
