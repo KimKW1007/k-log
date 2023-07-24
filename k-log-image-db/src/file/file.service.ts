@@ -20,6 +20,18 @@ export class FileService {
     return this.imagesRepository.createImageUrl(body, file);
   }
 
+  async createdBoard(boardId : number, userId : string){
+    const found = await this.imagesRepository.find({where : {boardId : "작성중", userId}})
+    try{
+      if(found){
+        found.map(board => board.boardId = String(boardId))
+        await this.imagesRepository.save(found);
+      }
+    }catch(e){
+      throw new BadRequestException('boardId 변경 중 오류 발생');
+    }
+    return {message : '변경완료'}
+  }
 
   async deleteFiles(boardId : string, userId : string){
     const found = await this.imagesRepository.find({where : {boardId , userId}})
