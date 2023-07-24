@@ -22,14 +22,17 @@ export class Board extends BaseEntity {
   boardTitle: string;
 
   @Column()
-  contents: string;
+  author: string;
+  
+  @Column()
+  authorImage: string;
 
   @CreateDateColumn()
   createdAt : Date;
-  
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @ManyToOne((type) => SubCategory, (subCategory) => subCategory.boards, { eager: false })
   subCategory : SubCategory;
+
+  @Column()
+  contents: string;
 }
