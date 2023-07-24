@@ -3,6 +3,7 @@ import React, { useCallback } from 'react'
 import { RefCallBack, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { Add } from '@styled-icons/ionicons-solid/Add';
+import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 
 interface InputLabelProps{
   setImage: React.Dispatch<React.SetStateAction<undefined>>
@@ -27,7 +28,8 @@ const ImageInputLabelBox = ({setImage, setIsChangeValue} :InputLabelProps) => {
       const base64 = await getBase64(imageFile).then((res: any) => {
         setImage(res);
       });
-      setValue('image', imageFile);
+      const newImage = new File([imageFile], removeEmptyBetweenString(imageFile.name), {type : imageFile.type})
+      setValue('image', newImage);
       setIsChangeValue && setIsChangeValue(true);
       onChange(event);
     }
