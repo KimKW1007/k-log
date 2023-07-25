@@ -1,27 +1,40 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { GET_BOARDS } from '@utils/queryKeys';
 import BoardWrapComp from '@components/board/BoardWrapComp';
+import useIsMount from 'src/hooks/useIsMount';
+import { useRecoilState } from 'recoil';
+import { currentPagenation } from '@atoms/atoms';
+import { CategoryPageProps } from './[subTitle]';
 
-const CategoryPage: NextPage = () => {
+const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
   const router = useRouter();
-  const [currentTitle, setCurrentTitle] = useState('');
-  const {getApi} = customApi(`/board/category/${currentTitle}`)
-  const { data : boardsList,isLoading } = useQuery([GET_BOARDS, currentTitle], getApi, {
-    enabled: !!Boolean(currentTitle)
+  const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
+  const {isMount} = useIsMount();
+  const {getApi} = customApi(`/board/category/${title}?page=${currentPage ?? 1}`)
+  const { data ,isLoading, refetch } = useQuery([GET_BOARDS, title], getApi, {
+    enabled: !!Boolean(title) && isMount
   });
-  useEffect(()=>{
-    if(router.query.title){
-      setCurrentTitle(String(router.query.title))
-    }
-  },[router.query.title])
 
+  useEffect(()=>{
+    refetch();
+  },[currentPage,isMount])
+
+  useEffect(()=>{
+    setCurrentPage(1);
+  },[router])
   return (
-    <BoardWrapComp title={currentTitle} isLoading={isLoading} currentList={boardsList} />
+    <BoardWrapComp title={title} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
   )
 }
-
+export const  getServerSideProps: GetServerSideProps = async ( context )=>{
+  const {query} = context;
+  const {title} = query;
+  return {
+    props : {title}
+  }
+}
 export default CategoryPage

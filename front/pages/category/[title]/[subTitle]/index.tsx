@@ -1,33 +1,47 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
-import type { NextPage } from 'next';
+import React, { useCallback, useEffect, useState } from 'react'
+import type { GetServerSideProps, NextPage } from 'next';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { GET_BOARDS } from '@utils/queryKeys';
 import BoardWrapComp from '@components/board/BoardWrapComp';
+import { useRecoilState } from 'recoil';
+import { currentPagenation } from '@atoms/atoms';
+import useIsMount from 'src/hooks/useIsMount';
 
-const SubCategoryPage: NextPage = () => {
+export interface CategoryPageProps{
+  [key: string] : string
+}
+
+const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
   const router = useRouter();
-  const [currentTitle, setCurrentTitle] = useState('');
-  const [currentSubTitle, setCurrentSubTitle] = useState('');
-  const {getApi} = customApi(`/board/subCategory/${currentSubTitle}`)
-  const { data : boardsList, isLoading } = useQuery([GET_BOARDS,currentSubTitle] , getApi, {
-    enabled: !!Boolean(currentTitle)
+  const {isMount} = useIsMount();
+  const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
+  const {getApi}  = customApi(`/board/subCategory/${subTitle}?page=${currentPage ?? 1}`)
+  const { data, isLoading, refetch } = useQuery([GET_BOARDS, subTitle] , getApi, {
+    enabled: !!Boolean(subTitle) && !!Boolean(title)
   });
- 
-  useEffect(()=>{
-    if(router.query){
-      const title = router.query.title;
-      const subTitle = router.query.subTitle;
-      setCurrentTitle(title + '/' + subTitle)
-      setCurrentSubTitle(String(subTitle))
-    }
-  },[router.query])
 
+  useEffect(()=>{
+    refetch();
+  },[currentPage,isMount])
+
+
+  useEffect(()=>{
+    setCurrentPage(1);
+  },[router])
+  console.log({data})
   return (
-    <BoardWrapComp title={currentTitle} isLoading={isLoading} currentList={boardsList} />
+    <BoardWrapComp title={title + '/' + subTitle} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
 
   )
 }
-
+export const  getServerSideProps: GetServerSideProps = async ( context  )=>{
+  const {query} = context;
+  const {title, subTitle} = query;
+  return {
+    props : {title, subTitle}
+  }
+}
 export default SubCategoryPage
+
