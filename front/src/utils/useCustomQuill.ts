@@ -3,20 +3,19 @@ import ifInImageApi from './ifInImageApi';
 import ReactQuill from 'react-quill';
 import customApi from './customApi';
 import { useQuery } from '@tanstack/react-query';
-import useIsMount from 'src/hooks/useIsMount';
 import { useRouter } from 'next/router';
 import hljs from 'highlight.js/lib/core';
 import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 
-const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) => {
+const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =>{
+
   const { postApi } = ifInImageApi('uploads');
   const router = useRouter();
   const [currentSubTitle, setCurrentSubTitle] = useState('');
-  const { getApi } = customApi('/board/lastBoardId');
-  const { isMount } = useIsMount();
+  const { getApi } = customApi(`/board/lastBoardId/${currentSubTitle}`);
   const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], getApi, {
-    enabled: !!isMount
+    enabled: !!currentSubTitle
   });
 
   useEffect(() => {
