@@ -35,3 +35,9 @@ export const isRemoveSidebar = atom<boolean>({
   key : "isRemoveSidebarKey",
   default : false
 })
+
+export const currentPagenation = atom<number>({
+  key : "currentPagenationKey",
+  default : 1,
+  effects_UNSTABLE: [sessionPersistAtom]
+})
