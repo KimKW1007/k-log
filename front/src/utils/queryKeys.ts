@@ -11,3 +11,4 @@ export const GET_COOKIE = "GET_COOKIE"
 /* 게시물 */
 export const GET_BOARDS = "GET_BOARDS"
 export const GET_BOARD_LAST_ID = "GET_BOARD_LAST_ID"
+export const BOARD_ALL = "BOARD_ALL"
