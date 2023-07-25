@@ -13,7 +13,7 @@ const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
     <>
       {data &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-          <CategoryItmeList isOverHeader={isOverHeader} key={categoryTitle}>
+          <CategoryItmeList $isOverHeader={isOverHeader} key={categoryTitle}>
             <CategoryTitle>
               <Link href={`/category/${categoryTitle}`}>
                 {categoryTitle}
@@ -34,11 +34,13 @@ const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
 
 export default CategoryItems;
 
-const CategoryItmeList = styled.dl<{isOverHeader ?: boolean}>`
+const CategoryItmeList = styled.dl<{$isOverHeader ?: boolean}>`
 & + & {
-  margin-top: 10px;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(128,128,128,0.3);
 }
-${({isOverHeader, theme}) => isOverHeader &&`
+${({$isOverHeader, theme}) => $isOverHeader &&`
 
   dt, dd{
     a{
@@ -61,11 +63,10 @@ ${({isOverHeader, theme}) => isOverHeader &&`
 
 const CategoryTitle = styled.dt`
   font-size: ${({ theme }) => theme.rem.p14};
-  margin-bottom: 2px;
   a {
     display: block;
     color: #fff;
-    padding: 5px;
+    padding: 8px 8px;
     border-radius: 5px;
     transition: 0.2s;
     &:hover {
@@ -84,7 +85,7 @@ const CategoryItem = styled.dd`
     color: #fff;
     font-size: ${({ theme }) => theme.rem.p12};
     word-break: keep-all;
-    padding: 5px 20px;
+    padding: 7px 20px;
     transition: 0.2s;
     &:after {
       content: '';
@@ -95,7 +96,7 @@ const CategoryItem = styled.dd`
       background: #fff;
       border-radius: 4px;
       left: 8px;
-      top: 10px;
+      top: 11px;
       transition: 0.2s;
     }
     &:hover {
