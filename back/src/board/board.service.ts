@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/user.entity';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class BoardService {
@@ -9,28 +10,43 @@ export class BoardService {
     @InjectRepository(BoardRepository)
     private boardRepository: BoardRepository,
   ) {}
+  private TAKE = 6;
 
   async createBoard(body,file: Express.Multer.File, user : User){
     return this.boardRepository.createBoard(body,file, user)
   }
 
 
-  async getBoardLastId(){
-    const foundLastId =  await this.boardRepository.find({order : {id : 'desc'},take: 1})
-    if(!foundLastId[0]){
-      return 1
-    }
-    return foundLastId[0].id + 1
+  async createLastBoardId(categorySubTitle : string, user : User){
+    return this.boardRepository.createLastBoardId(categorySubTitle ,user)
   }
 
-  async getBoardsForCategory(categoryTitle : string){
-    const boards = await this.boardRepository.find({where : {subCategory : {category : {categoryTitle}}}, relations:{subCategory : true}, order : {id : "desc"}})
-    return boards ?? []
+  async getAllBoards(page: number){
+    const [boards, total] = await this.boardRepository.findAndCount({where : {boardTitle : Not("")}, relations:{subCategory : true}, order : {id : "desc"}, take : this.TAKE , skip : (page - 1) * this.TAKE})
+    return {
+        boards,
+        last_page : Math.ceil(total / this.TAKE),
+    } ?? {}
+  }
+  async getBoardsForCategory(categoryTitle : string, page : number){
+    const [boards, total] = await this.boardRepository.findAndCount({where : {boardTitle : Not(""), subCategory : {category : {categoryTitle}}}, relations:{subCategory : true}, order : {id : "desc"}, take : this.TAKE, skip:(page - 1) * this.TAKE })
+    return {
+      boards,
+      last_page : Math.ceil(total / this.TAKE),
+  } ?? {}
   }
 
-  async getBoardsForSubCategory(categorySubTitle : string){
-    const boards = await this.boardRepository.find({where : {subCategory : {categorySubTitle}}, relations:{subCategory : true}, order : {id : "desc"}})
-    return boards ?? []
+  async getBoardsForSubCategory(categorySubTitle : string, page : number){
+    const [boards, total] = await this.boardRepository.findAndCount({where : {boardTitle : Not(""), subCategory : {categorySubTitle}}, relations:{subCategory : true}, order : {id : "desc"}, take : this.TAKE, skip :(page - 1) * this.TAKE })
+    return {
+      boards,
+      last_page : Math.ceil(total / this.TAKE),
+  } ?? {}
+  }
+
+
+  async deleteTemporaryBoard(categorySubTitle : string, user : User){
+    return this.boardRepository.deleteTemporaryBoard(categorySubTitle ,user)
   }
 
 }
