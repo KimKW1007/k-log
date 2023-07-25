@@ -9,15 +9,18 @@ import ReactQuill, { ReactQuillProps } from 'react-quill';
 import useCustomQuill from '@utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ifInImageApi from '@utils/ifInImageApi';
 import useConfirm from 'src/hooks/useConfirm';
 import { FormProvider, useForm } from 'react-hook-form';
 import CompletionBox from './CompletionBox';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useConvert from 'src/hooks/useConvert';
-import "highlight.js/styles/rainbow.css";
+import "highlight.js/styles/monokai-sublime.css";
 import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
+import LoadingText from '@components/common/Loading/LoadingText';
+import customApi from '@utils/customApi';
+import { GET_BOARDS } from '@utils/queryKeys';
 /* agate / base16/dracula */
 
 interface ForwardedQuillComponent extends ReactQuillProps {
@@ -43,7 +46,7 @@ const QuillNoSSRWrapper = dynamic(
   }
 );
 
-const SubTitleAddForm = () => {
+const BoardAddForm = () => {
   const methods = useForm({
     mode: 'all'
   });
@@ -63,8 +66,9 @@ const SubTitleAddForm = () => {
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const [currentTitle, setCurrentTitle] = useState('');
- 
- 
+  
+  const queryClient = useQueryClient();
+
   const  {convertContent} = useConvert();
   const onChangeContents = (contents: string) => {
     setContents(contents);
@@ -73,10 +77,15 @@ const SubTitleAddForm = () => {
   };
   const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!));
 
-  const { deleteApi } = ifInImageApi(`작성중/${currentUser?.id!}`);
-  const { mutate : deleteImageMutate } = useMutation(deleteApi, {
+  const { deleteApi: imageDeleteApi } = ifInImageApi(`작성중/${currentUser?.id!}`);
+  const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
     onError(error) {console.log({ error }); }
   });
+  console.log({boardLastId})
+/*   const {deleteApi : deleteTemporaryBoardApi} = customApi(`/board/deleteTemporaryBoard/${currentTitle}`)
+  const { mutate : deleteTemporaryBoardMutate } = useMutation(deleteTemporaryBoardApi, {
+    onError(error) {console.log({ error }); }
+  }); */
 
   const { postApi } = ifInImageApi('/board/createBoard', true);
   const {mutate: createBoardMutate} = useMutation(postApi,{
@@ -85,7 +94,7 @@ const SubTitleAddForm = () => {
     },
     onSuccess(data) {
       console.log({data})
-      alert("작성이 완료되었습니다.")
+      router.replace(`/category/개발공부(common)/${currentTitle}`);
     },
   })
 
@@ -142,7 +151,7 @@ const SubTitleAddForm = () => {
               <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" />
             </BoardTitleBox>
             <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats}  onChange={onChangeContents} />
-            <TestWrap dangerouslySetInnerHTML={{ __html :  DOMPurify.sanitize(contents)  }} />
+            {/* <TestWrap dangerouslySetInnerHTML={{ __html :  DOMPurify.sanitize(contents)  }} /> */}
             <CompletionBtnBox>
               <CompletionBtn type="button" onClick={handleClickMenu}>
                 작성 완료
@@ -161,7 +170,7 @@ const SubTitleAddForm = () => {
 
 
 */
-export default SubTitleAddForm;
+export default BoardAddForm;
 
 const Form = styled.form``;
 const BoardTitleBox = styled.div`
@@ -226,17 +235,6 @@ const CustomQuill = styled(QuillNoSSRWrapper)`
   }
 `;
 
-const TestWrap = styled.div`
-  .ql-align-center {
-    text-align: center;
-  }
-  .ql-align-right {
-    text-align: right;
-  }
-  img {
-    // cursor:default !important;
-  }
-`;
 
 const CompletionBtnBox = styled.div`
   width: 100%;
@@ -257,13 +255,4 @@ const CompletionBtn = styled.button`
   }
 `;
 
-const SubmitBtn = styled.button`
-  width: 88px;
-  line-height: 38px;
-  border-radius: 20px;
-  background: #e5e5e5;
-  transition: 0.2s;
-  &:hover {
-    background: #fff;
-  }
-`;
+
