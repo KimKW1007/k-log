@@ -30,6 +30,7 @@ export class BoardRepository extends Repository<Board> {
         thumbnail: '',
         author: user.userName,
         authorImage: '',
+        tags: '',
         subCategory,
       })
       await this.save(createTemporaryBoard)
@@ -43,7 +44,7 @@ export class BoardRepository extends Repository<Board> {
 
 
   async createBoard(body, file: Express.Multer.File, user: User) {
-    const { boardTitle, contents, categorySubTitle, boardId } = body;
+    const { boardTitle, contents, categorySubTitle, boardId, tags } = body;
     if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
     const authorImage = await this.fileRepository.findOneBy({ user: { id: user.id } });
     const foundBoard = await this.findOneBy({boardTitle : '', subCategory :{ category : {user : {id : user.id}}}});
@@ -51,7 +52,9 @@ export class BoardRepository extends Repository<Board> {
       try {
         foundBoard.boardTitle = boardTitle;
         foundBoard.contents = contents;
+        foundBoard.tags = tags;
         foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
+        foundBoard.createdAt = new Date();
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
         });
@@ -74,10 +77,12 @@ export class BoardRepository extends Repository<Board> {
           },
         });
         const IMG_URL = response.data.url;
-        foundBoard.boardTitle = boardTitle
-        foundBoard.contents = contents
-        foundBoard.thumbnail = IMG_URL,
-        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
+        foundBoard.boardTitle = boardTitle;
+        foundBoard.contents = contents;
+        foundBoard.thumbnail = IMG_URL;
+        foundBoard.tags = tags;
+        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '';
+        foundBoard.createdAt = new Date();
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
         });
