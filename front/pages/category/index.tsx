@@ -12,7 +12,7 @@ const AllCategoryPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const {isMount} = useIsMount();
-  const {getApi} = customApi(`/board/category?page=${currentPage ?? 1}`)
+  const {getApi} = customApi(`/board/getAllBoard/${currentPage ?? 1}`)
   const { data  , isLoading, refetch } = useQuery([GET_BOARDS, BOARD_ALL], getApi,{
     enabled : !!isMount
   });
@@ -21,7 +21,7 @@ const AllCategoryPage = () => {
   },[router])
   useEffect(()=>{
     refetch();
-  },[currentPage,isMount])
+  },[currentPage, isMount])
 
   return (
     <BoardWrapComp title={'분류 전체보기'} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page}  />
