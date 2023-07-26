@@ -21,6 +21,8 @@ import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString
 import LoadingText from '@components/common/Loading/LoadingText';
 import customApi from '@utils/customApi';
 import { GET_BOARDS } from '@utils/queryKeys';
+import Tags from '../Tags';
+import { CategoryPageProps } from '@pages/category/[title]/[subTitle]';
 /* agate / base16/dracula */
 
 interface ForwardedQuillComponent extends ReactQuillProps {
@@ -69,6 +71,9 @@ const BoardAddForm = () => {
   
   const queryClient = useQueryClient();
 
+  const [currentTags, setCurrentTags] = useState<string[]>([]);
+
+  
   const  {convertContent} = useConvert();
   const onChangeContents = (contents: string) => {
     setContents(contents);
@@ -124,6 +129,7 @@ const BoardAddForm = () => {
     formData.append("contents", contents)
     formData.append("categorySubTitle", currentTitle)
     formData.append("boardId", '작성중')
+    formData.append("tags", currentTags.toString())
     createBoardMutate(formData)
   }
 
@@ -148,8 +154,9 @@ const BoardAddForm = () => {
         <FormProvider {...methods}>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <BoardTitleBox>
-              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" />
+              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
             </BoardTitleBox>
+            <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
             <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats}  onChange={onChangeContents} />
             {/* <TestWrap dangerouslySetInnerHTML={{ __html :  DOMPurify.sanitize(contents)  }} /> */}
             <CompletionBtnBox>
@@ -166,7 +173,6 @@ const BoardAddForm = () => {
 };
 // 게시물 보이기
 /* 
-일단 저장
 
 
 */
@@ -174,7 +180,6 @@ export default BoardAddForm;
 
 const Form = styled.form``;
 const BoardTitleBox = styled.div`
-  margin-bottom: 30px;
   padding-bottom: 30px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.8);
 `;
@@ -218,6 +223,7 @@ const CustomQuill = styled(QuillNoSSRWrapper)`
   }
   .ql-container {
     height: 800px;
+    background: #454545;
   }
   .ql-snow .ql-color-picker .ql-picker-options {
     width: 199px;
@@ -231,7 +237,9 @@ const CustomQuill = styled(QuillNoSSRWrapper)`
     border: 1px solid #a5a5a5a1;
   }
   .ql-snow .ql-editor pre.ql-syntax{
-    background : #474949;
+  }
+  .ql-snow .ql-editor blockquote{
+
   }
 `;
 
@@ -254,5 +262,4 @@ const CompletionBtn = styled.button`
     background: #fff;
   }
 `;
-
 
