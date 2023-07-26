@@ -19,16 +19,12 @@ const PageNationArea = ({lastPage, title} : {lastPage :number; title : string;})
   }
 
   const onClickPrevBtn = ()=>{
-    if(currentPage <= 1){
-      return;
-    }
+    if(currentPage <= 1) return;
     setCurrentPage( prev => prev - 1);
   }
 
   const onClickNextBtn = ()=>{
-    if(currentPage >= lastPage){
-      return;
-    }
+    if(currentPage >= lastPage) return;
     setCurrentPage( prev => prev + 1);
   }
 
@@ -62,9 +58,7 @@ const PageNationArea = ({lastPage, title} : {lastPage :number; title : string;})
   useEffect(()=>{
     setPageNation(new Array(lastPage).fill(undefined).map((val, idx) => idx + 1))
   },[isMount])
-/* 4미만 이면  */
-/* 만약 4 이상 lastPage - 4 이하 이면  */
-/* lastPage - 4초과면  */
+
   return (
     <PageNationBox>
       <PrevPageBtn onClick={onClickPrevBtn}>
@@ -73,11 +67,11 @@ const PageNationArea = ({lastPage, title} : {lastPage :number; title : string;})
       <PageBox>
         <PageBtn onClick={handlePageNation(1)} isActive={1 === currentPage}>1</PageBtn>
         {pageDotState[0] && <PageDot>&#183;&#183;&#183;</PageDot>}
-        {pageNation.slice(1,lastPage-1).map(page =>(
+        { lastPage > 2 && pageNation.slice(1,lastPage-1).map(page =>(
           <PageBtn onClick={handlePageNation(page)} isDisappear={conditionOfDisappear(page)} isActive={page === currentPage}>{page}</PageBtn>
         ))}
         {pageDotState[1] && <PageDot>&#183;&#183;&#183;</PageDot>}
-        <PageBtn onClick={handlePageNation(lastPage)} isActive={lastPage === currentPage}>{lastPage}</PageBtn>
+        {lastPage >= 2 && <PageBtn onClick={handlePageNation(lastPage)} isActive={lastPage === currentPage}>{lastPage}</PageBtn>}
       </PageBox>
       <NextPageBtn onClick={onClickNextBtn}>
         <IosArrowRtl />
