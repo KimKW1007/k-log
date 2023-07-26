@@ -210,7 +210,7 @@ svg {
 const CreateBoardBtn = styled.button`
   position: absolute;
   right: 8%;
-  top: 5%;
+  top: 40px;
   line-height: 15px;
   padding: 12px 30px;
   background: #e1e1e1;
