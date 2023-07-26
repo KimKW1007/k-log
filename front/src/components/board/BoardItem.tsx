@@ -4,6 +4,8 @@ import styled, { keyframes } from 'styled-components';
 import Image from "next/image";
 import defaultImage from '@assets/images/500_94.jpg';
 import useConvert from 'src/hooks/useConvert';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 
 
@@ -15,7 +17,7 @@ const BoardItem = (board : any) => {
       <ContentsBox>
         <ItemCategory>
           <span>
-            {categorySubTitle.split(" ").at(-1)}
+            {categorySubTitle}
           </span>
         </ItemCategory>
         <ItemTitleBox>
@@ -32,7 +34,7 @@ const BoardItem = (board : any) => {
             <span>{author}</span>
           </ItemAuthorBox>
           <CreatedDateBox>
-            {createdAt.slice(0,10)}
+            {format(new Date(createdAt), 'yyyy-MM-dd HH:mm', { locale: ko })}
           </CreatedDateBox>
         </ItemDetailBox>
       </ContentsBox>
