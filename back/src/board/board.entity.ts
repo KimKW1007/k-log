@@ -27,6 +27,9 @@ export class Board extends BaseEntity {
   @Column()
   authorImage: string;
 
+  @Column()
+  tags : string;
+
   @CreateDateColumn()
   createdAt : Date;
 
