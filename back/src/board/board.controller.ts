@@ -28,10 +28,14 @@ export class BoardController {
     return this.boardService.createBoard(body, file, user)
   }
 
+  @Get("/:id")
+  getBoard(@Param("id", ParseIntPipe) id : number){
+    return this.boardService.getBoard(id)
+  }
 
 
-  @Get('/category')
-  getAllBoards(@Query("page" , ParseIntPipe) page : number = 1){
+  @Get('/getAllBoard/:page')
+  getAllBoards(@Param("page" , ParseIntPipe) page : number = 1){
     return this.boardService.getAllBoards(page)
   }
 
