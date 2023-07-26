@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/user.entity';
@@ -19,6 +19,14 @@ export class BoardService {
 
   async createLastBoardId(categorySubTitle : string, user : User){
     return this.boardRepository.createLastBoardId(categorySubTitle ,user)
+  }
+
+  async getBoard(id : number){
+    const found = await this.boardRepository.findOneBy({id})
+    if(!found){
+      throw new NotFoundException('없는 Board Id입니다.')
+    }
+    return found
   }
 
   async getAllBoards(page: number){
