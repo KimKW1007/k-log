@@ -32,7 +32,7 @@ const LoginWrap = styled.div`
 export const PageInnerBox = styled.div`
   // 550px
   width: 36rem;
-  height:700px;
+  min-height:700px;
   padding:80px 70px 0;
   background: #fefefe;
   margin: auto;
