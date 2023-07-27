@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/user.entity';
-import { Not } from 'typeorm';
+import { LessThan, MoreThan, Not } from 'typeorm';
 
 @Injectable()
 export class BoardService {
@@ -22,11 +22,17 @@ export class BoardService {
   }
 
   async getBoard(id : number){
-    const found = await this.boardRepository.findOneBy({id})
-    if(!found){
+    const currentBoard = await this.boardRepository.findOne({where :{id},relations:{subCategory : {category : true}}})
+    const prevBoard = await this.boardRepository.findOne({where :{id : LessThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"desc"}})
+    const nextBoard = await this.boardRepository.findOne({where :{id : MoreThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"asc"}})
+    if(!currentBoard){
       throw new NotFoundException('없는 Board Id입니다.')
     }
-    return found
+    return {
+      currentBoard,
+      prevBoard : prevBoard ?? {},
+      nextBoard : nextBoard ?? {}
+    }
   }
 
   async getAllBoards(page: number){
