@@ -58,17 +58,17 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
       blotFormatter: {},
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ header: [1, 2, 3, false] }],
+          // [{ 'size': ['huge','large','small'] }],
           [{ align: [] }],
           [{ indent: '-1' }, { indent: '+1' }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
           [{ list: 'ordered' }, { list: 'bullet' }],
           [{ color: [] }, { background: [] }],
-          ['image', 'link'],
-          ['clean']
+          ['image', 'link']
         ],
         handlers: {
-          image: handleImage
+          image: handleImage,
         }
       }
     };
