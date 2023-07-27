@@ -16,7 +16,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import CompletionBox from './CompletionBox';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useConvert from 'src/hooks/useConvert';
-import "highlight.js/styles/monokai-sublime.css";
+import "highlight.js/styles/atom-one-dark-reasonable.css";
 import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 import LoadingText from '@components/common/Loading/LoadingText';
 import customApi from '@utils/customApi';
@@ -86,7 +86,6 @@ const BoardAddForm = () => {
   const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
     onError(error) {console.log({ error }); }
   });
-  console.log({boardLastId})
 /*   const {deleteApi : deleteTemporaryBoardApi} = customApi(`/board/deleteTemporaryBoard/${currentTitle}`)
   const { mutate : deleteTemporaryBoardMutate } = useMutation(deleteTemporaryBoardApi, {
     onError(error) {console.log({ error }); }
@@ -238,9 +237,8 @@ const CustomQuill = styled(QuillNoSSRWrapper)`
   }
   .ql-snow .ql-editor pre.ql-syntax{
   }
-  .ql-snow .ql-editor blockquote{
 
-  }
+
 `;
 
 
