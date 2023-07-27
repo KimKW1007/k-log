@@ -4,9 +4,11 @@ import styled, { keyframes } from 'styled-components';
 const Waves = () => {
   return (
     <WaveWrap>
-      <WaveOne></WaveOne>
-      <WaveTwo></WaveTwo>
-      <WaveThree></WaveThree>
+      <WaveBox>
+        <WaveOne></WaveOne>
+        <WaveTwo></WaveTwo>
+        <WaveThree></WaveThree>
+      </WaveBox>
     </WaveWrap>
   )
 }
@@ -20,24 +22,31 @@ const drift = keyframes`
 
 const WaveWrap = styled.div`
   width:100%;
-  height: 100%;
+  height: 300px;
   position: absolute;
+  z-index: -1;
   left: 0;
   top: 0;
-  overflow: hidden;
   transform: translate3d(0, 0, 0);
 `
+
+const WaveBox =styled.div`
+  position :absolute;
+  left: 50%;
+  bottom: 0;
+  width:150vw;
+  height:150vw;
+  transform : translateX(-50%);
+`
+
 const Wave = styled.div`
 opacity: .4;
 position: absolute;
-bottom: -10%;
-left: -10%;
+top:  0;
+left: 0;
 background: #0af;
-width: 150vw;
-height: 150vw;
-margin-left: -250px;
-margin-top: -250px;
-transform-origin: 50% 48%;
+width: 100%;
+height: 100%;
 border-radius: 43%;
 animation: ${drift} 10s infinite linear;
 `
