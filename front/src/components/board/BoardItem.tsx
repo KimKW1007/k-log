@@ -6,6 +6,7 @@ import defaultImage from '@assets/images/500_94.jpg';
 import useConvert from 'src/hooks/useConvert';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import changeCreatedAt from '@utils/changeCreatedAt';
 
 
 
@@ -34,7 +35,7 @@ const BoardItem = (board : any) => {
             <span>{author}</span>
           </ItemAuthorBox>
           <CreatedDateBox>
-            {format(new Date(createdAt), 'yyyy-MM-dd HH:mm', { locale: ko })}
+            {changeCreatedAt(createdAt)}
           </CreatedDateBox>
         </ItemDetailBox>
       </ContentsBox>
