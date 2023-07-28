@@ -62,7 +62,8 @@ const CategoryAllListLink = styled(Link)<{$isOverHeader :boolean}>`
 const CategoryListBox = styled.div<{$isOverHeader : boolean}>`
   display: flex;
   flex-direction: column;
-  min-width: 230px;
+  width: 230px;
+  max-height: 70vh;
   background: #292929;
   color: #fff;
   padding: 10px 15px 25px;
