@@ -2,10 +2,9 @@ import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import React from 'react'
 import styled, { keyframes } from 'styled-components';
 import Image from "next/image";
-import defaultImage from '@assets/images/500_94.jpg';
+import defaultImage from '@assets/images/defaultImage.png';
+import defaultAuthorImage from '@assets/images/500_94.jpg';
 import useConvert from 'src/hooks/useConvert';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import changeCreatedAt from '@utils/changeCreatedAt';
 
 
@@ -30,7 +29,7 @@ const BoardItem = (board : any) => {
         <ItemDetailBox>
           <ItemAuthorBox>
             <AuthorImageBox>
-              <AuthorImage src={authorImage || defaultImage.src} alt={'프로필 이미지'} width={0} height={0} sizes='100vw' />
+              <AuthorImage src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={0} height={0} sizes='100vw' />
             </AuthorImageBox>
             <span>{author}</span>
           </ItemAuthorBox>
@@ -39,7 +38,7 @@ const BoardItem = (board : any) => {
           </CreatedDateBox>
         </ItemDetailBox>
       </ContentsBox>
-      <ImageBox>
+      <ImageBox isDefaultImg={!Boolean(thumbnail)}>
         <ImageBg src={thumbnail || defaultImage.src} />
       </ImageBox>
     </ItemWrap>
@@ -51,7 +50,7 @@ export default BoardItem
 const ItemWrap = styled(OnlyAlignCenterFlex)`
   padding: 30px 30px 20px;
   column-gap: 30px;
- 
+  min-height: 264px;
   @media(max-width:750px){
     padding: 0;
     flex-direction : column;
@@ -141,15 +140,19 @@ const AuthorImage = styled(Image)`
 
 
 
-const ImageBox = styled.div`
+const ImageBox = styled.div<{isDefaultImg : boolean;}>`
   position: relative;
   width: 168px;
   height: 168px;
+  background: #fff;
   overflow : hidden;
   img{
     width:100%;
     height:100%;
   }
+  ${({isDefaultImg}) => isDefaultImg && `
+    padding:30px;
+  `}
   @media(max-width:750px){
     width: 100%;
     height: 46.6666vw;
