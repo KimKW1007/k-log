@@ -3,7 +3,7 @@ import React from 'react'
 import styled, { css, keyframes } from 'styled-components';
 import {ArrowBack , ArrowForward} from "@styled-icons/ionicons-solid"
 import Link from 'next/link';
-import defaultImage from '@assets/images/500_94.jpg';
+import defaultImage from '@assets/images/defaultImage.png';
 
 interface NextPrevBoardBoxProps{
   [key: string]  : any
@@ -11,7 +11,8 @@ interface NextPrevBoardBoxProps{
 
 const NextPrevBoardBox = ({ title, id, thumbnail, type}: NextPrevBoardBoxProps) => {
   return (
-    <AnotherBoardLink title={title} href={`/category/${id}`} isPrev={type === 'prev'}>
+    <AnotherBoardLinkBox>
+    {id && <AnotherBoardLink title={title} href={`/${id}`} $isPrev={type === 'prev'}>
       <AnotherBoardBg thumbnail={thumbnail ? thumbnail : defaultImage.src} />
       <AnotherBoardBox >
         {type === 'prev' && <ArrowBack/>}
@@ -21,7 +22,8 @@ const NextPrevBoardBox = ({ title, id, thumbnail, type}: NextPrevBoardBoxProps) 
         </AnotherBoardTitleBox>
         {type === 'next' && <ArrowForward/>}
       </AnotherBoardBox>
-    </AnotherBoardLink>
+    </AnotherBoardLink>}
+    </AnotherBoardLinkBox>
   )
 }
 
@@ -38,13 +40,27 @@ const moveNextArrow = keyframes`
   }
 `
 
+const AnotherBoardLinkBox= styled.div`
+
+@media(max-width: 900px){
+  & + &{
+    display:flex;
+    justify-content:end;
+  }
+}
+@media(max-width: 550px){
+  & + &{
+    display:block;
+  }
+}
+`
 
 const AnotherBoardBg = styled.div<{thumbnail : string;}>`
 position: absolute;
 z-index: 2;
 left:0;
 top:0;
-background : linear-gradient(to right, rgba(0,0,0,.7)100%, rgba(0,0,0,.7) 100%), url(${({thumbnail}) => thumbnail}) no-repeat center center/cover;
+background : linear-gradient(to right, rgba(0,0,0,.7)100%, rgba(0,0,0,.7) 100%), url(${({thumbnail}) => thumbnail}) no-repeat center center/80% auto;
 transform :scale(1.05);
 filter: blur(5px);
 transition: .6s;
@@ -54,8 +70,8 @@ height:100%;
 const AnotherBoardBox = styled(OnlyAlignCenterFlex)`
   position: relative;
   z-index: 2;
-  width: 300px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   padding: 0 15px;
   overflow:hidden;
   > svg{
@@ -83,25 +99,29 @@ const AnotherBoardTitleBox = styled.div<{isNext : boolean;}>`
     padding: 0 20px 0 0 ;
   `}
 `
-const AnotherBoardLink = styled(Link)<{isPrev : boolean;}>`
+const AnotherBoardLink = styled(Link)<{$isPrev : boolean;}>`
   position: relative;
   overflow:hidden;
   border : 1px solid rgba(128,128,128,0.3);
   border-radius: 10px;
+  display:block;
+  width: 400px;
+  height: 100px;
   &:hover{
     ${AnotherBoardBg}{
       transform :scale(1.2);
     }
     ${AnotherBoardBox}{
       > svg{
-        ${({isPrev}) => isPrev ? css`
+        ${({$isPrev}) => $isPrev ? css`
         animation : ${movePrevArrow} 1s infinite;
         ` : css`
         animation : ${moveNextArrow} 1s infinite;
         `}
       }
     }
-   
   }
-
+  @media(max-width: 550px){
+    width: 100%;
+  }
 `
