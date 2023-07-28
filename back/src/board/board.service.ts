@@ -22,9 +22,9 @@ export class BoardService {
   }
 
   async getBoard(id : number){
-    const currentBoard = await this.boardRepository.findOne({where :{id},relations:{subCategory : {category : true}}})
-    const prevBoard = await this.boardRepository.findOne({where :{id : LessThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"desc"}})
-    const nextBoard = await this.boardRepository.findOne({where :{id : MoreThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"asc"}})
+    const currentBoard = await this.boardRepository.findOne({where :{id},relations:{subCategory : {category : {user : true}}}})
+    const prevBoard = await this.boardRepository.findOne({where :{boardTitle : Not(""), id : LessThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"desc"}})
+    const nextBoard = await this.boardRepository.findOne({where :{boardTitle : Not(""), id : MoreThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"asc"}})
     if(!currentBoard){
       throw new NotFoundException('없는 Board Id입니다.')
     }
@@ -59,8 +59,11 @@ export class BoardService {
   }
 
 
-  async deleteTemporaryBoard(categorySubTitle : string, user : User){
-    return this.boardRepository.deleteTemporaryBoard(categorySubTitle ,user)
+  async deleteBoard(id : number, user : User){
+    return this.boardRepository.deleteBoard(id ,user)
+  }
+  async updateBoard(body, file: Express.Multer.File, user : User){
+    return this.boardRepository.updateBoard(body,file, user)
   }
 
 }
