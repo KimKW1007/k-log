@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -15,11 +15,11 @@ export class BoardController {
     return this.boardService.createLastBoardId(categorySubTitle, user)
   }
 
-/*   @Delete('/deleteTemporaryBoard/:categorySubTitle')
+@Delete('/deleteBoard/:id')
   @UseGuards(AuthGuard())
-  deleteTemporaryBoard(@Param('categorySubTitle') categorySubTitle : string,@GetUser() user : User){
-    return this.boardService.deleteTemporaryBoard(categorySubTitle, user)
-  } */
+  deleteBoard(@Param("id", ParseIntPipe) id : number, @GetUser() user : User){
+    return this.boardService.deleteBoard(id, user)
+  }
 
   @Post("/createBoard")
   @UseInterceptors(FileInterceptor('boardImage'))
@@ -33,7 +33,6 @@ export class BoardController {
     return this.boardService.getBoard(id)
   }
 
-
   @Get('/getAllBoard/:page')
   getAllBoards(@Param("page" , ParseIntPipe) page : number = 1){
     return this.boardService.getAllBoards(page)
@@ -46,6 +45,13 @@ export class BoardController {
   @Get('/subCategory/:categorySubTitle')
   getBoardsForSubCategory(@Query("page" , ParseIntPipe) page : number = 1, @Param("categorySubTitle") categorySubTitle : string){
     return this.boardService.getBoardsForSubCategory(categorySubTitle, page)
+  }
+
+  @Post('/category/edit')
+  @UseInterceptors(FileInterceptor('boardImage'))
+  @UseGuards(AuthGuard())
+  updateBoard(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User){
+    return this.boardService.updateBoard(body, file, user)
   }
 
 }
