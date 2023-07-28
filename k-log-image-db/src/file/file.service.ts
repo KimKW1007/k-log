@@ -4,6 +4,7 @@ import { ImagesDto } from './dto/file-images.dto';
 import { ImagesRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
+import { Images } from './file.entity';
 
 
 @Injectable()
@@ -51,5 +52,29 @@ export class FileService {
     return {message : '삭제 할 board Image가 없습니다'}
     
   }
+
+
+
+  async checkDeleteUnnecessaryFile(body, boardId : string, userId : string){
+    const found = await this.imagesRepository.find({where : {boardId , userId}})
+    if(!found){
+      return  {message : '삭제 할 Image가 없습니다'}
+    }
+    try{
+      const filtered = found.filter(x => !body.imgArr.some((v: string, i: any) => v === x.imageUrl))
+      if(!filtered){
+        return  {message : '삭제 할 Image가 없습니다'}
+      }
+      filtered.map(async deleteImageName =>{
+        const fsFileName = deleteImageName.imageUrl.split('http://localhost:8000/api/uploads/').at(-1);
+        fs.unlinkSync(`${process.cwd()}/uploads/${fsFileName}`)
+        await this.imagesRepository.delete({boardId , userId, imageUrl: String(deleteImageName.imageUrl)})
+      })
+      return {message : "삭제 성공"}
+    }catch(e){
+      throw new BadRequestException('checkDeleteUnnecessaryFile 오류 발생');
+    }
+  }
+
 
 }

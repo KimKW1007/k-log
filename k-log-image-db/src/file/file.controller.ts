@@ -36,6 +36,12 @@ export class FileController {
     return this.fileService.deleteFiles(boardId, userId)
   }
 
+  @Delete("/unnecessary/:boardId/:userId")
+  checkDeleteUnnecessaryFile(@Body() body, @Param('boardId') boardId : string,@Param('userId') userId : string,){
+    return this.fileService.checkDeleteUnnecessaryFile(body, boardId, userId)
+  }
+
+
   @Get('uploads/:filename')
   async getImage(
     @Param('filename') filename: string,
