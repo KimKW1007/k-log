@@ -2,10 +2,12 @@ import styled, { keyframes } from 'styled-components';
 
 export const ContentsWrap = styled.div`
 
-padding: 100px 0;
+padding: 150px 0 100px;
+min-height: 1000px;
 
 line-height: 200%;
-
+border-bottom: 1px solid rgba(128,128,128,0.3);
+margin-bottom: 80px;
 // 내부 css
 
   img{
