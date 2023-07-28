@@ -22,7 +22,7 @@ const drift = keyframes`
 
 const WaveWrap = styled.div`
   width:100%;
-  height: 300px;
+  height: 400px;
   position: absolute;
   z-index: -1;
   left: 0;
