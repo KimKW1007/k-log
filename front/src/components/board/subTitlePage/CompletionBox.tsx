@@ -10,9 +10,10 @@ interface CompletionProps {
   handleClickMenu: () => void;
   isOpen: boolean;
   boardLastId: number;
+  defaultThumbnail ?: any;
 }
 
-const CompletionBox = ({ handleClickMenu, isOpen, boardLastId }: CompletionProps) => {
+const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail }: CompletionProps) => {
   const { watch } = useFormContext();
   const [image, setImage] = useState();
   const router = useRouter();
@@ -25,6 +26,14 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId }: CompletionProps
       setCurrentTitle(`/category/${title}/${subTitle}`);
     }
   }, [router.query]);
+
+  useEffect(()=>{
+    if(defaultThumbnail){
+      setImage(defaultThumbnail)
+    }
+  },[defaultThumbnail])
+
+
   return (
     <CompletionArea>
       <CompletionDim isOpen={isOpen} onClick={handleClickMenu} />
