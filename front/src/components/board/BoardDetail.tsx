@@ -13,9 +13,14 @@ import createBlockquoteBox from '@utils/createBlockquoteBox';
 import codeBlockJsStyle from '@utils/codeBlockJsStyle';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import NextPrevBoardBox from './NextPrevBoardBox';
+import Link from 'next/link';
+import UDBtnBox from './UpdateDelete/UDBtnBox';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
 
 
 const BoardDetail = ({ id }: { id: string }) => {
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { getApi } = customApi(`/board/${id}`);
   const { isMount } = useIsMount();
   const { reverseConvert, decodeHTMLEntities } = useConvert();
@@ -23,7 +28,6 @@ const BoardDetail = ({ id }: { id: string }) => {
     enabled: !!isMount
   });
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
-  console.log(data)
 
   const contentsWrapRef = useRef<HTMLDivElement>(null);
 
@@ -37,13 +41,13 @@ const BoardDetail = ({ id }: { id: string }) => {
   }, [data]);
   return (
     <>
-      {currentBoard && 
+      {data && 
         (<DetailWrap>
           <DetailContainer>
             <Waves />
             <DetailTitleBox>
               <CategoryBox>
-                <span>{`${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`}</span>
+                <Link href={`/category/${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`}>{`${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`}</Link>
               </CategoryBox>
               <h2>{currentBoard.boardTitle}</h2>
               <CreatedDateBox>{changeCreatedAt(currentBoard.createdAt)}</CreatedDateBox>
@@ -55,10 +59,11 @@ const BoardDetail = ({ id }: { id: string }) => {
               ))}
             </DetailTagBox>
             <AnotherBoardArea>
-              {prevBoard && <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail } id={prevBoard.id} />}
-              {nextBoard && <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail } id={nextBoard.id} />}
+                <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail } id={prevBoard.id} />
+                <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail } id={nextBoard.id} />
             </AnotherBoardArea>
           </DetailContainer>
+          {currentUser?.id === currentBoard.subCategory.category.user.id && <UDBtnBox id={currentBoard.id} returnUrl={`/category/${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`} />}
         </DetailWrap>)
       }
     </>
@@ -95,11 +100,15 @@ const DetailTitleBox = styled.div`
 
 const CategoryBox = styled.div`
   margin-bottom: 30px;
-  span {
+  a {
     display: inline-block;
     padding: 15px 30px;
     background: ${({ theme }) => theme.color.err};
     border-radius: 30px;
+    transition: .2s;
+    &:hover{
+      background: #FFB07F;
+    }
   }
 `;
 
@@ -129,4 +138,7 @@ const  TagBtn = styled.button`
 const AnotherBoardArea =styled(OnlyAlignCenterFlex)`
   width:100%;
   justify-content: space-between;
+  @media(max-width: 900px){
+    display:block;
+  }
 `
