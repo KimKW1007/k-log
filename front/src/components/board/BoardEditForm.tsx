@@ -46,7 +46,6 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
     enabled: !!isMount
   });
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
-  console.log({currentBoard})
 
 
   const  {convertContent , reverseConvert} = useConvert();
@@ -108,7 +107,11 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
       editMutateFn({boardTitle, image, contents})
     }
   };
-  console.log({data})
+  
+  useEffect(()=>{
+    setCurrentTags(currentBoard.tags.split(','))
+  },[data, isMount])
+
   return (
     <>
     {(data && isMount) ? (
@@ -117,7 +120,7 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
           <BoardTitleBox>
             <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} defaultValue={currentBoard.boardTitle} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
           </BoardTitleBox>
-          <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} defaultTags={currentBoard.tags} />
+          <Tags currentTags={currentTags} setCurrentTags={setCurrentTags}  />
           <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={reverseConvert(currentBoard.contents)}  onChange={onChangeContents} />
           <CompletionBtnBox>
             <CompletionBtn type="button" onClick={handleClickMenu}>
