@@ -30,16 +30,17 @@ const CommonModal = ({ children, setIsOpenModal }: MadalProps) => {
 
 export default CommonModal;
 
-const ModalWrap = styled(AllCenterFlex)`
+export const ModalWrap = styled(AllCenterFlex)`
   top: 0;
   left: 0;
   position: fixed;
   z-index: 55;
   width: 100%;
   height: 100%;
+  color: #232323;
 `;
 
-const Dim = styled.div`
+export const Dim = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -49,10 +50,10 @@ const Dim = styled.div`
   background: rgba(0, 0, 0, 0.3);
 `;
 
-const ModalBox = styled(AllCenterFlex)`
+export const ModalBox = styled(AllCenterFlex)`
   position: relative;
   z-index: 2;
-  width: 52rem;
+  width: 830px;
   flex-direction: column;
   justify-content: space-between;
   padding: ${({ theme }) => theme.rem.p20};
@@ -60,14 +61,14 @@ const ModalBox = styled(AllCenterFlex)`
   background: #fff;
 `;
 
-const ModalInnerText = styled.div`
+export const ModalInnerText = styled.div`
   font-size: ${({ theme }) => theme.rem.p24};
   margin: 0 0 ${({ theme }) => theme.rem.p30};
   word-break:keep-all;
   text-align:center;
 `;
 
-const ModalTitle = styled.h2`
+export const ModalTitle = styled.h2`
   font-size: ${({ theme }) => theme.rem.p34};
   font-weight: bold;
   margin: ${({ theme }) => theme.rem.p10} 0 ${({ theme }) => theme.rem.p30};
