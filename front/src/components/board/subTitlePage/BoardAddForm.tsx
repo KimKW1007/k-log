@@ -86,10 +86,7 @@ const BoardAddForm = () => {
   const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
     onError(error) {console.log({ error }); }
   });
-/*   const {deleteApi : deleteTemporaryBoardApi} = customApi(`/board/deleteTemporaryBoard/${currentTitle}`)
-  const { mutate : deleteTemporaryBoardMutate } = useMutation(deleteTemporaryBoardApi, {
-    onError(error) {console.log({ error }); }
-  }); */
+
 
   const { postApi } = ifInImageApi('/board/createBoard', true);
   const {mutate: createBoardMutate} = useMutation(postApi,{
@@ -157,7 +154,6 @@ const BoardAddForm = () => {
             </BoardTitleBox>
             <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
             <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats}  onChange={onChangeContents} />
-            {/* <TestWrap dangerouslySetInnerHTML={{ __html :  DOMPurify.sanitize(contents)  }} /> */}
             <CompletionBtnBox>
               <CompletionBtn type="button" onClick={handleClickMenu}>
                 작성 완료
@@ -178,11 +174,11 @@ const BoardAddForm = () => {
 export default BoardAddForm;
 
 const Form = styled.form``;
-const BoardTitleBox = styled.div`
+export const BoardTitleBox = styled.div`
   padding-bottom: 30px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.8);
 `;
-const TitleInput = styled.input<{ isError: boolean }>`
+export const TitleInput = styled.input<{ isError: boolean }>`
   width: 100%;
   line-height: 40px;
   padding: 20px 20px;
@@ -208,7 +204,7 @@ const TitleInput = styled.input<{ isError: boolean }>`
   `}
 `;
 
-const CustomQuill = styled(QuillNoSSRWrapper)`
+export const CustomQuill = styled(QuillNoSSRWrapper)`
   .ql-toolbar {
     background: #fff;
     color: #000;
@@ -237,19 +233,17 @@ const CustomQuill = styled(QuillNoSSRWrapper)`
   }
   .ql-snow .ql-editor pre.ql-syntax{
   }
-
-
 `;
 
 
-const CompletionBtnBox = styled.div`
+export const CompletionBtnBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: end;
   padding: 30px 0;
 `;
 
-const CompletionBtn = styled.button`
+export const CompletionBtn = styled.button`
   padding: 15px 40px;
   line-height: 16px;
   border-radius: 40px;
