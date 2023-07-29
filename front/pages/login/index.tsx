@@ -1,9 +1,11 @@
 import React from 'react';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import LoginForm from '@components/login/LoginForm';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import styled from 'styled-components';
 import { AuthSeasonBg } from '@components/login/SeasonBg';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+
 const LoginPage: NextPage = () => {
   return (
     <LoginWrap>
@@ -13,6 +15,12 @@ const LoginPage: NextPage = () => {
     </LoginWrap>
   );
 };
+
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+  return {
+    props: {},
+  };
+});
 
 export default LoginPage;
 
