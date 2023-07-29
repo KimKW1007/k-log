@@ -7,9 +7,10 @@ interface CustomSeoProps {
 const CustomSeo: FC<CustomSeoProps> = ({ seoData }) => {
   try {
     const { title, description } = seoData;
+    const titleText = `${title === '홈' ? "" : `${title} | `}K:Log`
     return (
       <Head>
-        <title>{title === '홈' ? "" : `${title} | `}K:Log</title>
+        <title>{titleText}</title>
         <meta name="viewport" content={`initial-scale=1.0, width=device-width`} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
