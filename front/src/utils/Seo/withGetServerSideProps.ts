@@ -67,11 +67,9 @@ const withGetServerSideProps = (getServerSideProps: GetServerSideProps) => {
     const pagePath = context.resolvedUrl;
     return await getServerSideProps(context).then((res: { [key: string]: any }) => {
       const {title, subTitle, id} = res?.props;
-      console.log(res?.props)
       const notCreateOrEdit = (title || subTitle) ? propsPathToSeo(title, subTitle) : mapPathToSeo[pagePath];
       const createOrEdit = createOrEditInpropsPathToSeo(pagePath.split("/").at(-1)!, id ? title : subTitle);
       const isCreateOrEdit = pagePath.split("/").at(-1) === "create" || pagePath.split("/").at(-1) === "edit";
-      console.log(pagePath.split("/").at(-1))
       return {
         ...res,
         props: {
