@@ -99,7 +99,7 @@ const SignupForm = () => {
       if (currentLevel === 'idListByEmail') {
         userIds.length < 5 ? setCurrentLevel((prev) => (prev = 'third')) : setCurrentLevel((prev) => (prev = 'second'));
       }
-      if (currentLevel === 'finally') router.push('/login');
+      if (currentLevel === 'finally') router.replace('/login');
     }
   };
 
