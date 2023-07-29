@@ -14,7 +14,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
   const router = useRouter();
   const [currentSubTitle, setCurrentSubTitle] = useState('');
   const { getApi } = customApi(`/board/lastBoardId/${currentSubTitle}`);
-  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], getApi, {
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], ()=> getApi(true), {
     enabled: !!currentSubTitle
   });
 
