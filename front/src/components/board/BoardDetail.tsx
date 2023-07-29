@@ -17,6 +17,7 @@ import Link from 'next/link';
 import UDBtnBox from './UpdateDelete/UDBtnBox';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
+import { GET_BOARD } from '@utils/queryKeys';
 
 
 const BoardDetail = ({ id }: { id: string }) => {
@@ -24,7 +25,7 @@ const BoardDetail = ({ id }: { id: string }) => {
   const { getApi } = customApi(`/board/${id}`);
   const { isMount } = useIsMount();
   const { reverseConvert, decodeHTMLEntities } = useConvert();
-  const { data } = useQuery(['GET_BOARD', id], getApi, {
+  const { data } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
