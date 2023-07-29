@@ -29,10 +29,10 @@ export default function customApi<T = any>(url: string) {
     });
     return result.data;
   };
-  const getApi = async () => {
+  const getApi = async (isNecessaryToken ?: boolean) => {
     const result = await baseApi().get(url, {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+        Authorization: isNecessaryToken ? 'Bearer ' + sessionStorage.getItem('jwtToken') : ""
       }
     });
     return result.data;
