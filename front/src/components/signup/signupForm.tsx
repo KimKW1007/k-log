@@ -19,7 +19,7 @@ const SignupForm = () => {
   const methods  = useForm<RegisterInputs>({
     mode: 'all'
   });
-  const {handleSubmit} = methods;
+  const {handleSubmit, setError} = methods;
 
   const router = useRouter();
 
@@ -54,6 +54,7 @@ const SignupForm = () => {
     onError(error: any) {
       console.log({ error: error.config.data.userId });
       setIsOpenModal(true);
+      setError("userId",{type:'custom', message:`${error.response.data.message}`})
       setModalErrMsg(error.response.data.message);
     },
     onSuccess(data) {
