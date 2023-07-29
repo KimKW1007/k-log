@@ -1,5 +1,5 @@
 import UserInfoInput from '@components/common/UserInfoInput';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { LogIn } from '@styled-icons/ionicons-solid';
@@ -39,7 +39,7 @@ const LoginForm = () => {
       sessionStorage.setItem('jwtToken', data.accessToken);
       const userData = await getApi();
       setUser(userData);
-      router.push('/');
+      router.back();
     }
   });
 
