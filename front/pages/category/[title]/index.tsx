@@ -9,13 +9,14 @@ import useIsMount from 'src/hooks/useIsMount';
 import { useRecoilState } from 'recoil';
 import { currentPagenation } from '@atoms/atoms';
 import { CategoryPageProps } from './[subTitle]';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const {isMount} = useIsMount();
   const {getApi} = customApi(`/board/category/${title}?page=${currentPage ?? 1}`)
-  const { data ,isLoading, refetch } = useQuery([GET_BOARDS, title], getApi, {
+  const { data ,isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi(), {
     enabled: !!Boolean(title) && isMount
   });
 
@@ -30,11 +31,11 @@ const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
     <BoardWrapComp title={title} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
   )
 }
-export const  getServerSideProps: GetServerSideProps = async ( context )=>{
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title} = query;
   return {
     props : {title}
   }
-}
+});
 export default CategoryPage

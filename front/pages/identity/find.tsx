@@ -1,11 +1,12 @@
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import FindForm from '@components/find/FindForm';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { ListTypes, findList, tabList } from '@utils/mapList';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 const FindPage: NextPage = () => {
   // 텝 관련
@@ -42,7 +43,11 @@ const FindPage: NextPage = () => {
     </FindPageWrap>
   );
 };
-
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+  return {
+    props : {}
+  }
+});
 export default FindPage;
 
 const FindPageWrap = styled.div`

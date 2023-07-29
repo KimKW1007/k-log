@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import styled from 'styled-components';
 import CertificateEmail from '@components/common/CertificateEmail';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { FinalBox, FinalText } from '@components/common/FinallPage';
 import CommonModal from '@components/modal/CommonModal';
 import { useRecoilState } from 'recoil';
 import { NotFoundByEmail } from '@atoms/atoms';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 const ChangeEmailPage: NextPage = () => {
   const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
@@ -120,7 +121,11 @@ const ChangeEmailPage: NextPage = () => {
     </ChangeEmailArea>
   );
 };
-
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+  return {
+    props : {}
+  }
+});
 export default ChangeEmailPage;
 const ChangeEmailArea = styled.div`
   width: 33rem;

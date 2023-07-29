@@ -1,7 +1,8 @@
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import SignupForm from '@components/signup/signupForm';
 import { PageInnerBox } from '@pages/login';
-import { NextPage } from 'next';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -14,7 +15,11 @@ const SignUpPage: NextPage = () => {
       </SignupWrap>
   );
 };
-
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+  return {
+    props : {}
+  }
+});
 export default SignUpPage;
 const SignupWrap = styled.div`
   position: relative;

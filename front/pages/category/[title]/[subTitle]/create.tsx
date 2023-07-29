@@ -7,6 +7,7 @@ import { BoardTitleBox } from '@components/board/BoardWrapComp';
 import night_BG from '@assets/images/dark_night.jpg';
 import { GetServerSideProps } from 'next';
 import { CategoryPageProps } from '.';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 const createPage = ({title, subTitle} : CategoryPageProps) => {
   const {isMount} = useIsMount();
@@ -28,13 +29,13 @@ const createPage = ({title, subTitle} : CategoryPageProps) => {
     </CreateWrap>
   )
 }
-export const  getServerSideProps: GetServerSideProps = async ( context  )=>{
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title, subTitle} = query;
   return {
     props : {title, subTitle}
   }
-}
+});
 export default createPage
 
 export const CreateWrap = styled.div`

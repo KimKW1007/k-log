@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import AccountEdit from '@components/accountEdit/AccountEdit';
 import AccountCertificate from '@components/accountEdit/AccountCertificate';
@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
 import EditSideBar from '@components/accountEdit/EditSidbar/EditSideBarBox';
 import useIsMount from 'src/hooks/useIsMount';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 
 const AccountEditPage: NextPage = () => {
@@ -37,7 +38,11 @@ const AccountEditPage: NextPage = () => {
     </EditWrap>
   );
 };
-
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+  return {
+    props : {}
+  }
+});
 export default AccountEditPage;
 
 const EditWrap = styled(OnlyJustifyCenterFlex)`

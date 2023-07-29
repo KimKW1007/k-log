@@ -8,6 +8,7 @@ import BoardWrapComp from '@components/board/BoardWrapComp';
 import { useRecoilState } from 'recoil';
 import { currentPagenation } from '@atoms/atoms';
 import useIsMount from 'src/hooks/useIsMount';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 export interface CategoryPageProps{
   [key: string] : string
@@ -18,7 +19,7 @@ const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
   const {isMount} = useIsMount();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const {getApi}  = customApi(`/board/subCategory/${subTitle}?page=${currentPage ?? 1}`)
-  const { data, isLoading, refetch } = useQuery([GET_BOARDS, subTitle] , getApi, {
+  const { data, isLoading, refetch } = useQuery([GET_BOARDS, subTitle] , ()=> getApi(), {
     enabled: !!Boolean(subTitle) && !!Boolean(title)
   });
 
@@ -36,12 +37,12 @@ const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
 
   )
 }
-export const  getServerSideProps: GetServerSideProps = async ( context  )=>{
+export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title, subTitle} = query;
   return {
     props : {title, subTitle}
   }
-}
+});
 export default SubCategoryPage
 
