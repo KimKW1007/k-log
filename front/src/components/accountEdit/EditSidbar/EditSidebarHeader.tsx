@@ -17,7 +17,7 @@ import { GET_USER_MINI_PL } from '@utils/queryKeys';
 const EditSidebarHeader = () => {
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery([GET_USER_MINI_PL], getApi);
+  const { data } = useQuery([GET_USER_MINI_PL], ()=> getApi());
 
   const { postApi } = ifInImageApi('/file/upload', true);
   const { mutate } = useMutation(postApi, {

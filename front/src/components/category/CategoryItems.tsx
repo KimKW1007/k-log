@@ -8,7 +8,7 @@ import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 
 const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
   const { getApi } = customApi('/category');
-  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], getApi);
+  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], () => getApi());
   return (
     <>
       {data &&

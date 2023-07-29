@@ -9,7 +9,7 @@ import { GET_USER_MINI_PL } from '@utils/queryKeys';
 
 const SidebarHeader = () => {
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery([GET_USER_MINI_PL], getApi);
+  const { data } = useQuery([GET_USER_MINI_PL], () => getApi());
 
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');

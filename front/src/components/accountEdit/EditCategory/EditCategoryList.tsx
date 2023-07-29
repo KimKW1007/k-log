@@ -31,7 +31,7 @@ const EditCategoryList = () => {
 
   // getAPI 관련
   const { getApi } = customApi('/category');
-  const { data } = useQuery([GET_ALL_CATEGORY], getApi);
+  const { data } = useQuery([GET_ALL_CATEGORY], ()=> getApi());
 
 
   // useForm

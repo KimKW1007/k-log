@@ -5,6 +5,7 @@ import CompletionBox from '@components/board/subTitlePage/CompletionBox';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
 import ifInImageApi from '@utils/ifInImageApi';
+import { GET_BOARD } from '@utils/queryKeys';
 import useCustomQuill from '@utils/useCustomQuill';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -42,7 +43,7 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
 
 
   const { getApi } = customApi(`/board/${id}`);
-  const { data } = useQuery(['GET_BOARD', id], getApi, {
+  const { data } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
@@ -107,9 +108,8 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
       editMutateFn({boardTitle, image, contents})
     }
   };
-  
   useEffect(()=>{
-    setCurrentTags(currentBoard.tags.split(','))
+    if(data) setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : [])
   },[data, isMount])
 
   return (

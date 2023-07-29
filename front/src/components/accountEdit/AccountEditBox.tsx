@@ -42,11 +42,11 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
 
   // 현재 쿠키값
   const { getApi: cookieApi } = customApi('/auth/cookies');
-  const { data: cookieData } = useQuery([GET_COOKIE], cookieApi);
+  const { data: cookieData } = useQuery([GET_COOKIE], ()=> cookieApi());
   const [checkCookie, setCheckCookie] = useState(false);
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
-  const { data } = useQuery([GET_USER], getApi, {
+  const { data } = useQuery([GET_USER], () => getApi(true), {
     enabled: !!checkCookie
   });
 
