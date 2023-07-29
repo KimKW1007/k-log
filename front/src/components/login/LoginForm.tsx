@@ -37,7 +37,7 @@ const LoginForm = () => {
     },
     async onSuccess(data) {
       sessionStorage.setItem('jwtToken', data.accessToken);
-      const userData = await getApi();
+      const userData = await getApi(true);
       setUser(userData);
       router.back();
     }
