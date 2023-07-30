@@ -18,6 +18,9 @@ export class Category extends BaseEntity {
   @Column()
   categoryTitle: string;
 
+  @Column()
+  dndNumber: number;
+
   @OneToMany((type) => SubCategory, (subCategory) => subCategory.category, {
     eager: true,
   })
