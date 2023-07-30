@@ -4,12 +4,13 @@ import CategoryItems from './CategoryItems';
 import Link from 'next/link';
 
 export interface CategoryBackProps {
-  id ?: number;
+  id ?: string;
   categoryTitle: string;
   subCategories: SubCategoryBackProps[];
+  dndNumber: number;
 }
 export  interface SubCategoryBackProps {
-  id ?: number;
+  id ?: string;
   categorySubTitle: string;
 }
 const CategoryList = ({isOverHeader} : {isOverHeader :boolean}) => {
