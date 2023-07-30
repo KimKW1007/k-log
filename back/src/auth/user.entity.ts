@@ -26,4 +26,10 @@ export class User extends BaseEntity{
 
   @OneToOne(type => FileEntity, file => file.user, {eager: true})
   location : FileEntity
+
+  @Column({ nullable: true })
+  currentRefreshToken: string;
+
+  @Column({ nullable: true })
+  currentRefreshTokenExp: Date;
 }
