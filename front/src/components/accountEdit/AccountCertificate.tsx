@@ -25,7 +25,7 @@ const AccountCertificate = ({setIsCertificated} : {setIsCertificated: React.Disp
   const {postApi} = customApi("/auth/checkCertificate");
   const {mutate} = useMutation(postApi,{
     onError(error : any) {
-      setError("password", {type:'custom',message:error.response.data.message})
+      setError("password", {type:'custom',message:`비밀번호가 일치하지 않습니다.`})
     },
     onSuccess(data) {
       setIsCertificated(true);
