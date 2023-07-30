@@ -17,7 +17,7 @@ export class CategoryService {
   async getAllCategory(): Promise<Category[]> {
     const category = await this.categoryRepository.find({
       where: { user: { id: 1 } },
-      order: { id: 'ASC', subCategories: { id: 'ASC' } },
+      order: { dndNumber: 'ASC', subCategories: { id: 'ASC' } },
     });
     return category;
   }
@@ -52,6 +52,7 @@ export class CategoryService {
         notFoundId.map(async (ele) => {
           const newCategory = this.categoryRepository.create({
             categoryTitle: ele.categoryTitle,
+            dndNumber : ele.dndNumber,
             user,
           });
           await this.categoryRepository.save(newCategory).then((res) => {
@@ -161,23 +162,21 @@ export class CategoryService {
 
     const updateTitles = () => {
       // 수정
-      const foundId2 = categoryDto.filter((x) => x.id);
-      if (foundId2.length >= 1) {
-        foundId2.map(async (ele) => {
+      const foundId = categoryDto.filter((x) => x.id);
+      if (foundId.length >= 1) {
+        foundId.map(async (ele) => {
+          console.log('12',ele.dndNumber)
           const found = await this.categoryRepository.findOneBy({ id: ele.id });
           if (!found) throw new BadRequestException(`상위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error() });
-          if (found.categoryTitle !== ele.categoryTitle) {
-            found.categoryTitle = ele.categoryTitle;
-          }
+          found.categoryTitle = ele.categoryTitle;
+          found.dndNumber = ele.dndNumber;
           await this.categoryRepository.save(found).then((res) => {
-            const notFoundSubId2 = ele.subCategories.filter((i) => i.id);
-            if (notFoundSubId2.length < 1) return;
-            notFoundSubId2.map(async ({ id: subId, categorySubTitle }) => {
+            const notFoundSubId = ele.subCategories.filter((i) => i.id);
+            if (notFoundSubId.length < 1) return;
+            notFoundSubId.map(async ({ id: subId, categorySubTitle }) => {
               const foundSubCategory = await this.subCategoryRepository.findOneBy({ id: subId });
               if (!foundSubCategory) throw new BadRequestException(`하위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error() });
-              if (foundSubCategory.categorySubTitle !== categorySubTitle) {
-                foundSubCategory.categorySubTitle = categorySubTitle;
-              }
+              foundSubCategory.categorySubTitle = categorySubTitle;
               await this.subCategoryRepository.save(foundSubCategory);
             });
           });
