@@ -40,12 +40,13 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
     },
     onSuccess(data) {
       console.log({ data });
+      sessionStorage.removeItem('access_token');
+      sessionStorage.removeItem('access_token_expiration');
     }
   });
   const logoutFn = (title: string) => () => {
     if (title !== 'logout') return;
     setUserInfo(null);
-    sessionStorage.removeItem('jwtToken');
     mutate({});
   };
 
