@@ -16,11 +16,10 @@ const DeleteModal = ({onClose, mutate}: DeleteMadalProps) => {
       <DeleteModalBox>
         <ModalTitle>안내</ModalTitle>
         <ModalInnerText>
-          <p>해당 게시물을</p>
-          <p>삭제하시겠습니까?</p>
+          <p>정말 삭제하시겠습니까?</p>
         </ModalInnerText>
         <ConfirmBtnBox>
-          <DeleteBtn onClick={()=> mutate({})}>
+          <DeleteBtn onClick={()=> mutate()}>
             네! 삭제할래요!
           </DeleteBtn>
           <CancelBtn onClick={onClose}>
