@@ -4,6 +4,7 @@ import styled, { keyframes, css } from 'styled-components';
 import { Trash } from '@styled-icons/bootstrap/Trash';
 
 import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
+import DeleteModal from '@components/modal/DeleteModal';
 
 
 export interface CategoryInputProps {
@@ -17,25 +18,27 @@ export interface CategoryInputProps {
 const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name, remove} :  CategoryInputProps) => {
   const [isOnDeleteBtn, setIsOnDeleteBtn] = useState(false);
   const { register } = useFormContext();
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const onClickDeleteInput =()=> {
-    setIsOnDeleteBtn(true);
-    if(isOnDeleteBtn){
-      remove(sub ? subCategoriesIndex : categoryIndex)
-    }
+    remove(sub ? subCategoriesIndex : categoryIndex)
+  }
+
+  const handleDeleteModal = ()=>{
+    setIsOpenDeleteModal(true)
   }
 
   const DeleteTipText = () => {
     if (!sub) {
       return (
         <>
-        해당 카테고리 삭제 시<br />하위 카테고리는 모두 삭제됩니다.<br />삭제하시려면 한번 더 눌러주세요.
+        해당 카테고리 삭제 시<br />하위 카테고리는 모두 삭제됩니다.
         </>
       );
     } else {
       return (
         <>
-        해당 카테고리를<br />삭제 하시겠습니까?<br />삭제하시려면 한번 더 눌러주세요.
+        해당 카테고리를<br />삭제 하시겠습니까?
         </>
       );
     }
@@ -45,17 +48,18 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
     <EditInputBox>
       <EditInput {...register(name)} name={name} placeholder="카테고리를 입력해주세요"></EditInput>
       <DeleteBox>
-        <DeleteBtn type="button" onClick={onClickDeleteInput} onBlur={() => setIsOnDeleteBtn(false)}   isOnDeleteBtn={isOnDeleteBtn}>
+        <DeleteBtn type="button" onClick={handleDeleteModal} onMouseLeave={() => setIsOnDeleteBtn(false)}  onMouseOver={() => setIsOnDeleteBtn(true)} isOnDeleteBtn={isOpenDeleteModal || isOnDeleteBtn}>
           <Trash></Trash>
         </DeleteBtn>
-        {isOnDeleteBtn && (
-          <DeleteTip isOnDeleteBtn={isOnDeleteBtn}>
+        {(isOpenDeleteModal || isOnDeleteBtn) && (
+          <DeleteTip isOnDeleteBtn={isOpenDeleteModal || isOnDeleteBtn}>
             <DeleteTipTextBox>
               <ExclamationCircleFill />
               <span>{DeleteTipText()}</span>
             </DeleteTipTextBox>
           </DeleteTip>
         )}
+        {isOpenDeleteModal && <DeleteModal onClose={()=>setIsOpenDeleteModal(false)} mutate={onClickDeleteInput}/>}
       </DeleteBox>
     </EditInputBox>
   );
@@ -86,6 +90,8 @@ const DeleteTipTextBox = styled.div`
   text-align: center;
   border-radius: 6px;
   background: #ff8989;
+  font-size: 13px;
+  line-height: 16px;
   border: 2px solid ${({ theme }) => theme.color.err};
   svg {
     position: absolute;
@@ -99,7 +105,6 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
   left: -168px;
   top: -94px;
   color: #fff;
-  font-size: 13px;
   pointer-events: none;
   opacity: 0;
   transition : .4s;
