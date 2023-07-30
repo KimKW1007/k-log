@@ -24,8 +24,7 @@ export default EditCategoryItemBox
 
 
 const CategoryItemBox =styled.div`
-  padding-bottom: 8px;
-  margin-bottom: 5px;
+  padding: 10px 0 10px;
   border-bottom: 2px solid #999;
 `
 
