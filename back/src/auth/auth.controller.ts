@@ -8,6 +8,7 @@ import {
   Res,
   Get,
   Patch,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import { AuthService } from './auth.service';
@@ -20,6 +21,8 @@ import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import {  GetUser } from 'src/auth/get-user.decorator';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { AuthPasswordCertificateDto } from './dto/auth-checkPasswordCertificate.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { JwtRefreshGuard } from './jwt-refresh.guard';
 
 
 @Controller('auth')
@@ -38,15 +41,19 @@ export class AuthController {
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
     @Res() res: Response,
   ): Promise<any> {
-    const jwt = await this.authService.signIn(authCredentialsDto);
-    res.setHeader('Authorization', 'Bearer ' + jwt.accessToken);
-    res.cookie('jwt', jwt.accessToken, {
+    const {user, accessToken, refreshToken} = await this.authService.signIn(authCredentialsDto);
+    await this.authService.setCurrentRefreshToken(refreshToken, user.id)
+    res.setHeader('Authorization', 'Bearer ' + accessToken);
+    res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: true,
-      maxAge: 420 * 60 * 1000,
+    });
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
     });
     return res.json({
-      accessToken: jwt.accessToken,
+      message:'login_success',
+      accessToken,
+      refreshToken
     });
   }
 
@@ -54,6 +61,7 @@ export class AuthController {
   @UseGuards(AuthGuard())
   isAuthenticated(@Req() req: any): User {
     const user: User = req.user;
+    console.log({user})
     return user;
   }
 
@@ -74,10 +82,8 @@ export class AuthController {
   ) : Promise<any>{
     const accessToken = await this.authService.changeThings(authChangeThingsDto , user)
     res.setHeader('Authorization', 'Bearer ' + accessToken);
-    res.cookie('jwt', accessToken, {
+    res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: true,
-      maxAge: 420 * 60 * 1000,
     });
     return res.json(accessToken)
   }
@@ -113,17 +119,38 @@ export class AuthController {
 
   @Get('/cookies')
   getCookies(@Req() req: Request, @Res() res: Response): any {
-    const jwt = req.cookies['jwt'];
-    return res.send(jwt);
+    const access_token = req.cookies['access_token'];
+    return res.send(access_token);
   }
 
   @Post('/logout')
-  logout(@Res() res: Response): any {
-    res.cookie('jwt', '', {
-      maxAge: 0,
-    });
+  @UseGuards(AuthGuard())
+  async logout(@Res() res: Response, @GetUser() user :User): Promise<any> {
+    await this.authService.removeRefreshToken(user.id);
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
     return res.send({
       message: 'success',
     });
   }
+
+  @Post('/refresh')
+  async refresh(
+    @Body() refreshTokenDto: RefreshTokenDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    try {
+      const newAccessToken = (await this.authService.refresh(refreshTokenDto)).accessToken;
+      res.setHeader('Authorization', 'Bearer ' + newAccessToken);
+      res.cookie('access_token', newAccessToken, {
+        httpOnly: true,
+      });
+      return res.json({newAccessToken});
+    } catch(err) {
+      throw new UnauthorizedException('Invalid refresh-token');
+    }
+  }
+
+
+
 }
