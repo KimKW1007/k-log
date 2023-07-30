@@ -22,7 +22,6 @@ import {  GetUser } from 'src/auth/get-user.decorator';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { AuthPasswordCertificateDto } from './dto/auth-checkPasswordCertificate.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { JwtRefreshGuard } from './jwt-refresh.guard';
 
 
 @Controller('auth')
