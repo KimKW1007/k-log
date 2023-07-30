@@ -22,7 +22,7 @@ export default function ifInImageApi<T = any>(url: string, isOriginServer?: bool
   const postApi = async (data: T) => {
     const result = await baseApi().post(`${isOriginServer ? `http://localhost:5000` : 'http://localhost:8000/api/'}${url}`, data, {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+        Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
       }
     });
     return result.data;
@@ -31,7 +31,7 @@ export default function ifInImageApi<T = any>(url: string, isOriginServer?: bool
     const result = await baseApi().delete(`${isOriginServer ? `http://localhost:5000` : 'http://localhost:8000/api/'}${url}`, {
       data,
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+        Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
       }
     });
     return result.data;

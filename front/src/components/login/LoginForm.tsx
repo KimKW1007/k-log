@@ -36,7 +36,8 @@ const LoginForm = () => {
       setIsError(true);
     },
     async onSuccess(data) {
-      sessionStorage.setItem('jwtToken', data.accessToken);
+      sessionStorage.setItem('access_token', data.accessToken);
+      sessionStorage.setItem('access_token_expiration', `${new Date().getTime() + process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRATION!}`);
       const userData = await getApi(true);
       setUser(userData);
       router.back();

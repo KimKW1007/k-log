@@ -35,7 +35,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
       setError(name, { type: 'custom', message: error.response.data.message });
     },
     onSuccess(data) {
-      sessionStorage.setItem('jwtToken', cookieData);
+      sessionStorage.setItem('access_token', cookieData);
       alert(`"${title}"이(가) 변경 되었습니다.`);
     }
   });
@@ -71,14 +71,14 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   useEffect(() => {
     if (document.hasFocus()) {
       queryClient.invalidateQueries([GET_USER]);
-      sessionStorage.setItem('jwtToken', cookieData);
+      sessionStorage.setItem('access_token', cookieData);
     }
   });
 
   // 쿠키가 들어오고 유저데이터 부르기
   useEffect(() => {
     if (cookieData) {
-      setCheckCookie(typeof window !== 'undefined' ? Boolean(sessionStorage.getItem('jwtToken') === cookieData) : false);
+      setCheckCookie(typeof window !== 'undefined' ? Boolean(sessionStorage.getItem('access_token') === cookieData) : false);
     }
   }, [cookieData]);
   useEffect(() => {
