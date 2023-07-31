@@ -1,4 +1,4 @@
-import { OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
@@ -26,8 +26,6 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   const [currentUserInfo, setCurrentUserInfo] = useState<any>({});
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
 
-  const queryClient = useQueryClient();
-
   const { patchApi } = customApi('/auth/changeThings');
   const { mutate } = useMutation(patchApi, {
     onError(error: any) {
@@ -35,21 +33,21 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
       setError(name, { type: 'custom', message: error.response.data.message });
     },
     onSuccess(data) {
-      sessionStorage.setItem('access_token', cookieData);
+      refetch()
+      cookieRefetch()
       alert(`"${title}"이(가) 변경 되었습니다.`);
     }
   });
 
   // 현재 쿠키값
   const { getApi: cookieApi } = customApi('/auth/cookies');
-  const { data: cookieData } = useQuery([GET_COOKIE], ()=> cookieApi());
+  const { data: cookieData, refetch : cookieRefetch } = useQuery([GET_COOKIE], ()=> cookieApi());
   const [checkCookie, setCheckCookie] = useState(false);
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
-  const { data } = useQuery([GET_USER], () => getApi(true), {
-    enabled: !!checkCookie
+  const { data, refetch } = useQuery([GET_USER], () => getApi(true), {
+    enabled: !!Boolean(cookieData)
   });
-
 
 
   const onSubmit = (data: any) => {
@@ -68,19 +66,11 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     if (isDirty) clearErrors(name);
   }, [isDirty, watch(name)]);
 
-  useEffect(() => {
-    if (document.hasFocus()) {
-      queryClient.invalidateQueries([GET_USER]);
-      sessionStorage.setItem('access_token', cookieData);
-    }
-  });
+  useEffect(()=>{
+    sessionStorage.setItem("access_token" , cookieData);
+  },[cookieData])
 
-  // 쿠키가 들어오고 유저데이터 부르기
-  useEffect(() => {
-    if (cookieData) {
-      setCheckCookie(typeof window !== 'undefined' ? Boolean(sessionStorage.getItem('access_token') === cookieData) : false);
-    }
-  }, [cookieData]);
+
   useEffect(() => {
     if (data) {
       setCurrentUserInfo(data);
@@ -88,25 +78,36 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (localStorage.getItem("isOpenPopup")) {
+      refetch()
+      cookieRefetch()
+    }
+  },[localStorage.getItem("isOpenPopup")]);
+
   return (
     <EditForm onSubmit={handleSubmit(onSubmit)}>
       <EditInputArea>
         <EditInputInnerArea>
-          <EditInput
-            title={title}
-            name={name}
-            defaultValue={currentUserInfo && currentUserInfo[name]}
-            register={register(name, {
-              required: name !== 'userEmail' && '값을 입력해주세요',
-              validate: {
-                currentVaildate: (value) => {
-                  if (vaildaters[name]) return vaildaters[name](value);
+          <EditInputBox>
+            <EditInput
+              title={title}
+              defaultValue={currentUserInfo && currentUserInfo[name]}
+              register={register(name, {
+                required: name !== 'userEmail' && '값을 입력해주세요',
+                validate: {
+                  currentVaildate: (value) => {
+                    if (vaildaters[name]) return vaildaters[name](value);
+                  }
                 }
-              }
-            })}
-            isError={Boolean(errors[name])}
-            disabled={name === 'userEmail'}
-          />
+              })}
+              isError={Boolean(errors[name])}
+              disabled={name === 'userEmail'}
+            />
+            <SubmitBtnBox>
+              <SubmitBtn>{name === 'userName' ? '개명' : '변경'}</SubmitBtn>
+            </SubmitBtnBox>
+          </EditInputBox>
           <AbsoluteBox>{errors[name] && name !== 'userEmail' && <ErrorMsgBox errColor errors={`${errors[name]?.message}`} isEditPage />}</AbsoluteBox>
         </EditInputInnerArea>
       </EditInputArea>
@@ -115,6 +116,27 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
 };
 
 export default AccountEditBox;
+const EditInputBox = styled(AllCenterFlex)`
+  column-gap: 10px;
+  width:100%;
+`;
+const SubmitBtnBox = styled.div`
+  @media(max-width: 660px){
+    display:flex;
+    height:100%;
+    align-items: end;
+    padding-bottom :5px;
+  }
+`;
+const SubmitBtn = styled.button`
+  padding: 8px 16px 8px;
+  border: 1px solid #cfcfcf;
+  background: linear-gradient(#fff 10%, #ddd);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -1.4px;
+  
+`;
 
 export const AbsoluteBox = styled.div`
   position: absolute;
@@ -123,6 +145,7 @@ export const AbsoluteBox = styled.div`
   justify-content:center;
   left: 50%;
   transform:translateX(-50%);
+  bottom: -50%;
 `;
 
 export const EditForm = styled.form`
@@ -132,8 +155,12 @@ export const EditForm = styled.form`
 `;
 export const EditInputArea = styled(OnlyJustifyCenterFlex)`
   padding: 30px 30px;
+  @media(max-width: 660px){
+    padding: 30px 10px;
+  }
 `;
-export const EditInputInnerArea = styled.div`
+export const EditInputInnerArea = styled(OnlyJustifyCenterFlex)`
   position: relative;
+  width:100%;
 `;
 
