@@ -43,7 +43,8 @@ const ChangeEmailPage: NextPage = () => {
         setIsFineChangeEmail(true);
       } else {
         setIsSuccess(true);
-        sessionStorage.setItem('jwtToken', data);
+        sessionStorage.setItem('access_token', data);
+        localStorage.removeItem("isOpenPopup");
       }
     }
   });
@@ -57,11 +58,13 @@ const ChangeEmailPage: NextPage = () => {
 
   const onSubmit = (data: RegisterInputs) => {
     if (isError || isSuccess) {
+      localStorage.removeItem("isOpenPopup");
       window.close();
       return;
     }
     delete data.token;
     mutate(data);
+    localStorage.setItem("isOpenPopup", 'true');
   };
 
   const submitText = () => {
@@ -90,6 +93,15 @@ const ChangeEmailPage: NextPage = () => {
       setIsError(true)
     }
   },[userIds])
+
+  useEffect(()=>{
+    window.addEventListener("beforeunload",()=>{
+      localStorage.removeItem("isOpenPopup");
+    })
+    return ()=>{ window.removeEventListener("beforeunload",()=>{})}
+  },[])
+
+
   return (
     <ChangeEmailArea>
       <ChangeEmailTitleBox>
@@ -131,6 +143,7 @@ const ChangeEmailArea = styled.div`
   width: 33rem;
   height: 100%;
   margin: 0 auto;
+  color : #232323;
 `;
 
 const ChangeEmailForm = styled.form`
