@@ -5,7 +5,7 @@ const useScrollOverHeader = () => {
   useEffect(() => {
     window.addEventListener('scroll', () => {
        
-        if(window.scrollY >= 70){
+        if(window.scrollY >= 10){
           setIsOverHeader(true)
         }else{
           setIsOverHeader(false)
