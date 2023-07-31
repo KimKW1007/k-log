@@ -25,6 +25,7 @@ const EditCategoryList = () => {
     onSuccess(data) {
       console.log({ data });
       setIsChangeValue(false);
+      queryClient.invalidateQueries([GET_ALL_CATEGORY]);
     }
   });
 
@@ -101,18 +102,9 @@ const EditCategoryList = () => {
     reset({ category: data });
     queryClient.invalidateQueries([GET_ALL_CATEGORY]);
   }, [data]);
-  useEffect(() => {
-    dirtyFields.category?.map(({dndNumber} :  CategoryBackProps)=>{
-      if(dndNumber){
-        setIsChangeValue(true);
-      } else {
-        setIsChangeValue(false);
-      }
-    })
-  }, [dirtyFields]);
+
 
   const onDragEnd =(result : DropResult)=>{
-    console.log({result})
     move(result.source.index, result.destination?.index!);
   }
   
@@ -129,6 +121,9 @@ const EditCategoryList = () => {
                 {(magic) => (
                   <div ref={magic.innerRef} {...magic.droppableProps}>
                     {fields.map((category, index) => {
+                      if(data[index].dndNumber !== index + 1){
+                        setIsChangeValue(true);
+                      }
                       return (
                         <Draggable key={String(category.id)} draggableId={String(category.id)} index={index}>
                           {(magic) => (
@@ -148,7 +143,6 @@ const EditCategoryList = () => {
                 )}
               </Droppable>
             </DragDropContext>
-
             <AddCategoryBtn
               onClick={() => {
                 append({ dndNumber: fields.length, categoryTitle: '', subCategories: [] });
@@ -218,7 +212,9 @@ export const EditBtn = styled.button<{ isChangeValue: boolean; isError?: boolean
       cursor: not-allowed;
     `}
 `;
-const Form = styled.form``;
+const Form = styled.form`
+  position: relative;
+`;
 
 const CategoryNav = styled.nav`
   position: relative;
