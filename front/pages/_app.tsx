@@ -28,7 +28,6 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
       const tokenExpiration = sessionStorage.getItem('access_token_expiration'); // 세션 스토리지에 저장된 토큰 만료 시간
       const currentTime = new Date().getTime();
       const expirationTime = parseInt(tokenExpiration!, 10);
-      console.log(expirationTime - currentTime)
       if (expirationTime && expirationTime - currentTime < TOKEN_REFRESH_INTERVAL) {
         // 만료 시간이 일정 시간(5분) 미만으로 남았을 때 토큰 갱신
         const response = await baseApi().post('/auth/refresh', {refresh_token});
@@ -57,8 +56,8 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
   }
   useEffect(()=>{
     let interval: string | number | NodeJS.Timeout | undefined;
-    checkAccessToken()
     if(refresh_token){
+      checkAccessToken()
       getNewAccessTokenByrefreshToken();
       interval = setInterval(getNewAccessTokenByrefreshToken, 60 * 1000);
     }
@@ -92,7 +91,7 @@ MyApp.getInitialProps = async (appContext: any) => {
   for (let i = 0; i < cookieArray.length; i++) {
     const cookie = cookieArray[i].trim(); // 쿠키 양쪽의 공백을 제거
 
-    // access_token을 찾으면 해당 값을 변수에 저장하고 반복문을 종료합니다.
+    // access_token을 찾으면 해당 값을 변수에 저장
     if (cookie.startsWith('access_token=')) {
       hasAccessToken = true;
     }
