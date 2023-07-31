@@ -60,7 +60,6 @@ export class AuthController {
   @UseGuards(AuthGuard())
   isAuthenticated(@Req() req: any): User {
     const user: User = req.user;
-    console.log({user})
     return user;
   }
 
