@@ -139,6 +139,7 @@ export const CurrentInputName = styled.span<{ small: boolean }>`
 
 export const ErrMsgBox = styled(OnlyAlignCenterFlex)<{ errColor?: boolean }>`
   margin: 6px 0 30px;
+  color:#232323;
   svg {
     width: 1em;
     margin-right: 6px;
