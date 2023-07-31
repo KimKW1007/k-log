@@ -52,7 +52,6 @@ const AccountCertificate = ({setIsCertificated} : {setIsCertificated: React.Disp
         <EditInputInnerArea>
           <EditInput
             title={'비밀번호 확인'}
-            name={name}
             type='password'
             register={register(name, {
               required: '값을 입력해주세요',
@@ -93,9 +92,14 @@ const AccountCertificateArea = styled.div`
   border : 1px solid #DDE6ED;
   border-radius: 30px;
   overflow:hidden;
-  padding: ${({theme}) => theme.rem.p60} ${({theme}) => theme.rem.p20};
+  padding: 60px 20px;
   display:flex;
   flex-direction: column;
+  @media(max-width: 980px){
+    border-radius: 0;
+    border : 0;
+    background: transparent;
+  }
 `
 
 const AccountCertificateDescBox = styled.div`
