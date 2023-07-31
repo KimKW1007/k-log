@@ -33,7 +33,6 @@ const EmailInput = ({ inputName = '이메일', watch,  small = false, errColor, 
             <Input
               small={small}
               bold={true}
-              isEmail
               type="text"
               {...register('userEmail', {
                 required: '값을 입력해주세요',
