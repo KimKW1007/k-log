@@ -49,7 +49,6 @@ const ChangePassword = () => {
           <EditInputInnerArea>
             <EditInput
               title={title}
-              name={name}
               type="password"
               register={register(name, {
                 required: errMsg['passwordMinLength'],
