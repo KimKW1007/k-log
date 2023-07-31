@@ -6,7 +6,6 @@ import styled, { css } from 'styled-components';
 
 interface EditInputProps{
   title : string;
-  name : string;
   defaultValue ?: string;
   type ?: string;
   register: UseFormRegisterReturn<string>
@@ -15,9 +14,8 @@ interface EditInputProps{
   isPassword ?:boolean;
 }
 
-const EditInput = ({title, name, defaultValue, type = 'text', register, isError, disabled, isPassword = false} : EditInputProps) => {
+const EditInput = ({title, defaultValue, type = 'text', register, isError, disabled, isPassword = false} : EditInputProps) => {
   return (
-    <EditInputBox>
       <EditInputInnerBox>
         <EditInputTitleBox isPassword={isPassword}>
           <h4>{title}</h4>
@@ -30,20 +28,18 @@ const EditInput = ({title, name, defaultValue, type = 'text', register, isError,
           disabled={disabled}
         />
       </EditInputInnerBox>
-      {isPassword || <SubmitBtnBox>
-        <SubmitBtn>{name === 'userName' ? '개명' : '변경'}</SubmitBtn>
-      </SubmitBtnBox>}
-    </EditInputBox>
+     
   )
 }
 
 export default EditInput
 
-const EditInputBox = styled(OnlyAlignCenterFlex)`
-  column-gap: 10px;
-`;
-const EditInputInnerBox = styled(OnlyAlignCenterFlex)`
+
+export const EditInputInnerBox = styled(OnlyAlignCenterFlex)`
   column-gap: 20px;
+  @media(max-width: 660px){
+    display:block;
+  }
 `;
 
 const EditInputTitleBox = styled.div<{isPassword ?: boolean;}>`
@@ -53,6 +49,12 @@ const EditInputTitleBox = styled.div<{isPassword ?: boolean;}>`
   `}
   h4 {
     font-size: 18px;
+  }
+  @media(max-width: 660px){
+    margin-bottom: 12px;
+    h4 {
+      font-size: 16px;
+    }
   }
 `;
 
@@ -87,12 +89,3 @@ const Input = styled.input<{ isError?: boolean }>`
   }
 `;
 
-const SubmitBtnBox = styled.div``;
-const SubmitBtn = styled.button`
-  padding: 8px 16px 8px;
-  border: 1px solid #cfcfcf;
-  background: linear-gradient(#fff 10%, #ddd);
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: -1.4px;
-`;
