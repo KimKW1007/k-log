@@ -86,7 +86,7 @@ const Banner = () => {
         }
       }, 300);
     })
-    return ()=>{  window.addEventListener("resize",()=>{})}
+      return ()=>{ clearTimeout(resizeTimer);  window.removeEventListener("resize",()=>{})}
   })
 
 
