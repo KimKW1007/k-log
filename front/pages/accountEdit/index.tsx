@@ -7,7 +7,7 @@ import AccountCertificate from '@components/accountEdit/AccountCertificate';
 import {ShieldLock} from "@styled-icons/bootstrap/ShieldLock"
 import { FlexEmptyBox } from '@components/signup/signupForm';
 import { useRecoilState } from 'recoil';
-import { isChangeInput, userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@atoms/atoms';
 import EditSideBar from '@components/accountEdit/EditSidbar/EditSideBarBox';
 import useIsMount from 'src/hooks/useIsMount';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
@@ -42,9 +42,6 @@ const AccountEditPage: NextPage = () => {
 
 
 useEffect(()=>{
-  if(!isForward && isDisappear){
-    setCurrentTab("카테고리")
-  }
   if(isDisappear){
     setIsForward(true);
   }
@@ -53,6 +50,9 @@ useEffect(()=>{
   }
   if(!isDisappear && currentTab === '카테고리'){
     setIsForward(false)
+    setCurrentTab("개인정보변경")
+  }
+  if(!isDisappear){
     setCurrentTab("개인정보변경")
   }
 },[isDisappear])
