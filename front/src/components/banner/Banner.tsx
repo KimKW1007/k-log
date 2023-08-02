@@ -11,8 +11,6 @@ import {useRouter} from "next/router";
 const Banner = () => {
   const router= useRouter();
   const innerBoxRef = useRef<HTMLDivElement>(null);
-  const [innerBoxWidth, setInnerBoxWidth] = useState(0);
-  const [innerBoxHeight, setInnerBoxHeight] = useState(0);
   const [itemLength, setItemLength] = useState(24);
   const bannerList = new Array(itemLength).fill(undefined).map((val, idx) => idx);
 
@@ -25,33 +23,21 @@ const Banner = () => {
   const ONE_ITEM_WIDTH = INNER_BOX_WIDTH / 24;
 
 
-  const [isRemoveTurnBanner, setIsRemoveTurnBanner] = useState(false);
 
+
+/*   // 배너 배경 animation
   useEffect(() => {
-    if((INNER_BOX_WIDTH - innerBoxWidth) >= 0){
-      const length = 24 - Math.floor(((INNER_BOX_WIDTH - innerBoxWidth) / ONE_ITEM_WIDTH))
-      setItemLength(length);
-    }else{
-      setItemLength(24)
-    }
-
-  }, [innerBoxWidth]);
-
-  // 배너 배경 animation
-  /* useEffect(() => {
   let turnTimer: string | number | NodeJS.Timeout | undefined;
-  if(!isRemoveTurnBanner){
     turnTimer = setInterval(() => {
       if(document.hasFocus() && router.pathname === '/'){
         setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
         setCurrentRotate((prev) => prev - 120);
       }
     }, 10000);
-  }
   return () => {
       clearInterval(turnTimer);
     };
-  },[]); */
+  },[]);
   useEffect(()=>{
     if(currentRotate === -360){
       setTimeout(()=>{
@@ -69,51 +55,23 @@ const Banner = () => {
     return()=>{}
   },[currentBannerNum])
 
-  let resizeTimer: string | number | NodeJS.Timeout | undefined;
 
-  useEffect(()=>{
-    window.addEventListener("resize",()=>{
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function(){
-        if (innerBoxRef.current) {
-          setInnerBoxWidth(innerBoxRef.current?.offsetWidth);
-          setInnerBoxHeight(innerBoxRef.current?.offsetHeight);
-        }
-        if(window.innerWidth <= 800){
-          setIsRemoveTurnBanner(true)
-        }else{
-          setIsRemoveTurnBanner(false);
-        }
-      }, 300);
-    })
-      return ()=>{ clearTimeout(resizeTimer);  window.removeEventListener("resize",()=>{})}
-  })
 
 
   // 초기화
   useEffect(()=>{
-    if(window.innerWidth <= 800){
-      setIsRemoveTurnBanner(true)
-    }else{
-      setIsRemoveTurnBanner(false);
-    }
-    return()=>{setCurrentBannerNum(1); setCurrentRotate(0);}
-  },[])
 
-  useEffect(() => {
-    if (innerBoxRef.current) {
-      setInnerBoxWidth(innerBoxRef.current?.offsetWidth);
-      setInnerBoxHeight(innerBoxRef.current?.offsetHeight);
-    }
-    return()=>{}
-  }, [innerBoxRef.current]);
+    return()=>{setCurrentBannerNum(1); setCurrentRotate(0);}
+  },[]) */
+
+
   return (
-    <BannerWrap isRemoveTurnBanner={isRemoveTurnBanner}>
-      <BannerBg currentBg={currentBg} isRemoveTurnBanner={isRemoveTurnBanner} className='banner-background-image'></BannerBg>
-      {isRemoveTurnBanner || <BannerInnerBox ref={innerBoxRef}>
+    <BannerWrap>
+      <BannerBg currentBg={currentBg} className='banner-background-image'></BannerBg>
+      {<BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele,idx) => (
-            <BannerItem key={ele + 'salt' + idx} currentRotate={currentRotate} boxWidth={innerBoxWidth} boxHeight={innerBoxHeight} delay={idx} resetRotate={resetRotate}></BannerItem>
+            <BannerItem key={ele + 'salt' + idx} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
       </BannerInnerBox>}
@@ -122,32 +80,29 @@ const Banner = () => {
 };
 
 export default Banner;
-const BannerWrap = styled(AllCenterFlex)<{isRemoveTurnBanner : boolean}>`
+const BannerWrap = styled(AllCenterFlex)`
   position: relative;
   z-index: 1;
   height: 480px;
   width: 100%;
   padding: 30px 0;
-  ${({isRemoveTurnBanner}) => isRemoveTurnBanner &&`
-  height: 300px;
-`}
-
+ 
+  @media(max-width:937px){
+    padding:  0;
+    height: 48.0256vw;
+  }
 `;
 
-const BannerBg = styled.div<{ currentBg: string; isRemoveTurnBanner : boolean }>`
+const BannerBg = styled.div<{ currentBg: string;  }>`
   position: absolute;
   left: 0;
   top: 0;
   width:100%;
   height:100%;
   background: url(${({currentBg}) => currentBg}) no-repeat center
-    bottom/cover fixed;
+    center/200% auto;
   transition: background 3s 3s;
-  box-shadow: inset 0 -30px 60px 1px #333;
-  ${({isRemoveTurnBanner, currentBg}) => isRemoveTurnBanner &&`
-    box-shadow: none;
-    background: url(${currentBg}) no-repeat center center/cover;
-  `}
+  filter: blur(5px);
 
 `
 
@@ -155,14 +110,21 @@ const BannerInnerBox = styled.div`
   position: relative;
   height: 450px;
   max-width: 937px;
-  width:90%;
+  width:100%;
   overflow: hidden;
   outline : 10px solid #435B66;
   outline-offset: -3px;
   transform: translateY(40px);
   transition: transform .3s ease-in-out;
+  box-shadow:  0 10px 12px  1px #fff;
+
   @media(max-width:1020px){
     transform: translateY(0);
+  }
+  @media(max-width:937px){
+    width:100%;
+    height: 50.0256vw;
+    outline : 0;
   }
 `;
 
