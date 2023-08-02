@@ -58,8 +58,7 @@ export class AuthController {
 
   @Get('/authenticate')
   @UseGuards(AuthGuard())
-  isAuthenticated(@Req() req: any): User {
-    const user: User = req.user;
+  isAuthenticated(@GetUser() user : User): User {
     return user;
   }
 
