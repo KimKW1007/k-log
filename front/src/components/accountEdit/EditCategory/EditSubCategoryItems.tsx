@@ -28,7 +28,7 @@ const EditSubCategoryItems = ({ categoryIndex }: { categoryIndex: number }) => {
 export default EditSubCategoryItems;
 
 const CategorySubItemBox = styled.div`
-  margin-left: ${({ theme }) => theme.rem.p20};
+  margin-left: 20px;
 `;
 const CategoryItem = styled.div`
   position: relative;
