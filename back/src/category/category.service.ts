@@ -44,33 +44,31 @@ export class CategoryService {
       if (chackSameSubCategoryTitle) throw new BadRequestException(`하위 카테고리 중 중복된 값이 있습니다1.`, { cause: new Error() });
     });
 
-    const createCategoryOrAll = () => {
+    const createCategoryOrAll = async () => {
       //create categoryTitle or all
       const notFoundId = categoryDto.filter((x) => !x.id);
       if (notFoundId.length >= 1) {
         // client 에서 받은  arr와 database arr 중복확인(categoryTitle)
-        notFoundId.map(async (ele) => {
+        for(const category of notFoundId){
           const newCategory = this.categoryRepository.create({
-            categoryTitle: ele.categoryTitle,
-            dndNumber : ele.dndNumber,
+            categoryTitle: category.categoryTitle,
+            dndNumber : category.dndNumber,
             user,
           });
-          await this.categoryRepository.save(newCategory).then((res) => {
-            if (ele.subCategories.length < 1) return;
-            return ele.subCategories.map(async (obj) => {
-              await this.subCategoryRepository.save(
-                this.subCategoryRepository.create({
-                  categorySubTitle: obj.categorySubTitle,
-                  category: res,
-                })
-              );
-            });
-          });
-        });
+          const savedCategory = await this.categoryRepository.save(newCategory)
+          if (category.subCategories.length < 1) return;
+          for(const subCategory of category.subCategories){
+            const newSubCategory = this.subCategoryRepository.create({
+              categorySubTitle: subCategory.categorySubTitle,
+              category: savedCategory,
+            })
+            await this.subCategoryRepository.save(newSubCategory);
+          }
+        }
       }
     };
 
-    const createSubCategory = () => {
+    const createSubCategory = async () => {
       const foundId = categoryDto.filter((x) => x.id);
       const notFoundSubId = foundId
         .filter((x) => {
@@ -80,24 +78,22 @@ export class CategoryService {
       // create SubCategory
       if (notFoundSubId.length >= 1) {
         // client 에서 받은  arr와 database arr 중복확인(subCategories.length)
-
-        notFoundSubId.map(async (ele) => {
+        for(const subCategory of notFoundSubId){
           const category = await this.categoryRepository.findOneBy({
-            id: ele.id,
+            id: subCategory.id,
           });
           const filteredCategory = await this.subCategoryRepository.find({
-            where: { category: { id: ele.id } },
+            where: { category: { id: subCategory.id } },
           });
-          const secondFilter = ele.subCategories.filter((x) => !filteredCategory.some((i) => i.id === x.id));
-
-          secondFilter.map(async ({ id, categorySubTitle }) => {
+          const secondFilter = subCategory.subCategories.filter((x) => !filteredCategory.some((i) => i.id === x.id));
+          for(const {categorySubTitle} of secondFilter){
             const newSubCategory = this.subCategoryRepository.create({
               categorySubTitle,
               category,
             });
             await this.subCategoryRepository.save(newSubCategory);
-          });
-        });
+          }
+        }
       }
     };
 
@@ -160,27 +156,26 @@ export class CategoryService {
       }
     };
 
-    const updateTitles = () => {
+    const updateTitles = async () => {
       // 수정
       const foundId = categoryDto.filter((x) => x.id);
       if (foundId.length >= 1) {
-        foundId.map(async (ele) => {
-          console.log('12',ele.dndNumber)
-          const found = await this.categoryRepository.findOneBy({ id: ele.id });
+        for(const category of foundId){
+          const found = await this.categoryRepository.findOneBy({ id: category.id });
           if (!found) throw new BadRequestException(`상위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error() });
-          found.categoryTitle = ele.categoryTitle;
-          found.dndNumber = ele.dndNumber;
-          await this.categoryRepository.save(found).then((res) => {
-            const notFoundSubId = ele.subCategories.filter((i) => i.id);
+          found.categoryTitle = category.categoryTitle;
+          found.dndNumber = category.dndNumber;
+          await this.categoryRepository.save(found).then(async (res) => {
+            const notFoundSubId = category.subCategories.filter((i) => i.id);
             if (notFoundSubId.length < 1) return;
-            notFoundSubId.map(async ({ id: subId, categorySubTitle }) => {
+            for(const {id : subId ,categorySubTitle} of notFoundSubId){
               const foundSubCategory = await this.subCategoryRepository.findOneBy({ id: subId });
               if (!foundSubCategory) throw new BadRequestException(`하위 카테고리 중 비교할 값이 없습니다.`, { cause: new Error() });
               foundSubCategory.categorySubTitle = categorySubTitle;
               await this.subCategoryRepository.save(foundSubCategory);
-            });
+            }
           });
-        });
+        }
       }
     };
     createCategoryOrAll();
