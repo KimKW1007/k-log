@@ -9,8 +9,8 @@ const AddCategoryBtn = ({onClick} : {onClick: () => void}) => {
 export default AddCategoryBtn
 const AddBtn = styled.button`
   width:100%;
-  margin-top: 6px;
-  padding: 5px 0;
+  margin-top: 10px;
+  padding: 10px 0;
   border-radius: 6px;
   background: #f2f2f2;
   color: #acacac;
