@@ -24,19 +24,17 @@ const CategoryBox = () => {
   }, [router]);
 
   return (
-    <>
-      {<CategoryWrap>
-        <CategoryBtn
-          isOverHeader={isOverHeader}
-          onClick={() => {
-            setIsCategoryOn((prev) => !prev);
-          }}>
-          CATEGORY
-          {isCategoryOn ? <UpDirection /> : <DownDirection />}
-        </CategoryBtn>
-        {isCategoryOn && <CategoryList isOverHeader={isOverHeader} />}
-      </CategoryWrap>}
-    </>
+    <CategoryWrap>
+      <CategoryBtn
+        isOverHeader={isOverHeader}
+        onClick={() => {
+          setIsCategoryOn((prev) => !prev);
+        }}>
+        CATEGORY
+        {isCategoryOn ? <UpDirection /> : <DownDirection />}
+      </CategoryBtn>
+      {isCategoryOn && <CategoryList isOverHeader={isOverHeader} />}
+    </CategoryWrap>
   );
 };
 
