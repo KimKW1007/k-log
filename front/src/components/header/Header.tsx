@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import logo_white from '@images/white.svg';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
@@ -18,11 +18,15 @@ export const Header = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isReactive, setIsReactive] = useRecoilState(isRemoveSidebar);
+  const [notShowCategory , setNotShowCategory] = useState(false);
   const { isMount } = useIsMount();
 
   useEffect(()=>{
     if(router.pathname !== '/'){
       setIsReactive(true);
+      setNotShowCategory(true)
+    }else{
+      setNotShowCategory(false)
     }
   },[router])
 
@@ -30,14 +34,16 @@ export const Header = () => {
     <HeaderBox >
       <HeaderInnerBox>
         <LogoAndCategoryBox>
-          <CategoryBox></CategoryBox>
-          <LogoBox>
-            <Link href={'/'} title="K - Blog">
+          {notShowCategory && <CategoryBox></CategoryBox> }
+          <LogoBox isReactive={notShowCategory}>
+            <Link href={'/'} title="홈">
               <Image src={logo_white} alt={'로고'}></Image>
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
-        <KlogText>K : Log</KlogText>
+        <KlogTextLogo href={'/'} title="홈">
+          <h2>K : Log</h2>
+        </KlogTextLogo>
         {isMount && (
           <>
             {isReactive || <BtnBox>{isMount && userInfo ? <HeaderUserMenu isInSideMenu={false} /> : <LoginSignUpBox />}</BtnBox>}
@@ -49,14 +55,31 @@ export const Header = () => {
   );
 };
 
-const KlogText = styled.h2`
+const TextLogoAni = keyframes`
+  0%{
+    color : #fff;
+  }
+  50%{
+    color : #A084E8;
+  }
+  100%{
+    color : #fff;
+  }
+
+`
+
+const KlogTextLogo = styled(Link)`
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none;
-
-
+  h2{
+  }
+  &:hover{
+    h2{
+      animation : ${TextLogoAni} 1s forwards;
+    }
+  }
 `;
 
 const HeaderBox = styled.header`
@@ -77,10 +100,12 @@ const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
   padding: 0 ${({ theme }) => theme.rem.p30};
   justify-content: space-between;
 `;
-const LogoBox = styled(OnlyAlignCenterFlex)`
+const LogoBox = styled(OnlyAlignCenterFlex)<{isReactive : boolean;}>`
   width: ${({ theme }) => theme.rem.p50};
   height: 100%;
-  margin-left: 180px;
+  ${({isReactive}) => isReactive &&`
+    margin-left: 180px;
+  `}
   img {
     max-width: 100%;
   }
