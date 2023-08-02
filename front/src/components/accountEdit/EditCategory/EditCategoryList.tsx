@@ -5,11 +5,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 import AddCategoryBtn from './AddCategoryBtn';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-import EditCategoryItemBox from './EditCategoryItemBox';
+import EditCategoryItemBox, { MoveAttraction } from './EditCategoryItemBox';
 import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import { removeTwoMoreEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 import { CategoryBackProps } from '@components/category/CategoryList';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
+import Loading from '@components/common/Loading/Loading';
 
 const EditCategoryList = () => {
   // mutate - putApi 관련
@@ -27,8 +28,7 @@ const EditCategoryList = () => {
       setTimeout(()=>{
         queryClient.invalidateQueries([GET_ALL_CATEGORY])
         setIsChangeValue(false);
-      },100)
-
+      },500)
     },
     
   });
@@ -83,24 +83,26 @@ const EditCategoryList = () => {
     mutate(result);
   };
 
-/*   useEffect(() => {
+  useEffect(() => {
     if (isDirty) {
       setIsChangeValue(true);
     } else {
       setIsChangeValue(false);
     }
-  }, [isDirty]); */
+  }, [isDirty]);
   console.log({isDirty})
 
   // input에 변화가 일어나면 error false
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log({ value })
+      console.log({ value, name, type })
       value.category?.map((category: any, index :number) =>{
         if(category.dndNumber !== index + 1){
           setIsChangeValue(true);
+          return;
         }else{
           setIsChangeValue(false);
+          return;
         }
       })
       if (type === 'change') {
@@ -109,7 +111,7 @@ const EditCategoryList = () => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, isDirty]);
 
   // 기본값
   useEffect(() => {
@@ -133,34 +135,36 @@ const EditCategoryList = () => {
               <Droppable droppableId="category">
                 {(magic) => (
                   <div ref={magic.innerRef} {...magic.droppableProps}>
-                    {fields.map((category, index) => {
-                      
-                      return (
+                    {fields.map((category, index) =>  (
                         <Draggable key={String(category.id)} draggableId={String(category.id)} index={index}>
-                          {(magic) => (
-                            <div
-                            ref={magic.innerRef}
-                            {...magic.draggableProps}
-                            {...magic.dragHandleProps}
-                            >
-                              <EditCategoryItemBox categoryIndex={index} key={category.id} remove={remove} />
-                            </div>
-                          )}
+                          {(magic, snapshot) => (
+                              <DraggableInnerBox
+                              ref={magic.innerRef}
+                              {...magic.draggableProps}
+                              {...magic.dragHandleProps}
+                              isDragging={snapshot.isDragging}
+                              >
+                                <EditCategoryItemBox categoryIndex={index} key={category.id} remove={remove} />
+                              </DraggableInnerBox>
+                            )
+                          }
                         </Draggable>
                       )
-                    })}
+                    )}
                   {magic.placeholder}
                   </div>
                 )}
               </Droppable>
             </DragDropContext>
-            <AddCategoryBtn
-              onClick={() => {
-                append({ dndNumber: fields.length, categoryTitle: '', subCategories: [] });
-              }}></AddCategoryBtn>
+            <AddCategoryBtnBox isNotItem={fields.length > 0}>
+              <AddCategoryBtn
+                onClick={() => {
+                  append({ dndNumber: fields.length, categoryTitle: '', subCategories: [] });
+                }}/>
+            </AddCategoryBtnBox>
             <EditBtnBox>
               <EditBtn disabled={!isChangeValue} isError={isError} isChangeValue={isChangeValue}>
-                {isLoading ? '수정 중' : isChangeValue ? '수정하기' : '수정완료'}
+                {isLoading ? <Loading/> : isChangeValue ? '수정하기' : '수정완료'}
               </EditBtn>
             </EditBtnBox>
           </Form>
@@ -232,7 +236,7 @@ const CategoryNav = styled.nav`
   z-index: 3;
   width: 100%;
   margin-top: 2px;
-  padding: 20px 30px;
+  padding: 20px 0;
 `;
 
 const CategoryListBox = styled.div`
@@ -240,10 +244,33 @@ const CategoryListBox = styled.div`
   flex-direction: column;
   color: #232323;
   h3 {
-    font-size: ${({ theme }) => theme.rem.p14};
+    font-size: 20px;
     border-bottom: 1px solid #858585;
-    padding: 0 5px 8px;
-    margin-bottom: 10px;
+    padding: 0 10px 10px;
+    margin: 0 10px 10px;
     pointer-events: none;
   }
 `;
+const DraggableInnerBox = styled.div<{isDragging :boolean;}>`
+padding: 0px 15px 15px;
+margin-bottom : 10px;
+border-radius: 10px;
+background: transparent;
+${({isDragging, theme}) => isDragging && `
+  background: #23232381;
+`}
+&:hover{
+  ${MoveAttraction}{
+    span{
+      background: #454545;
+    }
+  }
+}
+`
+
+const AddCategoryBtnBox =styled.div<{isNotItem : boolean}>`
+${({isNotItem}) => isNotItem && `
+border-top : 2px solid #999;
+`}
+  padding: 5px 0 0;
+`
