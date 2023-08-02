@@ -5,56 +5,70 @@ import styled, { keyframes, css } from 'styled-components';
 
 interface BannerItemProps {
   currentRotate: number;
-  delay: number;
-  boxWidth?: number;
-  boxHeight?: number;
+  idx: number;
   resetRotate: boolean;
 }
 
-const BaanerItem = ({ currentRotate, delay, boxWidth, boxHeight, resetRotate }: BannerItemProps) => {
-  return <Item currentRotate={currentRotate} boxWidth={boxWidth} resetRotate={resetRotate}
-  boxHeight={boxHeight} delay={delay}></Item>;
+const BaanerItem = ({ currentRotate, idx, resetRotate }: BannerItemProps) => {
+  return <Item currentRotate={currentRotate} resetRotate={resetRotate} idx={idx}></Item>;
 };
 
 export default BaanerItem;
-// ${({delay}) => delay * 32 }
+// ${({idx}) => idx * 32 }
 // ${({ currentRotate }) => currentRotate}
 
-const Item = styled.div<{ currentRotate: number; delay: number; boxWidth?: number; boxHeight?: number; resetRotate: boolean; }>`
+const Item = styled.div<{ currentRotate: number; idx: number; resetRotate: boolean; }>`
   position: absolute;
-  width: 40px;
+  z-index: 50;
+  width: 39.6px;
   height: 100%;
-  background: url(${banner1}) -${({ delay }) => delay * 40}px center no-repeat;
-  background-size: ${({ boxWidth }) => boxWidth! +40}px ${({ boxHeight }) => boxHeight! + 30}px;
+  top: -6.5px;
+  left: ${({idx}) => (idx * 39)}px;
+  background: url(${banner1}) no-repeat;
+  background-size: 977px auto;
+  background-position: -${({idx}) => (idx * 39.6)}px  center;
   transform-style: preserve-3d;
   transform: rotateY(${({ currentRotate }) => currentRotate}deg);
-  left: ${({ delay }) => delay * 39}px;
-  top: -8px;
-  transition: transform 2s ${({ delay }) => delay * 0.15}s;
+  transition: transform 2s ${({ idx }) => idx * 0.15}s;
   ${({ resetRotate }) => resetRotate && `transition: none`};
   transform-origin: center center -8.666px;
+  image-rendering: -webkit-optimize-contrast; /* 웹킷 브라우저용 */
+  image-rendering: pixelated; /* 일반 브라우저용 */
   &:after {
-    background: url(${banner2}) -${({ delay }) => delay * 40}px center no-repeat;
-    left: 102%;
+    background: url(${banner2})  no-repeat;
+    width: 100%;
+    left: 100%;
     transform: rotateY(120deg);
-    transform-origin: left;
+    transform-origin: left top;
   }
   &:before {
-    background: url(${banner3}) -${({ delay }) => delay * 39}px center no-repeat;
-    left: -102%;
+    background: url(${banner3}) no-repeat;
+    width: 100%;
+    left: -100%;
     transform: rotateY(240deg);
-    transform-origin: right;
+    transform-origin: right top;
   }
   &:before,
   &:after {
     content: '';
     position: absolute;
-    width: 100%;
     height: 100%;
-    background-size: ${({ boxWidth }) => boxWidth! +40}px ${({ boxHeight }) => boxHeight! + 30}px;
-    top: 0;
-    
+    background-size: 977px auto;
+    background-position: -${({idx}) => (idx * 39.6)}px  center;
+    top: -2px;
+    image-rendering: -webkit-optimize-contrast; /* 웹킷 브라우저용 */
+    image-rendering: pixelated; /* 일반 브라우저용 */
   }
-
+  @media(max-width: 937px){
+    width: 4.3vw;
+    background-size: 104.2689vw auto;
+    background-position: -${({idx}) => (idx * ( 39.6 / 937 * 100))}vw  center;
+    left: ${({idx}) => (idx * 4.1622)}%;
+    &:before,
+    &:after {
+      background-size: 104.2689vw auto;
+      background-position: -${({idx}) => (idx * ( 40 / 937 * 100))}vw  center;
+    }
+  }
   
 `;
