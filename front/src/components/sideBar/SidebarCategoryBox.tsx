@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CategoryItems from '@components/category/CategoryItems';
 const SidebarCategoryBox = () => {
   return (
-    <CategoryBox>
+    <CategoryBox className='customScroll'>
       <CategoryItems/>
     </CategoryBox>
   )
@@ -14,7 +14,7 @@ export default SidebarCategoryBox
 const CategoryBox = styled.div`
   width:100%;
   padding:  0 0 20px;
-  
+  min-height: 370px;
   dt{
     margin-bottom: 5px;
     a{
