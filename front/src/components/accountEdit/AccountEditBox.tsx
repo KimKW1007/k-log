@@ -45,9 +45,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   const [checkCookie, setCheckCookie] = useState(false);
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
-  const { data, refetch } = useQuery([GET_USER], () => getApi(true), {
-    enabled: !!Boolean(cookieData)
-  });
+  const { data, refetch } = useQuery([GET_USER], () => getApi(true));
 
 
   const onSubmit = (data: any) => {
@@ -66,9 +64,6 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     if (isDirty) clearErrors(name);
   }, [isDirty, watch(name)]);
 
-  useEffect(()=>{
-    sessionStorage.setItem("access_token" , cookieData);
-  },[cookieData])
 
 
   useEffect(() => {
@@ -82,6 +77,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     if (localStorage.getItem("isOpenPopup")) {
       refetch()
       cookieRefetch()
+      sessionStorage.setItem("access_token" , cookieData);
     }
   },[localStorage.getItem("isOpenPopup")]);
 
