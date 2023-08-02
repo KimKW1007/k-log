@@ -33,17 +33,18 @@ const HomeNewPosterWrap = styled.div`
 `;
 
 const TitleBox = styled(OnlyAlignCenterFlex)`
-  width: 380px;
+  max-width: 380px;
+  width:100%;
   box-shadow: 15px 10px 5px 3px rgba(0, 0, 0, 0.2);
   border-right: 3px solid rgba(255, 255, 255, 0.1);
   border-bottom: 3px solid rgba(255, 255, 255, 0.1);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px 40px;
+  justify-content: space-between;
 `;
 const Title = styled.h2`
   font-size: 40px;
-  margin-right: 40px;
 `;
 const TitleDescBox = styled.div`
   p {
