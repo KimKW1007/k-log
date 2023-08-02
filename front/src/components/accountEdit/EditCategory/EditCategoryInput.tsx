@@ -5,6 +5,7 @@ import { Trash } from '@styled-icons/bootstrap/Trash';
 
 import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
 import DeleteModal from '@components/modal/DeleteModal';
+import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 
 
 export interface CategoryInputProps {
@@ -32,13 +33,13 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
     if (!sub) {
       return (
         <>
-        해당 카테고리 삭제 시<br />하위 카테고리는 모두 삭제됩니다.
+        해당 카테고리 삭제 시<br />하위 카테고리 및 하위 카테고리에 작성된 게시물 모두 삭제됩니다.
         </>
       );
     } else {
       return (
         <>
-        해당 카테고리를<br />삭제 하시겠습니까?
+        해당 카테고리 삭제 시<br />해당 카테고리에 작성된<br />게시물 모두 삭제됩니다.
         </>
       );
     }
@@ -72,9 +73,8 @@ const TipAni = keyframes`
   
 `;
 
-const EditInputBox = styled.div`
-  display: flex;
-  align-items: center;
+const EditInputBox = styled(OnlyAlignCenterFlex)`
+  flex : 1;
 `;
 const DeleteBox = styled.div`
   position: relative;
@@ -89,10 +89,9 @@ const DeleteTipTextBox = styled.div`
   word-break: keep-all;
   text-align: center;
   border-radius: 6px;
-  background: #ff8989;
+  background: ${({ theme }) => theme.color.err};
   font-size: 13px;
-  line-height: 16px;
-  border: 2px solid ${({ theme }) => theme.color.err};
+  border: 2px solid #ff8989;
   svg {
     position: absolute;
     left: 8px;
@@ -119,9 +118,9 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
     height: 15px;
     transform: rotate(45deg);
     border-radius: 0 0 2px 0;
-    background: #ff8989;
-    border-bottom: 2px solid ${({ theme }) => theme.color.err};
-    border-right: 2px solid ${({ theme }) => theme.color.err};
+    background: ${({ theme }) => theme.color.err};
+    border-bottom: 2px solid #ff8989;
+    border-right: 2px solid #ff8989;
   }
   ${({isOnDeleteBtn}) => isOnDeleteBtn && css`
     opacity: 1;
@@ -151,11 +150,11 @@ const DeleteBtn = styled.button<{ isOnDeleteBtn: boolean }>`
 
 const EditInput = styled.input`
   width: 100%;
-  line-height: 18px;
+  line-height: 30px;
   border: 1px solid #a5a5a5;
   outline: none;
   background: #f0f0f0;
-  padding: 6px 10px 4px;
+  padding: 6px 10px 4px ;
   border-radius: 5px;
   transition: 0.2s;
   &:focus {
