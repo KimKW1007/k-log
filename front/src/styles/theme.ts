@@ -36,7 +36,7 @@ export const rem = {
 
 export const color ={
   err : "#FF6D60",
-  success : "rgba(134, 150, 254, 1)"
+  success : "#8696fe"
 }
 
 
