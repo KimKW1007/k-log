@@ -24,9 +24,13 @@ const EditCategoryList = () => {
     },
     onSuccess(data) {
       console.log({ data });
-      setIsChangeValue(false);
-      queryClient.invalidateQueries([GET_ALL_CATEGORY]);
-    }
+      setTimeout(()=>{
+        queryClient.invalidateQueries([GET_ALL_CATEGORY])
+        setIsChangeValue(false);
+      },100)
+
+    },
+    
   });
 
   // getAPI 관련
@@ -58,11 +62,11 @@ const EditCategoryList = () => {
     const categoryData = data.category;
     const filteredCategory = categoryData.filter((x: CategoryBackProps) => x.categoryTitle === '');
     const filteredSubCategory = categoryData.map((x: CategoryBackProps) => x.subCategories.filter((v) => v.categorySubTitle === '')).flat();
-    if (filteredCategory.length >= 1) {
+    if (filteredCategory.length > 0) {
       alert('상위 카테고리 중 비어있는 카테고리가 있습니다');
       return;
     }
-    if (filteredSubCategory.length >= 1) {
+    if (filteredSubCategory.length > 0) {
       alert('하위 카테고리 중 비어있는 카테고리가 있습니다');
       return;
     }
@@ -75,20 +79,30 @@ const EditCategoryList = () => {
       cateTitle = { ...cateTitle, subCategories: cateSubTitle };
       return cateTitle;
     });
+    console.log({result})
     mutate(result);
   };
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (isDirty) {
       setIsChangeValue(true);
     } else {
       setIsChangeValue(false);
     }
-  }, [isDirty]);
+  }, [isDirty]); */
+  console.log({isDirty})
 
   // input에 변화가 일어나면 error false
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
+      console.log({ value })
+      value.category?.map((category: any, index :number) =>{
+        if(category.dndNumber !== index + 1){
+          setIsChangeValue(true);
+        }else{
+          setIsChangeValue(false);
+        }
+      })
       if (type === 'change') {
         setIsError(false);
         setIsChangeValue(true);
@@ -100,7 +114,6 @@ const EditCategoryList = () => {
   // 기본값
   useEffect(() => {
     reset({ category: data });
-    queryClient.invalidateQueries([GET_ALL_CATEGORY]);
   }, [data]);
 
 
@@ -121,9 +134,7 @@ const EditCategoryList = () => {
                 {(magic) => (
                   <div ref={magic.innerRef} {...magic.droppableProps}>
                     {fields.map((category, index) => {
-                      if(data[index].dndNumber !== index + 1){
-                        setIsChangeValue(true);
-                      }
+                      
                       return (
                         <Draggable key={String(category.id)} draggableId={String(category.id)} index={index}>
                           {(magic) => (
