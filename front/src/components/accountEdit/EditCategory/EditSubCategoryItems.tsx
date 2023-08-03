@@ -32,5 +32,5 @@ const CategorySubItemBox = styled.div`
 `;
 const CategoryItem = styled.div`
   position: relative;
-  margin: ${({ theme }) => theme.rem.p10} 0 2px;
+  margin: 2px 0 ;
 `;
