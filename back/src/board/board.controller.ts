@@ -12,7 +12,7 @@ export class BoardController {
   @Get('/lastBoardId/:categorySubTitle')
   @UseGuards(AuthGuard())
   createLastBoardId(@Param('categorySubTitle') categorySubTitle : string,@GetUser() user : User){
-    return this.boardService.createLastBoardId(categorySubTitle, user)
+    return this.boardService.createLastBoardId(categorySubTitle.replace("-","/"), user)
   }
 
 @Delete('/deleteBoard/:id')
@@ -28,7 +28,7 @@ export class BoardController {
     return this.boardService.createBoard(body, file, user)
   }
 
-  @Get("/:id")
+  @Get("/getBoard/:id")
   getBoard(@Param("id", ParseIntPipe) id : number){
     return this.boardService.getBoard(id)
   }
@@ -40,11 +40,11 @@ export class BoardController {
 
   @Get('/category/:categoryTitle')
   getBoardsForCategory(@Query("page" , ParseIntPipe) page : number = 1, @Param("categoryTitle") categoryTitle : string){
-    return this.boardService.getBoardsForCategory(categoryTitle, page)
+    return this.boardService.getBoardsForCategory(categoryTitle.replace("-","/"), page)
   }
   @Get('/subCategory/:categorySubTitle')
   getBoardsForSubCategory(@Query("page" , ParseIntPipe) page : number = 1, @Param("categorySubTitle") categorySubTitle : string){
-    return this.boardService.getBoardsForSubCategory(categorySubTitle, page)
+    return this.boardService.getBoardsForSubCategory(categorySubTitle.replace("-","/"), page)
   }
 
   @Post('/category/edit')
@@ -52,6 +52,11 @@ export class BoardController {
   @UseGuards(AuthGuard())
   updateBoard(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User){
     return this.boardService.updateBoard(body, file, user)
+  }
+
+  @Get('/getNewBoards')
+  getNewBoards(){
+    return this.boardService.getNewBoards()
   }
 
 }
