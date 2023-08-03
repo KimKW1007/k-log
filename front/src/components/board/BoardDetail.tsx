@@ -22,13 +22,16 @@ import { GET_BOARD } from '@utils/queryKeys';
 
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const { getApi } = customApi(`/board/${id}`);
+  const { getApi } = customApi(`/board/getBoard/${id}`);
   const { isMount } = useIsMount();
   const { reverseConvert, decodeHTMLEntities } = useConvert();
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
+  const {author, authorImage, boardTitle, contents, createdAt, thumbnail, tags, subCategory }  = currentBoard ?? {};
+  const {categorySubTitle, category } = subCategory ?? {};
+  const {categoryTitle, user} = category ?? {};
 
   const contentsWrapRef = useRef<HTMLDivElement>(null);
 
@@ -48,14 +51,14 @@ const BoardDetail = ({ id }: { id: string }) => {
             <Waves />
             <DetailTitleBox>
               <CategoryBox>
-                <Link href={`/category/${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`}>{`${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`}</Link>
+                <Link href={`/category/${categoryTitle}/${categorySubTitle}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
               </CategoryBox>
-              <h2>{currentBoard.boardTitle}</h2>
-              <CreatedDateBox>{changeCreatedAt(currentBoard.createdAt)}</CreatedDateBox>
+              <h2>{boardTitle}</h2>
+              <CreatedDateBox>{changeCreatedAt(createdAt)}</CreatedDateBox>
             </DetailTitleBox>
-            <ContentsWrap ref={contentsWrapRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reverseConvert(currentBoard.contents)) }} />
+            <ContentsWrap ref={contentsWrapRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reverseConvert(contents)) }} />
             <DetailTagBox>
-              {data && currentBoard.tags && currentBoard.tags.split(",").map((tag : string, idx:number) =>(
+              {data && tags && tags.split(",").map((tag : string, idx:number) =>(
                 <TagBtn key={tag + idx}>{tag}</TagBtn>
               ))}
             </DetailTagBox>
@@ -64,7 +67,7 @@ const BoardDetail = ({ id }: { id: string }) => {
                 <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail } id={nextBoard.id} />
             </AnotherBoardArea>
           </DetailContainer>
-          {currentUser?.id === currentBoard.subCategory.category.user.id && <UDBtnBox id={currentBoard.id} returnUrl={`/category/${currentBoard.subCategory.category.categoryTitle}/${currentBoard.subCategory.categorySubTitle}`} />}
+          {currentUser?.id === user.id && <UDBtnBox id={id} returnUrl={`/category/${categoryTitle.replaceAll("/","-")}/${categorySubTitle.replaceAll("/","-")}`} />}
         </DetailWrap>)
       }
     </>
