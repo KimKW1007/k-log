@@ -57,9 +57,11 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
         foundBoard.createdAt = new Date();
-        await this.save(foundBoard).then(async res=>{
+        const newBoard = await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
+          return res
         });
+      return { message: 'success', boardId : newBoard.id };
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
@@ -67,7 +69,8 @@ export class BoardRepository extends Repository<Board> {
     } else {
       const formData = new FormData();
       file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-      const imageBlob = new Blob([file.buffer], { type: file.mimetype });
+      const imageBuffer = Buffer.from(file.buffer);
+      const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
       formData.append('image', imageBlob, file.originalname);
       formData.append('userId', String(user.id));
       formData.append('subTitle', categorySubTitle);
@@ -85,15 +88,16 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '';
         foundBoard.createdAt = new Date();
-        await this.save(foundBoard).then(async res=>{
+        const newBoard = await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
+          return res
         });
+        return { message: 'success', boardId : newBoard.id };
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
       }
     }
-    return { message: 'success' };
   }
 
 
@@ -127,16 +131,17 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
+          return res
         }).then(async res=>{
           let imgArr = [];
           const pattern = /http:\/\/localhost:8000[^"]*"/g;
-          const result = foundBoard.contents.match(pattern);
+          const result = res.contents.match(pattern);
           if(result){
             const extractedStrings = result.map(str => str.slice(0, -1));
             imgArr.push(extractedStrings)
           }
-          if(foundBoard.thumbnail){
-            imgArr.push(foundBoard.thumbnail)
+          if(res.thumbnail){
+            imgArr.push(res.thumbnail)
           }
           const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr : imgArr.flat()}})
         });
@@ -148,7 +153,8 @@ export class BoardRepository extends Repository<Board> {
     } else {
       const formData = new FormData();
       file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-      const imageBlob = new Blob([file.buffer], { type: file.mimetype });
+      const imageBuffer = Buffer.from(file.buffer);
+      const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
       formData.append('image', imageBlob, file.originalname);
       formData.append('userId', String(user.id));
       formData.append('subTitle', categorySubTitle);
@@ -167,16 +173,17 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '';
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
+          return res
         }).then(async res=>{
           let imgArr = [];
           const pattern = /http:\/\/localhost:8000[^"]*"/g;
-          const result = foundBoard.contents.match(pattern);
+          const result = res.contents.match(pattern);
           if(result){
             const extractedStrings = result.map(str => str.slice(0, -1));
             imgArr.push(extractedStrings)
           }
-          if(foundBoard.thumbnail){
-            imgArr.push(foundBoard.thumbnail)
+          if(res.thumbnail){
+            imgArr.push(res.thumbnail)
           }
           const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr : imgArr.flat()}})
         });
