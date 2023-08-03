@@ -12,10 +12,8 @@ const HomeNewPoster = () => {
         <Title>K : Log</Title>
         <TitleDescBox>
           <p>New Post</p>
-          <p>개발공부(common)</p>
         </TitleDescBox>
       </TitleBox>
-      <FlexEmptyBox />
       <HomeNewPosterList></HomeNewPosterList>
       <ProjectSlide />
     </HomeNewPosterWrap>
@@ -25,11 +23,13 @@ const HomeNewPoster = () => {
 export default HomeNewPoster;
 
 const HomeNewPosterWrap = styled.div`
-  width:100%;
-  max-width: 1138px;
+  width:1138px;
   display: flex;
   flex-direction: column;
   margin : 0 auto;
+  @media(max-width: 1600px){
+    width:100%;
+  }
 `;
 
 const TitleBox = styled(OnlyAlignCenterFlex)`
@@ -42,12 +42,16 @@ const TitleBox = styled(OnlyAlignCenterFlex)`
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px 40px;
   justify-content: space-between;
+  margin-bottom: 110px;
+  @media(max-width:937px){
+    margin-bottom: 60px;
+  }
 `;
 const Title = styled.h2`
   font-size: 40px;
 `;
 const TitleDescBox = styled.div`
   p {
-    padding: 2px 0;
+    font-size: 24px;
   }
 `;
