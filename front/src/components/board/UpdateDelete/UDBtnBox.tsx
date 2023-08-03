@@ -9,7 +9,7 @@ import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-const UDBtnBox = ({id, returnUrl} :{ id:number, returnUrl:string }) => {
+const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
 
   const router = useRouter()
 
