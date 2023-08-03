@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Image from 'next/image';
-import defaultImage from '@assets/images/500_94.jpg';
+import defaultAuthorImage from '@assets/images/500_94.jpg';
 import { PlusSquareDotted } from '@styled-icons/bootstrap/PlusSquareDotted';
 import { EditBtn } from '../EditCategory/EditCategoryList';
 import { getBase64 } from '@utils/getBase64';
@@ -37,7 +37,7 @@ const EditSidebarHeader = () => {
     mode: 'all',
     defaultValues: useMemo(() => {
       return {
-        image: data?.imageUrl ? data.imageUrl : defaultImage.src,
+        image: data?.imageUrl ? data.imageUrl : defaultAuthorImage.src,
         description: data?.description
       };
     }, [data])
@@ -61,7 +61,7 @@ const EditSidebarHeader = () => {
   };
   useEffect(() => {
     reset({
-      image: data?.imageUrl ? data.imageUrl : defaultImage.src,
+      image: data?.imageUrl ? data.imageUrl : defaultAuthorImage.src,
       description: data?.description
     });
     queryClient.invalidateQueries([GET_USER_MINI_PL]);
@@ -89,7 +89,7 @@ const EditSidebarHeader = () => {
       <EditSidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <SidebarHeaderBox>
           <ImgBox>
-            <Image src={image || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
+            <Image src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
             <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} />
           </ImgBox>
           <DescBox>
