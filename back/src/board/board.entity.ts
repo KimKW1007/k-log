@@ -1,4 +1,5 @@
 import { SubCategory } from 'src/category/subCategory.entity';
+import { Comment } from 'src/comment/comment.entity';
 import {
   BaseEntity,
   Column,
@@ -38,4 +39,8 @@ export class Board extends BaseEntity {
 
   @Column()
   contents: string;
+  
+  @OneToMany(type => Comment, comment => comment.board, {eager: true})
+  comment : Comment[];
+
 }
