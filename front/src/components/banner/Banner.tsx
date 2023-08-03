@@ -68,13 +68,13 @@ const Banner = () => {
   return (
     <BannerWrap>
       <BannerBg currentBg={currentBg} className='banner-background-image'></BannerBg>
-      {<BannerInnerBox ref={innerBoxRef}>
+      <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele,idx) => (
             <BannerItem key={ele + 'salt' + idx} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
-      </BannerInnerBox>}
+      </BannerInnerBox>
     </BannerWrap>
   );
 };
@@ -90,6 +90,9 @@ const BannerWrap = styled(AllCenterFlex)`
   @media(max-width:937px){
     padding:  0;
     height: 48.0256vw;
+  }
+  @media(max-width: 400px){
+    height: 200px;
   }
 `;
 
@@ -118,13 +121,16 @@ const BannerInnerBox = styled.div`
   transition: transform .3s ease-in-out;
   box-shadow:  0 10px 12px  1px #fff;
 
-  @media(max-width:1020px){
-    transform: translateY(0);
-  }
+
   @media(max-width:937px){
+    transform: translateY(0);
     width:100%;
     height: 50.0256vw;
     outline : 0;
+    box-shadow:  0 0px 12px  1px #fff;
+  }
+  @media(max-width: 400px){
+    height: 200px;
   }
 `;
 
@@ -135,5 +141,4 @@ const BannerSlideBox = styled.div`
   display: flex;
   height: 106.5%;
   top: -2%;
-  transform: rotateX(-20deg);
 `;

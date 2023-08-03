@@ -20,15 +20,15 @@ export default BaanerItem;
 const Item = styled.div<{ currentRotate: number; idx: number; resetRotate: boolean; }>`
   position: absolute;
   z-index: 50;
-  width: 39.6px;
+  width: 39.8px;
   height: 100%;
   top: -6.5px;
   left: ${({idx}) => (idx * 39)}px;
   background: url(${banner1}) no-repeat;
   background-size: 977px auto;
-  background-position: -${({idx}) => (idx * 39.6)}px  center;
+  background-position: -${({idx}) => (idx * 39)}px  center;
   transform-style: preserve-3d;
-  transform: rotateY(${({ currentRotate }) => currentRotate}deg);
+  transform: rotateY(0deg);
   transition: transform 2s ${({ idx }) => idx * 0.15}s;
   ${({ resetRotate }) => resetRotate && `transition: none`};
   transform-origin: center center -8.666px;
@@ -37,14 +37,14 @@ const Item = styled.div<{ currentRotate: number; idx: number; resetRotate: boole
   &:after {
     background: url(${banner2})  no-repeat;
     width: 100%;
-    left: 100%;
+    left: 102%;
     transform: rotateY(120deg);
     transform-origin: left top;
   }
   &:before {
     background: url(${banner3}) no-repeat;
     width: 100%;
-    left: -100%;
+    left: -102%;
     transform: rotateY(240deg);
     transform-origin: right top;
   }
@@ -54,21 +54,31 @@ const Item = styled.div<{ currentRotate: number; idx: number; resetRotate: boole
     position: absolute;
     height: 100%;
     background-size: 977px auto;
-    background-position: -${({idx}) => (idx * 39.6)}px  center;
+    background-position: -${({idx}) => (idx * 39)}px  center;
     top: -2px;
     image-rendering: -webkit-optimize-contrast; /* 웹킷 브라우저용 */
     image-rendering: pixelated; /* 일반 브라우저용 */
   }
   @media(max-width: 937px){
-    width: 4.3vw;
+    width: 4.2475vw;
     background-size: 104.2689vw auto;
-    background-position: -${({idx}) => (idx * ( 39.6 / 937 * 100))}vw  center;
+    background-position: -${({idx}) => (idx * 4.1622)}vw  center;
     left: ${({idx}) => (idx * 4.1622)}%;
     &:before,
     &:after {
       background-size: 104.2689vw auto;
-      background-position: -${({idx}) => (idx * ( 40 / 937 * 100))}vw  center;
+      background-position: -${({idx}) => (idx * 4.1622)}vw  center;
     }
   }
-  
+  @media(max-width: 400px){
+    width: 16.984px;
+    background-size: 400px auto;
+    background-position: -${({idx}) => (idx * 16.219)}px center;
+    left:  ${({idx}) => (idx * 16.219)}px;
+    &:before,
+    &:after {
+      background-size: 400px auto;
+      background-position: -${({idx}) => (idx * 16.219)}px  center;
+    }
+  }
 `;
