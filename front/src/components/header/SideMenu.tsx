@@ -35,7 +35,7 @@ const SideMenu = () => {
           <SidebarBox>
             <SidebarHeader/>
             <SearchBox />
-            <SidebarCategoryBox/>
+            <SidebarCategoryBox isMenu/>
           </SidebarBox>
           <SideMenuFooter>
             COPYRIGHT &copy; 2023 Kim Kyenong Won.
