@@ -69,7 +69,7 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
 export default EditCategoryInput;
 
 const TipAni = keyframes`
-  50%{ top: -98px;}
+  50%{ top: -100px;}
   
 `;
 
@@ -85,13 +85,14 @@ const DeleteTipTextBox = styled.div`
   width: 220px;
   position: relative;
   z-index: 2;
+  line-height: 16px;
   padding: 15px 5px 15px;
   word-break: keep-all;
   text-align: center;
   border-radius: 6px;
-  background: ${({ theme }) => theme.color.err};
+  background: #A084E8;
   font-size: 13px;
-  border: 2px solid #ff8989;
+  border: 2px solid #6F61C0;
   svg {
     position: absolute;
     left: 8px;
@@ -102,10 +103,9 @@ const DeleteTipTextBox = styled.div`
 const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
   position: absolute;
   left: -168px;
-  top: -94px;
+  top: -96px;
   color: #fff;
   pointer-events: none;
-  opacity: 0;
   transition : .4s;
   &:after {
     content: '';
@@ -113,26 +113,23 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
     z-index: 3;
     display: block;
     bottom: -8px;
-    right: 28px;
+    right: 22px;
     width: 15px;
     height: 15px;
     transform: rotate(45deg);
     border-radius: 0 0 2px 0;
-    background: ${({ theme }) => theme.color.err};
-    border-bottom: 2px solid #ff8989;
-    border-right: 2px solid #ff8989;
+    background: #A084E8;
+    border-bottom: 2px solid #6F61C0;
+    border-right: 2px solid #6F61C0;
   }
   ${({isOnDeleteBtn}) => isOnDeleteBtn && css`
-    opacity: 1;
     animation: ${TipAni} 1.5s infinite;
   `}
 `;
 const DeleteBtn = styled.button<{ isOnDeleteBtn: boolean }>`
-  width: ${({ theme }) => theme.rem.p28};
-  height: ${({ theme }) => theme.rem.p28};
-  padding: 5px;
-  margin-left: 2px;
-  border-radius: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 10px;
   border: 1px solid ${({ theme }) => theme.color.err};
   background: #ff8989;
   transition: 0.3s;
@@ -143,7 +140,6 @@ const DeleteBtn = styled.button<{ isOnDeleteBtn: boolean }>`
   ${({ isOnDeleteBtn, theme }) =>
     isOnDeleteBtn &&
     `
-  border-radius: 50%;
   background: ${theme.color.err};
   `}
 `;
@@ -155,7 +151,6 @@ const EditInput = styled.input`
   outline: none;
   background: #f0f0f0;
   padding: 6px 10px 4px ;
-  border-radius: 5px;
   transition: 0.2s;
   &:focus {
     border: 1px solid #000;
