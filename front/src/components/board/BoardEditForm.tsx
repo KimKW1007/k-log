@@ -39,10 +39,10 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const [contents, setContents] = useState<string>('');
   const [currentTags, setCurrentTags] = useState<string[]>([]);
-  const { formats, modules } = useCustomQuill(quillRef, String(currentUser?.id!));
+  const { formats, modules } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
 
 
-  const { getApi } = customApi(`/board/${id}`);
+  const { getApi } = customApi(`/board/getBoard/${id}`);
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
