@@ -1,36 +1,86 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import Image from "next/image"
+import AuthorBox from '@components/board/AuthorBox';
+import defaultImage from '@assets/images/defaultImage.png';
+import Link from 'next/link';
 
-
-const HomeNewPosterBigItem = () => {
+const HomeNewPosterBigItem = (board : any) => {
+  const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory }  = board;
+  const {categorySubTitle, category } = subCategory ?? {};
+  const {categoryTitle, user} = category ?? {};
   return (
     <PosterItem>
-      <PosterTop>
-        <PosterCategory>
-          <h3>개발공부/자바스크립트</h3>
-        </PosterCategory>
-        <PosterTitle>
-          <h4>Mapping에 관하여</h4>
-        </PosterTitle>
-      </PosterTop>
-      <PostDesc>Lorem ipsum dolor sit amet consectetur adipisicing elit....</PostDesc>
+        <PosterItemLink href={`/${id}`}>
+        <PosterTop>
+          <PosterCategory>
+            <h3>{`${categoryTitle}-${categorySubTitle}`}</h3>
+          </PosterCategory>
+          <PosterTitle>
+            <h4>{boardTitle}</h4>
+          </PosterTitle>
+        </PosterTop>
+        <PostDesc>{contents}</PostDesc>
+        <ImageBox>
+          <ImageBg thumbnailUrl={thumbnail || defaultImage.src} />
+        </ImageBox>
+        <AuthorBox author={author} authorImage={authorImage} />
+      </PosterItemLink>
     </PosterItem>
   );
 };
 
 export default HomeNewPosterBigItem;
 
+const PosterItemLink = styled(Link)`
+  display: block;
+  padding: 40px 30px 30px;
 
+`
+
+
+const ImageBox = styled.div`
+  position: relative;
+  height: 300px;
+  background :#fff;
+  margin-bottom: 30px;
+  overflow:hidden;
+`
+const ImageBg =styled.div<{thumbnailUrl : string}>`
+  width:100%;
+  height:100%;
+  background : url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/auto 100%;
+  transition: .2s;
+`
 
 
 const PosterTop = styled.div``;
 
 const PosterItem = styled.div`
-  width:100%;
-  flex: 1;
+  position: sticky;
+  top: 100px;
+  left: 0;
+  max-height: 656px;
+  display:flex;
+  flex-direction :column;
+  justify-content: space-between;
+  width:50%;
   border: 1px solid #de4568;
-  padding: 40px 30px;
   margin-right: 30px;
+  transition:  .3s;
+  box-shadow : 0px 0px 0px rgba(0,0,0,0);
+  &:hover{
+    transform : translateY(-5px);
+    box-shadow : 15px 15px 15px rgba(0,0,0,.5);
+  }
+
+
+  @media (max-width: 1200px){
+    width:100%;
+    position: relative;
+    top: 0;
+  }
+
 `;
 
 const PosterCategory = styled.div`
@@ -45,4 +95,13 @@ const PosterTitle = styled.div`
     font-size: 40px;
   }
 `;
-const PostDesc = styled.div``;
+const PostDesc = styled.div`
+  flex-shrink : 0;
+  margin-bottom : 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  word-break: keep-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; 
+`;
