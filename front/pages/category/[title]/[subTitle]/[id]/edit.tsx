@@ -15,18 +15,18 @@ import customApi from '@utils/customApi';
 
 const BoardEditPage : NextPage = ({categoryTitle, subTitle, id} : CategoryPageProps) => {
   const {isMount} = useIsMount();
-  const [currentTitle, setCurrentTitle] = useState('');
+  const [currentTitle, setCurrentTitle] = useState<string[]>([]);
   
   useEffect(()=>{
-    setCurrentTitle(categoryTitle + '/' + subTitle)
+    setCurrentTitle([categoryTitle ,subTitle])
   },[isMount])
   return (
     <CreateWrap>
       <CreateContainer>
         <BoardTitleBox>
-          {isMount &&  (currentTitle.includes('/') && currentTitle.split('/').map((ele, idx)=>(
+          {isMount &&  currentTitle.map((ele, idx)=>(
             <p key={ele + 'salt' + idx}>{ele}</p>
-          )))}
+          ))}
         </BoardTitleBox>
         <BoardEditForm subTitle={subTitle} id={id} />
       </CreateContainer>
@@ -36,11 +36,11 @@ const BoardEditPage : NextPage = ({categoryTitle, subTitle, id} : CategoryPagePr
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title : categoryTitle, subTitle, id} = query;
-  const { getApi } = customApi(`/board/${id}`);
+  const { getApi } = customApi(`/board/getBoard/${id}`);
   const data = await getApi();
   const {currentBoard} = data;
   return {
-    props : {title : currentBoard.boardTitle, categoryTitle, subTitle, id}
+    props : {title : currentBoard.boardTitle, categoryTitle :String(categoryTitle)?.replaceAll("-","/"), subTitle : String(subTitle)?.replaceAll("-","/"), id}
   }
 });
 export default BoardEditPage

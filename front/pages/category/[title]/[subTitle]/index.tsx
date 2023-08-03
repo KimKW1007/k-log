@@ -18,7 +18,7 @@ const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
   const router = useRouter();
   const {isMount} = useIsMount();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
-  const {getApi}  = customApi(`/board/subCategory/${subTitle}?page=${currentPage ?? 1}`)
+  const {getApi}  = customApi(`/board/subCategory/${subTitle.replaceAll("/","-")}?page=${currentPage ?? 1}`)
   const { data, isLoading, refetch } = useQuery([GET_BOARDS, subTitle] , ()=> getApi(), {
     enabled: !!Boolean(subTitle) && !!Boolean(title)
   });
@@ -33,7 +33,7 @@ const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
   },[router])
   console.log({data})
   return (
-    <BoardWrapComp title={title + '/' + subTitle} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    <BoardWrapComp title={[title , subTitle]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
 
   )
 }
@@ -41,7 +41,7 @@ export const getServerSideProps : GetServerSideProps = withGetServerSideProps(as
   const {query} = context;
   const {title, subTitle} = query;
   return {
-    props : {title, subTitle}
+    props : {title : String(title)?.replaceAll("-","/") , subTitle : String(subTitle)?.replaceAll("-","/")}
   }
 });
 export default SubCategoryPage

@@ -15,7 +15,7 @@ const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const {isMount} = useIsMount();
-  const {getApi} = customApi(`/board/category/${title}?page=${currentPage ?? 1}`)
+  const {getApi} = customApi(`/board/category/${title.replaceAll("/","-")}?page=${currentPage ?? 1}`)
   const { data ,isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi(), {
     enabled: !!Boolean(title) && isMount
   });
@@ -28,14 +28,14 @@ const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
     setCurrentPage(1);
   },[router])
   return (
-    <BoardWrapComp title={title} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    <BoardWrapComp title={[title]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
   )
 }
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title} = query;
   return {
-    props : {title}
+    props : {title : String(title)?.replaceAll("-","/")}
   }
 });
 export default CategoryPage
