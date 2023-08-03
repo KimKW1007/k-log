@@ -48,7 +48,7 @@ const QuillNoSSRWrapper = dynamic(
   }
 );
 
-const BoardAddForm = () => {
+const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   const methods = useForm({
     mode: 'all'
   });
@@ -67,7 +67,6 @@ const BoardAddForm = () => {
   const [contents, setContents] = useState<string>('');
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const [currentTitle, setCurrentTitle] = useState('');
   
   const queryClient = useQueryClient();
 
@@ -80,7 +79,7 @@ const BoardAddForm = () => {
     setValue('contents', contents === '<p><br></p>' ? '' : convertContent(contents));
     trigger('contents');
   };
-  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!));
+  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
 
   const { deleteApi: imageDeleteApi } = ifInImageApi(`작성중/${currentUser?.id!}`);
   const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
@@ -95,7 +94,7 @@ const BoardAddForm = () => {
     },
     onSuccess(data) {
       console.log({data})
-      router.replace(`/category/개발공부(common)/${currentTitle}`);
+      router.replace(`/${data.boardId}`);
     },
   })
 
@@ -123,7 +122,7 @@ const BoardAddForm = () => {
     formData.append("boardTitle", boardTitle)
     formData.append("boardImage", image)
     formData.append("contents", contents)
-    formData.append("categorySubTitle", currentTitle)
+    formData.append("categorySubTitle", subTitle)
     formData.append("boardId", '작성중')
     formData.append("tags", currentTags.toString())
     createBoardMutate(formData)
@@ -138,12 +137,7 @@ const BoardAddForm = () => {
       createMutateFn({boardTitle, image, contents})
     }
   };
-  useEffect(()=>{
-    if(router.query.subTitle){
-      setCurrentTitle(String(router.query.subTitle))
-    }
 
-  },[router.query.subTitle])
   return (
     <>
       {isMount ? (
