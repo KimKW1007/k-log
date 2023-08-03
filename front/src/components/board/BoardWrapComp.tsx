@@ -17,7 +17,7 @@ import PageNationArea from './PageNationArea';
 
 
 interface BoardWrapProps {
-  title: string;
+  title:  string[];
   currentList: any;
   isLoading: boolean;
   lastPage: number;
@@ -28,9 +28,11 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const router = useRouter();
   const onClickRouterPushCreatePage = () => {
-    router.push(`/category/${title}/create`);
+    router.push(`/category/${title[0].replaceAll("/","-")}/${title[1].replaceAll("/","-")}/create`);
   };
 
+
+ 
 
 
 
@@ -38,22 +40,20 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
     <CategoryWrap>
       <CategoryContainer>
         <BoardTitleBox>
-          <BoardTitleInnerBox>{isMount && (title.includes('/') ? title.split('/').map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>) : <span>{title}</span>)}</BoardTitleInnerBox>
+          <BoardTitleInnerBox>{isMount && title.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>) }</BoardTitleInnerBox>
         </BoardTitleBox>
         <ListBox isLoading={isLoading} isEmpty={Boolean(currentList?.length < 1)}>
-          {isMount && currentUser?.id === 1 && title.includes('/') && <CreateBoardBtn onClick={onClickRouterPushCreatePage}>글쓰기</CreateBoardBtn>}
+          {isMount && currentUser?.id === 1 && title.length > 1 && <CreateBoardBtn onClick={onClickRouterPushCreatePage}>글쓰기</CreateBoardBtn>}
           {isLoading && <LoadingText />}
           {isLoading ||
             (currentList?.length >= 1 ? (
               <>
               <ListInnerBox>
                 {currentList?.map((board: any) => (
-                    <ItemLink key={board.id} href={`/${board.id}`}>
-                      <BoardItem {...board}></BoardItem>
-                    </ItemLink>
+                  <BoardItem {...board} key={board.id}></BoardItem>
                 ))}
               </ListInnerBox>
-              <PageNationArea lastPage={lastPage} title={title} />
+              <PageNationArea lastPage={lastPage} />
               </>
             ) : (
               <EmptyIconBox>
@@ -98,10 +98,10 @@ export const BoardTitleBox = styled.div`
   background: #23262d;
   margin-bottom: 20px;
   transition: font-size 0.3s;
-  span,
   p:last-child {
     display: inline-block;
-    padding: 15px 30px;
+    font-size: 36px;
+    padding: 30px 30px 15px;
     border-bottom: 2px solid ${({ theme }) => theme.color.err};
   }
   @media (max-width: 1300px) {
@@ -111,13 +111,12 @@ export const BoardTitleBox = styled.div`
   }
   @media (max-width: 900px) {
     font-size: 24px;
-    span,
     p:last-child {
+      font-size: 30px;
       padding: 15px 30px 10px;
     }
   }
   @media (max-width: 700px) {
-    span,
     p:last-child {
       padding: 15px 30px 10px;
     }
@@ -127,7 +126,7 @@ export const BoardTitleBox = styled.div`
   }
 `;
 const BoardTitleInnerBox = styled.div`
-  min-height: 100px;
+  min-height: 120px;
   @media (max-width: 1300px) {
     min-height: 80px;
   }
@@ -169,26 +168,8 @@ const ListInnerBox = styled.div`
 width:100%;
 `
 
-const ItemLink = styled(Link)`
-  display: block;
-  width:100%;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #39486755;
-  transform: translateY(0);
-  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-  transition: 0.3s;
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(255, 255, 255, 0.6);
-    background: #394867d5;
-  }
-  & + & {
-    margin-top: 30px;
-  }
-`;
 
-const EmptyIconBox = styled(AllCenterFlex)`
+export const EmptyIconBox = styled(AllCenterFlex)`
   width: 100%;
   flex-direction: column;
   min-height: 630px;
@@ -198,14 +179,6 @@ const EmptyIconBox = styled(AllCenterFlex)`
   }
 `;
 
-const EmptyIconInnerBox = styled(AllCenterFlex)`
-width: 100%;
-flex-direction: column;
-svg {
-  width: 70px;
-  margin-bottom: 30px;
-}
-`
 
 const CreateBoardBtn = styled.button`
   position: absolute;
