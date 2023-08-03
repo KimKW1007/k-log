@@ -46,7 +46,6 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
                 <span>제목</span>
                 <h3>{watch('boardTitle') || `제목이 비어있습니다.`}</h3>
               </BoradTitle>
-              <FlexEmptyBox />
               <UrlBox>
                 <span>URL</span>
                 <span className="customScroll">{`http://localhost:3000/${boardLastId}`}</span>
@@ -111,7 +110,7 @@ const CompletionContainer = styled.div`
   z-index: 2;
   width: 100%;
   margin: auto auto 0;
-  padding: 40px 0;
+  padding: 40px 30px;
   background: #404258;
   opacity: 0;
   transform: translate(0, 100%);
@@ -133,15 +132,25 @@ const CompletionContent = styled.div`
   padding: 40px 0 30px;
   display: flex;
   column-gap: 80px;
+  @media(max-width: 700px){
+    column-gap: 9.3023vw;
+  }
+  @media(max-width: 600px){
+    display: block;
+  }
 `;
 
 const AboutBoardBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  @media(max-width: 600px){
+    margin-bottom: 40px;
+  }
 `;
 
 const BoradTitle = styled.div`
+  margin-bottom: 40px;
   h3 {
     padding: 10px 0 0;
     font-size: 22px;
@@ -170,6 +179,9 @@ const ImageBox = styled(AllCenterFlex)`
     position: relative;
     z-index: 1;
     max-width: 100%;
+  }
+  @media(max-width: 600px){
+    margin: 0 auto;
   }
 `;
 
