@@ -18,7 +18,7 @@ const BoardPage : NextPage = ({id} : CategoryPageProps) => {
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {id} = query;
-  const { getApi } = customApi(`/board/${id}`);
+  const { getApi } = customApi(`/board/getBoard/${id}`);
   const data = await getApi();
   const {currentBoard} = data;
   return {
