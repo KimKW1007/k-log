@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
 import CategoryItems from '@components/category/CategoryItems';
-const SidebarCategoryBox = () => {
+const SidebarCategoryBox = ({isMenu} : {isMenu ?: boolean;}) => {
   return (
-    <CategoryBox className='customScroll'>
+    <CategoryBox className='customScroll' isMenu={isMenu}>
       <CategoryItems/>
     </CategoryBox>
   )
@@ -11,10 +11,19 @@ const SidebarCategoryBox = () => {
 
 export default SidebarCategoryBox
 
-const CategoryBox = styled.div`
-  width:100%;
+const CategoryBox = styled.div<{isMenu ?: boolean;}>`
+  width:90%;
   padding:  0 0 20px;
-  min-height: 370px;
+  max-height: 500px;
+  overflow-y:scroll;
+  padding: 0 40px;
+  margin: 0 auto;
+  ${({isMenu}) => isMenu &&`
+    width:100%;
+    padding: 0;
+    margin: 0;
+  
+  `}
   dt{
     margin-bottom: 5px;
     a{
