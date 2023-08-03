@@ -35,7 +35,7 @@ const mapPathToSeo : MapPathToSeo = {
 const propsPathToSeo= (title : string, subTitle ?: string)=>{
   if(subTitle){
     return {
-      title: `${title}/${subTitle}`,
+      title: `${title}-${subTitle}`,
       description: `${subTitle}에 관한 게시물을 확인해 보세요!`,
     }
   }
