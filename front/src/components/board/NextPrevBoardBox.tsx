@@ -67,12 +67,13 @@ transition: .6s;
 width:100%;
 height:100%;
 `
-const AnotherBoardBox = styled(OnlyAlignCenterFlex)`
+const AnotherBoardBox = styled.div`
   position: relative;
+  display:flex;
   z-index: 2;
   width: 100%;
   height: 100%;
-  padding: 0 15px;
+  padding: 20px 15px;
   overflow:hidden;
   > svg{
     width: 30px;
@@ -80,23 +81,30 @@ const AnotherBoardBox = styled(OnlyAlignCenterFlex)`
   }
 `
 const AnotherBoardTitleBox = styled.div<{isNext : boolean;}>`
-  padding: 0 0 0 20px;
   overflow:hidden;
   flex:1;
   > span{
     display:inline-block;
     margin-bottom: 6px;
     font-size :14px;
+    padding: 0 20px;
+
   }
   > div{
     font-size :18px;
+    line-height : 20px;
     overflow:hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    padding: 0 20px;
   }
   ${({isNext}) => isNext&& `
     text-align:right;
-    padding: 0 20px 0 0 ;
+   
   `}
 `
 const AnotherBoardLink = styled(Link)<{$isPrev : boolean;}>`
