@@ -26,7 +26,7 @@ const AllCategoryPage = () => {
   },[currentPage, isMount])
 
   return (
-    <BoardWrapComp title={'분류 전체보기'} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page}  />
+    <BoardWrapComp title={['분류 전체보기']} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page}  />
   )
 }
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
