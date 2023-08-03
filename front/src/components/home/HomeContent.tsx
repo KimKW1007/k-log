@@ -54,11 +54,14 @@ width: 100%;
 transform-style: preserve-3d;
 z-index: 1;
 padding: 100px 30px;
+@media(max-width:937px){
+  padding: 50px 0 100px;
+}
 `
 
 const ContentsContainer = styled.div`
-  width:100%;
-  max-width: 1600px;
+  position: relative;
+  width:1600px;
   margin: 0 auto;
   height:100%;
   padding: 50px 30px;
@@ -66,4 +69,7 @@ const ContentsContainer = styled.div`
   display:flex;
   background: #2a2a2a;
   column-gap: 40px;
+  @media(max-width: 1600px){
+    width:100%;
+  }
 `
