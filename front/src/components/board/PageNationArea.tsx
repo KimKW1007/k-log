@@ -7,7 +7,7 @@ import { currentPagenation } from '@atoms/atoms';
 import useIsMount from 'src/hooks/useIsMount';
 
 
-const PageNationArea = ({lastPage, title} : {lastPage :number; title : string;}) => {
+const PageNationArea = ({lastPage} : {lastPage :number;}) => {
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const [pageNation, setPageNation] = useState<number[]>([]);
   const {isMount} = useIsMount();
