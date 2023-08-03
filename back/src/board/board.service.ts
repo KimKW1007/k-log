@@ -66,4 +66,9 @@ export class BoardService {
     return this.boardRepository.updateBoard(body,file, user)
   }
 
+  async getNewBoards(){
+    const newBoard = await this.boardRepository.find({where : {boardTitle : Not("")}, relations:{subCategory : {category : true}}, order : {createdAt : 'DESC'}, take : 6})
+    return newBoard ?? []
+  }
+
 }
