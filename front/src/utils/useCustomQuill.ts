@@ -7,22 +7,16 @@ import { useRouter } from 'next/router';
 import hljs from 'highlight.js/lib/core';
 import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
+import useIsMount from 'src/hooks/useIsMount';
 
-const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =>{
-
+const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle : string) =>{
+  console.log({subTitle})
   const { postApi } = ifInImageApi('uploads');
-  const router = useRouter();
-  const [currentSubTitle, setCurrentSubTitle] = useState('');
-  const { getApi } = customApi(`/board/lastBoardId/${currentSubTitle}`);
-  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], ()=> getApi(true), {
-    enabled: !!currentSubTitle
-  });
+  const {isMount} = useIsMount();
+  const { getApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/','-')}`);
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], ()=> getApi(true));
 
-  useEffect(() => {
-    if (router.query.subTitle) {
-      setCurrentSubTitle(String(router.query.subTitle));
-    }
-  }, [router.query.subTitle]);
+ 
   const handleImage = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -34,7 +28,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
         const formData = new FormData();
         formData.append('image', file);
         formData.append('userId', userId);
-        formData.append('subTitle', currentSubTitle);
+        formData.append('subTitle', subTitle);
         formData.append('boardId', '작성중');
         try {
           const res = await postApi(formData);
@@ -72,7 +66,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string) =
         }
       }
     };
-  }, [currentSubTitle]);
+  }, []);
   const formats = ['header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image', 'color', 'background', 'align', 'code-block'];
 
   return { formats, modules, boardLastId };
