@@ -38,7 +38,8 @@ export class FileService {
     
     const formData = new FormData();
     file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
-    const imageBlob = new Blob([file.buffer], { type: file.mimetype });
+    const imageBuffer = Buffer.from(file.buffer);
+    const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
     formData.append('image', imageBlob, file.originalname);
     formData.append('userId', String(user.id));
     formData.append('isProfile', 'true');
