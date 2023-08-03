@@ -50,7 +50,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
 
   const onSubmit = (data: any) => {
     if (name === 'userEmail') {
-      handleOpenPopup('/accountEdit/changeEmail', '이메일 변경', 546, 588);
+      handleOpenPopup('/accountEdit/changeEmail', '이메일 변경', 545, 588);
       return;
     }
     if (!isDirty || data[name] === currentUserInfo[name]) {
