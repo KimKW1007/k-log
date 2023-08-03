@@ -3,54 +3,70 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components';
 import Image from "next/image";
 import defaultImage from '@assets/images/defaultImage.png';
-import defaultAuthorImage from '@assets/images/500_94.jpg';
 import useConvert from 'src/hooks/useConvert';
 import changeCreatedAt from '@utils/changeCreatedAt';
+import AuthorBox from './AuthorBox';
+import Link from 'next/link';
 
 
 
 const BoardItem = (board : any) => {
-  const {author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory : {categorySubTitle}  }  = board;
+  const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory : {categorySubTitle}  }  = board;
   const  {reverseConvert} = useConvert();
   return (
-    <ItemWrap>
-      <ContentsBox>
-        <ItemCategory>
-          <span>
-            {categorySubTitle}
-          </span>
-        </ItemCategory>
-        <ItemTitleBox>
-          <p>{boardTitle}</p>
-        </ItemTitleBox>
-        <ItemDescBox>
-          {reverseConvert(contents).replace(/(<([^>]+)>)/gi, '')}
-        </ItemDescBox>
-        <ItemDetailBox>
-          <ItemAuthorBox>
-            <AuthorImageBox>
-              <AuthorImage src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={0} height={0} sizes='100vw' />
-            </AuthorImageBox>
-            <span>{author}</span>
-          </ItemAuthorBox>
-          <CreatedDateBox>
-            {changeCreatedAt(createdAt)}
-          </CreatedDateBox>
-        </ItemDetailBox>
-      </ContentsBox>
-      <ImageBox isDefaultImg={!Boolean(thumbnail)}>
-        <ImageBg src={thumbnail || defaultImage.src} />
-      </ImageBox>
-    </ItemWrap>
+    <ItemLink href={`/${id}`}>
+      <ItemWrap>
+        <ContentsBox>
+          <ItemCategory>
+            <span>
+              {categorySubTitle}
+            </span>
+          </ItemCategory>
+          <ItemTitleBox>
+            <p>{boardTitle}</p>
+          </ItemTitleBox>
+          <ItemDescBox>
+            {reverseConvert(contents).replace(/(<([^>]+)>)/gi, '')}
+          </ItemDescBox>
+          <ItemDetailBox>
+            <AuthorBox author={author} authorImage={authorImage} />
+            <CreatedDateBox>
+              {changeCreatedAt(createdAt)}
+            </CreatedDateBox>
+          </ItemDetailBox>
+        </ContentsBox>
+        <ImageBox isDefaultImg={!Boolean(thumbnail)}>
+          <ImageBg thumbnailUrl={thumbnail || defaultImage.src} />
+        </ImageBox>
+      </ItemWrap>
+    </ItemLink>
   )
 }
 
 export default BoardItem
 
+const ItemLink = styled(Link)`
+  display: block;
+  width:100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #39486755;
+  transform: translateY(0);
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  transition: 0.3s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(255, 255, 255, 0.6);
+    background: #394867d5;
+  }
+  & + & {
+    margin-top: 30px;
+  }
+`;
+
 const ItemWrap = styled(OnlyAlignCenterFlex)`
   padding: 30px 30px 20px;
   column-gap: 30px;
-  min-height: 264px;
   @media(max-width:750px){
     padding: 0;
     flex-direction : column;
@@ -91,6 +107,7 @@ p{
 }
 `
 const ItemDescBox =styled.div`
+  min-height: 60px;
   line-height: 20px;
   font-size : 14px;
   margin-bottom: 24px;
@@ -161,8 +178,8 @@ const ImageBox = styled.div<{isDefaultImg : boolean;}>`
   }
 `
 
-const ImageBg =styled.div<{src : string;}>`
+const ImageBg =styled.div<{thumbnailUrl : string;}>`
   width:100%;
   height:100%;
-  background: url(${({src}) => src}) no-repeat center center/cover;
+  background: url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/100% 100%;
 `
