@@ -18,13 +18,13 @@ const HomeNewPosterList = () => {
   return (
     <ListWrap>
       <ListContainer>
-        {data || 
+        {data?.length > 0 || 
           <EmptyBoardBox>
             <EmojiDizzyFill />
             <p>준비된 게시물이 없어요..</p>
           </EmptyBoardBox>
         }
-        {data && <>
+        {data?.length > 0 && <>
           <HomeNewPosterBigItem {...data?.[0]} />
           <NewPosterSmList >
             {data.slice(1).map((board: { id: string; }, idx: string)=>(
