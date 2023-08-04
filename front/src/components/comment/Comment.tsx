@@ -3,11 +3,11 @@ import styled, { keyframes, css } from 'styled-components';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-const Comment = () => {
+const Comment = ({id} : {id :string}) => {
   return (
     <CommentArea>
-      <CommentForm />
-      <CommentList />
+      <CommentForm id={id} />
+      <CommentList id={id} />
     </CommentArea>
   )
 }

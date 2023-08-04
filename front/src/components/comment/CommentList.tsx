@@ -2,10 +2,10 @@ import React from 'react'
 import styled, { keyframes, css } from 'styled-components';
 import CommentItemArea from './CommentItemArea';
 
-const CommentList = () => {
+const CommentList = ({id} : {id :string}) => {
   return (
     <CommentListBox>
-      <CommentItemArea />
+      <CommentItemArea id={id} />
     </CommentListBox>
   )
 }

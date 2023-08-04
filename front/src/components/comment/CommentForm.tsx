@@ -13,7 +13,7 @@ import { CheckBoxInput, Label } from '@components/common/CheckBoxInputs';
 interface CommentFormProps{
   isReply ?: boolean; 
   isWriter ?: boolean;
-
+  id : string
 }
 
 

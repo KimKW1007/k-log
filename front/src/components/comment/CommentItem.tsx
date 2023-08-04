@@ -10,9 +10,10 @@ import { Reply } from '@styled-icons/entypo/Reply';
 interface CommentItemProps {
   isWriter ?: boolean;
   setReplyIndex: React.Dispatch<React.SetStateAction<number>>;
+  comment: any;
 }
 
-const CommentItem = ({isWriter, setReplyIndex} : CommentItemProps) => {
+const CommentItem = ({isWriter, setReplyIndex, comment} : CommentItemProps) => {
   return (
     <CommentItemBox>
       <Icon isWriter={isWriter} />
@@ -39,7 +40,7 @@ const CommentItem = ({isWriter, setReplyIndex} : CommentItemProps) => {
             <span />
             <CommentOff />
           </DeleteBtn>
-          <ReplyBtn >
+          <ReplyBtn onClick={()=> setReplyIndex(comment.id)} >
             <span />
             <CommentMultiple />
           </ReplyBtn>

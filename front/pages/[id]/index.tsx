@@ -16,7 +16,7 @@ const BoardPage : NextPage = ({id} : CategoryPageProps) => {
       <DetailContainer>
         <Waves />
         <BoardDetail id={id}/>
-        {/* <Comment id={id}/> */}
+        <Comment id={id}/>
       </DetailContainer>
     </DetailWrap>
   )
