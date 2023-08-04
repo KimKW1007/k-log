@@ -7,7 +7,7 @@ const FinallPage = ({ isSignupFinal = false }: { isSignupFinal?: boolean }) => {
       {isSignupFinal ? (
         <FinalText>
           <p>회원가입을 진심으로 축하합니다.</p>
-          <p><strong>K-log</strong>를 세세하게 즐겨주세요!</p>
+          <p><strong>K-log</strong> 로그인하러 가볼까요?</p>
         </FinalText>
       ) : (
         <FinalText>
