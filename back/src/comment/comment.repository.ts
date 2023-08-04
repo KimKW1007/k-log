@@ -30,7 +30,7 @@ export class CommentRepository extends Repository<Comment> {
   }
 
   async getTargetBoardComment(boardId : number){
-    const comments = await this.find({where : {board: {id : boardId}}, order: {createdAt : "DESC"}})
+    const comments = await this.find({where : {board: {id : boardId}}, relations:{board : {subCategory : {category : {user : true}}}}, order: {createdAt : "DESC"}})
     return comments ?? []
   }
   async deleteComment(commentId : number, user: User){
