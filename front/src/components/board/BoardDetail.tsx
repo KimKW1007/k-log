@@ -48,7 +48,7 @@ const BoardDetail = ({ id }: { id: string }) => {
         <>
           <DetailTitleBox>
             <CategoryBox>
-              <Link href={`/category/${categoryTitle}/${categorySubTitle}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
+              <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
             </CategoryBox>
             <h2>{boardTitle}</h2>
             <CreatedDateBox>{changeCreatedAt(createdAt)}</CreatedDateBox>
