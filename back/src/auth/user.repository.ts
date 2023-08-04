@@ -9,6 +9,8 @@ import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { BoardRepository } from 'src/board/board.repository';
 import * as config from "config"
+import { CommentRepository } from 'src/comment/comment.repository';
+import { ReplyRepository } from 'src/comment/reply.repository';
 
 
 const jwtConfig = config.get("jwt")
@@ -17,6 +19,8 @@ const jwtConfig = config.get("jwt")
 export class UserRepository extends Repository<User> {
     constructor(private dataSource: DataSource,
       private boardRepository: BoardRepository,
+      private commentRepository: CommentRepository,
+      private replyRepository: ReplyRepository,
       ) {   
     super(User, dataSource.createEntityManager());
   }
@@ -58,20 +62,42 @@ export class UserRepository extends Repository<User> {
     const foundUser = await this.findOneBy({ id: user.id });
     if (!foundUser) throw new NotFoundException('해당 유저를 찾을 수 없습니다.', { cause: new Error() });
     if (foundUser.userId === userId || foundUser.userName === userName) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
+
+    const foundComments = await this.commentRepository.find({where:{ board : {subCategory :{ category :{ user: {id : user.id}}}}}})
+    const foundReplyComments = await this.replyRepository.find({where:{comment : { board : {subCategory :{ category :{ user: {id : user.id}}}}}}})
+
+
     if (userId) {
       const checkDuplicate = await this.findOneBy({ userId });
       if(checkDuplicate) throw new BadRequestException('이미 사용중인 아이디 입니다.', { cause: new Error() });
       foundUser.userId = userId;
     }
     if (userEmail) {
+      if(foundComments){
+        foundComments.map(foundComment =>foundComment.userEmail = userEmail)
+        await this.commentRepository.save(foundComments)
+      }
+      if(foundReplyComments){
+        foundReplyComments.map(foundReplyComment =>foundReplyComment.userEmail = userEmail)
+        await this.replyRepository.save(foundReplyComments)
+      }
       foundUser.userEmail = userEmail;
     }
     if (userName) {
       const foundBoards = await this.boardRepository.find({where:{subCategory :{ category :{ user: {id : user.id}}}}})
+
       foundUser.userName = userName;
       if(foundBoards){
         foundBoards.map(foundBoard =>foundBoard.author = userName)
         await this.boardRepository.save(foundBoards)
+      }
+      if(foundComments){
+        foundComments.map(foundComment =>foundComment.userName = userName)
+        await this.commentRepository.save(foundComments)
+      }
+      if(foundReplyComments){
+        foundReplyComments.map(foundReplyComment =>foundReplyComment.userName = userName)
+        await this.replyRepository.save(foundReplyComments)
       }
     }
     
