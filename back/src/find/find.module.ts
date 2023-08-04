@@ -11,6 +11,8 @@ import { BoardModule } from 'src/board/board.module';
 import { BoardRepository } from 'src/board/board.repository';
 import { SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
+import { CommentRepository } from 'src/comment/comment.repository';
+import { ReplyRepository } from 'src/comment/reply.repository';
 const mailConfig = config.get("nodeMail");
 
 @Module({
@@ -35,6 +37,6 @@ const mailConfig = config.get("nodeMail");
     })
   ],
   controllers: [FindController],
-  providers: [FindService, FindRepository, UserRepository, BoardRepository, SubCategoryRepository, FileRepository],
+  providers: [FindService, FindRepository, UserRepository, BoardRepository, SubCategoryRepository, FileRepository, CommentRepository, ReplyRepository],
 })
 export class FindModule {}

@@ -10,7 +10,7 @@ import { FileRepository } from 'src/file/file.repository';
 import { ReplyRepository } from './reply.repository';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([CommentRepository]),AuthModule],
+  imports:[TypeOrmModule.forFeature([CommentRepository]),TypeOrmModule.forFeature([ReplyRepository]),AuthModule],
   controllers: [CommentController],
   providers: [CommentService,CommentRepository,BoardRepository, SubCategoryRepository, FileRepository, ReplyRepository]
 })
