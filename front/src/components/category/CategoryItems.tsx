@@ -5,13 +5,21 @@ import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { GET_ALL_CATEGORY } from '@utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
+import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
+import { EmptyIconBox } from '@components/board/BoardWrapComp';
 
 const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
   const { getApi } = customApi('/category');
   const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], () => getApi());
   return (
     <>
-      {data &&
+    {data?.length > 0 || 
+          <EmptyCategoryBox>
+            <EmojiDizzyFill />
+            <p>준비된 카테고리가 없어요..</p>
+          </EmptyCategoryBox>
+        }
+      {data?.length > 0 &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
           <CategoryItmeList $isOverHeader={isOverHeader} key={categoryTitle}>
             <CategoryTitle>
@@ -33,6 +41,10 @@ const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
 };
 
 export default CategoryItems;
+
+const EmptyCategoryBox = styled(EmptyIconBox)`
+  min-height: 400px;
+`
 
 const CategoryItmeList = styled.dl<{$isOverHeader ?: boolean}>`
 & + & {
