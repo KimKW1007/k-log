@@ -164,7 +164,7 @@ const EditCategoryList = () => {
             </AddCategoryBtnBox>
             <EditBtnBox>
               <EditBtn disabled={!isChangeValue} isError={isError} isChangeValue={isChangeValue}>
-                {isLoading ? <Loading/> : isChangeValue ? '수정하기' : '수정완료'}
+                {isLoading ? "수정 중" : isChangeValue ? '수정하기' : '수정완료'}
               </EditBtn>
             </EditBtnBox>
           </Form>
