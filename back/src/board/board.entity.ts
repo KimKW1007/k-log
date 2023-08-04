@@ -41,6 +41,6 @@ export class Board extends BaseEntity {
   contents: string;
   
   @OneToMany(type => Comment, comment => comment.board, {eager: true})
-  comment : Comment[];
+  comments : Comment[];
 
 }

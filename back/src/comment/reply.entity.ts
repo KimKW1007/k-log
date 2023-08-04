@@ -9,15 +9,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Reply } from './reply.entity';
+import { Comment } from './comment.entity';
 
 @Entity()
-export class Comment extends BaseEntity {
+export class Reply extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  comment : string;
+  replyComment : string;
 
   @Column()
   userName : string;
@@ -28,15 +28,13 @@ export class Comment extends BaseEntity {
   @Column()
   userEmail : string;
 
-  @Column({nullable : true})
+  @Column()
   isSecret ?: string;
 
   @CreateDateColumn()
   createdAt : Date;
 
-  @ManyToOne((type) => Board, (board) => board.comments, { eager: false })
-  board : Board;
+  @ManyToOne((type) => Comment, (comment) => comment.replies, { eager: false })
+  comment : Comment;
 
-  @OneToMany(type => Reply, reply => reply.comment, {eager: true})
-  replies : Reply[];
 }
