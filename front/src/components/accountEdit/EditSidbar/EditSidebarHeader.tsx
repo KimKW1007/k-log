@@ -65,6 +65,7 @@ const EditSidebarHeader = () => {
       description: data?.description
     });
     queryClient.invalidateQueries([GET_USER_MINI_PL]);
+    setImage(data?.imageUrl ? data.imageUrl : defaultAuthorImage.src);
   }, [data]);
 
   useEffect(() => {
