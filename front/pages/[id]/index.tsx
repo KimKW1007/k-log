@@ -7,23 +7,15 @@ import Comment from '@components/comment/Comment'
 import styled, { keyframes } from 'styled-components';
 import Waves from '@components/common/Waves'
 import { CategoryPageProps } from '@pages/category/[title]/[subTitle]';
-import useIsMount from 'src/hooks/useIsMount';
-import { useQuery } from '@tanstack/react-query';
-import { GET_BOARD } from '@utils/queryKeys';
+
 
 
 const BoardPage : NextPage = ({id} : CategoryPageProps) => {
-  const { getApi } = customApi(`/board/getBoard/${id}`);
-  const { isMount } = useIsMount();
-  const { data } = useQuery([GET_BOARD, id], () => getApi(), {
-    enabled: !!isMount
-  });
-  console.log({data})
   return (
     <DetailWrap>
       <DetailContainer>
         <Waves />
-        {data && <BoardDetail {...data}/>}
+        <BoardDetail id={id}/>
         {/* <Comment id={id}/> */}
       </DetailContainer>
     </DetailWrap>

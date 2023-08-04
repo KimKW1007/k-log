@@ -19,7 +19,6 @@ import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
 import { GET_BOARD } from '@utils/queryKeys';
 
-
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { getApi } = customApi(`/board/getBoard/${id}`);
@@ -28,48 +27,41 @@ const BoardDetail = ({ id }: { id: string }) => {
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
-  const {currentBoard, prevBoard, nextBoard} = data ?? {};
-  const {author, authorImage, boardTitle, contents, createdAt, thumbnail, tags, subCategory }  = currentBoard ?? {};
-  const {categorySubTitle, category } = subCategory ?? {};
-  const {categoryTitle, user} = category ?? {};
+  const { currentBoard, prevBoard, nextBoard } = data ?? {};
+  const { author, authorImage, boardTitle, contents, createdAt, thumbnail, tags, subCategory } = currentBoard ?? {};
+  const { categorySubTitle, category } = subCategory ?? {};
+  const { categoryTitle, user } = category ?? {};
 
   const contentsWrapRef = useRef<HTMLDivElement>(null);
 
-  const {wrapConsecutiveBlockquotes} = createBlockquoteBox(contentsWrapRef);
+  const { wrapConsecutiveBlockquotes } = createBlockquoteBox(contentsWrapRef);
   useEffect(() => {
     wrapConsecutiveBlockquotes();
   }, [data]);
 
   useEffect(() => {
-    codeBlockJsStyle(contentsWrapRef)
+    codeBlockJsStyle(contentsWrapRef);
   }, [data]);
   return (
     <>
-      {data && 
-        (<DetailWrap>
-          <DetailContainer>
-            <Waves />
-            <DetailTitleBox>
-              <CategoryBox>
-                <Link href={`/category/${categoryTitle}/${categorySubTitle}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
-              </CategoryBox>
-              <h2>{boardTitle}</h2>
-              <CreatedDateBox>{changeCreatedAt(createdAt)}</CreatedDateBox>
-            </DetailTitleBox>
-            <ContentsWrap ref={contentsWrapRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reverseConvert(contents)) }} />
-            <DetailTagBox>
-              {data && tags && tags.split(",").map((tag : string, idx:number) =>(
-                <TagBtn key={tag + idx}>{tag}</TagBtn>
-              ))}
-            </DetailTagBox>
-            <AnotherBoardArea>
-                <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail } id={prevBoard.id} />
-                <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail } id={nextBoard.id} />
-            </AnotherBoardArea>
-          </DetailContainer>
-          {currentUser?.id === user.id && <UDBtnBox id={id} returnUrl={`/category/${categoryTitle.replaceAll("/","-")}/${categorySubTitle.replaceAll("/","-")}`} />}
-        </DetailWrap>)
-      }
+      {data && (
+        <>
+          <DetailTitleBox>
+            <CategoryBox>
+              <Link href={`/category/${categoryTitle}/${categorySubTitle}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
+            </CategoryBox>
+            <h2>{boardTitle}</h2>
+            <CreatedDateBox>{changeCreatedAt(createdAt)}</CreatedDateBox>
+          </DetailTitleBox>
+          <ContentsWrap ref={contentsWrapRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reverseConvert(contents)) }} />
+          <DetailTagBox>{tags.length > 0 && tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</DetailTagBox>
+          <AnotherBoardArea>
+            <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
+            <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
+          </AnotherBoardArea>
+          {currentUser?.id === user.id && <UDBtnBox id={id} returnUrl={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`} />}
+        </>
+      )}
     </>
   );
 };
@@ -109,9 +101,9 @@ const CategoryBox = styled.div`
     padding: 15px 30px;
     background: ${({ theme }) => theme.color.err};
     border-radius: 30px;
-    transition: .2s;
-    &:hover{
-      background: #FFB07F;
+    transition: 0.2s;
+    &:hover {
+      background: #ffb07f;
     }
   }
 `;
@@ -120,29 +112,26 @@ const CreatedDateBox = styled.div`
   font-size: 14px;
 `;
 
-const DetailTagBox = styled.div`
-
-`
-const  TagBtn = styled.button`
+const DetailTagBox = styled.div``;
+const TagBtn = styled.button`
   padding: 7px 15px 5px;
   border-radius: 6px;
   line-height: 20px;
   color: #fff;
-  background : #454545;
-  transition: .3s;
-  & + &{
+  background: #454545;
+  transition: 0.3s;
+  & + & {
     margin-left: 10px;
   }
-  &:hover{
-    background :${({theme}) => theme.color.success};
+  &:hover {
+    background: ${({ theme }) => theme.color.success};
   }
-`
+`;
 
-
-const AnotherBoardArea =styled(OnlyAlignCenterFlex)`
-  width:100%;
+const AnotherBoardArea = styled(OnlyAlignCenterFlex)`
+  width: 100%;
   justify-content: space-between;
-  @media(max-width: 900px){
-    display:block;
+  @media (max-width: 900px) {
+    display: block;
   }
-`
+`;
