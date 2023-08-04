@@ -33,7 +33,8 @@ const SignupWrap = styled.div`
 
 const SignupInnerBox = styled(PageInnerBox)`
   position: relative;
-  min-height: 710px;
+  display:flex;
+  height: 710px;
   box-shadow: 0 0px 25px 20px rgba(155, 155, 155, 0.4);
   margin: auto 0 auto auto;
   @media(max-width: 740px){
