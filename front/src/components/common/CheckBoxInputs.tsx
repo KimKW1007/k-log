@@ -39,7 +39,7 @@ const InputBox = styled(OnlyAlignCenterFlex)`
   justify-content: space-between;
 `;
 
-const CheckBoxInput = styled.input`
+export const CheckBoxInput = styled.input`
   &:checked + label {
     &::before {
       background: url(${checkedIcon.src}) center center no-repeat;
@@ -49,9 +49,10 @@ const CheckBoxInput = styled.input`
   }
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   position: relative;
   display: inline-flex;
+  align-items:center;
   font-size: 24px;
   &:before {
     position: relative;
@@ -60,10 +61,9 @@ const Label = styled.label`
     width: 0.8em;
     height: 0.8em;
     border: 1px solid #000;
-    margin: auto 0;
+    margin: auto 20px auto 0;
     transition: background-color 0.3s;
     border-radius: 4px;
-    margin-right: 20px;
   }
   @media(max-width:660px){
   font-size: 3.6363vw;
