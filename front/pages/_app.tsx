@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import CustomSeo from '@utils/Seo/CustomSeo';
 import { userInfomation } from '@atoms/atoms';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import customApi, { baseApi } from '@utils/customApi';
 import axios from 'axios';
 const queryClient = new QueryClient({});
