@@ -21,15 +21,15 @@ mkdir('uploads');
 export const multerOptionsFactory = (): MulterOptions => {
   return {
     storage: multer.diskStorage({
-      destination(req, file, done) { // 파일을 저장할 위치를 설정합니다
+      destination(req, file, done) { // 파일을 저장할 위치를 설정
         done(null, path.join(process.cwd(), 'uploads'));
       },
 
-      filename(req, file, done) { // 파일의 이름을 설정합니다.
+      filename(req, file, done) { // 파일의 이름을 설정.
         const filename = Buffer.from(file.originalname, 'latin1').toString('utf8')
         const ext = path.extname(filename); // 파일 확장자 추출
         const basename = path.basename(filename, ext);  // 파일 이름
-        // 파일 이름이 중복되는 것을 막기 위해 '파일이름_날짜.확장자' 의 형식으로 파일이름을 지정합니다.
+        // 파일 이름이 중복되는 것을 막기 위해 '파일이름_날짜.확장자' 의 형식으로 파일이름을 지정.
         if(req.query.userId){
           const file = fs.readdirSync(`${process.cwd()}/uploads`, 'utf8')
           const deleteOneByUserId = file.find(x => x.split("_")[0] === `${req.query.userId}`);
