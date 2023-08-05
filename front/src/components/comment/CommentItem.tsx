@@ -1,49 +1,118 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Image from 'next/image';
 import defaultAuthorImage from '@assets/images/500_94.jpg';
-import { AuthorImageBox, AuthorInnerBox } from './CommentForm';
+import { Author, AuthorImageBox } from './CommentForm';
 import { CommentMultiple, CommentOff } from '@styled-icons/fluentui-system-filled/';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { Reply } from '@styled-icons/entypo/Reply';
+import { User5 } from '@styled-icons/remix-fill/User5'
+import { Lock2 } from '@styled-icons/remix-fill/Lock2'
+import { LockOpen } from '@styled-icons/ionicons-solid/LockOpen'
+import changeCreatedAt from '@utils/changeCreatedAt';
+import customApi from '@utils/customApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { GET_COMMENTS } from '@utils/queryKeys';
+import DeleteModal from '@components/modal/DeleteModal';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
+import useCheckLogin from 'src/hooks/useCheckLogin';
 
 interface CommentItemProps {
-  isWriter ?: boolean;
+  isReply ?: boolean;
+  writerId : number;
   setReplyIndex: React.Dispatch<React.SetStateAction<number>>;
-  comment: any;
+  comment ?: any;
+  boardId : string;
+  ownerId : number;
 }
 
-const CommentItem = ({isWriter, setReplyIndex, comment} : CommentItemProps) => {
+const CommentItem = ({writerId, setReplyIndex, ownerId, isReply, comment, boardId} : CommentItemProps) => {
+  const {id, authorImage, authorName, authorId, comment : commentText, createdAt, isSecret, replies} = comment;
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const {checkLogin} = useCheckLogin();
+  const isWriter = writerId === Number(authorId) || Number(authorId) === 1
+  const checkAuthor = ownerId === currentUser?.id || writerId === currentUser?.id || authorId === currentUser?.id || currentUser?.id === 1
+  const checkDeleteAuthor =  writerId === currentUser?.id || authorId === currentUser?.id || currentUser?.id === 1
+  console.log(isReply, ownerId, ownerId === currentUser?.id)
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  
+  const queryClient = useQueryClient();
+  const {deleteApi : deleteReplyCommentApi } = customApi(`/comment/deleteReply/${id}`)
+  const {deleteApi : deleteCommentApi } = customApi(`/comment/deleteComment/${id}`)
+  
+  const {mutate} = useMutation(isReply ? deleteReplyCommentApi : deleteCommentApi,{
+    onError(error) {
+        console.log({error})
+    },
+    onSuccess(data) {
+        console.log({data})
+        queryClient.invalidateQueries([GET_COMMENTS, boardId])
+    },
+  })
+
+  const secretComment = ()=>{
+    if(checkAuthor){
+      return false
+    }
+    return JSON.parse(isSecret.toLowerCase())
+  }
+
+
+  const handleDeleteComment = ()=>{
+    if(!checkDeleteAuthor){
+      alert("댓글 삭제는 작성자 및 관리자만 가능합니다.")
+      return 
+    }
+    if(!isReply && replies.length > 0){
+      alert("대댓글이 작성 된 경우 삭제가 불가능 합니다.")
+      return
+    }
+    setIsOpenDeleteModal(true)
+  }
+
+  const handleReplyComment = ()=>{
+    checkLogin(()=>{setReplyIndex(id)})
+  }
+
+
   return (
-    <CommentItemBox>
-      <Icon isWriter={isWriter} />
+    <CommentItemBox isWriter={isWriter}>
+      <Icon $isWriter={isWriter} />
       <AuthorImageBox isWriter={isWriter}>
-        <Image src={defaultAuthorImage.src} alt={'유저 이미지'} width={30} height={30} />
+        <Image src={authorImage || defaultAuthorImage.src} alt={'유저 이미지'} width={30} height={30} />
       </AuthorImageBox>
       <CommentBox>
-        <CommentInnerBox >
+        <CommentInnerBox isWriter={isWriter}>
           <AuthorArea isWriter={isWriter}>
             <AuthorBox >
-              <span>From . 관리자</span>
+              <User5/>
+              <span>{authorName}</span>
             </AuthorBox>
           </AuthorArea>
           <CommentTextBox>
-            <p>
-              누가 뭐래도난누가 뭐래도난누가 뭐래도누가 뭐래도난난누가 뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가
-              뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가뭐래도난누가 뭐래도난누가 뭐래도난누가
-            </p>
+            {secretComment() && <SecretComment><Lock2/><span>비밀 댓글 입니다.</span></SecretComment>}
+            {secretComment() || 
+            commentText.split("\n").map(((ele : string, index: number)=>(
+              <p key={ authorName + ele + 'salt' + index}>{ele}</p>
+            )))}
           </CommentTextBox>
         </CommentInnerBox>
         <AccessoryBox>
-          <DateBox>2023.08.04 16:42</DateBox>
-          <DeleteBtn>
+          <DateBox>{changeCreatedAt(createdAt)}</DateBox>
+          <DeleteBtn onClick={handleDeleteComment}>
             <span />
             <CommentOff />
           </DeleteBtn>
-          <ReplyBtn onClick={()=> setReplyIndex(comment.id)} >
+          {isReply || <ReplyBtn onClick={handleReplyComment} >
             <span />
             <CommentMultiple />
-          </ReplyBtn>
+          </ReplyBtn>}
+          {checkAuthor && JSON.parse(isSecret.toLowerCase()) && <SecretIconBtn disabled onClick={(e)=> e.preventDefault()}>
+            <span/>
+            <LockOpen/>
+          </SecretIconBtn>}
+          {isOpenDeleteModal && <DeleteModal mutate={mutate} onClose={()=> setIsOpenDeleteModal(false)}/>}
         </AccessoryBox>
       </CommentBox>
     </CommentItemBox>
@@ -63,6 +132,18 @@ const BtnAni = keyframes`
     top: 0px;
   }
 `;
+
+
+
+const SecretComment = styled(OnlyAlignCenterFlex)`
+  height:30px;
+  svg{
+    width: 20px;
+    color: #fff;
+    margin: -3px 6px 0 0;
+  }
+
+`
 
 const DefaultBtn = styled.button`
   position: relative;
@@ -90,15 +171,16 @@ const DefaultBtn = styled.button`
       content: '';
       position: absolute;
       left: 50%;
-      background: #fff;
+      background: #4682A9;
     }
     &:after {
       top: -36px;
       padding: 5px 7px;
       transform: translateX(-50%);
-      width: 30px;
+      width: 60px;
       color: #232323;
       border-radius: 4px;
+      color:#fff;
     }
     &:before {
       top: -12px;
@@ -120,7 +202,6 @@ const ReplyBtn = styled(DefaultBtn)`
   span {
     &:after {
       content: '답글쓰기';
-      width: 60px;
     }
   }
 `;
@@ -128,10 +209,17 @@ const DeleteBtn = styled(DefaultBtn)`
   span {
     &:after {
       content: '삭제';
+      width: 30px;
     }
   }
 `;
-
+const SecretIconBtn =styled(DefaultBtn)`
+  span {
+    &:after {
+      content: '비밀댓글';
+    }
+  }
+`
 const DateBox = styled.div`
   font-size: 13px;
 `;
@@ -144,18 +232,26 @@ const AccessoryBox = styled(OnlyAlignCenterFlex)`
   background: rgba(128, 128, 128, 0.3);
 `;
 
-const CommentInnerBox = styled.div`
-  padding: 20px 30px;
+const CommentInnerBox = styled.div<{isWriter ?: boolean;}>`
+  padding: 20px 24px;
   background: #50577a;
+
+  ${({isWriter}) => isWriter&&`
+    background: #C38154;
+  `}
 `;
 
 const CommentTextBox = styled.div`
+  min-width: 260px;
+  min-height: 30px;
+  padding: 0 10px;
   p {
     overflow-wrap: break-word;
     word-break: keep-all;
     white-space: pre-wrap;
     color: #fff;
     line-height: 30px;
+    
   }
 `;
 
@@ -166,8 +262,7 @@ ${({isWriter}) => isWriter&&`
 `}
 `
 
-const AuthorBox = styled(AuthorInnerBox)`
-  padding: 8px 20px;
+const AuthorBox = styled(Author)`
   background: #3c4048;
 `;
 
@@ -177,19 +272,23 @@ const CommentBox = styled.div`
   overflow: hidden;
 `;
 
-const CommentItemBox = styled.div`
+const CommentItemBox = styled.div<{isWriter ?: boolean;}>`
   width: 100%;
   display: flex;
   position: relative;
   column-gap: 20px;
+  margin-bottom: 30px;
+  ${({isWriter}) => isWriter&&`
+    justify-content:end;
+  `}
 `;
 
-const Icon = styled(Reply)<{isWriter ?: boolean;}>`
+const Icon = styled(Reply)<{$isWriter ?: boolean;}>`
   position: absolute;
   width: 30px;
   color: #50577a;
   top: 0;
-  ${({isWriter}) => isWriter ? css`
+  ${({$isWriter}) => $isWriter ? css`
     transform: scaleX(1) rotate(-45deg);
     right: 39px;
 
