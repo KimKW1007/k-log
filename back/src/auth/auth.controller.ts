@@ -149,5 +149,18 @@ export class AuthController {
   }
 
 
+  @Post("/withdraw")
+  @UseGuards(AuthGuard())
+  async withdraw(@Res() res: Response,@GetUser() user :User){
+    const message = await this.authService.withdraw(user).then(async result =>{
+      await this.authService.removeRefreshToken(user.id);
+      res.clearCookie('access_token');
+      res.clearCookie('refresh_token');
+    });
+    
+    return res.send(message)
+  }
+
+
 
 }
