@@ -8,10 +8,11 @@ import { useQuery } from '@tanstack/react-query';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { EmptyIconBox } from '@components/board/BoardWrapComp';
 import BoardItem from '@components/board/BoardItem';
+import { GET_NEW_BOARDS } from '@utils/queryKeys';
 
 const HomeNewPosterList = () => {
   const { getApi } = customApi('/board/getNewBoards')
-  const { data } = useQuery(["GET_NEW_BOARDS"], ()=> getApi())
+  const { data } = useQuery([GET_NEW_BOARDS], ()=> getApi())
 
 
   
