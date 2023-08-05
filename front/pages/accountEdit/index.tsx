@@ -11,13 +11,14 @@ import { userInfomation } from '@atoms/atoms';
 import EditSideBar from '@components/accountEdit/EditSidbar/EditSideBarBox';
 import useIsMount from 'src/hooks/useIsMount';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import LockIcon from '@components/accountEdit/LockIcon';
 
 
 const AccountEditPage: NextPage = () => {
   const [ isCertificated, setIsCertificated ] = useState(false);
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const {isMount} = useIsMount();
-  const isEnter = isMount &&  isCertificated && currentUser?.id === 1;
+  const isEnter = isMount &&  isCertificated ;
   const [currentTab, setCurrentTab] = useState("");
   const [isForward, setIsForward] = useState(false);
   const [isDisappear, setIsDisappear] = useState(false);
@@ -45,7 +46,7 @@ useEffect(()=>{
   if(isDisappear){
     setIsForward(true);
   }
-  if(isDisappear && currentTab === ''){
+  if(isDisappear && currentTab === '' ){
     setCurrentTab("카테고리")
   }
   if(!isDisappear && currentTab === '카테고리'){
@@ -59,14 +60,10 @@ useEffect(()=>{
 
   return (
     <EditWrap>
-      <EditInnerBox>
+      <EditInnerBox >
         <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={()=> isCertificated && !isDisappear && setIsForward(false)}>
-          {(isEnter) || <LockIconBox>
-            <FlexEmptyBox/>
-              <ShieldLock/>
-            <FlexEmptyBox/>
-          </LockIconBox>}
-          {isEnter && <EditSideBar></EditSideBar>}
+          {(isEnter) || <LockIcon/>}
+          {isEnter && <EditSideBar isAdmin={currentUser?.id === 1}></EditSideBar>}
         </SideProfileEditBox>
         <AccountEditArea isCertificated={isCertificated} isForward={isForward} onClick={()=> isCertificated && !isDisappear && setIsForward(true)}>
           {isCertificated && <AccountEdit isForward={isForward} isDisappear={isDisappear} currentTab={currentTab} setCurrentTab={setCurrentTab}  ></AccountEdit>}
@@ -99,12 +96,14 @@ const EditInnerBox = styled.div`
   display:flex;
   column-gap: 30px;
 
+ 
+
 `;
 
-const AccountEditArea = styled.div<{isCertificated : boolean; isForward :boolean;}>`
+const AccountEditArea = styled.div<{isCertificated : boolean; isForward :boolean; }>`
   position:relative;
   flex-grow: 1;
-  ${({isCertificated, isForward}) => isCertificated && `
+  ${({isCertificated, isForward}) => isCertificated  && css`
     @media(max-width: 1500px){
       position:absolute;
       z-index : 1;
@@ -144,7 +143,7 @@ const AccountEditArea = styled.div<{isCertificated : boolean; isForward :boolean
         border-radius: 0;
       }
     }
-  `}
+  ` }
 `;
 const SideProfileEditBox = styled.div<{isEnter :boolean; isForward : boolean;}>`
   position:relative;
@@ -186,14 +185,3 @@ const SideProfileEditBox = styled.div<{isEnter :boolean; isForward : boolean;}>`
   
 `;
 
-const LockIconBox = styled.div`
-  display:flex;
-  flex-direction: column;
-  align-items:center;
-  height:100%;
-  svg{
-    width: 50%;
-    color:${({theme}) => theme.color.success};
-  }
-  
-`
