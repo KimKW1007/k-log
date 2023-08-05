@@ -6,16 +6,18 @@ import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import SearchBox from '../../sideBar/SearchBox';
 import EditSidebarHeader from './EditSidebarHeader';
 import EditCategoryList from '@components/accountEdit/EditCategory/EditCategoryList';
+import LockIcon from '../LockIcon';
 
 
 
 
-const EditSideBar = () => {
+const EditSideBar = ({isAdmin} : {isAdmin : boolean;}) => {
 
   return (
     <SidebarBox>
       <EditSidebarHeader></EditSidebarHeader>
-      <EditCategoryList ></EditCategoryList>
+      {isAdmin && <EditCategoryList ></EditCategoryList>}
+      {isAdmin || <LockIcon/>}
     </SidebarBox>
   );
 };
