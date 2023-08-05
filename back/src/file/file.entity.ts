@@ -12,7 +12,7 @@ export class FileEntity extends BaseEntity{
   @Column()
   description : string;
 
-  @OneToOne((type) => User, (user) => user.location, { eager: false })
+  @OneToOne((type) => User, (user) => user.location, { onDelete: 'CASCADE',  eager: false })
   @JoinColumn()
   user: User;
 }

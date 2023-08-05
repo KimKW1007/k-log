@@ -20,13 +20,16 @@ export class Comment extends BaseEntity {
   comment : string;
 
   @Column()
-  userName : string;
+  authorName : string;
 
   @Column()
-  userId : number;
+  authorId : number;
 
   @Column()
-  userEmail : string;
+  authorEmail : string;
+
+  @Column()
+  authorImage : string;
 
   @Column({nullable : true})
   isSecret ?: string;
@@ -34,9 +37,9 @@ export class Comment extends BaseEntity {
   @CreateDateColumn()
   createdAt : Date;
 
-  @ManyToOne((type) => Board, (board) => board.comments, { eager: false })
+  @ManyToOne((type) => Board, (board) => board.comments, { eager: false, onDelete: 'CASCADE' })
   board : Board;
 
-  @OneToMany(type => Reply, reply => reply.comment, {eager: true})
+  @OneToMany(type => Reply, reply => reply.connectedComment, {eager: true, cascade: ['remove'] })
   replies : Reply[];
 }

@@ -34,13 +34,13 @@ export class Board extends BaseEntity {
   @CreateDateColumn()
   createdAt : Date;
 
-  @ManyToOne((type) => SubCategory, (subCategory) => subCategory.boards, { eager: false })
+  @ManyToOne((type) => SubCategory, (subCategory) => subCategory.boards, { eager: false, onDelete: 'CASCADE' })
   subCategory : SubCategory;
 
   @Column()
   contents: string;
   
-  @OneToMany(type => Comment, comment => comment.board, {eager: true})
+  @OneToMany(type => Comment, comment => comment.board, {eager: true, cascade: ['remove'] })
   comments : Comment[];
 
 }

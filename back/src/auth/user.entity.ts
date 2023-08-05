@@ -21,10 +21,10 @@ export class User extends BaseEntity{
   @Column()
   password: string;
 
-  @OneToMany(type => Category, category => category.user, {eager: true})
+  @OneToMany(type => Category, category => category.user, {eager: true, cascade: ['remove'] })
   categories: Category[]
 
-  @OneToOne(type => FileEntity, file => file.user, {eager: true})
+  @OneToOne(type => FileEntity, file => file.user, {eager: true, cascade: ['remove'] })
   location : FileEntity
 
   @Column({ nullable: true })

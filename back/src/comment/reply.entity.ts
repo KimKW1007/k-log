@@ -17,16 +17,19 @@ export class Reply extends BaseEntity {
   id: number;
 
   @Column()
-  replyComment : string;
+  comment : string;
 
   @Column()
-  userName : string;
+  authorName : string;
 
   @Column()
-  userId : number;
+  authorId : number;
 
   @Column()
-  userEmail : string;
+  authorEmail : string;
+
+  @Column()
+  authorImage : string;
 
   @Column()
   isSecret ?: string;
@@ -34,7 +37,7 @@ export class Reply extends BaseEntity {
   @CreateDateColumn()
   createdAt : Date;
 
-  @ManyToOne((type) => Comment, (comment) => comment.replies, { eager: false })
-  comment : Comment;
+  @ManyToOne((type) => Comment, (comment) => comment.replies, { eager: false, onDelete: 'CASCADE' })
+  connectedComment : Comment;
 
 }

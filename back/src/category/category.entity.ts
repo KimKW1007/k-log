@@ -22,10 +22,10 @@ export class Category extends BaseEntity {
   dndNumber: number;
 
   @OneToMany((type) => SubCategory, (subCategory) => subCategory.category, {
-    eager: true,
+    eager: true, cascade: ['remove'],
   })
   subCategories: SubCategory[];
 
-  @ManyToOne((type) => User, (user) => user.categories, { eager: false })
+  @ManyToOne((type) => User, (user) => user.categories, { eager: false, onDelete: 'CASCADE' })
   user: User;
 }

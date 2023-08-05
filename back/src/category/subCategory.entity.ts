@@ -20,11 +20,11 @@ export class SubCategory extends BaseEntity {
   categorySubTitle: string;
 
   @ManyToOne((type) => Category, (category) => category.subCategories, {
-    eager: false,
+    eager: false,onDelete: 'CASCADE'
   })
   category: Category;
 
-  @OneToMany(type => Board, board => board.subCategory, {eager: true})
+  @OneToMany(type => Board, board => board.subCategory, {eager: true, cascade: ['remove'] })
   boards : Board[];
 
 
