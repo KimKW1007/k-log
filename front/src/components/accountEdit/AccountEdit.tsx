@@ -140,6 +140,7 @@ const EditAreaBox = styled.div`
   overflow:hidden;
   padding: 60px 20px;
   @media(max-width: 980px){
+    width:100%;
     padding: 60px 0;
   }
   @media(max-width: 980px){
@@ -180,6 +181,9 @@ const EditInnerBox = styled.div`
   border-radius: 30px;
   overflow:hidden;
   padding: 30px;
+  @media(max-width: 1080px){
+    padding:  30px 10px;
+  }
   @media(max-width: 660px){
     padding:  0;
     border-radius: 0;
