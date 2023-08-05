@@ -31,7 +31,7 @@ export class FileController {
   }
 
 
-  @Delete('/:boardId/:userId')
+  @Delete('/deleteFiles/:boardId/:userId')
   deleteFiles(@Param('boardId') boardId : string,@Param('userId') userId : string, ): Promise<{ message: string; }>{
     return this.fileService.deleteFiles(boardId, userId)
   }
@@ -39,6 +39,11 @@ export class FileController {
   @Delete("/unnecessary/:boardId/:userId")
   checkDeleteUnnecessaryFile(@Body() body, @Param('boardId') boardId : string,@Param('userId') userId : string,){
     return this.fileService.checkDeleteUnnecessaryFile(body, boardId, userId)
+  }
+
+  @Delete("/withdraw/:userId")
+  withdraw(@Param('userId') userId : string){
+    return this.fileService.withdraw(userId)
   }
 
 
