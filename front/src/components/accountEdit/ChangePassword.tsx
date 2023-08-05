@@ -82,7 +82,7 @@ const ChangePassword = () => {
 
 export default ChangePassword;
 
-const ChangePasswordSubmitBox = styled(SubmitBox)`
+export const ChangePasswordSubmitBox = styled(SubmitBox)`
   width: 50%;
   margin: 62px auto 0;
 `;
