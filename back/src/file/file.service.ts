@@ -6,6 +6,8 @@ import { FileRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { BoardRepository } from 'src/board/board.repository';
+import { CommentRepository } from 'src/comment/comment.repository';
+import { ReplyRepository } from 'src/comment/reply.repository';
 
 const S3Config = config.get('S3');
 
@@ -14,7 +16,9 @@ export class FileService {
   constructor(
     @InjectRepository(FileRepository)
     private fileRepository: FileRepository,
-    private boardRepository: BoardRepository
+    private boardRepository: BoardRepository,
+    private commentRepository: CommentRepository,
+    private replyRepository: ReplyRepository
   ) {}
   private readonly DATA_URL = 'http://localhost:8000/api/uploads';
   
@@ -22,17 +26,8 @@ export class FileService {
     if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
     const found = await this.fileRepository.findOneBy({ user: { id: user.id } });
     if (!file) {
-      if(!found){
-        const createUserPl = this.fileRepository.create({
-          imageUrl: '',
-          description: description,
-          user,
-        });
-        await this.fileRepository.save(createUserPl);
-      }else{
-        found.description = description;
-        await this.fileRepository.save(found);
-      }
+      found.description = description;
+      await this.fileRepository.save(found);
       return { message: 'Only changed Description' };
     }
     
@@ -44,6 +39,8 @@ export class FileService {
     formData.append('userId', String(user.id));
     formData.append('isProfile', 'true');
     const foundBoards = await this.boardRepository.find({where : {subCategory : {category : {user : {id : user.id}}}}})
+    const foundComments = await this.commentRepository.find({where : {board : {subCategory : {category : {user : {id : user.id}}}}}})
+    const foundReplies = await this.replyRepository.find({where : {connectedComment : {board : {subCategory : {category : {user : {id : user.id}}}}}}})
     try{
       const response = await axios.post(this.DATA_URL, formData , {
         headers:{
@@ -54,20 +51,19 @@ export class FileService {
         }
       })
       const IMG_URL = response.data.url;
-      if(!found){
-        const createUserPl = this.fileRepository.create({
-          imageUrl: IMG_URL,
-          description: description,
-          user,
-        });
-        await this.fileRepository.save(createUserPl);
-      }else{
-        found.imageUrl = IMG_URL;
-        found.description = description;
-        await this.fileRepository.save(found);
-      }
+      found.imageUrl = IMG_URL;
+      found.description = description;
+      await this.fileRepository.save(found);
       if(foundBoards){
         foundBoards.map(foundBoard => foundBoard.authorImage = IMG_URL)
+        await this.boardRepository.save(foundBoards);
+      }
+      if(foundComments){
+        foundComments.map(foundComment => foundComment.authorImage = IMG_URL)
+        await this.commentRepository.save(foundComments);
+      }
+      if(foundReplies){
+        foundReplies.map(foundReply => foundReply.authorImage = IMG_URL)
         await this.boardRepository.save(foundBoards);
       }
 
@@ -78,8 +74,12 @@ export class FileService {
     }
   }
 
-  async getUserPl() {
+  async getAdminPl() {
     const found = await this.fileRepository.findOneBy({ user: { id: 1 } });
+    return found;
+  }
+  async getUserPl(user : User) {
+    const found = await this.fileRepository.findOneBy({ user: { id: user.id } });
     return found;
   }
 }
