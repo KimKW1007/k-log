@@ -7,8 +7,9 @@ import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 interface DeleteMadalProps {
   onClose: ()=> void;
   mutate : any;
+  isWithdraw ?: boolean;
 }
-const DeleteModal = ({onClose, mutate}: DeleteMadalProps) => {
+const DeleteModal = ({onClose, mutate, isWithdraw}: DeleteMadalProps) => {
   return (
     <ModalPortal>
     <ModalWrap>
@@ -16,11 +17,11 @@ const DeleteModal = ({onClose, mutate}: DeleteMadalProps) => {
       <DeleteModalBox>
         <ModalTitle>안내</ModalTitle>
         <ModalInnerText>
-          <p>정말 삭제하시겠습니까?</p>
+          <p>정말 {isWithdraw? "탈퇴" : '삭제'} 하시겠습니까?</p>
         </ModalInnerText>
         <ConfirmBtnBox>
           <DeleteBtn onClick={()=> mutate()}>
-            네! 삭제할래요!
+            네! {isWithdraw? "탈퇴" : '삭제'}할래요!
           </DeleteBtn>
           <CancelBtn onClick={onClose}>
             다시 생각해볼게요..
