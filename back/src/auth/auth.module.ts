@@ -8,7 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import * as config from "config"
 import { BoardRepository } from 'src/board/board.repository';
-import { SubCategoryRepository } from 'src/category/category.repository';
+import { CategoryRepository, SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
@@ -28,7 +28,7 @@ const jwtConfig = config.get("jwt")
     PassportModule.register({ defaultStrategy: 'jwt' })
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserRepository, JwtStrategy, BoardRepository, SubCategoryRepository, FileRepository, CommentRepository, ReplyRepository],
+  providers: [AuthService, UserRepository, CategoryRepository ,JwtStrategy, BoardRepository, SubCategoryRepository, FileRepository, CommentRepository, ReplyRepository],
   exports:[JwtStrategy, PassportModule]
 })
 export class AuthModule {}
