@@ -55,7 +55,7 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.boardTitle = boardTitle;
         foundBoard.contents = contents;
         foundBoard.tags = tags;
-        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
+        foundBoard.authorImage = authorImage?.imageUrl ??  '',
         foundBoard.createdAt = new Date();
         const newBoard = await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
@@ -86,7 +86,7 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.contents = contents;
         foundBoard.thumbnail = IMG_URL;
         foundBoard.tags = tags;
-        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '';
+        foundBoard.authorImage = authorImage?.imageUrl ??  '';
         foundBoard.createdAt = new Date();
         const newBoard = await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
@@ -107,7 +107,7 @@ export class BoardRepository extends Repository<Board> {
       return {message : '삭제할 board가 없습니다.'}
     }
     try{
-      await axios.delete(`${this.DATA_BOARD_DELETE}/${id}/${user.id}`).then(async res=>{
+      await axios.delete(`${this.DATA_BOARD_DELETE}/deleteFiles/${id}/${user.id}`).then(async res=>{
         await this.delete({id})
       })
       return {message : '삭제 완료'}
@@ -128,7 +128,7 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.boardTitle = boardTitle;
         foundBoard.contents = contents;
         foundBoard.tags = tags;
-        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '',
+        foundBoard.authorImage = authorImage?.imageUrl ??  '',
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
           return res
@@ -170,7 +170,7 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.contents = contents;
         foundBoard.thumbnail = IMG_URL;
         foundBoard.tags = tags;
-        foundBoard.authorImage = authorImage !== null ? authorImage.imageUrl : '';
+        foundBoard.authorImage = authorImage?.imageUrl ??  '';
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
           return res
