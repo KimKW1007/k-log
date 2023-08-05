@@ -5,7 +5,7 @@ import { FieldValues, UseFormRegister, UseFormRegisterReturn } from 'react-hook-
 import styled, { css } from 'styled-components';
 
 interface EditInputProps{
-  title : string;
+  title ?: string;
   defaultValue ?: string;
   type ?: string;
   register: UseFormRegisterReturn<string>
@@ -17,15 +17,16 @@ interface EditInputProps{
 const EditInput = ({title, defaultValue, type = 'text', register, isError, disabled, isPassword = false} : EditInputProps) => {
   return (
       <EditInputInnerBox>
-        <EditInputTitleBox isPassword={isPassword}>
+        {title && <EditInputTitleBox isPassword={isPassword}>
           <h4>{title}</h4>
-        </EditInputTitleBox>
+        </EditInputTitleBox>}
         <Input
           defaultValue={defaultValue}
           type={type}
           {...register}
           isError={isError}
           disabled={disabled}
+          autoComplete="off"
         />
       </EditInputInnerBox>
      
