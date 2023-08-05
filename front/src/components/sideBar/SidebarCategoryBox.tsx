@@ -22,7 +22,8 @@ const CategoryBox = styled.div<{isMenu ?: boolean;}>`
     width:100%;
     padding: 0;
     margin: 0;
-  
+    min-height: 300px;
+    height: auto;
   `}
   dt{
     margin-bottom: 5px;
