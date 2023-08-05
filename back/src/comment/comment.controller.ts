@@ -10,6 +10,11 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
 
 
+  @Post('/sendMail/:boardId')
+  @UseGuards(AuthGuard())
+  sendMail(@Param('boardId', ParseIntPipe) boardId : number, @Body() commentCreateDto : CommentCreateDto, @GetUser() user: User){
+    return this.commentService.sendMail(boardId, commentCreateDto, user)
+  }
   @Post('/create/:boardId')
   @UseGuards(AuthGuard())
   createComment(@Param('boardId', ParseIntPipe) boardId : number, @Body() commentCreateDto : CommentCreateDto, @GetUser() user: User){
