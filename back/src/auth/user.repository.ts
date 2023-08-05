@@ -11,6 +11,11 @@ import { BoardRepository } from 'src/board/board.repository';
 import * as config from "config"
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
+import { FileRepository } from 'src/file/file.repository';
+import { selectedImage } from 'src/utils/defaultRandomImage';
+import axios from 'axios';
+import * as fs from 'fs';
+
 
 
 const jwtConfig = config.get("jwt")
@@ -21,9 +26,13 @@ export class UserRepository extends Repository<User> {
       private boardRepository: BoardRepository,
       private commentRepository: CommentRepository,
       private replyRepository: ReplyRepository,
+      private fileRepository: FileRepository
       ) {   
     super(User, dataSource.createEntityManager());
   }
+  private readonly DATA_URL = 'http://localhost:8000/api/uploads';
+
+ 
 
   deletePasswordInUsers(user : User[]){
     const deletePasswordUser = user.map(ele => {
@@ -33,6 +42,7 @@ export class UserRepository extends Repository<User> {
     return deletePasswordUser
   }
 
+  
   async createUser(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     const { userId, password, userName, userEmail } = authRegistrationDto;
 
@@ -45,6 +55,7 @@ export class UserRepository extends Repository<User> {
       userName,
       userEmail,
     });
+
     try {
       await this.save(user);
     } catch (e) {
@@ -54,6 +65,40 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
+
+    fs.readFile(selectedImage,async (err, data)=> {
+      if (err) {
+        console.error('Error reading image file:', err);
+        return;
+      }
+      const formData = new FormData();
+      const imageBuffer = Buffer.from(data);
+      const imageBlob = new Blob([imageBuffer], { type: 'image/jpg' });
+      formData.append('image', imageBlob, 'defaultImage.jpg');
+      formData.append('userId', String(user.id));
+      formData.append('isProfile', 'true');
+
+      try{
+        const response = await axios.post(this.DATA_URL, formData , {
+          headers:{
+            'Content-Type' : "multipart/form-data"
+          },
+          params:{
+            userId : user.userId
+          }
+        })
+        const IMG_URL = response.data.url;
+        const createUserPl = this.fileRepository.create({
+          imageUrl: IMG_URL,
+          description: "",
+          user,
+        });
+        await this.fileRepository.save(createUserPl);
+      }catch(e){
+        throw new Error("이미지 저장 중 오류발생")
+      }
+
+    });
   }
 
 
@@ -64,7 +109,7 @@ export class UserRepository extends Repository<User> {
     if (foundUser.userId === userId || foundUser.userName === userName) throw new BadRequestException('변경된 값이 없습니다.', { cause: new Error() });
 
     const foundComments = await this.commentRepository.find({where:{ board : {subCategory :{ category :{ user: {id : user.id}}}}}})
-    const foundReplyComments = await this.replyRepository.find({where:{comment : { board : {subCategory :{ category :{ user: {id : user.id}}}}}}})
+    const foundReplyComments = await this.replyRepository.find({where:{connectedComment : { board : {subCategory :{ category :{ user: {id : user.id}}}}}}})
 
 
     if (userId) {
@@ -74,11 +119,11 @@ export class UserRepository extends Repository<User> {
     }
     if (userEmail) {
       if(foundComments){
-        foundComments.map(foundComment =>foundComment.userEmail = userEmail)
+        foundComments.map(foundComment =>foundComment.authorEmail = userEmail)
         await this.commentRepository.save(foundComments)
       }
       if(foundReplyComments){
-        foundReplyComments.map(foundReplyComment =>foundReplyComment.userEmail = userEmail)
+        foundReplyComments.map(foundReplyComment =>foundReplyComment.authorEmail = userEmail)
         await this.replyRepository.save(foundReplyComments)
       }
       foundUser.userEmail = userEmail;
@@ -92,11 +137,11 @@ export class UserRepository extends Repository<User> {
         await this.boardRepository.save(foundBoards)
       }
       if(foundComments){
-        foundComments.map(foundComment =>foundComment.userName = userName)
+        foundComments.map(foundComment =>foundComment.authorName = userName)
         await this.commentRepository.save(foundComments)
       }
       if(foundReplyComments){
-        foundReplyComments.map(foundReplyComment =>foundReplyComment.userName = userName)
+        foundReplyComments.map(foundReplyComment =>foundReplyComment.authorName = userName)
         await this.replyRepository.save(foundReplyComments)
       }
     }
