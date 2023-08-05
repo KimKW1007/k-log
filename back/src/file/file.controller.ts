@@ -26,9 +26,16 @@ export class FileController {
   async uploadFile(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User) {
     return this.fileService.uploadFile(body.description, file, user)
   }
+
+
+  @Get('/getAdminPl')
+  async getAdminPl(){
+    return this.fileService.getAdminPl()
+  }
   @Get('/getUserPl')
-  async getUserPl(){
-    return this.fileService.getUserPl()
+  @UseGuards(AuthGuard())
+  async getUserPl( @GetUser() user : User){
+    return this.fileService.getUserPl(user)
   }
 
 
