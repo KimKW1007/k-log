@@ -12,6 +12,12 @@ import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { AuthPasswordCertificateDto } from './dto/auth-checkPasswordCertificate.dto';
 import * as config from "config"
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { CommentRepository } from 'src/comment/comment.repository';
+import { ReplyRepository } from 'src/comment/reply.repository';
+import axios from 'axios';
+import { BoardRepository } from 'src/board/board.repository';
+import { CategoryRepository, SubCategoryRepository } from 'src/category/category.repository';
+import { FileRepository } from 'src/file/file.repository';
 
 const jwtConfig = config.get("jwt")
 
@@ -22,7 +28,12 @@ export class AuthService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private jwtService: JwtService,
+    private commentRepository: CommentRepository,
+    private replyRepository: ReplyRepository,
+    private categoryRepository: CategoryRepository,
+    private fileRepository: FileRepository,
   ) {}
+  private readonly DATA_BOARD_DELETE = 'http://localhost:8000/api';
 
   async accessToken(user : User): Promise<string>{
     delete user.password
@@ -129,4 +140,32 @@ export class AuthService {
       currentRefreshTokenExp: null,
     });
   }
+
+  async withdraw(user : User){
+    const foundReply = await this.replyRepository.find({where : {authorId : user.id}})
+    const foundComment = await this.commentRepository.find({where : {authorId : user.id}})
+
+    const foundUser = await this.userRepository.findOne({where : {id : user.id}});
+    if(foundReply.length > 0 || foundComment.length > 0){
+      await this.categoryRepository.delete({user :{id : user.id}}); 
+      await this.fileRepository.delete({user :{id : user.id}}); 
+      foundUser.userId = `deleteUser${Date.now()}`
+      foundUser.userEmail = `deleteUser${Date.now()}@gmail.com`
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(`deleteUser${Date.now()}`, salt);
+      foundUser.password = hashedPassword
+      await this.userRepository.save(foundUser)
+    }else{
+      try{
+        await axios.delete(`${this.DATA_BOARD_DELETE}/withdraw/${user.userId}`)
+        await this.userRepository.delete({id : user.id})
+      }catch(e){
+        console.log({e})
+        throw new Error("회원탈퇴 이미지 삭제 중 오류 발생")
+      }
+    }
+    return {message : 'success'}
+  }
+
+
 }
