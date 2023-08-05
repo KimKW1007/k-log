@@ -1,5 +1,5 @@
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components';
 import Image from 'next/image';
 import defaultAuthorImage from '@assets/images/500_94.jpg'
@@ -7,44 +7,90 @@ import { Comment } from '@styled-icons/fluentui-system-filled/Comment'
 import { useForm } from 'react-hook-form';
 import checkedIcon from '@images/check.svg';
 import { CheckBoxInput, Label } from '@components/common/CheckBoxInputs';
-
-
+import customApi from '@utils/customApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
+import { useRouter } from 'next/router';
+import { User5 } from '@styled-icons/remix-fill/User5'
+import { X } from '@styled-icons/bootstrap';
+import useIsMount from 'src/hooks/useIsMount';
+import { GET_COMMENTS } from '@utils/queryKeys';
+import useCheckLogin from 'src/hooks/useCheckLogin';
 
 interface CommentFormProps{
   isReply ?: boolean; 
-  isWriter ?: boolean;
-  id : string
+  id : string;
+  commentId ?: number;
+  setReplyIndex ?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
-const CommentForm = ({isReply, isWriter} : CommentFormProps) => {
+const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps) => {
+  const queryClient = useQueryClient();
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const {checkLogin} = useCheckLogin();
+  const {isMount} = useIsMount();
+  const router = useRouter()
   const [row, setRow] = useState(1);
   const resizeTextarea = (e : any) => {
     const { value } = e.target;
     setRow(value.split("\n").length)
   };
 
-  const {register, handleSubmit} = useForm({mode: 'onSubmit'})
+  const {postApi : sendMailPostApi} = customApi(`/comment/sendMail/${id}`)
+  const {postApi : commentPostApi} = customApi(`/comment/create/${id}`)
+  const {postApi : replyPostApi} = customApi(`/comment/createReply/${commentId}`)
+  const {mutate: sendMailMutate}  = useMutation(sendMailPostApi,{
+    onError(error) {
+      console.log({error})
+    },
+    onSuccess(data) {
+      console.log({data})
+    },
+  })
+  const {mutate} = useMutation(isReply ? replyPostApi : commentPostApi,{
+    onError(error) {
+      console.log({error})
+    },
+    onSuccess(data) {
+      console.log({data})
+      queryClient.invalidateQueries([GET_COMMENTS, id])
+      setValue('comment', '')
+      setRow(1);
+      setReplyIndex!(-1)
+    },
+  })
 
-const onSubmit =(data : any)=>{
+  const {register, handleSubmit, watch, setValue} = useForm({mode: 'onSubmit'})
 
-}
+  const onSubmit =({comment, isSecret} : any)=>{
+    console.log({isReply})
+    checkLogin(()=>{
+      if(comment.trim() === ''){
+        alert("댓글을 입력해주세요")
+        setValue('comment', '')
+        setRow(1);
+        return
+      }
+      mutate({comment,isSecret:`${isSecret}`})
+      sendMailMutate({comment,isSecret:`${isSecret}`})
+    })
+  }
   return (
-    <Form isReply={isReply} isWriter={isWriter} onSubmit={handleSubmit(onSubmit)}>
+    <Form isReply={isReply} onSubmit={handleSubmit(onSubmit)}>
       <FormContainer>
         <AuthorBox>
-          <AuthorInnerBox>
-            <AuthorImageBox>
-              <Image src={defaultAuthorImage.src} alt={'유저 이미지'} width={30} height={30} />
-            </AuthorImageBox>
-            <Author>
-              <span>{isReply ? "To . 관리자" : 'From . 관리자'}</span>
-            </Author>
-          </AuthorInnerBox>
+          <Author>
+            <User5/>
+            <span>{isMount && currentUser ? currentUser.userName : "게스트"}</span>
+          </Author>
+          {isReply && <CancelBtn type='button' onClick={()=> setReplyIndex!(-1)}><X/></CancelBtn>}
         </AuthorBox>
         <CommentBox>
           <CommentInnerBox>
             <CommentTextArea 
+            {...register('comment')}
             row={row}
             onChange={resizeTextarea}
             placeholder={`여러분의 댓글은 저에게 큰 힘이 됩니다.\n구독과 좋아요..아 이게아니지..\n대댓글이 작성 될 경우 삭제가 불가능 합니다.`}
@@ -57,8 +103,8 @@ const onSubmit =(data : any)=>{
             </SubmitBox>
           </CommentInnerBox>
           <CheckSecretInputBox>
-            <CheckSecretInput className="blind" type='checkbox' id={'secretInput'}/>
-            <CheckSecretLabel htmlFor={'secretInput'}>비밀글 작성</CheckSecretLabel>
+            <CheckSecretInput {...register('isSecret')} className="blind" type='checkbox' id={`secretInput${commentId ?? 0}`}/>
+            <CheckSecretLabel htmlFor={`secretInput${commentId ?? 0}`}>비밀글 작성</CheckSecretLabel>
           </CheckSecretInputBox>
         </CommentBox>
       </FormContainer>
@@ -68,12 +114,27 @@ const onSubmit =(data : any)=>{
 
 export default CommentForm
 
+const CancelBtn = styled.button`
+  width: 30px;
+  height: 30px;
+  background :transparent;
+  border-radius: 50%;
+  transition: .2s;
+  svg{
+    width:100%;
+    color: #fff;
+  }
+  &:hover{
+    background :rgba(0,0,0,.2);
+  }
+`
+
 const CheckSecretInputBox =styled.div`
   margin: 10px 0 0 10px;
 
 `
 
-const CheckSecretInput = styled(CheckBoxInput)`
+export const CheckSecretInput = styled(CheckBoxInput)`
 &:checked + label {
   &::before {
     background-color: ${({theme}) => theme.color.success};
@@ -82,7 +143,7 @@ const CheckSecretInput = styled(CheckBoxInput)`
 
 `
 
-const CheckSecretLabel = styled(Label)`
+export const CheckSecretLabel = styled(Label)`
 font-size: 14px;
 user-select:none;
 &:before {
@@ -128,8 +189,8 @@ const CommentTextArea = styled.textarea<{row : number}>`
   font-size : 14px;
   min-height: 150px;
   // height 계산법 line-height * row + padding(top/bottom)
-  height: ${({ row }) => 24 * row }px;
-  padding: 0 10px ;
+  height: ${({ row }) => 24 * row + 10}px;
+  padding: 0 10px 10px;
   background: transparent;
   outline: 0;
   color :#fff;
@@ -144,17 +205,21 @@ const CommentBox = styled.div`
 padding:  40px 20px 20px;
 `
 
-const Author = styled.div`
-
-
+export const Author = styled.div`
+  display:inline-flex;
+  align-items:center;
+  background: #6B728E;
+  padding: 8px 24px 8px 20px;
+  border-radius : 30px;
+  column-gap: 5px;
+  svg{
+    width: 18px; 
+    margin-top: -2px;
+  }
 `
 export const AuthorInnerBox =styled.div`
   display: inline-flex;
-  align-items:center;
-  column-gap : 20px;
-  background: #6B728E;
-  padding: 6px 30px 6px 20px;
-  border-radius : 30px;
+
 `
 
 export const AuthorImageBox = styled.div<{isWriter ?: boolean;}>`
@@ -171,6 +236,8 @@ export const AuthorImageBox = styled.div<{isWriter ?: boolean;}>`
 const AuthorBox = styled.div`
   padding: 15px 30px 15px;
   background: rgba(128,128,128,0.3);
+  display:flex;
+  justify-content: space-between;
 `
 
 const FormContainer = styled.div`
@@ -181,15 +248,10 @@ const FormContainer = styled.div`
   overflow: hidden;
 `
 
-const Form = styled.form<{isReply ?: boolean; isWriter ?: boolean;}>`
+const Form = styled.form<{isReply ?: boolean;}>`
   width:100%;
-  margin-bottom: 80px;
-  ${({isReply, isWriter}) => isReply &&`
+  ${({isReply}) => isReply &&`
     max-width: 850px;
-    ${isWriter ? css`
-    ` : css`
-    margin : 0 0 0 auto;
-    `}
-    
+    margin : 0 auto 40px;
   `}
 `
