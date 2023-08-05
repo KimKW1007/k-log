@@ -8,10 +8,30 @@ import { BoardRepository } from 'src/board/board.repository';
 import { SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { ReplyRepository } from './reply.repository';
+import { MailerModule } from '@nestjs-modules/mailer';
+import * as config from "config"
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+const mailConfig = config.get("nodeMail");
 
 @Module({
-  imports:[TypeOrmModule.forFeature([CommentRepository]),TypeOrmModule.forFeature([ReplyRepository]),AuthModule],
+  imports: [TypeOrmModule.forFeature([CommentRepository]), TypeOrmModule.forFeature([ReplyRepository]), AuthModule,MailerModule.forRoot({
+    transport: {
+      host: 'smtp.gmail.com',
+      port: 587,
+      auth: {
+        user: mailConfig.mailId,
+        pass: mailConfig.mailPw,
+      },
+    },
+    template: {
+      dir: process.cwd() + '/template/',
+      adapter: new HandlebarsAdapter(),
+      options: {
+        strict: true,
+      },
+    },
+  })],
   controllers: [CommentController],
-  providers: [CommentService,CommentRepository,BoardRepository, SubCategoryRepository, FileRepository, ReplyRepository]
+  providers: [CommentService, CommentRepository, BoardRepository, SubCategoryRepository, FileRepository, ReplyRepository],
 })
 export class CommentModule {}

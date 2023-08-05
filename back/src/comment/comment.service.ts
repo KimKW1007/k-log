@@ -13,6 +13,9 @@ export class CommentService {
     private replyRepository: ReplyRepository
   ) {}
 
+  async sendMail(boardId : number, commentCreateDto : CommentCreateDto, user: User){
+    return this.commentRepository.sendMail(boardId, commentCreateDto, user)
+  }
   async createComment(boardId : number, commentCreateDto : CommentCreateDto, user: User){
     return this.commentRepository.createComment(boardId, commentCreateDto, user)
   }
