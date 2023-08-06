@@ -29,6 +29,7 @@ interface CommentFormProps{
 const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps) => {
   const queryClient = useQueryClient();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const [placeholderText, setPlaceholderText] = useState('로그인 후 이용 가능합니다.')
   const {checkLogin} = useCheckLogin();
   const {isMount} = useIsMount();
   const router = useRouter()
@@ -37,6 +38,7 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
     const { value } = e.target;
     setRow(value.split("\n").length)
   };
+
 
   const {postApi : sendMailPostApi} = customApi(`/comment/sendMail/${id}`)
   const {postApi : commentPostApi} = customApi(`/comment/create/${id}`)
@@ -67,16 +69,26 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
   const onSubmit =({comment, isSecret} : any)=>{
     console.log({isReply})
     checkLogin(()=>{
-      if(comment.trim() === ''){
+      if(comment?.trim() === '' || !comment){
         alert("댓글을 입력해주세요")
         setValue('comment', '')
         setRow(1);
-        return
+      }else{
+        mutate({comment,isSecret:`${isSecret}`})
+        sendMailMutate({comment,isSecret:`${isSecret}`})
       }
-      mutate({comment,isSecret:`${isSecret}`})
-      sendMailMutate({comment,isSecret:`${isSecret}`})
     })
   }
+
+  useEffect(()=>{
+    if(currentUser?.id){
+      setPlaceholderText(`여러분의 댓글은 저에게 큰 힘이 됩니다.\n구독과 좋아요..아 이게아니지..\n대댓글이 작성 될 경우 삭제가 불가능 합니다.`)
+    }else{
+      setPlaceholderText('로그인 후 이용 가능합니다.')
+    }
+  },[isMount])
+
+
   return (
     <Form isReply={isReply} onSubmit={handleSubmit(onSubmit)}>
       <FormContainer>
@@ -93,7 +105,8 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
             {...register('comment')}
             row={row}
             onChange={resizeTextarea}
-            placeholder={`여러분의 댓글은 저에게 큰 힘이 됩니다.\n구독과 좋아요..아 이게아니지..\n대댓글이 작성 될 경우 삭제가 불가능 합니다.`}
+            placeholder={placeholderText}
+            disabled={!Boolean(currentUser)}
             >
             </CommentTextArea>
             <SubmitBox>
@@ -203,6 +216,7 @@ const CommentTextArea = styled.textarea<{row : number}>`
 
 const CommentBox = styled.div`
 padding:  40px 20px 20px;
+background : inherit;
 `
 
 export const Author = styled.div`
@@ -242,14 +256,16 @@ const AuthorBox = styled.div`
 
 const FormContainer = styled.div`
   width:100%;
-  border: 1px solid rgba(128,128,128,0.3);
-  box-shadow : 10px 10px 10px rgba(0,0,0,.3);
-  border-radius : 20px;
-  overflow: hidden;
+ 
 `
 
 const Form = styled.form<{isReply ?: boolean;}>`
   width:100%;
+  border: 1px solid rgba(128,128,128,0.3);
+  box-shadow : 10px 10px 10px rgba(0,0,0,.3);
+  border-radius : 20px;
+  overflow: hidden;
+  background: #23262d;
   ${({isReply}) => isReply &&`
     max-width: 850px;
     margin : 0 auto 40px;
