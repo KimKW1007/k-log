@@ -142,20 +142,10 @@ export class AuthService {
   }
 
   async withdraw(user : User){
-    const foundReply = await this.replyRepository.find({where : {authorId : user.id}})
-    const foundComment = await this.commentRepository.find({where : {authorId : user.id}})
-
     const foundUser = await this.userRepository.findOne({where : {id : user.id}});
-    if(foundReply.length > 0 || foundComment.length > 0){
-      await this.categoryRepository.delete({user :{id : user.id}}); 
-      await this.fileRepository.delete({user :{id : user.id}}); 
-      foundUser.userId = `deleteUser${Date.now()}`
-      foundUser.userEmail = `deleteUser${Date.now()}@gmail.com`
-      const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(`deleteUser${Date.now()}`, salt);
-      foundUser.password = hashedPassword
-      await this.userRepository.save(foundUser)
-    }else{
+    if(!foundUser){
+      throw new BadRequestException("탈퇴할 유저가 없습니다.")
+    }
       try{
         await axios.delete(`${this.DATA_BOARD_DELETE}/withdraw/${user.userId}`)
         await this.userRepository.delete({id : user.id})
@@ -163,7 +153,6 @@ export class AuthService {
         console.log({e})
         throw new Error("회원탈퇴 이미지 삭제 중 오류 발생")
       }
-    }
     return {message : 'success'}
   }
 
