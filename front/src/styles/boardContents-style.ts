@@ -1,7 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
 export const ContentsWrap = styled.div`
-
+  *{
+    font-family: 'Pretendard-Regular' !important;
+  }
 padding: 150px 0 100px;
 min-height: 1000px;
 
@@ -120,14 +122,15 @@ margin-bottom: 80px;
   }
 
   pre[class^='ql-syntax'] .code-body::-webkit-scrollbar {
-    width: 10px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
-  pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-thumb {
+  pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-thumb:vertical {
     background-color: rgb(1 2 3 / 80%);
     border-radius: 10px;
   }
+ 
 
   pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-corner {
     display: none;
