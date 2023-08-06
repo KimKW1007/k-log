@@ -7,7 +7,7 @@ import { GET_BOARDS } from '@utils/queryKeys';
 import BoardWrapComp from '@components/board/BoardWrapComp';
 import useIsMount from 'src/hooks/useIsMount';
 import { useRecoilState } from 'recoil';
-import { currentPagenation, isLoadingData } from '@atoms/atoms';
+import { currentPagenation } from '@atoms/atoms';
 import { CategoryPageProps } from './[subTitle]';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 import PageLoading from '@components/common/Loading/PageLoading';
