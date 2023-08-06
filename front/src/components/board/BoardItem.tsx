@@ -7,12 +7,13 @@ import useConvert from 'src/hooks/useConvert';
 import changeCreatedAt from '@utils/changeCreatedAt';
 import AuthorBox from './AuthorBox';
 import Link from 'next/link';
+import DOMPurify from 'dompurify';
 
 
 
 const BoardItem = (board : any) => {
   const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory : {categorySubTitle}  }  = board;
-  const  {reverseConvert} = useConvert();
+  const  {convertContent} = useConvert();
   return (
     <ItemLink href={`/${id}`}>
       <ItemWrap>
@@ -25,9 +26,7 @@ const BoardItem = (board : any) => {
           <ItemTitleBox>
             <p>{boardTitle}</p>
           </ItemTitleBox>
-          <ItemDescBox>
-            {reverseConvert(contents).replace(/(<([^>]+)>)/gi, '')}
-          </ItemDescBox>
+          <ItemDescBox dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
           <ItemDetailBox>
             <AuthorBox author={author} authorImage={authorImage} />
             <CreatedDateBox>
