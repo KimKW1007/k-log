@@ -4,11 +4,15 @@ import Image from "next/image"
 import AuthorBox from '@components/board/AuthorBox';
 import defaultImage from '@assets/images/defaultImage.png';
 import Link from 'next/link';
+import DOMPurify from 'dompurify';
+import useConvert from 'src/hooks/useConvert';
 
 const HomeNewPosterBigItem = (board : any) => {
   const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory }  = board;
   const {categorySubTitle, category } = subCategory ?? {};
   const {categoryTitle, user} = category ?? {};
+  const  {convertContent} = useConvert();
+
   return (
     <PosterItem>
         <PosterItemLink href={`/${id}`}>
@@ -20,7 +24,7 @@ const HomeNewPosterBigItem = (board : any) => {
             <h4>{boardTitle}</h4>
           </PosterTitle>
         </PosterTop>
-        <PostDesc>{contents}</PostDesc>
+        <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
         <ImageBox>
           <ImageBg thumbnailUrl={thumbnail || defaultImage.src} />
         </ImageBox>
