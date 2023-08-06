@@ -4,7 +4,7 @@ import Loading from './Loading';
 import { AllCenterFlex } from '../CommonFlex';
 import { ChildrenProps } from '@src/types/children';
 
-const LoadingText = ({children = '로딩 중'} : {children ?: React.ReactNode}) => {
+const LoadingText = ({children = '로딩 중'} : {children ?: React.ReactNode; }) => {
   return (
     <LoadingWrap>
       <LoadingContainer>
@@ -24,7 +24,8 @@ const LoadingWrap = styled(AllCenterFlex)`
   height:100%;
 `
 
-const LoadingContainer = styled.div`
+const LoadingContainer = styled(AllCenterFlex)`
+  flex-direction : column;
   width: 100px;
   height: 100px;
 `
