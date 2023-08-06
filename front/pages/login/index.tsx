@@ -46,6 +46,7 @@ export const PageInnerBox = styled.div`
   margin: auto;
   @media(max-width: 660px){
     padding: 60px 40px 0;
+    min-height:630px;
   }
 `;
 
