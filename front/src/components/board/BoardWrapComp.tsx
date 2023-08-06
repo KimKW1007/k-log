@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useIsMount from 'src/hooks/useIsMount';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import BoardItem from './BoardItem';
 import Link from 'next/link';
 import night_BG from '@assets/images/dark_night.jpg';
@@ -71,6 +71,7 @@ export default BoardWrapComp;
 
 const CategoryWrap = styled.div`
   position: relative;
+  z-indexL:  2
   width: 100%;
   padding: 0 50px;
   background: linear-gradient(to right, rgba(11, 11, 22, 0.8) 100%, rgba(11, 11, 22, 0.8) 100%), url(${night_BG.src}) no-repeat center center/cover fixed;
