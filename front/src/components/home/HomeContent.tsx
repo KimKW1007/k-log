@@ -20,18 +20,21 @@ const HomeContent = () => {
   }
 
   useEffect(()=>{
-    if(router.pathname === '/'){
-      window.addEventListener("resize",()=>{
-        checkNowWindowWidth()
-      })
+    const handleResize = () => {
+      checkNowWindowWidth();
+    };
+  
+    if (router.pathname === '/') {
+      window.addEventListener("resize", handleResize);
+      checkNowWindowWidth(); // 초기 렌더링 시에도 체크를 수행
     }
-    return ()=>window.addEventListener("resize",()=>{})
-  })
-  useEffect(()=>{
-    if(router.pathname === '/'){
-      checkNowWindowWidth()
-    }
-  },[])
+  
+    return () => {
+      if (router.pathname === '/') {
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+  }, [router.pathname]);
 
 
 
@@ -61,7 +64,8 @@ padding: 100px 30px;
 
 const ContentsContainer = styled.div`
   position: relative;
-  width:1600px;
+  max-width:1600px;
+  width:100%;
   margin: 0 auto;
   height:100%;
   padding: 50px 30px;
