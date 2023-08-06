@@ -4,7 +4,6 @@ import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useIsMount from 'src/hooks/useIsMount';
-import DOMPurify from 'dompurify';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import useCustomQuill from '@utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
@@ -17,13 +16,11 @@ import CompletionBox from './CompletionBox';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useConvert from 'src/hooks/useConvert';
 import "highlight.js/styles/atom-one-dark-reasonable.css";
-import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
-import LoadingText from '@components/common/Loading/LoadingText';
-import customApi from '@utils/customApi';
-import { GET_BOARDS } from '@utils/queryKeys';
 import Tags from '../Tags';
-import { CategoryPageProps } from '@pages/category/[title]/[subTitle]';
+import PageLoading from '@components/common/Loading/PageLoading';
+import 'highlight.js/styles/base16/dracula.css';
 /* agate / base16/dracula */
+
 
 interface ForwardedQuillComponent extends ReactQuillProps {
   forwardedRef: React.Ref<ReactQuill>;
@@ -36,7 +33,8 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['javascript', 'ruby', 'python']
+      languages: ['javascript', 'typescript', 'ruby', 'python', 'html', 'css'],
+
     })
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
     return function forwardRef({ forwardedRef, ...props }: ForwardedQuillComponent) {
@@ -44,7 +42,8 @@ const QuillNoSSRWrapper = dynamic(
     };
   },
   {
-    ssr: false
+    ssr: false,
+    loading : ({isLoading}) => <PageLoading isLoading={isLoading!}/>
   }
 );
 
@@ -53,7 +52,6 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
     mode: 'all'
   });
   const { handleClickMenu, isOpen, isActive } = useHandleSideMenu();
-
   const {
     handleSubmit,
     register,
@@ -64,7 +62,6 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   } = methods;
   const router = useRouter();
   const quillRef = useRef<ReactQuill>(null);
-  const [contents, setContents] = useState<string>('');
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   
@@ -75,8 +72,7 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   
   const  {convertContent} = useConvert();
   const onChangeContents = (contents: string) => {
-    setContents(contents);
-    setValue('contents', contents === '<p><br></p>' ? '' : convertContent(contents));
+    setValue('contents', contents === '<p><br></p>' ? '' : contents);
     trigger('contents');
   };
   const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
@@ -94,7 +90,16 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
     },
     onSuccess(data) {
       console.log({data})
-      router.replace(`/${data.boardId}`);
+      let boardIdTimeout: string | number | NodeJS.Timeout | undefined;
+      const checkBoardId = () => {
+      if (data.boardId) {
+        clearTimeout(boardIdTimeout); // 기다리던 타임아웃을 취소
+        router.replace(`/${data.boardId}`);
+      } else {
+        boardIdTimeout = setTimeout(checkBoardId, 100); // 100ms 마다 체크
+      }
+    };
+    checkBoardId();
     },
   })
 
@@ -102,26 +107,26 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
 
   
-/*   useEffect(()=>{
+  useEffect(()=>{
       if(boardLastId){
         deleteImageMutate({})
       }
-  },[boardLastId]) */
+  },[boardLastId])
   
-  /* useEffect(() => {
+  useEffect(() => {
     window.addEventListener('beforeunload', handlePageLeave);
     router.events.on('routeChangeStart', handleRouteChangeStart);
     return () => {
       window.removeEventListener('beforeunload', handlePageLeave);
       router.events.off('routeChangeStart', handleRouteChangeStart);
     };
-  }, [isMount]); */
+  }, [isMount]);
 
   const createMutateFn = ({boardTitle, image, contents}: any)=>{
     const formData = new FormData();
     formData.append("boardTitle", boardTitle)
     formData.append("boardImage", image)
-    formData.append("contents", contents)
+    formData.append("contents", convertContent(contents))
     formData.append("categorySubTitle", subTitle)
     formData.append("boardId", '작성중')
     formData.append("tags", currentTags.toString())
@@ -199,6 +204,10 @@ export const TitleInput = styled.input<{ isError: boolean }>`
 `;
 
 export const CustomQuill = styled(QuillNoSSRWrapper)`
+  .ql-editor *{
+    font-size : 14px;
+    font-family: 'Pretendard-Regular' !important;
+  }
   .ql-toolbar {
     background: #fff;
     color: #000;
@@ -226,6 +235,23 @@ export const CustomQuill = styled(QuillNoSSRWrapper)`
     border: 1px solid #a5a5a5a1;
   }
   .ql-snow .ql-editor pre.ql-syntax{
+    white-space:pre;
+    overflow:auto;
+    padding: 20px;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb:horizontal {
+      background-color: #fff;
+      border-radius: 10px;
+    }
+   
+  
+    &::-webkit-scrollbar-corner {
+      display: none;
+    }
   }
 `;
 
