@@ -25,9 +25,9 @@ const EditCategoryList = () => {
     },
     onSuccess(data) {
       console.log({ data });
+      setIsChangeValue(false);
       setTimeout(()=>{
         queryClient.invalidateQueries([GET_ALL_CATEGORY])
-        setIsChangeValue(false);
       },500)
     },
     
@@ -79,7 +79,6 @@ const EditCategoryList = () => {
       cateTitle = { ...cateTitle, subCategories: cateSubTitle };
       return cateTitle;
     });
-    console.log({result})
     mutate(result);
   };
 
@@ -90,12 +89,10 @@ const EditCategoryList = () => {
       setIsChangeValue(false);
     }
   }, [isDirty]);
-  console.log({isDirty})
 
   // input에 변화가 일어나면 error false
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log({ value, name, type })
       value.category?.map((category: any, index :number) =>{
         if(category.dndNumber !== index + 1){
           setIsChangeValue(true);
@@ -164,7 +161,7 @@ const EditCategoryList = () => {
             </AddCategoryBtnBox>
             <EditBtnBox>
               <EditBtn disabled={!isChangeValue} isError={isError} isChangeValue={isChangeValue}>
-                {isLoading ? "수정 중" : isChangeValue ? '수정하기' : '수정완료'}
+                {isChangeValue ? '수정하기' : '수정완료'}
               </EditBtn>
             </EditBtnBox>
           </Form>
