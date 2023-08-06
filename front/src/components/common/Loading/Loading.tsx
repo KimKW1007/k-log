@@ -53,7 +53,12 @@ const LodingBox = styled(AllCenterFlex)<{ isCustom?: boolean }>`
   padding: 15px;
   ${({ isCustom }) =>
     isCustom
-      ? css``
+      ? css`
+        width: 80px;
+        height: 70px;
+        margin : 0 auto;
+        padding: 0 ;
+      `
       : css`
           border: 2px solid rgb(221, 221, 221);
           border-radius: 30px;
