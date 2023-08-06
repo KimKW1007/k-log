@@ -7,24 +7,30 @@ import React, { useEffect, useRef, useState } from 'react';
 import useConvert from 'src/hooks/useConvert';
 import useIsMount from 'src/hooks/useIsMount';
 import styled, { keyframes } from 'styled-components';
-import 'highlight.js/styles/atom-one-dark-reasonable.css';
 import { ContentsWrap } from '@styles/boardContents-style';
 import createBlockquoteBox from '@utils/createBlockquoteBox';
-import codeBlockJsStyle from '@utils/codeBlockJsStyle';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import NextPrevBoardBox from './NextPrevBoardBox';
 import Link from 'next/link';
 import UDBtnBox from './UpdateDelete/UDBtnBox';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
 import { GET_BOARD } from '@utils/queryKeys';
+import PageLoading from '@components/common/Loading/PageLoading';
+import { User5 } from '@styled-icons/remix-fill/User5'
+import { AccessTime } from '@styled-icons/material-rounded/AccessTime'
+import codeBlockStyler from '@utils/codeBlockStyler';
+import 'highlight.js/styles/base16/dracula.css';
+
+
+
 
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { getApi } = customApi(`/board/getBoard/${id}`);
   const { isMount } = useIsMount();
-  const { reverseConvert, decodeHTMLEntities } = useConvert();
-  const { data } = useQuery([GET_BOARD, id], () => getApi(), {
+  const { convertContent } = useConvert();
+  const { data, isLoading, refetch } = useQuery([GET_BOARD, id], () => getApi(), {
     enabled: !!isMount
   });
   const { currentBoard, prevBoard, nextBoard } = data ?? {};
@@ -36,14 +42,22 @@ const BoardDetail = ({ id }: { id: string }) => {
 
   const { wrapConsecutiveBlockquotes } = createBlockquoteBox(contentsWrapRef);
   useEffect(() => {
-    wrapConsecutiveBlockquotes();
-  }, [data]);
+    if(contentsWrapRef.current){
+      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(convertContent(contents))
+      if(contentsWrapRef.current.innerHTML){
+        wrapConsecutiveBlockquotes();
+        codeBlockStyler(contentsWrapRef);
+      }
+    }
+  }, [data, contentsWrapRef]);
 
-  useEffect(() => {
-    codeBlockJsStyle(contentsWrapRef);
-  }, [data]);
+  useEffect(()=>{
+    refetch()
+  },[isMount])
+
   return (
     <>
+      <PageLoading isLoading={isLoading} />
       {data && (
         <>
           <DetailTitleBox>
@@ -51,9 +65,13 @@ const BoardDetail = ({ id }: { id: string }) => {
               <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
             </CategoryBox>
             <h2>{boardTitle}</h2>
-            <CreatedDateBox>{changeCreatedAt(createdAt)}</CreatedDateBox>
+            <CreatedDateBox>
+              <div><User5 /><span>{author}</span></div>
+              &#183;
+              <div><AccessTime /><span>{changeCreatedAt(createdAt)}</span></div>
+            </CreatedDateBox>
           </DetailTitleBox>
-          <ContentsWrap ref={contentsWrapRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reverseConvert(contents)) }} />
+          <ContentsWrap ref={contentsWrapRef}  />
           <DetailTagBox>{tags.length > 0 && tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</DetailTagBox>
           <AnotherBoardArea>
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
@@ -67,22 +85,6 @@ const BoardDetail = ({ id }: { id: string }) => {
 };
 
 export default BoardDetail;
-
-const DetailWrap = styled.div`
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const DetailContainer = styled.div`
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 100px 50px;
-  @media (max-width: 660px) {
-    padding: 100px 20px;
-  }
-`;
 
 const DetailTitleBox = styled.div`
   position: relative;
@@ -108,8 +110,24 @@ const CategoryBox = styled.div`
   }
 `;
 
-const CreatedDateBox = styled.div`
-  font-size: 14px;
+const CreatedDateBox = styled(AllCenterFlex)`
+  font-size: 16px;
+
+  > div{
+    display:flex;
+    aling-items:center;
+    margin : 0 10px;
+    svg{
+      width: 1.1em;
+      margin: -1px 4px 0 0;
+    }
+    span{
+      display:inline-block;
+      line-height: 1.5em;
+      flex-shrink : 0;
+    }
+  }
+
 `;
 
 const DetailTagBox = styled.div``;
