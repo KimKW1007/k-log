@@ -74,10 +74,12 @@ const KlogTextLogo = styled(Link)`
   top: 50%;
   transform: translate(-50%, -50%);
   h2{
+    font-size: 34px;
+    transition: .2s;
   }
   &:hover{
     h2{
-      animation : ${TextLogoAni} 1s forwards;
+      text-shadow: #fc0 1px 0 10px;
     }
   }
 `;
