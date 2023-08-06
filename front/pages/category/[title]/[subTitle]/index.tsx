@@ -6,9 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 import { GET_BOARDS } from '@utils/queryKeys';
 import BoardWrapComp from '@components/board/BoardWrapComp';
 import { useRecoilState } from 'recoil';
-import { currentPagenation } from '@atoms/atoms';
+import { currentPagenation, isLoadingData } from '@atoms/atoms';
 import useIsMount from 'src/hooks/useIsMount';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import PageLoading from '@components/common/Loading/PageLoading';
 
 export interface CategoryPageProps{
   [key: string] : string
@@ -27,13 +28,15 @@ const SubCategoryPage: NextPage = ({title, subTitle} : CategoryPageProps) => {
     refetch();
   },[currentPage,isMount])
 
-
   useEffect(()=>{
     setCurrentPage(1);
   },[router])
-  console.log({data})
+
   return (
-    <BoardWrapComp title={[title , subTitle]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    <>
+      <PageLoading isLoading={isLoading!}/>
+      <BoardWrapComp title={[title , subTitle]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    </>
 
   )
 }

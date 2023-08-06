@@ -7,9 +7,10 @@ import { GET_BOARDS } from '@utils/queryKeys';
 import BoardWrapComp from '@components/board/BoardWrapComp';
 import useIsMount from 'src/hooks/useIsMount';
 import { useRecoilState } from 'recoil';
-import { currentPagenation } from '@atoms/atoms';
+import { currentPagenation, isLoadingData } from '@atoms/atoms';
 import { CategoryPageProps } from './[subTitle]';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import PageLoading from '@components/common/Loading/PageLoading';
 
 const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
   const router = useRouter();
@@ -27,8 +28,13 @@ const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
   useEffect(()=>{
     setCurrentPage(1);
   },[router])
+
+
   return (
-    <BoardWrapComp title={[title]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    <>
+      <PageLoading isLoading={isLoading!}/>
+      <BoardWrapComp title={[title]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
+    </>
   )
 }
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {

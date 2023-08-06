@@ -1,5 +1,6 @@
-import { currentPagenation } from '@atoms/atoms';
+import { currentPagenation, isLoadingData } from '@atoms/atoms';
 import BoardWrapComp from '@components/board/BoardWrapComp';
+import PageLoading from '@components/common/Loading/PageLoading';
 import { useQuery } from '@tanstack/react-query';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 import customApi from '@utils/customApi';
@@ -26,7 +27,10 @@ const AllCategoryPage = () => {
   },[currentPage, isMount])
 
   return (
-    <BoardWrapComp title={['분류 전체보기']} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page}  />
+    <>
+      <PageLoading isLoading={isLoading!}/>
+      <BoardWrapComp title={['분류 전체보기']} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page}  />
+    </>
   )
 }
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
