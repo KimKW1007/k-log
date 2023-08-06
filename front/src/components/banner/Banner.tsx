@@ -39,8 +39,9 @@ const Banner = () => {
     };
   },[]);
   useEffect(()=>{
+    let resetTimer: string | number | NodeJS.Timeout | undefined;
     if(currentRotate === -360){
-      setTimeout(()=>{
+      resetTimer  = setTimeout(()=>{
         setResetRotate(true)
         setCurrentRotate((prev) => prev = 0 );
         setTimeout(()=>{
@@ -48,6 +49,10 @@ const Banner = () => {
         },100)
       },5500)
     }
+    return () => {
+      clearTimeout(resetTimer);
+      setResetRotate(false);
+    };
   },[currentRotate])
 
   useEffect(()=>{
@@ -59,15 +64,18 @@ const Banner = () => {
 
 
   // 초기화
-  useEffect(()=>{
-
-    return()=>{setCurrentBannerNum(1); setCurrentRotate(0);}
-  },[]) */
+  useEffect(() => {
+  setCurrentBannerNum(1);
+  setCurrentRotate(0);
+}, []);
+*/
 
 
   return (
     <BannerWrap>
-      <BannerBg currentBg={currentBg} className='banner-background-image'></BannerBg>
+      <BannerBgBox>
+        <BannerBg currentBg={currentBg} className='banner-background-image'></BannerBg>
+      </BannerBgBox>
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele,idx) => (
@@ -96,17 +104,26 @@ const BannerWrap = styled(AllCenterFlex)`
   }
 `;
 
+const BannerBgBox= styled.div`
+width:100%;
+height:100%;
+position: absolute;
+left: 0;
+top: 0;
+overflow:hidden;
+`
+
 const BannerBg = styled.div<{ currentBg: string;  }>`
-  position: absolute;
-  left: 0;
-  top: 0;
   width:100%;
   height:100%;
   background: url(${({currentBg}) => currentBg}) no-repeat center
-    center/200% auto;
+    center/150% auto;
   transition: background 3s 3s;
   filter: blur(5px);
-
+  -webkit-filter: blur(5px); 
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  transform : scale(1.1);
 `
 
 const BannerInnerBox = styled.div`
