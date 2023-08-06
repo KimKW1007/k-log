@@ -43,7 +43,7 @@ const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
 export default CategoryItems;
 
 const EmptyCategoryBox = styled(EmptyIconBox)`
-  min-height: 400px;
+  min-height: 300px;
 `
 
 const CategoryItmeList = styled.dl<{$isOverHeader ?: boolean}>`
