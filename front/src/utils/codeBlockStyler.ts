@@ -1,18 +1,14 @@
 import React from 'react'
 import useConvert from 'src/hooks/useConvert';
-import hljs from 'highlight.js';
 
-const codeBlockJsStyle = (ref : React.RefObject<HTMLDivElement>) => {
-  const { decodeHTMLEntities } = useConvert();
-
+const codeBlockStyler = (ref : React.RefObject<HTMLDivElement>) => {
   if(ref.current){
     const codeWrappers = ref.current.querySelectorAll('pre[class^=ql-syntax]');
-    if (codeWrappers.length >= 1) {
+    if (codeWrappers.length > 0) {
       codeWrappers.forEach((codeWrapper) => {
         if (codeWrapper) {
-          const codes = decodeHTMLEntities(codeWrapper.innerHTML).split('\n');
-
-          const processedCodes = codes.reduce((prevCodes: string, curCode: string) => prevCodes + `<div class="line">${hljs.highlightAuto(curCode).value}</div>`, '');
+          const codes = codeWrapper.innerHTML.split('\n').slice(0,-1);
+          const processedCodes = codes.reduce((prevCodes: string, curCode: string) => prevCodes + `<div class="line">${curCode}</div>`, '');
           const codeBody = `<div class="code-body">${processedCodes}</div>`;
 
           const codeHeader = `
@@ -28,5 +24,4 @@ const codeBlockJsStyle = (ref : React.RefObject<HTMLDivElement>) => {
     }
   }
 }
-
-export default codeBlockJsStyle
+export default codeBlockStyler
