@@ -93,7 +93,7 @@ const EditSidebarHeader = () => {
             <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} />
           </ImgBox>
           <DescBox>
-            <TextArea {...register('description')}></TextArea>
+            <TextArea className='customScroll' {...register('description')}></TextArea>
           </DescBox>
           <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue}>
             저장
@@ -140,16 +140,24 @@ export const ImgBox = styled.div<{ isBgBlack?: boolean }>`
 
 const TextArea = styled.textarea`
   width: 100%;
-  height: 100px;
+  height: 110px;
   line-height: 20px;
   text-align: center;
   border: 1px solid #a5a5a5;
   outline: none;
   background: #f0f0f0;
-  padding: 10px 20px;
+  padding: 10px 10px 10px 20px;
   border-radius: 5px;
   transition: 0.2s;
   resize: none;
+  font-family: 'Pretendard-Regular';
+  &::-webkit-scrollbar-thumb {
+    background-color: #000 !important;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,.1);
+    margin : 3px 0;
+  }
   &:focus {
     border: 1px solid #000;
     background: #fff;
@@ -188,5 +196,4 @@ export const InputLabelBox = styled.div`
 
 export const DescBox = styled.div`
   width: 100%;
-  padding: 0 30px;
 `;
