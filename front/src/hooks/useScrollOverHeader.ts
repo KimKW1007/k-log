@@ -2,14 +2,21 @@ import React, { useEffect, useState } from 'react'
 
 const useScrollOverHeader = () => {
   const [isOverHeader, setIsOverHeader] = useState(false);
+
+  const handleScrollState = ()=>{
+    if(window.scrollY >= 10){
+      setIsOverHeader(true)
+    }else{
+      setIsOverHeader(false)
+    }
+  }
+
+  useEffect(()=>{
+    handleScrollState()
+  },[])
   useEffect(() => {
     window.addEventListener('scroll', () => {
-       
-        if(window.scrollY >= 10){
-          setIsOverHeader(true)
-        }else{
-          setIsOverHeader(false)
-        }
+      handleScrollState()
     });
     return () => window.removeEventListener('scroll', () => {});
   });
