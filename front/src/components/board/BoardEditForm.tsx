@@ -7,11 +7,11 @@ import customApi from '@utils/customApi';
 import ifInImageApi from '@utils/ifInImageApi';
 import { GET_BOARD } from '@utils/queryKeys';
 import useCustomQuill from '@utils/useCustomQuill';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { DeltaStatic, Sources } from 'quill';
 import React, { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form';
-import ReactQuill, { ReactQuillProps } from 'react-quill';
+import ReactQuill, { ReactQuillProps, UnprivilegedEditor } from 'react-quill';
 import { useRecoilState } from 'recoil';
 import useConfirm from 'src/hooks/useConfirm';
 import useConvert from 'src/hooks/useConvert';
@@ -37,10 +37,9 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
   const quillRef = useRef<ReactQuill>(null);
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const [contents, setContents] = useState<string>('');
   const [currentTags, setCurrentTags] = useState<string[]>([]);
-  const { formats, modules } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
-
+  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const { getApi } = customApi(`/board/getBoard/${id}`);
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
@@ -49,10 +48,9 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
   const {currentBoard, prevBoard, nextBoard} = data ?? {};
 
 
-  const  {convertContent , reverseConvert} = useConvert();
-  const onChangeContents = (contents: string) => {
-    setContents(contents);
-    setValue('contents', contents === '<p><br></p>' ? '' : convertContent(contents));
+  const  {convertContent } = useConvert();
+  const onChangeContents = (contents: string, delta: DeltaStatic, source: Sources, editor: UnprivilegedEditor) => {
+    setValue('contents', contents === '<p><br></p>' ? '' : contents);
     trigger('contents');
   };
 
@@ -72,31 +70,34 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
     onError(error) {console.log({ error }); }
   });
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
-/*   useEffect(()=>{
+  useEffect(()=>{
       if(boardLastId){
         deleteImageMutate({})
       }
-  },[boardLastId]) */
+  },[boardLastId])
   
-  /* useEffect(() => {
-    window.addEventListener('beforeunload', handlePageLeave);
-    router.events.on('routeChangeStart', handleRouteChangeStart);
+  useEffect(() => {
+    if(!isSuccess){
+      window.addEventListener('beforeunload', handlePageLeave);
+      router.events.on('routeChangeStart', handleRouteChangeStart);
+    }
     return () => {
       window.removeEventListener('beforeunload', handlePageLeave);
       router.events.off('routeChangeStart', handleRouteChangeStart);
     };
-  }, [isMount]); */
+  }, [isMount]);
 
 
   const editMutateFn = ({boardTitle, image, contents}: any)=>{
     const formData = new FormData();
     formData.append("boardTitle", boardTitle)
     formData.append("boardImage", image)
-    formData.append("contents", contents)
+    formData.append("contents", convertContent(contents))
     formData.append("categorySubTitle", subTitle)
     formData.append("boardId", id)
     formData.append("tags", currentTags.toString())
     editBoardMutate(formData)
+    setIsSuccess(true)
   }
 
   const onSubmit = ({boardTitle, image, contents}:  any) => {
@@ -108,10 +109,11 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
       editMutateFn({boardTitle, image, contents})
     }
   };
+
+
   useEffect(()=>{
     if(data) setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : [])
   },[data, isMount])
-
   return (
     <>
     {(data && isMount) ? (
@@ -121,7 +123,7 @@ const BoardEditForm = ({subTitle, id} : {[key : string] : string}) => {
             <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} defaultValue={currentBoard.boardTitle} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
           </BoardTitleBox>
           <Tags currentTags={currentTags} setCurrentTags={setCurrentTags}  />
-          <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={reverseConvert(currentBoard.contents)}  onChange={onChangeContents} />
+          <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={convertContent(currentBoard.contents)}  onChange={onChangeContents} />
           <CompletionBtnBox>
             <CompletionBtn type="button" onClick={handleClickMenu}>
               작성 완료
