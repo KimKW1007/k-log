@@ -35,7 +35,7 @@ const SidebarHeader = () => {
   return (
     <HomeSidebarHeaderBox>
       <ImgBox isBgBlack>
-        <Image src={imageUrl || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
+        {imageUrl && <Image src={imageUrl} alt={'프로필 이미지'} width={120} height={120} />}
       </ImgBox>
       <UserDescBox>{descriptionMapping()}</UserDescBox>
     </HomeSidebarHeaderBox>
@@ -45,7 +45,7 @@ const SidebarHeader = () => {
 export default SidebarHeader;
 
 const HomeSidebarHeaderBox = styled(SidebarHeaderBox)`
-  width:100%;
+  width:260px;
 `
 
 const UserDescBox = styled(DescBox)`
