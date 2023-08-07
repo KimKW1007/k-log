@@ -28,6 +28,11 @@ export class BoardController {
     return this.boardService.createBoard(body, file, user)
   }
 
+  @Get("/getSearchBoard")
+  getSearchBoard(){
+    return this.boardService.getSearchBoard()
+  }
+
   @Get("/getBoard/:id")
   getBoard(@Param("id", ParseIntPipe) id : number){
     return this.boardService.getBoard(id)

@@ -21,6 +21,10 @@ export class BoardService {
     return this.boardRepository.createLastBoardId(categorySubTitle ,user)
   }
 
+  async getSearchBoard(){
+    return this.boardRepository.find({where : {boardTitle : Not("")}, select: {id : true, boardTitle : true, tags : true, contents : true}})
+  }
+
   async getBoard(id : number){
     const currentBoard = await this.boardRepository.findOne({where :{id},relations:{subCategory : {category : {user : true}}}})
     const prevBoard = await this.boardRepository.findOne({where :{boardTitle : Not(""), id : LessThan(id), subCategory :{ categorySubTitle : currentBoard.subCategory.categorySubTitle}},relations:{subCategory : true},order:{id:"desc"}})
