@@ -1,11 +1,11 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import Image from "next/image"
 import AuthorBox from '@components/board/AuthorBox';
 import defaultImage from '@assets/images/defaultImage.png';
 import Link from 'next/link';
 import DOMPurify from 'dompurify';
 import useConvert from 'src/hooks/useConvert';
+import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 
 const HomeNewPosterBigItem = (board : any) => {
   const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory }  = board;
@@ -18,7 +18,7 @@ const HomeNewPosterBigItem = (board : any) => {
         <PosterItemLink href={`/${id}`}>
         <PosterTop>
           <PosterCategory>
-            <h3>{`${categoryTitle}-${categorySubTitle}`}</h3>
+            <h3>{`${categoryTitle} - ${categorySubTitle}`}</h3>
           </PosterCategory>
           <PosterTitle>
             <h4>{boardTitle}</h4>
@@ -26,9 +26,11 @@ const HomeNewPosterBigItem = (board : any) => {
         </PosterTop>
         <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
         <ImageBox>
-          <ImageBg thumbnailUrl={thumbnail || defaultImage.src} />
+          {thumbnail && <ImageBg thumbnailUrl={thumbnail} />}
         </ImageBox>
-        <AuthorBox author={author} authorImage={authorImage} />
+        <AuthorAndDateBox>
+          <AuthorBox author={author} authorImage={authorImage} createdAt={createdAt} />
+        </AuthorAndDateBox>
       </PosterItemLink>
     </PosterItem>
   );
@@ -41,7 +43,10 @@ const PosterItemLink = styled(Link)`
   padding: 40px 30px 30px;
 
 `
+const AuthorAndDateBox = styled(OnlyAlignCenterFlex)`
 
+
+`
 
 const ImageBox = styled.div`
   position: relative;
@@ -69,7 +74,7 @@ const PosterItem = styled.div`
   flex-direction :column;
   justify-content: space-between;
   width:50%;
-  border: 1px solid #de4568;
+  border: 2px solid #de4568;
   margin-right: 30px;
   transition:  .3s;
   box-shadow : 0px 0px 0px rgba(0,0,0,0);
