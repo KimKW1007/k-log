@@ -8,9 +8,9 @@ import hljs from 'highlight.js/lib/core';
 import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 import useIsMount from 'src/hooks/useIsMount';
+import "highlight.js/styles/atom-one-dark.css";
 
 const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle : string) =>{
-  console.log({subTitle})
   const { postApi } = ifInImageApi('uploads');
   const {isMount} = useIsMount();
   const { getApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/','-')}`);
@@ -47,13 +47,17 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
   const modules = useMemo(() => {
     return {
       syntax: {
-        highlight: (text: any) => hljs.highlightAuto(text).value
+        highlight: (text: any) => {
+          return hljs.highlightAuto(text).value
+        }
+      },
+      clipboard: {
+        matchVisual: false,
       },
       blotFormatter: {},
       toolbar: {
         container: [
           [{ header: [1, 2, 3, false] }],
-          // [{ 'size': ['huge','large','small'] }],
           [{ align: [] }],
           [{ indent: '-1' }, { indent: '+1' }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
