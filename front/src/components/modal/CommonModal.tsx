@@ -56,32 +56,32 @@ export const ModalBox = styled(AllCenterFlex)`
   width: 830px;
   flex-direction: column;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.rem.p20};
+  padding: 20px;
   border-radius: 10px;
   background: #fff;
 `;
 
 export const ModalInnerText = styled.div`
-  font-size: ${({ theme }) => theme.rem.p24};
-  margin: 0 0 ${({ theme }) => theme.rem.p30};
+  font-size: 24px;
+  margin: 0 0 30px;
   word-break:keep-all;
   text-align:center;
 `;
 
 export const ModalTitle = styled.h2`
-  font-size: ${({ theme }) => theme.rem.p34};
+  font-size: 34px;
   font-weight: bold;
-  margin: ${({ theme }) => theme.rem.p10} 0 ${({ theme }) => theme.rem.p30};
+  margin: 10px 0 30px;
 `;
 
 const CloseBtn = styled.button`
   background: inherit;
-  font-size: ${({ theme }) => theme.rem.p22};
+  font-size: 22px;
   font-weight: bold;
   letter-spacing: -1px;
   color: #ff1e00;
   transition: 0.2s;
-  padding: 0.25rem ${({ theme }) => theme.rem.p20};
+  padding: 0.25rem 20px;
   border-radius: 5px;
   &:hover {
     color: #9772fb;
