@@ -15,10 +15,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import CompletionBox from './CompletionBox';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useConvert from 'src/hooks/useConvert';
-import "highlight.js/styles/atom-one-dark-reasonable.css";
 import Tags from '../Tags';
 import PageLoading from '@components/common/Loading/PageLoading';
-import 'highlight.js/styles/base16/dracula.css';
+import customApi from '@utils/customApi';
+import { GET_BOARD } from '@utils/queryKeys';
 /* agate / base16/dracula */
 
 
@@ -33,9 +33,10 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['javascript', 'typescript', 'ruby', 'python', 'html', 'css'],
+      languages: ['javascript', 'typescript', 'python', 'html', 'css'],
 
     })
+    
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
     return function forwardRef({ forwardedRef, ...props }: ForwardedQuillComponent) {
       return <QuillComponent ref={forwardedRef} theme={"snow"} {...props}  />;
@@ -47,7 +48,13 @@ const QuillNoSSRWrapper = dynamic(
   }
 );
 
-const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
+interface BoardFormProps {
+  subTitle:string;
+  id ?: string;
+  isEdit ?: boolean;
+}
+
+const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
   const methods = useForm({
     mode: 'all'
   });
@@ -64,49 +71,66 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   const quillRef = useRef<ReactQuill>(null);
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  
-  const queryClient = useQueryClient();
-
   const [currentTags, setCurrentTags] = useState<string[]>([]);
-
+  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
+  const [isSuccess, setIsSuccess] = useState(false);
   
+
   const  {convertContent} = useConvert();
+
   const onChangeContents = (contents: string) => {
     setValue('contents', contents === '<p><br></p>' ? '' : contents);
     trigger('contents');
   };
-  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
-
-  const { deleteApi: imageDeleteApi } = ifInImageApi(`작성중/${currentUser?.id!}`);
-  const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
-    onError(error) {console.log({ error }); }
-  });
 
 
-  const { postApi } = ifInImageApi('/board/createBoard', true);
-  const {mutate: createBoardMutate} = useMutation(postApi,{
+  
+
+
+  /* 생성 및 수정 */
+  const { postApi: editApi } = ifInImageApi('/board/category/edit', true);
+  const { postApi:createApi } = ifInImageApi('/board/createBoard', true);
+  const {mutate: boardMutate} = useMutation(isEdit ? editApi : createApi,{
     onError(error) {
         console.log({error})
     },
     onSuccess(data) {
       console.log({data})
-      let boardIdTimeout: string | number | NodeJS.Timeout | undefined;
-      const checkBoardId = () => {
-      if (data.boardId) {
-        clearTimeout(boardIdTimeout); // 기다리던 타임아웃을 취소
-        router.replace(`/${data.boardId}`);
-      } else {
-        boardIdTimeout = setTimeout(checkBoardId, 100); // 100ms 마다 체크
+      if(isEdit){
+        router.replace(`/${id}`);
+      }else{
+        let boardIdTimeout: string | number | NodeJS.Timeout | undefined;
+        const checkBoardId = () => {
+          if (data.boardId) {
+            clearTimeout(boardIdTimeout); // 기다리던 타임아웃을 취소
+            router.replace(`/${data.boardId}`);
+          } else {
+            boardIdTimeout = setTimeout(checkBoardId, 100); // 100ms 마다 체크
+        }
+        };
+        checkBoardId();
       }
-    };
-    checkBoardId();
     },
   })
 
+  /* Edit 일 경우 data */
+  const { getApi } = customApi(`/board/getBoard/${id}`);
+  const { data } = useQuery([GET_BOARD, id], () => getApi(), {
+    enabled: !!isEdit
+  });
+  const { currentBoard, prevBoard, nextBoard } = data ?? {};
 
+  useEffect(() => {
+    if (data) setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : []);
+  }, [data, isMount, isEdit]);
+
+  /* 작성중인 data 삭제 */
+  const { deleteApi: imageDeleteApi } = ifInImageApi(`deleteFiles/작성중/${currentUser?.id!}`);
+  const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
+    onError(error) {console.log({ error }); }
+  });
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
 
-  
   useEffect(()=>{
       if(boardLastId){
         deleteImageMutate({})
@@ -114,32 +138,35 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
   },[boardLastId])
   
   useEffect(() => {
-    window.addEventListener('beforeunload', handlePageLeave);
-    router.events.on('routeChangeStart', handleRouteChangeStart);
+    if(!isSuccess){
+      window.addEventListener('beforeunload', handlePageLeave);
+      router.events.on('routeChangeStart', handleRouteChangeStart);
+    }
     return () => {
       window.removeEventListener('beforeunload', handlePageLeave);
       router.events.off('routeChangeStart', handleRouteChangeStart);
     };
-  }, [isMount]);
+  }, [isMount, isSuccess]);
 
-  const createMutateFn = ({boardTitle, image, contents}: any)=>{
+  const mutateFn = ({boardTitle, image, contents}: any)=>{
     const formData = new FormData();
     formData.append("boardTitle", boardTitle)
     formData.append("boardImage", image)
     formData.append("contents", convertContent(contents))
     formData.append("categorySubTitle", subTitle)
-    formData.append("boardId", '작성중')
+     formData.append("boardId",  isEdit ? id! : '작성중' )
     formData.append("tags", currentTags.toString())
-    createBoardMutate(formData)
+    boardMutate(formData)
+    setIsSuccess(true)
   }
 
   const onSubmit = ({boardTitle, image, contents}:  any) => {
     if(image.length <= 0){
       if(confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')){
-        createMutateFn({boardTitle, image, contents})
+        mutateFn({boardTitle, image, contents})
       }
     }else{
-      createMutateFn({boardTitle, image, contents})
+      mutateFn({boardTitle, image, contents})
     }
   };
 
@@ -149,15 +176,15 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
         <FormProvider {...methods}>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <BoardTitleBox>
-              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
+              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} defaultValue={isEdit ? currentBoard.boardTitle : ""} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
             </BoardTitleBox>
             <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
-            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats}  onChange={onChangeContents} />
+            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={isEdit ? convertContent(currentBoard.contents) : ''}  onChange={onChangeContents} />
             <CompletionBtnBox>
               <CompletionBtn type="button" onClick={handleClickMenu}>
                 작성 완료
               </CompletionBtn>
-              {isActive && <CompletionBox handleClickMenu={handleClickMenu} isOpen={isOpen} boardLastId={boardLastId} />}
+              {isActive && <CompletionBox handleClickMenu={handleClickMenu} isOpen={isOpen} boardLastId={isEdit ? Number(id) : boardLastId} defaultThumbnail={isEdit ? currentBoard.thumbnail : null} />}
             </CompletionBtnBox>
           </Form>
         </FormProvider>
@@ -165,12 +192,8 @@ const BoardAddForm = ({title, subTitle} :{[key:string] : string}) => {
     </>
   );
 };
-// 게시물 보이기
-/* 
 
-
-*/
-export default BoardAddForm;
+export default BoardForm;
 
 const Form = styled.form``;
 export const BoardTitleBox = styled.div`
