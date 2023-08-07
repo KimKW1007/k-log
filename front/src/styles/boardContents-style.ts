@@ -68,6 +68,7 @@ margin-bottom: 80px;
     counter-increment: line-idx;
     line-height: 1.5;
     margin: 2px 0;
+    white-space:pre-wrap;
   }
 
   pre[class^='ql-syntax'] .line:hover {
@@ -126,9 +127,12 @@ margin-bottom: 80px;
     height: 8px;
   }
 
-  pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-thumb:vertical {
+  pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-thumb {
     background-color: rgb(1 2 3 / 80%);
     border-radius: 10px;
+  }
+  pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-track:horizontal {
+    margin: 0 30px;
   }
  
 
