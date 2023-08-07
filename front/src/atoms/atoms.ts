@@ -31,8 +31,14 @@ export const NotFoundByEmail = atom<boolean>({
   key : "NotFoundByEmailKey",
   default : false
 })
+
 export const isRemoveSidebar = atom<boolean>({
   key : "isRemoveSidebarKey",
+  default : false
+})
+
+export const searchModalState = atom<boolean>({
+  key : "searchModalStateKey",
   default : false
 })
 
