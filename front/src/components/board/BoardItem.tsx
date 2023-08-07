@@ -28,10 +28,7 @@ const BoardItem = (board : any) => {
           </ItemTitleBox>
           <ItemDescBox dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
           <ItemDetailBox>
-            <AuthorBox author={author} authorImage={authorImage} />
-            <CreatedDateBox>
-              {changeCreatedAt(createdAt)}
-            </CreatedDateBox>
+            <AuthorBox author={author} authorImage={authorImage} createdAt={createdAt} />
           </ItemDetailBox>
         </ContentsBox>
         <ImageBox isDefaultImg={!Boolean(thumbnail)}>
@@ -143,7 +140,7 @@ const AuthorImageBox= styled.div`
   }
 `
 
-const CreatedDateBox = styled.div`
+export const CreatedDateBox = styled.div`
 
 
 `
