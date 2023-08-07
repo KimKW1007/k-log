@@ -106,7 +106,7 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
             row={row}
             onChange={resizeTextarea}
             placeholder={placeholderText}
-            disabled={!Boolean(currentUser)}
+            disabled={isMount && !Boolean(currentUser)}
             >
             </CommentTextArea>
             <SubmitBox>
