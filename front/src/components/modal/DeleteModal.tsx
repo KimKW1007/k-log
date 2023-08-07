@@ -12,31 +12,31 @@ interface DeleteMadalProps {
 const DeleteModal = ({onClose, mutate, isWithdraw}: DeleteMadalProps) => {
   return (
     <ModalPortal>
-    <ModalWrap>
-      <Dim/>
-      <DeleteModalBox>
-        <ModalTitle>안내</ModalTitle>
-        <ModalInnerText>
-          <p>정말 {isWithdraw? "탈퇴" : '삭제'} 하시겠습니까?</p>
-        </ModalInnerText>
-        <ConfirmBtnBox>
-          <DeleteBtn onClick={()=> mutate()}>
-            네! {isWithdraw? "탈퇴" : '삭제'}할래요!
-          </DeleteBtn>
-          <CancelBtn onClick={onClose}>
-            다시 생각해볼게요..
-          </CancelBtn>
-        </ConfirmBtnBox>
-      </DeleteModalBox>
-    </ModalWrap>
-  </ModalPortal>
+      <ModalWrap>
+        <Dim/>
+        <DeleteModalBox>
+          <ModalTitle>안내</ModalTitle>
+          <ModalInnerText>
+            <p>정말 {isWithdraw? "탈퇴" : '삭제'} 하시겠습니까?</p>
+          </ModalInnerText>
+          <ConfirmBtnBox>
+            <DeleteBtn onClick={()=> mutate()}>
+              네! {isWithdraw? "탈퇴" : '삭제'}할래요!
+            </DeleteBtn>
+            <CancelBtn onClick={onClose}>
+              다시 생각해볼게요..
+            </CancelBtn>
+          </ConfirmBtnBox>
+        </DeleteModalBox>
+      </ModalWrap>
+    </ModalPortal>
   )
 }
 
 export default DeleteModal
 
-const DeleteModalBox = styled(ModalBox)`
-  max-width: 500px;
+export const DeleteModalBox = styled(ModalBox)`
+  max-width: 560px;
   width:100%;
 `
 
