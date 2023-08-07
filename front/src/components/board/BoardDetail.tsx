@@ -20,7 +20,7 @@ import PageLoading from '@components/common/Loading/PageLoading';
 import { User5 } from '@styled-icons/remix-fill/User5'
 import { AccessTime } from '@styled-icons/material-rounded/AccessTime'
 import codeBlockStyler from '@utils/codeBlockStyler';
-import 'highlight.js/styles/base16/dracula.css';
+
 
 
 
