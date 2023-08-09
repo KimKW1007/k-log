@@ -28,9 +28,11 @@ export class BoardController {
     return this.boardService.createBoard(body, file, user)
   }
 
-  @Get("/getSearchBoard")
-  getSearchBoard(){
-    return this.boardService.getSearchBoard()
+
+  @Post("/search")
+  searchBoard(@Body("searchValue") searchValue : string){
+    console.log({searchValue})
+    return this.boardService.searchBoard(searchValue)
   }
 
   @Get("/getBoard/:id")

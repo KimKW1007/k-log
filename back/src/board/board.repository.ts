@@ -129,6 +129,7 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.contents = contents;
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '',
+        foundBoard.thumbnail = "";
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
           return res
