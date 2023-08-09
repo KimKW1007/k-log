@@ -15,19 +15,20 @@ const useInfinityRolling = (newData: {id : number; title : string; link : string
 
   
   const rolling = ()=>{
-    
-    if(ref1OffsetLeft <= -refsClientWidth!){
-      ref1.current!.style.left = `${refsClientWidth}px`;
-      setRef1OffsetLeft(refsClientWidth!)
+    if(ref1.current &&  ref2.current){
+      if(ref1OffsetLeft <= -refsClientWidth!){
+        ref1.current.style.left = `${refsClientWidth}px`;
+        setRef1OffsetLeft(refsClientWidth!)
+      }
+      if(ref2OffsetLeft <= -refsClientWidth!){
+        ref2.current.style.left = `${refsClientWidth}px`;
+        setRef2OffsetLeft(refsClientWidth!)
+      }
+      ref1.current.style.left = `${ref1OffsetLeft}px`;
+      ref2.current.style.left = `${ref2OffsetLeft}px`;
+      setRef1OffsetLeft(prev => prev - .2)
+      setRef2OffsetLeft(prev => prev - .2)
     }
-    if(ref2OffsetLeft <= -refsClientWidth!){
-      ref2.current!.style.left = `${refsClientWidth}px`;
-      setRef2OffsetLeft(refsClientWidth!)
-    }
-    ref1.current!.style.left = `${ref1OffsetLeft}px`;
-    ref2.current!.style.left = `${ref2OffsetLeft}px`;
-    setRef1OffsetLeft(prev => prev - .2)
-    setRef2OffsetLeft(prev => prev - .2)
   }
 
    const handleRestart = () => {
