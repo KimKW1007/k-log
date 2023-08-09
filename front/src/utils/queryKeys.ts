@@ -20,3 +20,8 @@ export const BOARD_ALL = "BOARD_ALL"
 /* 댓글 */
 export const GET_COMMENTS = "GET_COMMENTS"
 
+
+/* 배너 */
+export const GET_BANNER_LIST = "GET_BANNER_LIST"
+export const GET_PROJECTS = "GET_PROJECTS"
+
