@@ -9,7 +9,6 @@ min-height: 1000px;
 
 line-height: 200%;
 border-bottom: 1px solid rgba(128,128,128,0.3);
-margin-bottom: 80px;
 // 내부 css
 
   img{
