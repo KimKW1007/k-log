@@ -8,9 +8,9 @@ import { ListTypes } from './mapList';
 
 //  배경은 3개만
 
-const banner1 = bg1.src;
-const banner2 = bg2.src;
-const banner3 = bg3.src;
+const defaultBanner1 = bg1.src;
+const defaultBanner2 = bg2.src;
+const defaultBanner3 = bg3.src;
 
 export const banner: ListTypes = {
   banner1: bg1.src,
@@ -18,4 +18,4 @@ export const banner: ListTypes = {
   banner3: bg3.src
 };
 
-export { banner1, banner2, banner3 };
+export { defaultBanner1, defaultBanner2, defaultBanner3 };
