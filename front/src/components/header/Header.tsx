@@ -55,19 +55,6 @@ export const Header = () => {
   );
 };
 
-const TextLogoAni = keyframes`
-  0%{
-    color : #fff;
-  }
-  50%{
-    color : #A084E8;
-  }
-  100%{
-    color : #fff;
-  }
-
-`
-
 const KlogTextLogo = styled(Link)`
   position: absolute;
   left: 50%;
@@ -86,7 +73,7 @@ const KlogTextLogo = styled(Link)`
 
 const HeaderBox = styled.header`
   position: relative;
-  z-index: 16;
+  z-index: 14;
   width: 100%;
   height: ${({ theme }) => theme.rem.p70};
   background: #111111;
