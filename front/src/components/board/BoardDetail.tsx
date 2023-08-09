@@ -72,7 +72,7 @@ const BoardDetail = ({ id }: { id: string }) => {
             </CreatedDateBox>
           </DetailTitleBox>
           <ContentsWrap ref={contentsWrapRef}  />
-          <DetailTagBox>{tags.length > 0 && tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</DetailTagBox>
+          <TagBox>{tags.length > 0 && tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</TagBox>
           <AnotherBoardArea>
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
             <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
@@ -130,14 +130,20 @@ const CreatedDateBox = styled(AllCenterFlex)`
 
 `;
 
-const DetailTagBox = styled.div``;
-const TagBtn = styled.button`
+const TagBox = styled(OnlyAlignCenterFlex)`
+  flex-wrap:wrap;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(128,128,128,0.3);
+
+`;
+const TagBtn = styled.div`
   padding: 7px 15px 5px;
   border-radius: 6px;
   line-height: 20px;
   color: #fff;
   background: #454545;
   transition: 0.3s;
+  cursor:default;
   & + & {
     margin-left: 10px;
   }
