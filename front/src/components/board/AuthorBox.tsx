@@ -10,7 +10,7 @@ const AuthorBox = ({authorImage, author, createdAt} : {[key : string] : string})
     <ItemAuthorBox>
       <Author>
         <AuthorImageBox>
-          <AuthorImage src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={0} height={0} sizes='100vw' />
+          <AuthorImage src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={30} height={30} />
         </AuthorImageBox>
         <span>{author}</span>
       </Author>
@@ -44,5 +44,4 @@ const AuthorImageBox= styled.div`
 `
 const AuthorImage = styled(Image)`
   width:100%;
-  height:auto;
 `
