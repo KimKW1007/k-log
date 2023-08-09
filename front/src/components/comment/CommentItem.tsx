@@ -112,7 +112,7 @@ const CommentItem = ({writerId, setReplyIndex, ownerId, isReply, comment, boardI
             <span/>
             <LockOpen/>
           </SecretIconBtn>}
-          {isOpenDeleteModal && <DeleteModal mutate={mutate} onClose={()=> setIsOpenDeleteModal(false)}/>}
+          {isOpenDeleteModal && <DeleteModal mutate={()=>mutate({})} onClose={()=> setIsOpenDeleteModal(false)}/>}
         </AccessoryBox>
       </CommentBox>
     </CommentItemBox>
