@@ -6,8 +6,9 @@ import { Add } from '@styled-icons/ionicons-solid/Add';
 import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 
 interface InputLabelProps{
-  setImage: React.Dispatch<React.SetStateAction<undefined>>
+  setImage: React.Dispatch<React.SetStateAction<string>>
   setIsChangeValue ?: React.Dispatch<React.SetStateAction<boolean>>
+  id : string
 }
 /**
  * - 부모 컴포넌트에 position : relative 필수
@@ -17,7 +18,7 @@ interface InputLabelProps{
  * 
  * 
  */
-const ImageInputLabelBox = ({setImage, setIsChangeValue} :InputLabelProps) => {
+const ImageInputLabelBox = ({setImage, setIsChangeValue, id} :InputLabelProps) => {
 
   const {register, setValue} = useFormContext();
   const { onChange, ref } = register('image');
@@ -37,8 +38,8 @@ const ImageInputLabelBox = ({setImage, setIsChangeValue} :InputLabelProps) => {
 
   return (
     <InputLabelBox>
-        <input ref={ref} onChange={onAvatarChange} type="file" className="blind" name="userImage" id="userImage" />
-        <label htmlFor="userImage">
+        <input ref={ref} onChange={onAvatarChange} type="file" className="blind" name={id} id={id} />
+        <label htmlFor={id}>
           <Add />
         </label>
     </InputLabelBox>
