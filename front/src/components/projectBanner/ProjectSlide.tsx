@@ -1,35 +1,101 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { FormatColorReset } from '@styled-icons/material-rounded';
-import React, { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query';
+import customApi from '@utils/customApi';
+import { GET_PROJECTS } from '@utils/queryKeys';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react'
 import useInfinityRolling from 'src/hooks/useInfinityRolling';
 import styled, { keyframes, css } from 'styled-components';
 
 
 const ProjectSlide = () => {
-  const bannerList = new Array(12).fill(undefined).map((val, idx) => idx);
-  const {ref1, ref2, onMouseOver,onMouseLeave } = useInfinityRolling();
+  const containerList = new Array(2).fill(undefined).map((val, idx) => idx);
 
-  
+  const [newData, setNewData] = useState<{id : number; title : string; link : string}[]>([]);
+
+  const {getApi} = customApi('/banner/projects');
+  const {data} = useQuery([GET_PROJECTS], ()=>getApi());
+
+  const MINLENGTH = 9;
+
+  useEffect(()=>{
+    if(data){
+      if(data?.length > 0 && data?.length <= 9){
+        let newArr = [...data]
+        for(let i = 0; i < MINLENGTH; i++){
+          if(newArr.length < MINLENGTH){
+            newArr = [...newArr, ...data];
+          }else{
+            break;
+          }
+        }
+        setNewData(newArr);
+      }else{
+        setNewData(data)
+      }
+    }
+  },[data])
+
+
+
+  const {ref1, ref2, onMouseOver,onMouseLeave } = useInfinityRolling(newData);
 
   return (
     <SlideArea>
-      <SlideWrap >
-        <SlideContainer ref={ref1} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
-        {bannerList.map(ele =>(
-          <div key={`${'salt' + ele}`}>banner{ele + 1}</div>
-        ))}
+      {data?.length > 0 && <SlideWrap >
+        {containerList.map((_: any, idx:  number)=>(
+          <SlideContainer key={idx + 'salt'} ref={idx === 0 ? ref1 : ref2} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+            {newData && newData.map(({id, title, link}, index) =>(
+                <SlideItem key={idx + id + 'salt' + index}>
+                  <Link href={link} target='_blank'>{title}</Link>
+                </SlideItem>
+              ))}
         </SlideContainer>
-        <SlideContainer ref={ref2} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
-        {bannerList.map(ele =>(
-          <div key={`${'salt' + (-ele)}`}>banner{ele + 1}</div>
         ))}
-        </SlideContainer>
-      </SlideWrap>
+      </SlideWrap>}
     </SlideArea>
   )
 }
 
 export default ProjectSlide
+
+const bannerAni = keyframes`
+  50%{
+    text-shadow: #fc0 0px 0 5px;
+  }
+
+`
+
+
+const SlideItem = styled(AllCenterFlex)`
+  width:100%;
+  height:100%;
+  padding: 0 30px;
+  &:nth-child(2n){
+    a{
+      animation: ${bannerAni} 2s .6s infinite;
+    }
+  }
+  &:nth-child(3n){
+    a{
+      animation: ${bannerAni} 2s 1.7s infinite;
+    }
+  }
+  a{
+    display:block;
+    text-align:center;
+    transition: .2s;
+    font-size: 17px;
+    white-space: nowrap;
+    animation: ${bannerAni} 2s infinite;
+    
+    &:hover{
+      animation:none;
+      text-shadow: #0cf 0px 0 5px;
+    }
+  }
+`
 
 
 const SlideArea = styled.div`
@@ -52,13 +118,11 @@ height:100%;
 border-top: 4px solid #4F4557;
 border-bottom: 4px solid #4F4557;
 overflow:hidden;
+
 `
 
 const SlideContainer = styled(OnlyAlignCenterFlex)`
   position:absolute;
   left : 0px;
   height:100%;
-  >div{
-    padding: 0 30px;
-  }
 `
