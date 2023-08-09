@@ -37,6 +37,11 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
           const range = editor?.getSelection();
           editor?.insertEmbed(range?.index!, 'image', `${IMG_URL}`);
           editor?.setSelection(range?.index! + 1, 0);
+          const insertedImage = editor?.root.querySelector('img[src="' + IMG_URL + '"]');
+          if (insertedImage) {
+            insertedImage.setAttribute('width', '300px')
+            insertedImage.setAttribute('height', 'auto')
+          }
         } catch (err) {
           return '실패';
         }
@@ -47,12 +52,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
   const modules = useMemo(() => {
     return {
       syntax: {
-        highlight: (text: any) => {
-          return hljs.highlightAuto(text).value
-        }
-      },
-      clipboard: {
-        matchVisual: false,
+        highlight: (text: any) => hljs.highlightAuto(text).value
       },
       blotFormatter: {},
       toolbar: {
