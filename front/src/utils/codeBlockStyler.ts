@@ -19,7 +19,8 @@ const codeBlockStyler = (ref : React.RefObject<HTMLDivElement>) => {
             }else if(curCode.includes('`</span>')){
               if(isHljsString==='on'){
                 isHljsString = 'off'
-                code = `<span class="hljs-string">${curCode.split('</span>')[0]}</span>;`
+                const splitValue = curCode.split('</span>')
+                code = `<span class="hljs-string">${splitValue[0]}</span>${splitValue.slice(1)}`
               }
             }else{
               if(isHljsString === 'on'){
