@@ -1,147 +1,191 @@
-import React, { useEffect } from 'react'
-import styled, {keyframes} from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import ModalPortal from '@components/modal/ModalPortal';
 import { ModalWrap, Dim } from '@components/modal/CommonModal';
 import { DeleteModalBox } from '@components/modal/DeleteModal';
-import {Search} from "@styled-icons/fluentui-system-filled/Search"
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import { useForm } from 'react-hook-form';
-import { X } from '@styled-icons/bootstrap/X';
+import { Search } from '@styled-icons/fluentui-system-filled/Search';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { searchModalState } from '@atoms/atoms';
+import { searchModalState, searchRecent } from '@atoms/atoms';
+import customApi from '@utils/customApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import Esc from '@assets/images/esc.svg';
+import SearchListBox from './SearchListBox';
+import NoResult from './NoResult';
+import SearchRecent from './SearchRecent';
+import SearchInputBox from './SearchInputBox';
+import TypingLoading from '../components/common/Loading/TypingLoading';
+import useIsMount from 'src/hooks/useIsMount';
 
-const SeachModal = ({onClose,boards}: { onClose: ()=> void; boards: any }) => {
+const SeachModal = ({ onClose }: { onClose: () => void }) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
-  const { register, setValue, watch }  = useForm({mode:"onSubmit"})
-  const handleKeyDown = (e: { code: string; }) => {
+  const methods = useForm({ mode: 'onSubmit' });
+  const { register, setValue, watch } = methods;
+
+  const {isMount} = useIsMount();
+
+  const [searchedData, setSearchedData] = useState([]);
+  const [searchedDataWithTag, setSearchedDataWithTag] = useState([]);
+
+  const [isTyping, setIsTyping] = useState(false);
+
+  const [recentBoard, setRecentBoard] = useRecoilState(searchRecent);
+
+
+
+ 
+  const { postApi } = customApi('/board/search');
+  const { mutate, isLoading } = useMutation(postApi,{
+    onError(error, variables, context) {
+        console.log({error})
+    },
+    onSuccess(data, variables, context) {
+      console.log({data})
+      setIsTyping(false);
+      const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(watch('search').toLowerCase()) || item.contents.toLowerCase().includes(watch('search').toLowerCase()));
+      const filteredDataWithTag = data.filter((item: any) => item.tags.toLowerCase().includes(watch('search').toLowerCase()));
+      setSearchedData(filteredData);
+      setSearchedDataWithTag(filteredDataWithTag);
+    },
+  });
+  
+
+  const handleKeyDown = (e: { code: string }) => {
     if (e.code === 'Escape') {
       onClose();
     }
   };
   useEffect(() => {
     if (isOpenSearchModal) {
-      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener('keydown', handleKeyDown);
     }
-  
+
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpenSearchModal]);
 
 
+  useEffect(()=>{
+    let mutateTimer: NodeJS.Timeout | undefined;
+    if(watch('search')?.length > 0){
+      clearTimeout(mutateTimer);
+      mutateTimer = setTimeout(() => {
+        mutate({searchValue : watch('search')})
+      }, 500);
+    }else{
+      setIsTyping(false);
+    }
+    return ()=>clearTimeout(mutateTimer);
+  },[watch('search'), isMount])
 
+  /* regex */                      /* false      false          false                  false */
+  const isTyping_REGEX = (isTyping || isLoading);
+  const isValueOverZero = watch('search')?.length > 0;
+  const noRecentSearches_REGEX = isTyping_REGEX || (isValueOverZero || recentBoard.length > 0);
 
 
   return (
     <ModalPortal>
       <SearchWrap>
-        <SearchDim onClick={onClose}/>
-        <SearchModalBox>
-          <ModalInnerBox>
-            <SeachInputBox>
-              <SeachIconBox>
-                <Search />
-              </SeachIconBox>
-              <SearchInput {...register("search")} type='text' placeholder='검색어를 입력하세요' autoComplete="off" />
-              {watch('search')?.length > 0 && <CleanBtn type='button' onClick={()=>{}}>
-                <X/>
-              </CleanBtn>}
-            </SeachInputBox>
-            {watch('search')?.length > 0 || 
-            <NoRecentSearches>
-                <p>No Recent Searches</p>
-            </NoRecentSearches>}
-
-          </ModalInnerBox>
-        </SearchModalBox>
+        <SearchDim onClick={onClose} />
+        <FormProvider {...methods}>
+          <SearchModalBox>
+            <ModalInnerBox>
+              <SearchInputBox setIsTyping={setIsTyping} />
+              <SearchListArea className="customScroll">
+                <SearchRecent />
+                {isTyping_REGEX && <TypingLoading/>}
+                {noRecentSearches_REGEX || (
+                  <NoRecentSearches>
+                    <p>No Recent Searches</p>
+                  </NoRecentSearches>
+                )}
+                {isTyping_REGEX || isValueOverZero && (
+                  <>
+                    {searchedData.length > 0 || searchedDataWithTag.length > 0 ? (
+                      <>
+                        <SearchListBox data={searchedData} title={'Title | Contents'} currentValue={watch('search')} />
+                        <SearchListBox data={searchedDataWithTag} title={'Tags'} currentValue={watch('search')} />
+                      </>
+                    ) : (
+                      <NoResult value={watch('search')} />
+                    )}
+                  </>
+                )}
+              </SearchListArea>
+            </ModalInnerBox>
+            <SearchFooter>
+              <SearchCommands>
+                <CommandsIcon />
+                <span>to close</span>
+              </SearchCommands>
+            </SearchFooter>
+          </SearchModalBox>
+        </FormProvider>
       </SearchWrap>
     </ModalPortal>
-  )
-}
+  );
+};
 
-export default SeachModal
+export default SeachModal;
 
-const CleanBtnAni = keyframes`
-  0%{
-    opacity: 0;
+
+
+const SearchListArea = styled.div`
+  width: 100%;
+  max-height: 480px;
+  overflow-y: scroll;
+  padding: 0 20px;
+`;
+
+const SearchFooter = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+
+const SearchCommands = styled(OnlyAlignCenterFlex)`
+  justify-content: end;
+  span {
+    font-size: 14px;
   }
-  100%{
-    opacity: 1;
-  }
+`;
+const CommandsIcon = styled.div`
+  width: 24px;
+  height: 18px;
+  background: url(${Esc.src}) no-repeat center center/100% auto;
+  margin-right: 6px;
+`;
 
-`
 
-const SearchModalBox= styled(DeleteModalBox)`
+
+const SearchModalBox = styled(DeleteModalBox)`
   margin: 100px auto auto;
   border-radius: 4px;
-  background :#454545;
-  color:#fff;
-`
+  background: #454545;
+  color: #fff;
+  padding: 20px 0 0;
+  box-shadow: 0 0px 10px rgba(255, 255, 255, 0.2);
+`;
 
 const SearchWrap = styled(ModalWrap)`
-  display:block;
-`
+  display: block;
+`;
 
 const SearchDim = styled(Dim)`
-  background: rgba(0,0,0,.5);
-`
-
+  background: rgba(0, 0, 0, 0.5);
+`;
 
 const NoRecentSearches = styled.div`
   padding: 56px 0 36px;
-  text-align:center;
+  text-align: center;
   font-size: 14px;
   color: #ffffffa1;
-`
+`;
 
 const ModalInnerBox = styled.div`
-  width:100%;
-`
-
-const SeachInputBox= styled(OnlyAlignCenterFlex)`
-  width:100%;
-  padding: 0 10px;
-  border : 2px solid ${({theme}) => theme.color.success};
-
-`
-const SeachIconBox=styled.div`
-  width:30px;
-  flex-shrink : 0;
-  svg{
-    width:100%;
-    color: #fff;
-  }
-`
-
-const CleanBtn = styled.button`
-  width: 30px;
-  height:30px;
-  background:transparent;
-  height:100%;
-  border-radius:50%;
-  transition: .2s;
-  svg{
-    opacity: 0;
-    animation: ${CleanBtnAni} .2s forwards;
-    width:100%;
-    color: #fff;
-  }
-  &:hover{
-    background :rgba(0,0,0,.2);
-  }
-`
-
-const SearchInput = styled.input`
   width: 100%;
-  line-height: 34px;
-  font-size : 16px;
-  outline: 0;
-  padding: 10px 10px 10px 10px;
-  background: transparent;
-  color:#fff;
-  &::placeholder{
-    font-size : 16px;
-    margin-top: 20px;
-    color:#fff;
-  }
-`
+`;
+
+
