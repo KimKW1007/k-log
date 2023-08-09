@@ -30,7 +30,7 @@ const EditSidebarHeader = () => {
   });
 
   const [isChangeValue, setIsChangeValue] = useState(false);
-  const [image, setImage] = useState();
+  const [image, setImage] = useState('');
 
   const methods = useForm({
     mode: 'all',
@@ -49,7 +49,6 @@ const EditSidebarHeader = () => {
     reset,
     formState: { isDirty }
   } = methods;
-  const { onChange, ref } = register('image');
 
   const onSubmit = async ({ image, description }: any) => {
     const formData = new FormData();
@@ -90,7 +89,7 @@ const EditSidebarHeader = () => {
         <SidebarHeaderBox>
           <ImgBox>
             <Image src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
-            <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} />
+            <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={"userImage"} />
           </ImgBox>
           <DescBox>
             <TextArea className='customScroll' {...register('description')}></TextArea>
