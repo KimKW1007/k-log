@@ -9,6 +9,8 @@ const { persistAtom: sessionPersistAtom } = recoilPersist({
   key: 'sessionStorageKey',
   storage: sessionStorage
 });
+const { persistAtom : localPersistAtom } = recoilPersist();
+
 
 export const userInfomation = atom<User | null>({
   key: 'userInfomationKey',
@@ -46,4 +48,9 @@ export const currentPagenation = atom<number>({
   key : "currentPagenationKey",
   default : 1,
   effects_UNSTABLE: [sessionPersistAtom]
+})
+export const searchRecent = atom<string[]>({
+  key : "searchRecentKey",
+  default : [],
+  effects_UNSTABLE: [localPersistAtom]
 })
