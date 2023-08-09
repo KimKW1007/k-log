@@ -12,10 +12,12 @@ interface SearchInputBoxProps {
 }
 
 const SearchInputBox = ({setIsTyping} : SearchInputBoxProps) => {
-  const {register, watch, setValue} = useFormContext();
+  const {register, watch, setValue, setFocus} = useFormContext();
 
 
-  
+  useEffect(() => {
+    setFocus("search")
+  }, [])
 
   return (
     <SeachInputBox>
