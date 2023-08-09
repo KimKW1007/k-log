@@ -148,6 +148,7 @@ const AccountEditArea = styled.div<{isCertificated : boolean; isForward :boolean
 const SideProfileEditBox = styled.div<{isEnter :boolean; isForward : boolean;}>`
   position:relative;
   z-index : 2;
+  flex-shrink : 0;
   width: 360px;
   border : 1px solid #DDE6ED;
   border-radius: 30px;
