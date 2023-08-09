@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled, { keyframes } from 'styled-components';
 import { Settings } from "@styled-icons/material-rounded/Settings"
 import { Trash } from '@styled-icons/bootstrap/Trash';
@@ -8,9 +8,10 @@ import DeleteModal from '@components/modal/DeleteModal';
 import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import useHandleClickOutside from 'src/hooks/useHandleClickOutside';
 
 const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
-
+  const settingsRef = useRef<HTMLDivElement>(null);
   const router = useRouter()
 
   const [isActive, setIsActive] = useState(false);
@@ -35,10 +36,11 @@ const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
     router.push(`${returnUrl}/${id}/edit`)
   }
 
+  useHandleClickOutside(settingsRef, setIsActive)
 
   return (
     <>
-    <UDBtnArea >
+    <UDBtnArea ref={settingsRef}>
       <BoardSettingBtn title='게시물 설정' onClick={()=>setIsActive(prev=> !prev)}>
         <Settings />
       </BoardSettingBtn>
@@ -49,7 +51,7 @@ const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
         <Scissors/>
       </BoardUpdateBtn>
     </UDBtnArea>
-    {isOpenModal && <DeleteModal mutate={mutate} onClose={()=> setIsOpenModal(false)} />}
+    {isOpenModal && <DeleteModal mutate={()=>mutate({})} onClose={()=> setIsOpenModal(false)} />}
     </>
   )
 }

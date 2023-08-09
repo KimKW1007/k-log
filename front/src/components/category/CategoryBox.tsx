@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { useRouter } from 'next/router';
 import CategoryList from './CategoryList';
 import useScrollOverHeader from 'src/hooks/useScrollOverHeader';
+import useHandleClickOutside from 'src/hooks/useHandleClickOutside';
 
-interface CategoryBackProps {
-  id: number;
-  categoryTitle: string;
-  subCategories: SubCategoryBackProps[];
-}
-interface SubCategoryBackProps {
-  id: number;
-  categorySubTitle: string;
-}
 const CategoryBox = () => {
   const router = useRouter();
+  const categoryRef = useRef<HTMLDivElement>(null);
+
   const [isCategoryOn, setIsCategoryOn] = useState(false);
   const { isOverHeader } = useScrollOverHeader();
 
@@ -23,8 +17,10 @@ const CategoryBox = () => {
     setIsCategoryOn(false);
   }, [router]);
 
+  useHandleClickOutside(categoryRef, setIsCategoryOn)
+
   return (
-    <CategoryWrap>
+    <CategoryWrap ref={categoryRef}>
       <CategoryBtn
         isOverHeader={isOverHeader}
         onClick={() => {
