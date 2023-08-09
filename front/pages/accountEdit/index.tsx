@@ -46,7 +46,7 @@ useEffect(()=>{
   if(isDisappear){
     setIsForward(true);
   }
-  if(isDisappear && currentTab === '' ){
+  if(isDisappear && (currentTab === '' || currentTab === '배너설정') ){
     setCurrentTab("카테고리")
   }
   if(!isDisappear && currentTab === '카테고리'){
@@ -61,10 +61,10 @@ useEffect(()=>{
   return (
     <EditWrap>
       <EditInnerBox >
-        <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={()=> isCertificated && !isDisappear && setIsForward(false)}>
+        {isDisappear || <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={()=> (isCertificated && !isDisappear) && setIsForward(false)}>
           {(isEnter) || <LockIcon/>}
           {isEnter && <EditSideBar isAdmin={currentUser?.id === 1}></EditSideBar>}
-        </SideProfileEditBox>
+        </SideProfileEditBox>}
         <AccountEditArea isCertificated={isCertificated} isForward={isForward} onClick={()=> isCertificated && !isDisappear && setIsForward(true)}>
           {isCertificated && <AccountEdit isForward={isForward} isDisappear={isDisappear} currentTab={currentTab} setCurrentTab={setCurrentTab}  ></AccountEdit>}
           {isCertificated || <AccountCertificate setIsCertificated={setIsCertificated} ></AccountCertificate>}
