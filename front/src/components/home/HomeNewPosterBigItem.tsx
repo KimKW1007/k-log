@@ -25,8 +25,8 @@ const HomeNewPosterBigItem = (board : any) => {
           </PosterTitle>
         </PosterTop>
         <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
-        <ImageBox>
-          {thumbnail && <ImageBg thumbnailUrl={thumbnail} />}
+        <ImageBox >
+          <ImageBg isDefault={!Boolean(thumbnail)} thumbnailUrl={thumbnail || defaultImage.src} />
         </ImageBox>
         <AuthorAndDateBox>
           <AuthorBox author={author} authorImage={authorImage} createdAt={createdAt} />
@@ -55,11 +55,14 @@ const ImageBox = styled.div`
   margin-bottom: 30px;
   overflow:hidden;
 `
-const ImageBg =styled.div<{thumbnailUrl : string}>`
+const ImageBg =styled.div<{thumbnailUrl : string; isDefault: boolean;}>`
   width:100%;
   height:100%;
-  background : url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/auto 100%;
+  background : url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/cover;
   transition: .2s;
+  ${({isDefault}) => isDefault  && `
+  background-size: auto 100%;
+`}
 `
 
 
