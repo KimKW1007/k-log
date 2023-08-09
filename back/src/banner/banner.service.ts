@@ -15,11 +15,11 @@ export class BannerService {
   ) {}
 
   async getBanners() {
-    const banners = await this.bannerRepository.find();
+    const banners = await this.bannerRepository.find({order : {listNumber : 'ASC'}});
     return banners ?? [];
   }
   async getProjects() {
-    const projects = await this.projectRepository.find();
+    const projects = await this.projectRepository.find({order : {id : 'ASC'}});
     return projects ?? [];
   }
 
