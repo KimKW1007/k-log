@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import AccountEditInputsBox from './AccountEditInputsBox';
 import { accountEditTabList, accountEditMobTabList, bannerEditTabList } from '@utils/accountEditTabList';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
 
 interface AccountEditProps{
   isForward : boolean;
@@ -16,23 +18,31 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
   const onClickTab =(title : string) => ()=>{
     setCurrentTab(title)
   }
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+
   const [currentBannerTitle, setCurrentBannerTitle] = useState('메인배너')
+  const settingBanner = accountEditTabList.at(-1);
 
   return (
     <>
     {isDisappear || <TabBox>
-      {accountEditTabList.map((title, idx)=>(
+      {accountEditTabList.slice(0,accountEditTabList.length - 1).map((title, idx)=>(
         <Tab onClick={onClickTab(title)} key={idx + 'salt' + title} isCurrent={title === currentTab} isForward={isForward}>
           {title}
         </Tab>
       ))}
+      {currentUser?.id === 1 && settingBanner && 
+        <Tab onClick={onClickTab(settingBanner)} key={settingBanner + 'salt'} isCurrent={settingBanner === currentTab} isForward={isForward}>
+        {settingBanner}
+      </Tab>
+      }
     </TabBox>}
     <EditAreaBox>
       <EditTitleBox>
         <h2>{currentTab}</h2>
       </EditTitleBox>
       <EditBox>
-        {currentTab === '배너설정' && <BannerTabBox>
+        {isDisappear || currentTab === '배너설정' && <BannerTabBox>
           {bannerEditTabList.map((title,idx)=>(
             <BannerDetailTab onClick={() => setCurrentBannerTitle(title)} key={idx + 'saltMob' + title} isCurrent={title === currentBannerTitle}>
               {title}
