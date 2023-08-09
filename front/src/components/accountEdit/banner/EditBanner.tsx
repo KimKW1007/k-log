@@ -15,8 +15,10 @@ import { GET_BANNER_LIST } from '@utils/queryKeys';
 const EditBanner = () => {
   const queryClient = useQueryClient();
   const methods = useForm({mode : "all"})
-  const {register, handleSubmit ,formState:{errors}, setValue} = methods;
+  const {register, handleSubmit ,formState:{errors , isDirty}, watch, setValue} = methods;
   const bannerList = [1,2,3];
+
+  const [isChangeValue, setIsChangeValue] = useState(false);
 
   const [image, setImage] = useState('');
 
@@ -47,7 +49,18 @@ const EditBanner = () => {
     formData.append('listNumber', String(currentlistNumber));
 
     mutate(formData);
+    setIsChangeValue(false);
+
   }
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name === 'image') {
+        setIsChangeValue(true);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <EditBannerWrap>
@@ -63,7 +76,7 @@ const EditBanner = () => {
             </BannerImageBox>
           </BannerItem>
           <BannerSubmitBox>
-            <SubmitBtn currentLevel='third'>
+            <SubmitBtn currentLevel='third' disabled={!isChangeValue}>
                 변경
             </SubmitBtn>
           </BannerSubmitBox>
@@ -108,6 +121,7 @@ const BannerItem = styled.li<{notPointer ?: boolean}>`
   border : 1px solid rgba(128,128,128,.3);
   margin: 0 auto;
   cursor:pointer;
+  background: #d5d5d5;
   ${({notPointer}) => notPointer&&`
     cursor:default;
   `}
@@ -121,6 +135,7 @@ const BannerList = styled.ul`
 
 const BannerNumber = styled.div`
   margin-bottom: 10px;
+  font-weight: 700;
 `
 
 
