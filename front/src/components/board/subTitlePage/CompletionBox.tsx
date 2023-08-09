@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
+
 interface CompletionProps {
   handleClickMenu: () => void;
   isOpen: boolean;
@@ -14,8 +15,8 @@ interface CompletionProps {
 }
 
 const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail }: CompletionProps) => {
-  const { watch } = useFormContext();
-  const [image, setImage] = useState();
+  const { watch, setValue } = useFormContext();
+  const [image, setImage] = useState('');
   const router = useRouter();
   const [currentTitle, setCurrentTitle] = useState('');
 
@@ -53,7 +54,7 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
             </AboutBoardBox>
             <ImageBox>
               {image ? <Image src={image} alt={'대표 이미지'} width={168} height={168} /> : <span>대표이미지</span>}
-              <ImageInputLabelBox setImage={setImage} />
+              <ImageInputLabelBox setImage={setImage} id={'boardImage'} />
             </ImageBox>
           </CompletionContent>
           <SubmitBox>
@@ -168,6 +169,7 @@ const UrlBox = styled(OnlyAlignCenterFlex)`
   }
 `;
 
+
 const ImageBox = styled(AllCenterFlex)`
   position: relative;
   width: 168px;
@@ -184,6 +186,7 @@ const ImageBox = styled(AllCenterFlex)`
     margin: 0 auto;
   }
 `;
+
 
 const SubmitBox = styled(OnlyJustifyCenterFlex)``;
 const CommonBtn = styled.button`
