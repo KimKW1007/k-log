@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useIsMount from 'src/hooks/useIsMount';
-import ReactQuill, { ReactQuillProps } from 'react-quill';
+import ReactQuill, { ReactQuillProps, UnprivilegedEditor } from 'react-quill';
 import useCustomQuill from '@utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
@@ -19,6 +19,7 @@ import Tags from '../Tags';
 import PageLoading from '@components/common/Loading/PageLoading';
 import customApi from '@utils/customApi';
 import { GET_BOARD } from '@utils/queryKeys';
+
 /* agate / base16/dracula */
 
 
@@ -33,8 +34,7 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['javascript', 'typescript', 'python', 'html', 'css'],
-
+      languages: ['javascript', 'typescript', 'python',  'css'],
     })
     
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
@@ -78,13 +78,6 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
 
   const  {convertContent} = useConvert();
 
-  const onChangeContents = (contents: string) => {
-    setValue('contents', contents === '<p><br></p>' ? '' : contents);
-    trigger('contents');
-  };
-
-
-  
 
 
   /* 생성 및 수정 */
@@ -116,12 +109,16 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
   /* Edit 일 경우 data */
   const { getApi } = customApi(`/board/getBoard/${id}`);
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
-    enabled: !!isEdit
+    enabled: !!isEdit,
   });
-  const { currentBoard, prevBoard, nextBoard } = data ?? {};
+  const { currentBoard } = data ?? {};
+
 
   useEffect(() => {
-    if (data) setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : []);
+    if (data) {
+      setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : []);
+      setValue('boardTitle', currentBoard.boardTitle)
+    }
   }, [data, isMount, isEdit]);
 
   /* 작성중인 data 삭제 */
@@ -148,13 +145,14 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     };
   }, [isMount, isSuccess]);
 
-  const mutateFn = ({boardTitle, image, contents}: any)=>{
+  const mutateFn = ({boardTitle, image}: any)=>{
+    const contents = quillRef.current?.editor?.root.innerHTML!
     const formData = new FormData();
     formData.append("boardTitle", boardTitle)
     formData.append("boardImage", image)
-    formData.append("contents", convertContent(contents))
+    formData.append("contents", contents === '<p><br></p>' ? '' : convertContent(contents))
     formData.append("categorySubTitle", subTitle)
-     formData.append("boardId",  isEdit ? id! : '작성중' )
+    formData.append("boardId",  isEdit ? id! : '작성중' )
     formData.append("tags", currentTags.toString())
     boardMutate(formData)
     setIsSuccess(true)
@@ -170,21 +168,23 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     }
   };
 
+
+
   return (
     <>
       {isMount ? (
         <FormProvider {...methods}>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <BoardTitleBox>
-              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} defaultValue={isEdit ? currentBoard.boardTitle : ""} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
+              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
             </BoardTitleBox>
             <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
-            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={isEdit ? convertContent(currentBoard.contents) : ''}  onChange={onChangeContents} />
+            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={data ? convertContent(currentBoard.contents) : ''} />
             <CompletionBtnBox>
               <CompletionBtn type="button" onClick={handleClickMenu}>
                 작성 완료
               </CompletionBtn>
-              {isActive && <CompletionBox handleClickMenu={handleClickMenu} isOpen={isOpen} boardLastId={isEdit ? Number(id) : boardLastId} defaultThumbnail={isEdit ? currentBoard.thumbnail : null} />}
+              {isActive && <CompletionBox handleClickMenu={handleClickMenu} isOpen={isOpen} boardLastId={data ? Number(id) : boardLastId} defaultThumbnail={data ? currentBoard.thumbnail : null} />}
             </CompletionBtnBox>
           </Form>
         </FormProvider>
