@@ -10,10 +10,10 @@ import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import { searchModalState } from '@atoms/atoms';
-import SeachModal from 'src/search/SeachModal';
+import SearchModal from 'src/search/SearchModal';
 
 const Layout = ({ children }: ChildrenProps) => {
-  const [isOpenSeachModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
+  const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const [isAboutAuth, setIsAboutAuth] = useState(false);
   const router = useRouter();
   const routerPathCheck = (value: string) => {
@@ -35,7 +35,7 @@ const Layout = ({ children }: ChildrenProps) => {
       {isAboutAuth ? <IconLinkListBox popupPage={popupPage} /> : <Header />}
       {children}
       <Footer />
-      {isOpenSeachModal && <SeachModal  onClose={()=>setIsOpenSearchModal(false)}/>}
+      {isOpenSearchModal && <SearchModal  onClose={()=>setIsOpenSearchModal(false)}/>}
     </Root>
   );
 };
