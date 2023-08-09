@@ -20,9 +20,7 @@ const Layout = ({ children }: ChildrenProps) => {
     return router.pathname.includes(value);
   };
 
-  const {getApi} = customApi('/board/getSearchBoard');
-  const {data : searchData} = useQuery(["GET_SEARCH_DATA"], ()=> getApi());
-  console.log({searchData})
+
   const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail')
   useEffect(() => {
     if (routerPathCheck('login') || routerPathCheck('signup') || popupPage) {
@@ -37,7 +35,7 @@ const Layout = ({ children }: ChildrenProps) => {
       {isAboutAuth ? <IconLinkListBox popupPage={popupPage} /> : <Header />}
       {children}
       <Footer />
-      {isOpenSeachModal && <SeachModal boards={searchData} onClose={()=>setIsOpenSearchModal(false)}/>}
+      {isOpenSeachModal && <SeachModal  onClose={()=>setIsOpenSearchModal(false)}/>}
     </Root>
   );
 };
