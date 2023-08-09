@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components';
 import AccountEditInputsBox from './AccountEditInputsBox';
-import { accountEditTabList, accountEditMobTabList } from '@utils/accountEditTabList';
+import { accountEditTabList, accountEditMobTabList, bannerEditTabList } from '@utils/accountEditTabList';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 
 interface AccountEditProps{
@@ -16,7 +16,7 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
   const onClickTab =(title : string) => ()=>{
     setCurrentTab(title)
   }
-
+  const [currentBannerTitle, setCurrentBannerTitle] = useState('메인배너')
 
   return (
     <>
@@ -32,6 +32,13 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
         <h2>{currentTab}</h2>
       </EditTitleBox>
       <EditBox>
+        {currentTab === '배너설정' && <BannerTabBox>
+          {bannerEditTabList.map((title,idx)=>(
+            <BannerDetailTab onClick={() => setCurrentBannerTitle(title)} key={idx + 'saltMob' + title} isCurrent={title === currentBannerTitle}>
+              {title}
+            </BannerDetailTab>
+          ))}
+          </BannerTabBox>}
         {isDisappear && <MobTabBox>
           {accountEditMobTabList.map((title, idx)=>(
             <MobTap onClick={onClickTab(title)} key={idx + 'saltMob' + title} isCurrent={title === currentTab}>
@@ -40,7 +47,7 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
           ))}
         </MobTabBox>}
         <EditInnerBox>
-          <AccountEditInputsBox currentTab={currentTab}></AccountEditInputsBox>
+          <AccountEditInputsBox currentTab={currentTab} currentBannerTitle={currentBannerTitle}></AccountEditInputsBox>
         </EditInnerBox>
       </EditBox>
     </EditAreaBox>
@@ -49,6 +56,7 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
 }
 
 export default AccountEdit
+
 
 const MobTap = styled.button<{isCurrent : boolean}>`
   border-bottom : 2px solid #999999a1;
@@ -135,6 +143,7 @@ const EditAreaBox = styled.div`
   position:relative;
   z-index: 3;
   width:100%;
+  min-height: 850px;
   background: #fff;
   border-radius: 30px;
   overflow:hidden;
@@ -191,4 +200,9 @@ const EditInnerBox = styled.div`
     border-top : 1px solid #DDE6ED;
   }
 `
+const BannerTabBox = styled(MobTabBox)`
+  display:flex;
+`
+const BannerDetailTab = styled(MobTap)``
+
 
