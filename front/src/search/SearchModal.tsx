@@ -18,7 +18,7 @@ import SearchInputBox from './SearchInputBox';
 import TypingLoading from '../components/common/Loading/TypingLoading';
 import useIsMount from 'src/hooks/useIsMount';
 
-const SeachModal = ({ onClose }: { onClose: () => void }) => {
+const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const methods = useForm({ mode: 'onSubmit' });
   const { register, setValue, watch } = methods;
@@ -80,7 +80,6 @@ const SeachModal = ({ onClose }: { onClose: () => void }) => {
     return ()=>clearTimeout(mutateTimer);
   },[watch('search'), isMount])
 
-  /* regex */                      /* false      false          false                  false */
   const isTyping_REGEX = (isTyping || isLoading);
   const isValueOverZero = watch('search')?.length > 0;
   const noRecentSearches_REGEX = isTyping_REGEX || (isValueOverZero || recentBoard.length > 0);
@@ -129,7 +128,7 @@ const SeachModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default SeachModal;
+export default SearchModal;
 
 
 
