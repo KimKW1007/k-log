@@ -13,8 +13,13 @@ import { EditBtn } from '../EditCategory/EditCategoryList';
 import { getBase64 } from '@utils/getBase64';
 import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
 import { GET_USER_MINI_PL, USERS } from '@utils/queryKeys';
+import { useRecoilState } from 'recoil';
+import { userInfomation } from '@atoms/atoms';
+import useIsMount from 'src/hooks/useIsMount';
 
 const EditSidebarHeader = () => {
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const {isMount} = useIsMount();
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
   const { data } = useQuery([GET_USER_MINI_PL,USERS], ()=> getApi(true));
@@ -92,7 +97,7 @@ const EditSidebarHeader = () => {
             <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={"userImage"} />
           </ImgBox>
           <DescBox>
-            <TextArea className='customScroll' {...register('description')}></TextArea>
+            <TextArea className='customScroll' disabled={!isMount && !Boolean(currentUser?.isAdmin)} {...register('description')}></TextArea>
           </DescBox>
           <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue}>
             저장

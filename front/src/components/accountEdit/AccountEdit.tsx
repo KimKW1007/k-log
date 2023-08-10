@@ -31,7 +31,7 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
           {title}
         </Tab>
       ))}
-      {currentUser?.id === 1 && settingBanner && 
+      {currentUser?.isAdmin && settingBanner && 
         <Tab onClick={onClickTab(settingBanner)} key={settingBanner + 'salt'} isCurrent={settingBanner === currentTab} isForward={isForward}>
         {settingBanner}
       </Tab>
