@@ -130,6 +130,14 @@ export class AuthController {
       message: 'success',
     });
   }
+  @Post('/cleanCookie')
+  async cleanCookie(@Res() res: Response, @GetUser() user :User): Promise<any> {
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+    return res.send({
+      message: 'success',
+    });
+  }
 
   @Post('/refresh')
   async refresh(
