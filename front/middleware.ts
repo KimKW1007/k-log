@@ -1,10 +1,19 @@
 import customApi from "@utils/customApi";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next();
-  let cookie = req.cookies.get('jwt')?.value
-  console.log("{cookie}",{cookie})
+export async function middleware(req: NextRequest, res: NextResponse  ) {
+  let cookie = req.cookies.get('access_token')?.value
+  if(Boolean(cookie)){
+    if(req.url.includes('/login') || req.url.includes('/signup')){
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+  }else{
+    if(req.url.includes('/create') || req.url.includes('/edit')){
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+
 }
 
 export const config = {
