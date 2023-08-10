@@ -47,7 +47,7 @@ export class BoardRepository extends Repository<Board> {
 
   async createBoard(body, file: Express.Multer.File, user: User) {
     const { boardTitle, contents, categorySubTitle, boardId, tags } = body;
-    if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
+    if (!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.');
     const authorImage = await this.fileRepository.findOneBy({ user: { id: user.id } });
     const foundBoard = await this.findOneBy({boardTitle : '', subCategory :{ category : {user : {id : user.id}}}});
     if (!file) {
@@ -102,6 +102,7 @@ export class BoardRepository extends Repository<Board> {
 
 
   async deleteBoard(id : number, user :User){
+    if (!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.');
     const foundBoard = await this.findOneBy({id, subCategory : { category : {user : {id : user.id}}}})
     if(!foundBoard){
       return {message : '삭제할 board가 없습니다.'}
@@ -120,7 +121,7 @@ export class BoardRepository extends Repository<Board> {
 
   async updateBoard(body, file: Express.Multer.File, user : User){
     const { boardTitle, contents, categorySubTitle, boardId, tags } = body;
-    if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
+    if (!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.');
     const authorImage = await this.fileRepository.findOneBy({ user: { id: user.id } });
     const foundBoard = await this.findOneBy({id:boardId, subCategory :{ category : {user : {id : user.id}}}});
     if (!file) {

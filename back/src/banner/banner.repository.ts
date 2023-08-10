@@ -21,7 +21,7 @@ export class BannerRepository extends Repository<Banner> {
   
 
   async updateBanner(listNumber: string, file: Express.Multer.File, user: User){
-    if(user.id !== 1) throw new UnauthorizedException('관리자 권한이 없습니다.')
+    if(!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.')
     const foundBanner = await this.findOneBy({listNumber})
     console.log({file})
 

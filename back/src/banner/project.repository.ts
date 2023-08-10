@@ -19,7 +19,7 @@ export class ProjectRepository extends Repository<Project> {
   }
   async createProject(createProjectDto : CreateProjectDto, user : User){
     const {title, link} = createProjectDto;
-    if(user.id !== 1) throw new UnauthorizedException('관리자 권한이 없습니다.')
+    if(!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.')
     const createProject = this.create({
       title, link
     })
@@ -27,7 +27,7 @@ export class ProjectRepository extends Repository<Project> {
   }
 
   async deleteProject(id:number, user : User){
-    if(user.id !== 1) throw new UnauthorizedException('관리자 권한이 없습니다.')
+    if(!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.')
     const found = await this.findOneBy({id});
     if(!found){
       throw new BadRequestException('삭제할 프로젝트가 없습니다.')
