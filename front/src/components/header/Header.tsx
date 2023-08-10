@@ -62,11 +62,16 @@ const KlogTextLogo = styled(Link)`
   transform: translate(-50%, -50%);
   h2{
     font-size: 34px;
-    transition: .2s;
+    transition: text-shadow .2s;
   }
   &:hover{
     h2{
       text-shadow: #fc0 1px 0 10px;
+    }
+  }
+  @media (max-width:700px){
+    h2{
+      font-size: 24px;
     }
   }
 `;
