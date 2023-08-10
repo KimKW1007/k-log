@@ -7,6 +7,7 @@ import { Category } from './category.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSubCategoryDto } from './dto/createSubCategory.dto';
 import { TestDto } from './dto/test.dto';
+import { SubCategory } from './subCategory.entity';
 
 @Controller('category')
 
@@ -14,10 +15,14 @@ export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Get("/")
-  getCurrentUserCategory(): Promise<Category[]>{
+  getAllCategory(): Promise<Category[]>{
     return this.categoryService.getAllCategory();
   }
 
+  @Get('/getSubCategory/:categoryTitle')
+  getAllSubCategory(@Param('categoryTitle') categoryTitle : string): Promise<Category>{
+    return this.categoryService.getAllSubCategory(categoryTitle.replace("-","/"));
+  }
 
 
   @Put('/updateCategories')

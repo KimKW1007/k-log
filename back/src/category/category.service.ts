@@ -5,6 +5,7 @@ import { CreateCategoryDto } from './dto/createCategory.dto';
 import { User } from 'src/auth/user.entity';
 import { Category } from './category.entity';
 import { CreateSubCategoryDto } from './dto/createSubCategory.dto';
+import { SubCategory } from './subCategory.entity';
 
 @Injectable()
 export class CategoryService {
@@ -21,12 +22,18 @@ export class CategoryService {
     });
     return category;
   }
+  async getAllSubCategory(categoryTitle : string): Promise<Category> {
+    const category = await this.categoryRepository.findOneBy({
+       categoryTitle,  user: { id: 1 }
+    });
+    if(!category){
+      throw new BadRequestException('해당 카테고리를 찾지 못했습니다.')
+    }
+    return category;
+  }
 
   async updateTitles(categoryDto: Category[], user: User): Promise<any> {
-    if (user.id > 1)
-      throw new UnauthorizedException('관리자 권한이 없습니다.', {
-        cause: new Error(),
-      });
+    if (!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.');
     const foundCategory = await this.categoryRepository.find({
       where: { user: { id: user.id } },
     });
