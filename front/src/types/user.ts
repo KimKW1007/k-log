@@ -5,6 +5,7 @@ export interface User {
   userId?: string;
   userEmail?: string;
   userName?: string;
+  isAdmin : string | null;
 }
 export interface UserIds {
   userIds?: User[];
