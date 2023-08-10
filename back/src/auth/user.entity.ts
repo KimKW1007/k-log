@@ -21,6 +21,9 @@ export class User extends BaseEntity{
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  isAdmin: string;
+
   @OneToMany(type => Category, category => category.user, {eager: true, cascade: ['remove'] })
   categories: Category[]
 
