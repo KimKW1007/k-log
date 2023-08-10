@@ -8,6 +8,7 @@ import night_BG from '@assets/images/dark_night.jpg';
 import { GetServerSideProps } from 'next';
 import { CategoryPageProps } from '.';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import customApi from '@utils/customApi';
 
 const createPage = ({ title, subTitle }: CategoryPageProps) => {
   const { isMount } = useIsMount();
@@ -28,9 +29,25 @@ const createPage = ({ title, subTitle }: CategoryPageProps) => {
 export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
   const { query } = context;
   const { title, subTitle } = query;
-  return {
-    props: { title: String(title)?.replaceAll('-', '/'), subTitle: String(subTitle)?.replaceAll('-', '/') }
-  };
+  try{
+    const { getApi } = customApi(`/category/getSubCategory/${title}`);
+    const data = await getApi();
+    const checkSubTitleInData = data.subCategories.find((x : {categorySubTitle : string}) => x.categorySubTitle === String(subTitle)?.replaceAll('-', '/'));
+    if(!checkSubTitleInData){
+      return{
+        props:{},
+        notFound : true
+      }
+    }
+    return {
+      props: { title: String(title)?.replaceAll('-', '/'), subTitle: String(subTitle)?.replaceAll('-', '/') }
+    };
+    }catch(e){
+      return{
+        props:{},
+        notFound : true
+      }
+    }
 });
 export default createPage;
 

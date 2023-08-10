@@ -42,8 +42,25 @@ const SubCategoryPage: NextPage = ({ title, subTitle }: CategoryPageProps) => {
 export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
   const { query } = context;
   const { title, subTitle } = query;
+  try{
+  const { getApi } = customApi(`/category/getSubCategory/${title}`);
+  const data = await getApi();
+  const checkSubTitleInData = data.subCategories.find((x : {categorySubTitle : string}) => x.categorySubTitle === String(subTitle)?.replaceAll('-', '/'));
+  if(!checkSubTitleInData){
+    return{
+      props:{},
+      notFound : true
+    }
+  }
   return {
     props: { title: String(title)?.replaceAll('-', '/'), subTitle: String(subTitle)?.replaceAll('-', '/') }
   };
+  }catch(e){
+    return{
+      props:{},
+      notFound : true
+    }
+  }
+ 
 });
 export default SubCategoryPage;

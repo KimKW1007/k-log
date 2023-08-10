@@ -40,6 +40,15 @@ const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {title} = query;
+  const { getApi } = customApi('/category');
+  const data = await getApi();
+  const checkTitleInData = data.find((x : {categoryTitle : string}) => x.categoryTitle === String(title)?.replaceAll("-","/"));
+  if(!checkTitleInData){
+    return{
+      props:{},
+      notFound : true
+    }
+  }
   return {
     props : {title : String(title)?.replaceAll("-","/")}
   }

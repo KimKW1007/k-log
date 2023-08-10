@@ -24,11 +24,18 @@ const BoardPage : NextPage = ({id} : CategoryPageProps) => {
 export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
   const {query} = context;
   const {id} = query;
-  const { getApi } = customApi(`/board/getBoard/${id}`);
-  const data = await getApi();
-  const {currentBoard} = data;
-  return {
-    props : { id, title : currentBoard.boardTitle }
+  try{
+    const { getApi } = customApi(`/board/getBoard/${id}`);
+    const data = await getApi();
+    const {currentBoard} = data;
+    return {
+      props : { id, title : currentBoard.boardTitle }
+    }
+  }catch(e){
+    return {
+      props : {},
+      notFound : true
+    }
   }
 });
 
