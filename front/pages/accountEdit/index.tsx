@@ -63,7 +63,7 @@ useEffect(()=>{
       <EditInnerBox >
         {isDisappear || <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={()=> (isCertificated && !isDisappear) && setIsForward(false)}>
           {(isEnter) || <LockIcon/>}
-          {isEnter && <EditSideBar isAdmin={currentUser?.id === 1}></EditSideBar>}
+          {isEnter && <EditSideBar isAdmin={Boolean(currentUser?.isAdmin)}></EditSideBar>}
         </SideProfileEditBox>}
         <AccountEditArea isCertificated={isCertificated} isForward={isForward} onClick={()=> isCertificated && !isDisappear && setIsForward(true)}>
           {isCertificated && <AccountEdit isForward={isForward} isDisappear={isDisappear} currentTab={currentTab} setCurrentTab={setCurrentTab}  ></AccountEdit>}
