@@ -45,8 +45,8 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
       setIsTyping(false);
       const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(watch('search').toLowerCase()) || item.contents.toLowerCase().includes(watch('search').toLowerCase()));
       const filteredDataWithTag = data.filter((item: any) => item.tags.toLowerCase().includes(watch('search').toLowerCase()));
-      setSearchedData(filteredData);
-      setSearchedDataWithTag(filteredDataWithTag);
+      setSearchedData(filteredData.slice(0,5));
+      setSearchedDataWithTag(filteredDataWithTag.slice(0,5));
     },
   });
   
