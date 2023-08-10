@@ -31,7 +31,6 @@ export class BoardController {
 
   @Post("/search")
   searchBoard(@Body("searchValue") searchValue : string){
-    console.log({searchValue})
     return this.boardService.searchBoard(searchValue)
   }
 

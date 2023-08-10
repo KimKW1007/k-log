@@ -28,12 +28,13 @@ export class BoardService {
   }
 
   async getBoard(id: number) {
+    const checkBoard = await this.boardRepository.findOne({ where: { id, boardTitle : "" }});
+    if (checkBoard === null || checkBoard) {
+      throw new NotFoundException('없는 Board Id입니다.');
+    }
     const currentBoard = await this.boardRepository.findOne({ where: { id }, relations: { subCategory: { category: { user: true } } } });
     const prevBoard = await this.boardRepository.findOne({ where: { boardTitle: Not(''), id: LessThan(id), subCategory: { categorySubTitle: currentBoard.subCategory.categorySubTitle } }, relations: { subCategory: true }, order: { id: 'desc' } });
     const nextBoard = await this.boardRepository.findOne({ where: { boardTitle: Not(''), id: MoreThan(id), subCategory: { categorySubTitle: currentBoard.subCategory.categorySubTitle } }, relations: { subCategory: true }, order: { id: 'asc' } });
-    if (!currentBoard) {
-      throw new NotFoundException('없는 Board Id입니다.');
-    }
     return {
       currentBoard,
       prevBoard: prevBoard ?? {},
