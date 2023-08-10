@@ -31,9 +31,9 @@ const CommentItem = ({writerId, setReplyIndex, ownerId, isReply, comment, boardI
   const {id, authorImage, authorName, authorId, comment : commentText, createdAt, isSecret, replies} = comment;
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const {checkLogin} = useCheckLogin();
-  const isWriter = writerId === Number(authorId) || Number(authorId) === 1
-  const checkAuthor = ownerId === currentUser?.id || writerId === currentUser?.id || authorId === currentUser?.id || currentUser?.id === 1
-  const checkDeleteAuthor =  writerId === currentUser?.id || authorId === currentUser?.id || currentUser?.id === 1
+  const isWriter = writerId === Number(authorId) || Boolean(currentUser?.isAdmin)
+  const checkAuthor = ownerId === currentUser?.id || writerId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
+  const checkDeleteAuthor =  writerId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
   console.log(isReply, ownerId, ownerId === currentUser?.id)
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   

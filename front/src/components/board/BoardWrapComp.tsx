@@ -43,7 +43,7 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
           <BoardTitleInnerBox>{isMount && title.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>) }</BoardTitleInnerBox>
         </BoardTitleBox>
         <ListBox isLoading={isLoading} isEmpty={Boolean(currentList?.length < 1)}>
-          {isMount && currentUser?.id === 1 && title.length > 1 && <CreateBoardBtn onClick={onClickRouterPushCreatePage}>글쓰기</CreateBoardBtn>}
+          {isMount && currentUser?.isAdmin && title.length > 1 && <CreateBoardBtn onClick={onClickRouterPushCreatePage}>글쓰기</CreateBoardBtn>}
           {isLoading && <LoadingText />}
           {isLoading ||
             (currentList?.length >= 1 ? (
