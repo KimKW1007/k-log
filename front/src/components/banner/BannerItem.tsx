@@ -43,12 +43,12 @@ export default BaanerItem;
 const Item = styled.div<ItemProps>`
   position: absolute;
   z-index: 50;
-  width: 39.8px;
+  width: 40px;
   height: 100%;
   top: -6.5px;
   left: ${({idx}) => (idx * 39)}px;
   background: url(${({banner1}) => banner1}) no-repeat;
-  background-size: 977px auto;
+  background-size: 980px auto;
   background-position: -${({idx}) => (idx * 39)}px  center;
   transform-style: preserve-3d;
   transform: rotateY(${({ currentRotate }) => currentRotate}deg);
