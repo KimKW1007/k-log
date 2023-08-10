@@ -69,7 +69,7 @@ export class CommentRepository extends Repository<Comment> {
     let comment;
     const checkAuthor = await this.findOne({where :{id : commentId} , relations :{board : {subCategory : {category : {user :true}}}}})
     const writerId = checkAuthor.board.subCategory.category.user.id
-    if(user.id === 1 || comment.authorId === writerId){
+    if(user.isAdmin){
       comment = await this.findOneBy({id : commentId})
     }else{
       comment = await this.findOneBy({id : commentId, authorId : user.id})

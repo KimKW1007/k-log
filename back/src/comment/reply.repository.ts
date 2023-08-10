@@ -37,7 +37,7 @@ export class ReplyRepository extends Repository<Reply> {
     let comment;
     const checkAuthor = await this.findOne({where :{id : replyId} , relations : { connectedComment : {board : {subCategory : {category : {user :true}}}}}})
     const writerId = checkAuthor.connectedComment.board.subCategory.category.user.id
-    if(user.id === 1 || comment.authorId === writerId){
+    if(user.isAdmin){
       comment = await this.findOneBy({id : replyId})
     }else{
       comment = await this.findOneBy({id : replyId, authorId : user.id})
