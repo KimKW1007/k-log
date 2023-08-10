@@ -65,15 +65,28 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
     return () => clearInterval(interval);
   },[refresh_token])
 
+  const { postApi : logoutApi } = customApi('/auth/cleanCookie');
+  useEffect(()=>{
+    if(!sessionStorage.getItem('access_token')){
+      const logoutAsync = async()=>{
+        try{
+          await logoutApi({});
+        }catch(e){
+          console.log('Error logging out:', e)
+        }
+      }
+      logoutAsync()
+    }
+  },[])
 
-  const { seoData } = pageProps;
+
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Layout>
-            <CustomSeo seoData={seoData} />
+            <CustomSeo seoData={pageProps?.seoData ? pageProps.seoData : pageProps} />
             <Component {...pageProps} />
           </Layout>
         </ThemeProvider>
@@ -83,20 +96,23 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
   );
 };
 MyApp.getInitialProps = async (appContext: any) => {
-  const cookies = appContext.ctx.req.headers.cookie || '';
-  const cookieArray = cookies.split(';');
   let hasAccessToken = false;
   let refresh_token ;
   
-  for (let i = 0; i < cookieArray.length; i++) {
-    const cookie = cookieArray[i].trim(); // 쿠키 양쪽의 공백을 제거
+  if (typeof window === 'undefined') {
+    // 서버에서 실행 중인 경우에만 req 객체를 사용
+    const cookies = appContext.ctx.req.headers.cookie || '';
+    const cookieArray = cookies.split(';');
 
-    // access_token을 찾으면 해당 값을 변수에 저장
-    if (cookie.startsWith('access_token=')) {
-      hasAccessToken = true;
-    }
-    if (cookie.startsWith('refresh_token=')) {
-      refresh_token = cookie.split('=')[1];
+    for (let i = 0; i < cookieArray.length; i++) {
+      const cookie = cookieArray[i].trim();
+
+      if (cookie.startsWith('access_token=')) {
+        hasAccessToken = true;
+      }
+      if (cookie.startsWith('refresh_token=')) {
+        refresh_token = cookie.split('=')[1];
+      }
     }
   }
 
