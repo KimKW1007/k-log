@@ -17,7 +17,7 @@ const Banner = () => {
   const bannerList = new Array(24).fill(undefined).map((val, idx) => idx);
 
   const [currentRotate, setCurrentRotate] = useState<number>(0);
-  const [currentBg, setCurrentBg] = useState(banner[`banner1`]);
+  const [currentBg, setCurrentBg] = useState('');
   const [currentBannerNum, setCurrentBannerNum] = useRecoilState(currentBanner);
   const [resetRotate , setResetRotate] = useState(false);
 
@@ -31,16 +31,19 @@ const Banner = () => {
   // 배너 배경 animation
   useEffect(() => {
   let turnTimer: string | number | NodeJS.Timeout | undefined;
-    turnTimer = setInterval(() => {
-      if(document.hasFocus() && router.pathname === '/'){
-        setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
-        setCurrentRotate((prev) => prev - 120);
-      }
-    }, 15000);
+  if(!document.hasFocus())clearInterval(turnTimer);
+  turnTimer = setInterval(() => {
+    if(document.hasFocus() && router.pathname === '/'){
+      setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
+      setCurrentRotate((prev) => prev - 120);
+    }
+  }, 15000);
   return () => {
       clearInterval(turnTimer);
     };
   },[]);
+
+  /* deg가 -360일 때 0으로 초기화 */
   useEffect(()=>{
     let resetTimer: string | number | NodeJS.Timeout | undefined;
     if(currentRotate === -360){
@@ -59,10 +62,12 @@ const Banner = () => {
     };
   },[currentRotate])
 
+  /* bannerBgImage */
   useEffect(()=>{
     setCurrentBg(data?.[currentBannerNum-1]?.imageUrl ||  banner[`banner${currentBannerNum}`])
   },[currentBannerNum])
 
+  /* bannerBgImage 초기화 */
   useEffect(()=>{
     if(data?.[0]?.imageUrl){
       setCurrentBg(data?.[0]?.imageUrl)
@@ -71,6 +76,7 @@ const Banner = () => {
     }
   },[])
 
+  /* 마운트시 css 컨트롤 */
   useEffect(()=>{
     let settingTimer: string | number | NodeJS.Timeout | undefined;
     settingTimer = setTimeout(()=>{
@@ -92,7 +98,7 @@ const Banner = () => {
   return (
     <BannerWrap>
       <BannerBgBox>
-        <BannerBg settingState={settingState} currentBg={data?.[currentBannerNum-1]?.imageUrl ||  banner[`banner${currentBannerNum}`]} className='banner-background-image'></BannerBg>
+        <BannerBg settingState={settingState} currentBg={currentBg} className='banner-background-image'></BannerBg>
       </BannerBgBox>
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
