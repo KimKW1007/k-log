@@ -35,7 +35,7 @@ const SidebarHeader = () => {
   return (
     <HomeSidebarHeaderBox>
       <ImgBox isBgBlack>
-        {imageUrl && <Image src={imageUrl} alt={'프로필 이미지'} width={120} height={120} />}
+        <Image src={imageUrl || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
       </ImgBox>
       <UserDescBox>{descriptionMapping()}</UserDescBox>
     </HomeSidebarHeaderBox>
