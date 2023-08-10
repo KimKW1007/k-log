@@ -52,9 +52,12 @@ export class AuthService {
     });
   }
 
+
+  /* 회원가입 */
   async signUp(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     return this.userRepository.createUser(authRegistrationDto);
   }
+  /* 회원가입 시 이메일 인증 */
   async checkEmail(authCheckEmailDto: AuthCheckEmailDto): Promise<User[] | {user: User[], message: string}> {
     const { userEmail } = authCheckEmailDto;
     const user = await this.userRepository.find({ where: { userEmail }});
@@ -68,6 +71,8 @@ export class AuthService {
   }
   
 
+
+  /* 로그인 */
   async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{user : User,accessToken : string, refreshToken : string}> {
     const { userId, password } = authCredentialsDto;
     const user = await this.userRepository.findOneBy({ userId });
@@ -89,7 +94,7 @@ export class AuthService {
     });
   }
 
-
+  /* 계정설정 */
   async changeThings(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<string>{
     const foundUser = await this.userRepository.changeThings(authChangeThingsDto, user)
     const accessToken = this.accessToken(foundUser);
@@ -97,14 +102,19 @@ export class AuthService {
 
   }
   
+
+  /* 이메일 확인 */
   async checkChangeEmail(authCheckEmailDto: AuthCheckEmailDto , user: User): Promise<User[] | {user: User[], message: string}>{
     return await this.userRepository.checkChangeEmail(authCheckEmailDto, user)
   }
 
+
+  /* 비밀번호 변경 */
   async changePassword(authChangeThingsDto: AuthChangeThingsDto , user: User): Promise<{ message: string}>{
     return await this.userRepository.changePassword(authChangeThingsDto, user)
   }
 
+  /* 계정설정 비밀번호확인 */
   async checkCertificate(authPasswordCertificateDto: AuthPasswordCertificateDto , user: User): Promise<{ message: string}>{
     const {password} = authPasswordCertificateDto;
     const foundUser = await this.userRepository.findOneBy( {id : user.id} );
@@ -115,6 +125,7 @@ export class AuthService {
     return {message : 'success'}
   }
 
+  /* refreshToken 으로 AccessToken 새로받기 */
   async refresh(refreshTokenDto: RefreshTokenDto): Promise<{ accessToken: string }> {
     const { refresh_token } = refreshTokenDto;
 
@@ -134,6 +145,8 @@ export class AuthService {
 
     return {accessToken};
   }
+
+  /* 로그아웃 시 리프레쉬토큰 삭제*/
   async removeRefreshToken(userId: number): Promise<any> {
     return await this.userRepository.update({id : userId}, {
       currentRefreshToken: null,
@@ -141,6 +154,8 @@ export class AuthService {
     });
   }
 
+
+  /* 회원탈퇴 */
   async withdraw(user : User){
     const foundUser = await this.userRepository.findOne({where : {id : user.id}});
     if(!foundUser){
