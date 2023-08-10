@@ -42,7 +42,7 @@ export class UserRepository extends Repository<User> {
     return deletePasswordUser
   }
 
-  
+  /* 회원가입 */
   async createUser(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     const { userId, password, userName, userEmail } = authRegistrationDto;
 
