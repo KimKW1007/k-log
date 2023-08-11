@@ -74,7 +74,7 @@ ${({$isOverHeader, theme}) => $isOverHeader &&`
 `
 
 const CategoryTitle = styled.dt`
-  font-size: ${({ theme }) => theme.rem.p14};
+  font-size: 14px;
   a {
     display: block;
     color: #fff;
@@ -95,7 +95,7 @@ const CategoryItem = styled.dd`
   a {
     display: block;
     color: #fff;
-    font-size: ${({ theme }) => theme.rem.p12};
+    font-size: 13px;
     word-break: keep-all;
     padding: 7px 20px;
     transition: 0.2s;
