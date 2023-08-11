@@ -57,7 +57,7 @@ export class AuthService {
   async signUp(authRegistrationDto: AuthRegistrationDto): Promise<void> {
     return this.userRepository.createUser(authRegistrationDto);
   }
-  /* 회원가입 시 이메일 인증 */
+  /* 회원가입 시 해당 이메일 아이디 */
   async checkEmail(authCheckEmailDto: AuthCheckEmailDto): Promise<User[] | {user: User[], message: string}> {
     const { userEmail } = authCheckEmailDto;
     const user = await this.userRepository.find({ where: { userEmail }});
