@@ -136,7 +136,7 @@ const SearchListArea = styled.div`
   width: 100%;
   max-height: 480px;
   overflow-y: scroll;
-  padding: 0 20px;
+  padding: 0 10px 0 20px;
 `;
 
 const SearchFooter = styled.div`
