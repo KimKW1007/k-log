@@ -45,15 +45,18 @@ export class CommentRepository extends Repository<Comment> {
     }
   /*   await this.mailerService
     .sendMail({
-      from: mailConfig.mailId,
+      from: `"K : log" <${mailConfig.mailId}>`,
       to: mailConfig.mailId,
-      subject: `K : Log 댓글 : ${foundBoard.boardTitle} - ${userName}님`,
+      subject: `K : Log : ${userName}님의 댓글 - ${foundBoard.boardTitle}`,
       html: `<div style='width: 100%; max-width: 700px; margin: 0 auto; min-height: 500px; background :#23262d; color :#fff; padding : 30px 60px; box-sizing: border-box;'>
       <h2 style='font-size: 40px; text-align:center;'>K : Log</h2>
       <div style="text-align:center; margin-bottom :50px;">
         <a href="http://localhost:3000/${boardId}" style="color: #fff; display:inline-block; ">게시물 바로가기</a>
       </div>
-      <div style="width: 100%; padding : 20px 30px; min-height: 300px; background :rgba(128,128,128,0.3); box-sizing: border-box; text-align:center;">${comment}</div>
+      <div style="width: 100%; padding : 20px 30px; min-height: 300px; background :rgba(128,128,128,0.3); box-sizing: border-box; text-align:center;">
+        <p style="text-align: left;">${userName} 님</p>
+        ${comment}
+      </div>
       </div>`
     }).catch(e =>{
       throw new Error('메일 전송 중 오류 발생')
