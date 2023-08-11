@@ -2,6 +2,7 @@ import React from 'react';
 
 const useConvert = () => {
   const convertContent = (contents: string) => {
+    if(!contents) return '';
     const convertValue = contents.replace(/&lt;/g, '@lt;').replace(/</g, '&lt;').replace(/@lt;/g, '<').replace(/&gt;/g, '@gt;').replace(/>/g, '&gt;').replace(/@gt;/g, '>');
     return convertValue;
   };
