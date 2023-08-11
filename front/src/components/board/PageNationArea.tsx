@@ -5,9 +5,11 @@ import { IosArrowLtr, IosArrowRtl } from '@styled-icons/fluentui-system-filled'
 import { useRecoilState } from 'recoil';
 import { currentPagenation } from '@atoms/atoms';
 import useIsMount from 'src/hooks/useIsMount';
+import { useRouter } from 'next/router';
 
 
 const PageNationArea = ({lastPage} : {lastPage :number;}) => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const [pageNation, setPageNation] = useState<number[]>([]);
   const {isMount} = useIsMount();
@@ -43,7 +45,9 @@ const PageNationArea = ({lastPage} : {lastPage :number;}) => {
   }
 
   useEffect(()=>{
-    if(lastPage >= 6){
+    if(lastPage < 6){
+      setPageDotState([false, false])
+    }else {
       if(currentPage <= 3){
         setPageDotState([false, true])
       }else if(currentPage > lastPage - 3){
@@ -52,7 +56,7 @@ const PageNationArea = ({lastPage} : {lastPage :number;}) => {
         setPageDotState([true, true])
       }
     }
-  },[currentPage])
+  },[lastPage, currentPage])
 
 
   useEffect(()=>{
