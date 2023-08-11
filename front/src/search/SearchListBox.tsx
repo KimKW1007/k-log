@@ -1,185 +1,217 @@
-import React, { MouseEventHandler } from 'react'
-import styled, {keyframes} from 'styled-components';
+import React, { MouseEventHandler, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
-import {Clipboard} from '@styled-icons/bootstrap/Clipboard';
-import {ArrowEnterLeft} from '@styled-icons/fluentui-system-filled/ArrowEnterLeft';
+import { Clipboard } from '@styled-icons/bootstrap/Clipboard';
+import { ArrowEnterLeft } from '@styled-icons/fluentui-system-filled/ArrowEnterLeft';
 import useConvert from 'src/hooks/useConvert';
 import { useRecoilState } from 'recoil';
 import { searchModalState, searchRecent } from '@atoms/atoms';
 import { X } from '@styled-icons/bootstrap/X';
 import { CleanBtn } from './SearchInputBox';
-
+import customApi from '@utils/customApi';
+import { SearchBoardProps } from '@src/types/board';
+import { AccessTime } from '@styled-icons/material-rounded/AccessTime'
+import { useFormContext } from 'react-hook-form';
 
 interface SearchListBoxProps {
-  data: any; 
-  title: string; 
-  currentValue :string
-  isRecent ?: boolean;
+  data: any;
+  title: string;
+  currentValue: string;
+  isRecent?: boolean;
 }
 
-const SearchListBox = ({data, title, currentValue, isRecent}:SearchListBoxProps) => {
+const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const [recentBoard, setRecentBoard] = useRecoilState(searchRecent);
 
-  const {convertContent} = useConvert();
+  const { convertContent } = useConvert();
 
+  const onClickLink = (board: SearchBoardProps) => () => {
+    const isDuplicate = recentBoard.some(({ id }: any) => id === board.id);
 
-
-  const onClickLink = (board : any)=> ()=>{
-    const isDuplicate = recentBoard.some(({id}: any) => id === board.id);
-    if(!isDuplicate) {
-      setRecentBoard(prev => [...prev, board]);
+    if (!isDuplicate) {
+      if (recentBoard.length > 5) {
+        setRecentBoard((prev) => {
+          prev = prev.filter((x) => x !== prev.at(-1));
+          return [board, ...prev];
+        });
+      } else {
+        setRecentBoard((prev) => [board, ...prev]);
+      }
     }
-    setIsOpenSearchModal(false)
-  }
+    setIsOpenSearchModal(false);
+  };
 
-  const handleDeleteRecent = (id : number)=> (e: React.MouseEvent<HTMLButtonElement>)=>{
+  const handleDeleteRecent = (id: number) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    setRecentBoard(prev => prev.filter((board: any) => id !== board.id));
-  }
+    setRecentBoard((prev) => prev.filter((board: any) => id !== board.id));
+  };
 
-
-  const highlightSearchTerm = (text : string) => {
+  const highlightSearchTerm = (text: string) => {
     if (!currentValue) return text;
     const index = text.toLowerCase().indexOf(currentValue.toLowerCase());
 
     if (index !== -1) {
-        const start = Math.max(0, index - 15);
-        const end = Math.min(text.length, index + currentValue.length + 50);
-        const highlightedText = text.substring(start, end);
-        const displayedText = start > 0 ? `...${highlightedText}` : highlightedText;
-        return displayedText.replace(new RegExp(currentValue, 'gi'), '<mark>$&</mark>');
+      const start = Math.max(0, index - 15);
+      const end = Math.min(text.length, index + currentValue.length + 50);
+      const highlightedText = text.substring(start, end);
+      const displayedText = start > 0 ? `...${highlightedText}` : highlightedText;
+      return displayedText.replace(new RegExp(currentValue, 'gi'), '<mark>$&</mark>');
     }
 
     return text;
-};
+  };
+
+  useEffect(() => {
+    if (recentBoard) {
+      const copiedRecentBoard = [...recentBoard];
+      Promise.all(copiedRecentBoard.map(async (board) => {
+        const { getApi } = customApi(`/board/getBoard/${board.id}`);
+        const { currentBoard: { contents, boardTitle, tags } } = await getApi();
+        return {
+          ...board,
+          contents,
+          boardTitle,
+          tags
+        };
+      })).then(updatedBoards => {
+        setRecentBoard(updatedBoards)
+      });
+    }
+  }, []);
+
   return (
     <>
-      {data.length > 0  && <SearchList isRecent={isRecent}>
-        <SearchListTitle>
-          <span>{title}</span>
-        </SearchListTitle>
-        {data.map((board: any)=>{
-        const {id, boardTitle, contents, tags} = board
-        return(
-          <SearchItem>
-            <SearchItemLink href={`/${id}`} onClick={onClickLink(board)} $isRecent={isRecent}>
-              <SearchItemIconBox>
-                <Clipboard/>
-              </SearchItemIconBox>
-              <SearchItemContents>
-                <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(boardTitle) }}  />
-                <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === "Tags"? tags : convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }}  />
-              </SearchItemContents>
-              <SearchItemIconBox className='enterIconBox'>
-                <ArrowEnterLeft/>
-              </SearchItemIconBox>
-              {isRecent && <RecentDeleteBtnBox>
-                <CleanBtn onClick={handleDeleteRecent(id)}>
-                  <X />
-                </CleanBtn>
-              </RecentDeleteBtnBox>}
-            </SearchItemLink>
-          </SearchItem>
-          )}
-        )}
-      </SearchList>
-      }
+      {data.length > 0 && (
+        <SearchList isRecent={isRecent}>
+          <SearchListTitle>
+            <span>{title}</span>
+          </SearchListTitle>
+          {data.map((board: any) => {
+            const { id, boardTitle, contents, tags } = board;
+            return (
+              <SearchItem>
+                <SearchItemLink href={`/${id}`} onClick={onClickLink(board)} $isRecent={isRecent}>
+                  <SearchItemIconBox>
+                    {isRecent ? <AccessTime/> : <Clipboard />}
+                  </SearchItemIconBox>
+                  <SearchItemContents>
+                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(boardTitle) }} />
+                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+                  </SearchItemContents>
+                  <SearchItemIconBox className="enterIconBox">
+                    <ArrowEnterLeft />
+                  </SearchItemIconBox>
+                  {isRecent && (
+                    <RecentDeleteBtnBox>
+                      <CleanBtn onClick={handleDeleteRecent(id)}>
+                        <X />
+                      </CleanBtn>
+                    </RecentDeleteBtnBox>
+                  )}
+                </SearchItemLink>
+              </SearchItem>
+            );
+          })}
+        </SearchList>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default SearchListBox
+export default SearchListBox;
 
 const RecentDeleteBtnBox = styled.div`
-  position:absolute;
-  right:5px;
-  top:50%;
+  position: absolute;
+  right: 5px;
+  top: 50%;
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  flex-shrink : 0;
-`
-
+  flex-shrink: 0;
+`;
 
 const SearchListTitle = styled.div`
-  color: ${({theme}) => theme.color.success};
+  color: ${({ theme }) => theme.color.success};
   font-size: 14px;
   padding: 10px 0;
-`
+`;
 
 const SearchItemContents = styled.div`
-  width:calc(100% - 60px);
+  width: calc(100% - 60px);
   padding: 0 20px;
-  p{
-    width:100%;
-    white-space : nowrap;
+  p {
+    width: 100%;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 26px;
   }
-  mark{
+  mark {
     background: transparent;
-    color: ${({theme}) => theme.color.success};
+    color: ${({ theme }) => theme.color.success};
     text-decoration: underline;
-    transition : .2s;
+    transition: 0.2s;
   }
-`
+`;
 const SearchItemIconBox = styled.div`
   flex-shrink: 0;
-  width:30px;
+  width: 30px;
   padding: 3px;
-  flex-shrink : 0;
-  svg{
-    width:100%;
+  flex-shrink: 0;
+  svg {
+    width: 100%;
     color: #fff;
   }
-`
+`;
 
-const SearchItemLink = styled(Link)<{$isRecent ?: boolean;}>`
+const SearchItemLink = styled(Link)<{ $isRecent?: boolean }>`
   position: relative;
-  width:100%;
+  width: 100%;
   padding: 10px 10px 10px 20px;
-  display:flex;
-  align-items:center;
-  transition : .2s;
+  display: flex;
+  align-items: center;
+  transition: 0.2s;
   background: #232323;
-  >${SearchItemIconBox}.enterIconBox{
-    opacity:0;
+  > ${SearchItemIconBox}.enterIconBox {
+    opacity: 0;
     margin: auto 0 auto auto;
-    transition : .2s;
+    transition: 0.2s;
   }
-  &:hover{
-    >${SearchItemIconBox}.enterIconBox{
-      opacity:1;
+  &:hover {
+    > ${SearchItemIconBox}.enterIconBox {
+      opacity: 1;
     }
-    background: ${({theme}) => theme.color.success};
-    mark{
+    background: ${({ theme }) => theme.color.success};
+    mark {
       color: #fff;
       text-decoration: underline;
     }
   }
-  ${({$isRecent}) => $isRecent &&`
+  ${({ $isRecent }) =>
+    $isRecent &&
+    `
     padding: 10px 40px 10px 20px;
   `}
-`
+`;
 
-const SearchItem= styled.li`
-  width:100%;
+const SearchItem = styled.li`
+  width: 100%;
   border-radius: 3px;
-  overflow:hidden;
-  
-  & + &{
+  overflow: hidden;
+
+  & + & {
     margin-top: 6px;
   }
-`
+`;
 
-const SearchList = styled.ul<{isRecent ?: boolean;}>`
-  padding:  10px 0;
-  ${({isRecent}) => isRecent &&`
+const SearchList = styled.ul<{ isRecent?: boolean }>`
+  padding: 10px 0;
+  ${({ isRecent }) =>
+    isRecent &&
+    `
     border-bottom: 1px solid rgba(128,128,128,1);
   `}
-`
-
+`;
