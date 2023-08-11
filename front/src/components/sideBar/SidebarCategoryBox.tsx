@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components';
 import CategoryItems from '@components/category/CategoryItems';
+import { CategoryAllListLink } from '@components/category/CategoryList';
 const SidebarCategoryBox = ({isMenu} : {isMenu ?: boolean;}) => {
   return (
     <CategoryBox className='customScroll' isMenu={isMenu}>
+      <CategoryAllListLink href={'/category'}>분류 전체보기</CategoryAllListLink>
       <CategoryItems/>
     </CategoryBox>
   )
@@ -28,19 +30,22 @@ const CategoryBox = styled.div<{isMenu ?: boolean;}>`
   dt{
     margin-bottom: 5px;
     a{
-      font-size: 15px;
+      font-size: 18px;
       padding: 10px 7px;
 
     }
   }
   dd{
     a{
-      font-size: 14px;
+      font-size: 16px;
       padding: 10px 30px;
       &:after{
         left: 14px;
         top: 16px;
       }
     }
+  }
+  ${CategoryAllListLink}{
+    font-size: 18px;
   }
 `
