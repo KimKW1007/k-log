@@ -50,10 +50,8 @@ const Banner = () => {
       resetTimer  = setTimeout(()=>{
         setResetRotate(true)
         setCurrentRotate((prev) => prev = 0 );
-        console.log({resetRotate})
         setTimeout(()=>{
           setResetRotate(false)
-          console.log({resetRotate})
         },1200)
       },7000)
     }
