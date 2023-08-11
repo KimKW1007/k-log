@@ -24,7 +24,7 @@ import { GET_BOARD } from '@utils/queryKeys';
 
 
 interface ForwardedQuillComponent extends ReactQuillProps {
-  forwardedRef: React.Ref<ReactQuill>;
+  forwardedRef: React.RefObject<ReactQuill>;
 }
 
 
@@ -44,7 +44,6 @@ const QuillNoSSRWrapper = dynamic(
   },
   {
     ssr: false,
-    loading : ({isLoading}) => <PageLoading isLoading={isLoading!}/>
   }
 );
 
@@ -78,6 +77,8 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
 
   const  {convertContent} = useConvert();
 
+  /* 로딩 */
+  const [isLoading, setIsLoading] = useState(true);
 
 
   /* 생성 및 수정 */
@@ -145,6 +146,19 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     };
   }, [isMount, isSuccess]);
 
+
+
+  useEffect(()=>{
+    let isLoadingTimer: string | number | NodeJS.Timeout | undefined;
+    clearInterval(isLoadingTimer)
+    isLoadingTimer=  setInterval(()=>{
+      if(quillRef.current?.editor?.root){
+        setIsLoading(false);
+        clearInterval(isLoadingTimer)
+      }
+      },1000)
+  },[data])
+
   const mutateFn = ({boardTitle, image}: any)=>{
     const contents = quillRef.current?.editor?.root.innerHTML!
     const formData = new FormData();
@@ -172,6 +186,7 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
 
   return (
     <>
+      <PageLoading isLoading={isLoading!} />
       {isMount ? (
         <FormProvider {...methods}>
           <Form onSubmit={handleSubmit(onSubmit)}>
