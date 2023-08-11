@@ -39,6 +39,7 @@ const SearchInputBox = ({setIsTyping} : SearchInputBoxProps) => {
             type="button"
             onClick={() => {
               setValue('search', '');
+              setFocus("search")
             }}>
             <X />
           </CleanBtn>
