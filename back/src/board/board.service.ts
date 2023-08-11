@@ -28,8 +28,8 @@ export class BoardService {
   }
 
   async getBoard(id: number) {
-    const checkBoard = await this.boardRepository.findOne({ where: { id, boardTitle : "" }});
-    if (checkBoard === null || checkBoard) {
+    const checkBoard = await this.boardRepository.findOne({ where: { id, boardTitle : Not("") }});
+    if (!checkBoard) {
       throw new NotFoundException('없는 Board Id입니다.');
     }
     const currentBoard = await this.boardRepository.findOne({ where: { id }, relations: { subCategory: { category: { user: true } } } });
