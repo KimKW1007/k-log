@@ -72,7 +72,7 @@ const BoardDetail = ({ id }: { id: string }) => {
             </CreatedDateBox>
           </DetailTitleBox>
           <ContentsWrap ref={contentsWrapRef}  />
-          <TagBox>{tags.length > 0 && tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</TagBox>
+          {tags.length > 0 && <TagBox>{tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</TagBox>}
           <AnotherBoardArea>
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
             <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
@@ -154,6 +154,7 @@ const TagBtn = styled.div`
 
 const AnotherBoardArea = styled(OnlyAlignCenterFlex)`
   width: 100%;
+  margin-top: 50px;
   justify-content: space-between;
   @media (max-width: 900px) {
     display: block;
