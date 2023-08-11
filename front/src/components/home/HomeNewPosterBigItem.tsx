@@ -15,7 +15,7 @@ const HomeNewPosterBigItem = (board : any) => {
 
   return (
     <PosterItem>
-        <PosterItemLink href={`/${id}`}>
+      <PosterItemLink href={`/${id}`}>
         <PosterTop>
           <PosterCategory>
             <h3>{`${categoryTitle} - ${categorySubTitle}`}</h3>
@@ -39,13 +39,14 @@ const HomeNewPosterBigItem = (board : any) => {
 export default HomeNewPosterBigItem;
 
 const PosterItemLink = styled(Link)`
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding: 40px 30px 30px;
+  height:100%;
 
 `
 const AuthorAndDateBox = styled(OnlyAlignCenterFlex)`
-
-
+  margin-top: 20px;
 `
 
 const ImageBox = styled.div`
@@ -54,6 +55,7 @@ const ImageBox = styled.div`
   background :#fff;
   margin-bottom: 30px;
   overflow:hidden;
+margin : auto 0 0;
 `
 const ImageBg =styled.div<{thumbnailUrl : string; isDefault: boolean;}>`
   width:100%;
