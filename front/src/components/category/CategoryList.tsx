@@ -43,7 +43,7 @@ const CategoryNav = styled.nav`
 
 `;
 
-const CategoryAllListLink = styled(Link)<{$isOverHeader :boolean}>`
+export const CategoryAllListLink = styled(Link)<{$isOverHeader ?:boolean}>`
   display: block;
   font-size: ${({ theme }) => theme.rem.p14};
   border-bottom: 1px solid #858585;
