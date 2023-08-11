@@ -24,11 +24,12 @@ export class FileService {
     const found = await this.imagesRepository.find({
       where: { boardId: '작성중', userId },
     });
+    if(!found){
+      return { message : "변경할 이미지가 없습니다."}
+    }
     try {
-      if (found) {
-        found.map((board) => (board.boardId = String(boardId)));
-        await this.imagesRepository.save(found);
-      }
+      found.map((board) => (board.boardId = String(boardId)));
+      await this.imagesRepository.save(found);
     } catch (e) {
       throw new BadRequestException('boardId 변경 중 오류 발생');
     }
@@ -39,22 +40,20 @@ export class FileService {
     const found = await this.imagesRepository.find({
       where: { boardId, userId },
     });
-    if (found) {
-      try {
-        const files = fs.readdirSync(`${process.cwd()}/uploads`, 'utf8');
-        const filtered = files.filter((x) =>
-          found.some((v, i) => v.imageUrl.includes(x)),
-        );
-        filtered.map((deleteImageName) => {
-          fs.unlinkSync(`${process.cwd()}/uploads/${deleteImageName}`);
-        });
-        await this.imagesRepository.delete({ boardId, userId });
-        return { message: '삭제 성공' };
-      } catch (e) {
-        throw new BadRequestException('deleteFiles 오류 발생');
-      }
+    if(!found) return { message: '삭제 할 board Image가 없습니다' };
+    try {
+      const files = fs.readdirSync(`${process.cwd()}/uploads`, 'utf8');
+      const filtered = files.filter((x) =>
+        found.some((v, i) => v.imageUrl.includes(x)),
+      );
+      filtered.map((deleteImageName) => {
+        fs.unlinkSync(`${process.cwd()}/uploads/${deleteImageName}`);
+      });
+      await this.imagesRepository.delete({ boardId, userId });
+      return { message: '삭제 성공' };
+    } catch (e) {
+      throw new BadRequestException('deleteFiles 오류 발생');
     }
-    return { message: '삭제 할 board Image가 없습니다' };
   }
 
   async checkDeleteUnnecessaryFile(body, boardId: string, userId: string) {
