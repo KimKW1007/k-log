@@ -18,15 +18,7 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
   const { watch, setValue } = useFormContext();
   const [image, setImage] = useState('');
   const router = useRouter();
-  const [currentTitle, setCurrentTitle] = useState('');
 
-  useEffect(() => {
-    if (router.query) {
-      const title = router.query.title;
-      const subTitle = router.query.subTitle;
-      setCurrentTitle(`/category/${title}/${subTitle}`);
-    }
-  }, [router.query]);
 
   useEffect(()=>{
     if(defaultThumbnail){
