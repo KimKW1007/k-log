@@ -43,8 +43,9 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     onSuccess(data, variables, context) {
       console.log({data})
       setIsTyping(false);
-      const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(watch('search').toLowerCase()) || item.contents.toLowerCase().includes(watch('search').toLowerCase()));
-      const filteredDataWithTag = data.filter((item: any) => item.tags.toLowerCase().includes(watch('search').toLowerCase()));
+      const value = watch('search').trim()
+      const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(value.toLowerCase()) || item.contents.toLowerCase().includes(value.toLowerCase()));
+      const filteredDataWithTag = data.filter((item: any) => item.tags.toLowerCase().includes(value.toLowerCase()));
       setSearchedData(filteredData.slice(0,5));
       setSearchedDataWithTag(filteredDataWithTag.slice(0,5));
     },
@@ -72,7 +73,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     if(watch('search')?.length > 0){
       clearTimeout(mutateTimer);
       mutateTimer = setTimeout(() => {
-        mutate({searchValue : watch('search')})
+        mutate({searchValue : watch('search').trim()})
       }, 500);
     }else{
       setIsTyping(false);
@@ -105,11 +106,11 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
                   <>
                     {searchedData.length > 0 || searchedDataWithTag.length > 0 ? (
                       <>
-                        <SearchListBox data={searchedData} title={'Title | Contents'} currentValue={watch('search')} />
-                        <SearchListBox data={searchedDataWithTag} title={'Tags'} currentValue={watch('search')} />
+                        <SearchListBox data={searchedData} title={'Title | Contents'} currentValue={watch('search').trim()} />
+                        <SearchListBox data={searchedDataWithTag} title={'Tags'} currentValue={watch('search').trim()} />
                       </>
                     ) : (
-                      <NoResult value={watch('search')} />
+                      <NoResult value={watch('search').trim()} />
                     )}
                   </>
                 )}
