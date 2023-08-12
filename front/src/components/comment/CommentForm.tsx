@@ -17,6 +17,7 @@ import { X } from '@styled-icons/bootstrap';
 import useIsMount from 'src/hooks/useIsMount';
 import { GET_COMMENTS } from '@utils/queryKeys';
 import useCheckLogin from 'src/hooks/useCheckLogin';
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface CommentFormProps{
   isReply ?: boolean; 
@@ -32,12 +33,7 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
   const [placeholderText, setPlaceholderText] = useState('로그인 후 이용 가능합니다.')
   const {checkLogin} = useCheckLogin();
   const {isMount} = useIsMount();
-  const router = useRouter()
-  const [row, setRow] = useState(1);
-  const resizeTextarea = (e : any) => {
-    const { value } = e.target;
-    setRow(value.split("\n").length)
-  };
+  const router = useRouter();
 
 
   const {postApi : sendMailPostApi} = customApi(`/comment/sendMail/${id}`)
@@ -59,7 +55,6 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
       console.log({data})
       queryClient.invalidateQueries([GET_COMMENTS, id])
       setValue('comment', '')
-      setRow(1);
       setReplyIndex!(-1)
     },
   })
@@ -72,7 +67,6 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
       if(comment?.trim() === '' || !comment){
         alert("댓글을 입력해주세요")
         setValue('comment', '')
-        setRow(1);
       }else{
         mutate({comment,isSecret:`${isSecret}`})
         sendMailMutate({comment,isSecret:`${isSecret}`})
@@ -87,7 +81,11 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
       setPlaceholderText('로그인 후 이용 가능합니다.')
     }
   },[isMount])
-
+  const handleTextChange = (event : React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = event.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
 
   return (
     <Form isReply={isReply} onSubmit={handleSubmit(onSubmit)}>
@@ -103,8 +101,7 @@ const CommentForm = ({isReply, id, commentId, setReplyIndex} : CommentFormProps)
           <CommentInnerBox>
             <CommentTextArea 
             {...register('comment')}
-            row={row}
-            onChange={resizeTextarea}
+            onChange={handleTextChange}
             placeholder={placeholderText}
             disabled={isMount && !Boolean(currentUser)}
             >
@@ -195,14 +192,12 @@ const SubmitBox = styled.div`
   overflow:hidden;
 `
 
-const CommentTextArea = styled.textarea<{row : number}>`
+const CommentTextArea = styled(TextareaAutosize)`
   flex: 1;
   resize :none;
   line-height: 24px;
   font-size : 14px;
   min-height: 150px;
-  // height 계산법 line-height * row + padding(top/bottom)
-  height: ${({ row }) => 24 * row + 10}px;
   padding: 0 10px 10px;
   background: transparent;
   outline: 0;
@@ -236,16 +231,7 @@ export const AuthorInnerBox =styled.div`
 
 `
 
-export const AuthorImageBox = styled.div<{isWriter ?: boolean;}>`
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  overflow: hidden;
-  flex-shrink : 0;
-  ${({isWriter}) => isWriter &&`
-    order : 2;
-  `}
-`
+
 
 const AuthorBox = styled.div`
   padding: 15px 30px 15px;
