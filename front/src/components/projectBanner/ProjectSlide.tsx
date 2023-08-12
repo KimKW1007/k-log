@@ -47,7 +47,7 @@ const ProjectSlide = () => {
         {containerList.map((_: any, idx:  number)=>(
           <SlideContainer key={idx + 'salt'} ref={idx === 0 ? ref1 : ref2} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             {newData && newData.map(({id, title, link}, index) =>(
-                <SlideItem key={idx + id + 'salt' + index}>
+                <SlideItem key={idx + id + 'project' + index}>
                   <Link href={link} target='_blank'>{title}</Link>
                 </SlideItem>
               ))}

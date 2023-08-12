@@ -32,7 +32,7 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
         </Tab>
       ))}
       {currentUser?.isAdmin && settingBanner && 
-        <Tab onClick={onClickTab(settingBanner)} key={settingBanner + 'salt'} isCurrent={settingBanner === currentTab} isForward={isForward}>
+        <Tab onClick={onClickTab(settingBanner)} isCurrent={settingBanner === currentTab} isForward={isForward}>
         {settingBanner}
       </Tab>
       }
@@ -44,14 +44,14 @@ const AccountEdit = ({isForward, isDisappear, currentTab, setCurrentTab} :Accoun
       <EditBox>
         {isDisappear || currentTab === '배너설정' && <BannerTabBox>
           {bannerEditTabList.map((title,idx)=>(
-            <BannerDetailTab onClick={() => setCurrentBannerTitle(title)} key={idx + 'saltMob' + title} isCurrent={title === currentBannerTitle}>
+            <BannerDetailTab onClick={() => setCurrentBannerTitle(title)} key={idx + 'bannerEditTabList' + title} isCurrent={title === currentBannerTitle}>
               {title}
             </BannerDetailTab>
           ))}
           </BannerTabBox>}
         {isDisappear && <MobTabBox>
           {accountEditMobTabList.map((title, idx)=>(
-            <MobTap onClick={onClickTab(title)} key={idx + 'saltMob' + title} isCurrent={title === currentTab}>
+            <MobTap onClick={onClickTab(title)} key={idx + 'accountEditMobTabList' + title} isCurrent={title === currentTab}>
               {title}
             </MobTap>
           ))}

@@ -6,7 +6,7 @@ const IdListByEmail = ({ userIds }: UserIds) => {
   return (
     <React.Fragment>
       <AccountsBox>
-        {userIds && userIds.length >= 1 ? userIds.map(({ id, userId }) => <p key={id}>{userId}</p>) : <p>가입된 아이디가 없습니다</p>}
+        {userIds && userIds.length >= 1 ? userIds.map(({ id, userId }) => <p key={'userIds' + id}>{userId}</p>) : <p>가입된 아이디가 없습니다</p>}
       </AccountsBox>
     </React.Fragment>
   );

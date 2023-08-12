@@ -17,7 +17,7 @@ const SidebarHeader = () => {
   const descriptionMapping = ()=>{
     if(description){
       return description.split("\r\n").map((ele,idx)=>(
-        <React.Fragment key={`${idx + 'salt' + ele}`}>
+        <React.Fragment key={`${idx + 'description' + ele}`}>
         {ele === ''? <br /> : <p>{ele}</p>}
         </React.Fragment>
         

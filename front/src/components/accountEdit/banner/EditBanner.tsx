@@ -84,7 +84,7 @@ const EditBanner = () => {
       </FormProvider>
       <BannerList>
         {bannerList.map((listNumber : number, index: number)=>(
-          <BannerItem onClick={()=> setCurrentListNumber(listNumber)}>
+          <BannerItem key={'bannerList' + listNumber} onClick={()=> setCurrentListNumber(listNumber)}>
             <BannerNumber>
               {listNumber}
             </BannerNumber>

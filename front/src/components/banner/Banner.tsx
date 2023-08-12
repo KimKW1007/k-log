@@ -101,7 +101,7 @@ const Banner = () => {
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele,idx) => (
-            <BannerItem key={ele + 'salt' + idx} data={data} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
+            <BannerItem key={ele + 'bannerList' + idx} data={data} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
       </BannerInnerBox>

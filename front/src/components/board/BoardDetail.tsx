@@ -30,9 +30,7 @@ const BoardDetail = ({ id }: { id: string }) => {
   const { getApi } = customApi(`/board/getBoard/${id}`);
   const { isMount } = useIsMount();
   const { convertContent } = useConvert();
-  const { data, isLoading, refetch } = useQuery([GET_BOARD, id], () => getApi(), {
-    enabled: !!isMount
-  });
+  const { data, isLoading, refetch } = useQuery([GET_BOARD, id], () => getApi());
   const { currentBoard, prevBoard, nextBoard } = data ?? {};
   const { author, authorImage, boardTitle, contents, createdAt, thumbnail, tags, subCategory } = currentBoard ?? {};
   const { categorySubTitle, category } = subCategory ?? {};
@@ -51,9 +49,6 @@ const BoardDetail = ({ id }: { id: string }) => {
     }
   }, [data, contentsWrapRef]);
 
-  useEffect(()=>{
-    refetch()
-  },[isMount])
 
   return (
     <>
@@ -72,7 +67,9 @@ const BoardDetail = ({ id }: { id: string }) => {
             </CreatedDateBox>
           </DetailTitleBox>
           <ContentsWrap ref={contentsWrapRef}  />
-          {tags.length > 0 && <TagBox>{tags.split(',').map((tag: string, idx: number) => <TagBtn key={tag + idx}>{tag}</TagBtn>)}</TagBox>}
+          {tags.length > 0 && <TagBox>
+            {tags.split(',').map((tag: string, idx: number) => <TagBtn key={"tags" + tag + idx}>{tag}</TagBtn>)}
+            </TagBox>}
           <AnotherBoardArea>
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
             <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
@@ -134,7 +131,7 @@ const TagBox = styled(OnlyAlignCenterFlex)`
   flex-wrap:wrap;
   padding: 30px 0;
   border-bottom: 1px solid rgba(128,128,128,0.3);
-
+  gap: 10px;
 `;
 const TagBtn = styled.div`
   padding: 7px 15px 5px;
@@ -144,9 +141,6 @@ const TagBtn = styled.div`
   background: #454545;
   transition: 0.3s;
   cursor:default;
-  & + & {
-    margin-left: 10px;
-  }
   &:hover {
     background: ${({ theme }) => theme.color.success};
   }

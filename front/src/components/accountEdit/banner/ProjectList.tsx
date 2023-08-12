@@ -52,7 +52,7 @@ const ProjectList = ({projects} : ProjectsListProps) => {
       {projects?.length > 0 || <EmptyDataText>아직 안 만들었나봐요..</EmptyDataText>}
       <ProjectListBox>
         {projects?.length > 0 && projects.map(({title, id}) =>(
-          <ProjectItem>
+          <ProjectItem key={'project' + id}>
             <p>{title}</p>
             <DeleteBox>
               <DeleteBtn type='button' onClick={handleDeleteModal(id)}>

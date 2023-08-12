@@ -18,7 +18,7 @@ const AccountEditInputsBox = ({currentTab, currentBannerTitle } : {[key:string] 
       <InputsBox isMainBanner={currentTab === '배너설정'}> 
         {currentTab === '카테고리' && <EditSideBar isAdmin={Boolean(currentUser?.isAdmin)}/>}
         {currentTab === '개인정보변경' && accountEditInputList.map(({ name, title }, idx) => (
-          <AccountEditBox title={title} key={idx + 'salt' + title} name={name} />
+          <AccountEditBox title={title} key={idx + 'accountEditInputList' + title} name={name} />
         ))}
         {currentTab === '비밀번호변경' && <ChangePassword/>}
         {currentTab === '회원탈퇴' && <Withdraw/>}

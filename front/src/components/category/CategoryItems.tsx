@@ -21,14 +21,14 @@ const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
         }
       {data?.length > 0 &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-          <CategoryItmeList $isOverHeader={isOverHeader} key={categoryTitle}>
+          <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
             <CategoryTitle>
               <Link href={`/category/${categoryTitle.replaceAll("/", "-")}`}>
                 {categoryTitle}
               </Link>
             </CategoryTitle>
             {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
-              <CategoryItem key={categorySubTitle}>
+              <CategoryItem key={'categorySubTitle' + categorySubTitle}>
                 <Link href={`/category/${categoryTitle.replaceAll("/", "-")}/${categorySubTitle.replaceAll("/", "-")}`}>
                   {categorySubTitle}
                 </Link>
