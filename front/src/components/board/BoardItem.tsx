@@ -26,7 +26,7 @@ const BoardItem = (board : any) => {
           <ItemTitleBox>
             <p>{boardTitle}</p>
           </ItemTitleBox>
-          <ItemDescBox dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+          <ItemDescBox dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '').slice(0,500)) }} />
           <ItemDetailBox>
             <AuthorBox author={author} authorImage={authorImage} createdAt={createdAt} />
           </ItemDetailBox>
@@ -47,6 +47,7 @@ const ItemLink = styled(Link)`
   border-radius: 10px;
   overflow: hidden;
   background: #39486755;
+  padding: 30px 30px 20px;
   transform: translateY(0);
   box-shadow: 0 0 0 rgba(255, 255, 255, 0);
   transition: 0.3s;
@@ -61,8 +62,8 @@ const ItemLink = styled(Link)`
 `;
 
 const ItemWrap = styled(OnlyAlignCenterFlex)`
-  padding: 30px 30px 20px;
-  column-gap: 30px;
+  width:100%;
+  justify-content:space-between;
   @media(max-width:750px){
     padding: 0;
     flex-direction : column;
@@ -70,9 +71,7 @@ const ItemWrap = styled(OnlyAlignCenterFlex)`
 
 `
 const ContentsBox =styled.div`
-  flex: 1;
   @media(max-width:750px){
-    width:100%;
     padding: 20px;
     order: 2;
   }
@@ -103,6 +102,7 @@ p{
 }
 `
 const ItemDescBox =styled.div`
+  width:100%;
   min-height: 60px;
   line-height: 20px;
   font-size : 14px;
@@ -123,35 +123,11 @@ const ItemDetailBox =styled(OnlyAlignCenterFlex)`
     font-size: 12px;
   }
 `
-const ItemAuthorBox =styled(OnlyAlignCenterFlex)`
-  margin-right: 20px;
- 
-`
-const AuthorImageBox= styled.div`
-  position:relative;
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-  border-radius: 5px;
-  overflow: hidden;
-  @media(max-width:750px){
-    width: 4vw;
-    height: 4vw;
-  }
-`
 
 export const CreatedDateBox = styled.div`
 
 
 `
-
-const AuthorImage = styled(Image)`
-  width:100%;
-  height:auto;
-`
-
-
-
 
 const ImageBox = styled.div<{isDefaultImg : boolean;}>`
   position: relative;
@@ -159,6 +135,8 @@ const ImageBox = styled.div<{isDefaultImg : boolean;}>`
   height: 168px;
   background: #fff;
   overflow : hidden;
+  flex-shrink : 0;
+  margin-left:30px;
   img{
     width:100%;
     height:100%;
@@ -170,6 +148,7 @@ const ImageBox = styled.div<{isDefaultImg : boolean;}>`
     width: 100%;
     height: 46.6666vw;
     order: 1;
+    padding:0;
     width: 100%;
   }
 `
@@ -177,5 +156,5 @@ const ImageBox = styled.div<{isDefaultImg : boolean;}>`
 const ImageBg =styled.div<{thumbnailUrl : string;}>`
   width:100%;
   height:100%;
-  background: url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/100% 100%;
+  background: url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/auto 100%;
 `
