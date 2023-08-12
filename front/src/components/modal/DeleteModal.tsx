@@ -20,7 +20,7 @@ const DeleteModal = ({onClose, mutate, isWithdraw}: DeleteMadalProps) => {
             <p>정말 {isWithdraw? "탈퇴" : '삭제'} 하시겠습니까?</p>
           </ModalInnerText>
           <ConfirmBtnBox>
-            <DeleteBtn onClick={mutate}>
+            <DeleteBtn onClick={()=>{mutate(); onClose();}}>
               네! {isWithdraw? "탈퇴" : '삭제'}할래요!
             </DeleteBtn>
             <CancelBtn onClick={onClose}>
