@@ -5,20 +5,23 @@ import LoadingText from './LoadingText';
 
 const PageLoading = ({isLoading , isCreate} : {isLoading : boolean; isCreate ?: boolean;}) => {
   const [isShow, setIsShow] = useState(true);
-
+  const [isOpacity, setIsOpacity] = useState(false);
   useEffect(()=>{
     let loadTimer: string | number | NodeJS.Timeout | undefined;
     clearTimeout(loadTimer)
     if(!isLoading){
       loadTimer = setTimeout(()=>{
-        setIsShow(false);
-      },1000)
+        setIsOpacity(true);
+        setTimeout(()=>{
+          setIsShow(false);
+        },1500)
+      },100)
     }
     return ()=>{clearTimeout(loadTimer)}
   },[isLoading])
   return (
     <>
-    {isShow && <PageLoadingWrap isLoading={!isLoading}>
+    {isShow && <PageLoadingWrap isLoading={isOpacity}>
       <PageLoadingDim/>
       <LoadingBox>
         <LoadingText>{isCreate && '생성 중'}</LoadingText>
@@ -38,7 +41,7 @@ const PageLoadingWrap = styled(AllCenterFlex)<{isLoading : boolean;}>`
   left: 0;
   top : 0;
   opacity: 1;
-  transition : .3s;
+  transition : 1.5s;
   ${({isLoading}) => isLoading &&`
     opacity: 0;
   `}
