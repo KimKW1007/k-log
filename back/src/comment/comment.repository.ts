@@ -43,7 +43,7 @@ export class CommentRepository extends Repository<Comment> {
     if(user.id === 1){
       return
     }
-  /*   await this.mailerService
+    await this.mailerService
     .sendMail({
       from: `"K : log" <${mailConfig.mailId}>`,
       to: mailConfig.mailId,
@@ -60,13 +60,14 @@ export class CommentRepository extends Repository<Comment> {
       </div>`
     }).catch(e =>{
       throw new Error('메일 전송 중 오류 발생')
-    }) */
+    })
   }
   async getTargetBoardComment(boardId : number){
-    const comments = await this.find({where : {board: {id : boardId}},relations:{board : {subCategory : {category : {user : true}}}}, order: {createdAt : "DESC", replies : {createdAt : "ASC"}}})
+    const comments = await this.find({where : {board: {id : boardId}}, order: {createdAt : "DESC", replies : {createdAt : "ASC"}}})
     const foundUser = await this.boardRepository.findOne({where : {id : boardId} ,relations:{subCategory : {category : {user : true}}}})
     const writerId = foundUser.subCategory.category.user.id
-    return {comments , writerId} ?? {}
+
+    return {comments, writerId} ?? {}
   }
   async deleteComment(commentId : number, user: User){
     let comment;
