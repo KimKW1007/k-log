@@ -170,6 +170,7 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     formData.append("tags", currentTags.toString())
     boardMutate(formData)
     setIsSuccess(true)
+    handleClickMenu()
   }
 
   const onSubmit = ({boardTitle, image, contents}:  any) => {
