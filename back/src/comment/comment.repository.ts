@@ -45,8 +45,8 @@ export class CommentRepository extends Repository<Comment> {
     }
     await this.mailerService
     .sendMail({
-      from: `"K : log" <${mailConfig.mailId}>`,
-      to: mailConfig.mailId,
+      from: `"K : log" <${process.env.NODEMAIL_MAIL_ID || mailConfig.mailId}>`,
+      to: process.env.NODEMAIL_MAIL_ID || mailConfig.mailId,
       subject: `K : Log : ${userName}님의 댓글 - ${foundBoard.boardTitle}`,
       html: `<div style='width: 100%; max-width: 700px; margin: 0 auto; min-height: 500px; background :#23262d; color :#fff; padding : 30px 60px; box-sizing: border-box;'>
       <h2 style='font-size: 40px; text-align:center;'>K : Log</h2>

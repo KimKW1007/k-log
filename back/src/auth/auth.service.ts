@@ -47,8 +47,8 @@ export class AuthService {
     delete user.categories
     const payload = { ...user };
     return this.jwtService.signAsync({id: payload.id}, {
-      secret: jwtConfig.JWT_REFRESH_TOKEN_SECRET,
-      expiresIn: jwtConfig.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
+      secret:  process.env.JWT_REFRESH_TOKEN_SECRET || jwtConfig.JWT_REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME || jwtConfig.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
     });
   }
 
@@ -131,7 +131,7 @@ export class AuthService {
 
     // Verify refresh token
     // JWT Refresh Token 검증 로직
-    const decodedRefreshToken = this.jwtService.verify(refresh_token, { secret: jwtConfig.JWT_REFRESH_TOKEN_SECRET });
+    const decodedRefreshToken = this.jwtService.verify(refresh_token, { secret: process.env.JWT_REFRESH_TOKEN_SECRET || jwtConfig.JWT_REFRESH_TOKEN_SECRET });
 
     // Check if user exists
     const userId = decodedRefreshToken.id;

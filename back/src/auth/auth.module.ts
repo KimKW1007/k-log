@@ -22,7 +22,7 @@ const jwtConfig = config.get("jwt")
     JwtModule.register({
       secret: process.env.JWT_ACCESS_TOKEN_SECRET || jwtConfig.JWT_ACCESS_TOKEN_SECRET,
       signOptions: {
-        expiresIn: jwtConfig.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
+        expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME || jwtConfig.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' })

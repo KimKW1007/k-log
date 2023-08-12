@@ -23,8 +23,8 @@ const mailConfig = config.get("nodeMail");
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: mailConfig.mailId,
-          pass: mailConfig.mailPw,
+          user: process.env.NODEMAIL_MAIL_ID || mailConfig.mailId,
+          pass: process.env.NODEMAIL_MAIL_PW || mailConfig.mailPw,
         },
       },
       template: {

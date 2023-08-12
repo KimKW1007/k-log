@@ -28,7 +28,7 @@ export class FindRepository extends Repository<FindId> {
     try{
       await this.mailerService
       .sendMail({
-        from: `"K : log" <${mailConfig.mailId}>`,
+        from: `"K : log" <${process.env.NODEMAIL_MAIL_ID ||  mailConfig.mailId}>`,
         to: `${userEmail}`,
         subject: 'K : log 인증 코드',
         html: `
