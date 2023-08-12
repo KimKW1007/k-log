@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest, res: NextResponse  ) {
     }
 
   }else{
-    if(req.url.includes('/create') || req.url.includes('/edit')){
+    if(req.url.includes('/create') || req.url.includes('/edit') || req.url.includes('/accountEdit') ){
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
