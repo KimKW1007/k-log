@@ -12,6 +12,7 @@ import useIsMount from 'src/hooks/useIsMount';
 import HeaderUserMenu from './HeaderUserMenu';
 import LoginSignUpBox from './LoginSignUpBox';
 import { OnDeviceTraining } from '@styled-icons/material-rounded';
+import Link from 'next/link';
 
 const SideMenu = () => {
   const { handleClickMenu, isOpen, isActive } = useHandleSideMenu();
@@ -26,7 +27,9 @@ const SideMenu = () => {
           <SideMenuDim isOpen={isOpen} onClick={handleClickMenu} />
           <SideMenuArea className="customScroll">
             <SideMenuContainer>
-              <LogoBox>K : Log</LogoBox>
+              <LogoBox>
+                <Link href="/">K : Log</Link>
+              </LogoBox>
               <RelevantToTheUser>{isMount && userInfo ? <HeaderUserMenu isInSideMenu /> : <LoginSignUpBox isInSideMenu />}</RelevantToTheUser>
               <SidebarBox>
                 <SidebarHeader />
@@ -107,7 +110,14 @@ const RelevantToTheUser = styled(AllCenterFlex)`
 `;
 
 const LogoBox = styled.div`
-  pointer-events: none;
+  user-select:none;
+  a{
+    display:inline-block;
+    transition: text-shadow .2s;
+    &:hover{
+      text-shadow: #fc0 1px 0 10px;
+    }
+  }
 `;
 
 const SideMenuContainer = styled.div`
