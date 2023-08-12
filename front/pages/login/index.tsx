@@ -3,7 +3,6 @@ import type { GetServerSideProps, NextPage } from 'next';
 import LoginForm from '@components/login/LoginForm';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import styled from 'styled-components';
-import { AuthSeasonBg } from '@components/login/SeasonBg';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
 const LoginPage: NextPage = () => {
@@ -30,8 +29,6 @@ const LoginWrap = styled.div`
   width: 100%;
   padding:150px  50px ;
   display:flex;
-  // background : url(${AuthSeasonBg()}) center center no-repeat;
-  // background-size:  cover;
   @media(max-width: 660px){
     padding: 100px   20px ;
   }
