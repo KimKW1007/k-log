@@ -21,7 +21,7 @@ export class ImagesRepository extends Repository<Images> {
   }
   
   async createImageUrl (body ,file: Express.Multer.File){
-    const IMG_URL = `${defaultURLConfig.hostURL}api/uploads/${file.filename}`;
+    const IMG_URL = `${process.env.BASE_HOST_URL || defaultURLConfig.hostURL}api/uploads/${file.filename}`;
     if(!body.isProfile){
       const creatUrl = this.create({
         imageUrl : IMG_URL,
