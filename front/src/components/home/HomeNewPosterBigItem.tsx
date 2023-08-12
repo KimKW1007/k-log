@@ -81,7 +81,7 @@ const PosterItem = styled.div`
   width:50%;
   border: 2px solid #de4568;
   margin-right: 30px;
-  transition:  .3s;
+  transition:  transform .3s, box-shadow .3s;
   box-shadow : 0px 0px 0px rgba(0,0,0,0);
   &:hover{
     transform : translateY(-5px);
