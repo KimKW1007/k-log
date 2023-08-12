@@ -21,11 +21,6 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
       link: 'accountEdit',
       text: '계정 설정'
     },
-    /* {
-      title:"myPost",
-      link: '/',
-      text: '나의 활동'
-    }, */
     {
       title: 'logout',
       link: '',
