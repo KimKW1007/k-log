@@ -72,9 +72,6 @@ const NewPosterSmList = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
-  @media (max-width: 1280px) {
-    width: 41.4062vw;
-  }
   @media (max-width: 1200px) {
     width: 100%;
     margin-top: 30px;
