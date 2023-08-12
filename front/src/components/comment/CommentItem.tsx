@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Image from 'next/image';
 import defaultAuthorImage from '@assets/images/500_94.jpg';
-import { Author, AuthorImageBox } from './CommentForm';
+import { Author } from './CommentForm';
 import { CommentMultiple, CommentOff } from '@styled-icons/fluentui-system-filled/';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { Reply } from '@styled-icons/entypo/Reply';
@@ -20,21 +20,20 @@ import useCheckLogin from 'src/hooks/useCheckLogin';
 
 interface CommentItemProps {
   isReply ?: boolean;
-  writerId : number;
+  boardWriterId : number;
   setReplyIndex: React.Dispatch<React.SetStateAction<number>>;
   comment ?: any;
   boardId : string;
-  ownerId : number;
+  commentWriterId : number;
 }
 
-const CommentItem = ({writerId, setReplyIndex, ownerId, isReply, comment, boardId} : CommentItemProps) => {
+const CommentItem = ({boardWriterId, setReplyIndex, commentWriterId, isReply, comment, boardId} : CommentItemProps) => {
   const {id, authorImage, authorName, authorId, comment : commentText, createdAt, isSecret, replies} = comment;
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const {checkLogin} = useCheckLogin();
-  const isWriter = writerId === Number(authorId) || Boolean(currentUser?.isAdmin)
-  const checkAuthor = ownerId === currentUser?.id || writerId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
-  const checkDeleteAuthor =  writerId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
-  console.log(isReply, ownerId, ownerId === currentUser?.id)
+  const isWriter = boardWriterId === Number(authorId) 
+  const checkAuthor = commentWriterId === currentUser?.id || boardWriterId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
+  const checkDeleteAuthor =  boardWriterId === currentUser?.id || authorId === currentUser?.id || Boolean(currentUser?.isAdmin)
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   
   const queryClient = useQueryClient();
@@ -80,7 +79,7 @@ const CommentItem = ({writerId, setReplyIndex, ownerId, isReply, comment, boardI
     <CommentItemBox isWriter={isWriter}>
       <Icon $isWriter={isWriter} />
       <AuthorImageBox isWriter={isWriter}>
-        <Image src={authorImage || defaultAuthorImage.src} alt={'유저 이미지'} width={30} height={30} />
+        <Image src={authorImage || defaultAuthorImage.src} alt={'유저 이미지'} width={50} height={50} />
       </AuthorImageBox>
       <CommentBox>
         <CommentInnerBox isWriter={isWriter}>
@@ -133,7 +132,16 @@ const BtnAni = keyframes`
   }
 `;
 
-
+const AuthorImageBox = styled.div<{isWriter ?: boolean;}>`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink : 0;
+  ${({isWriter}) => isWriter &&`
+    order : 2;
+  `}
+`
 
 const SecretComment = styled(OnlyAlignCenterFlex)`
   height:30px;
@@ -286,14 +294,14 @@ const CommentItemBox = styled.div<{isWriter ?: boolean;}>`
 const Icon = styled(Reply)<{$isWriter ?: boolean;}>`
   position: absolute;
   width: 30px;
-  color: #50577a;
-  top: 0;
+  top: 10px;
   ${({$isWriter}) => $isWriter ? css`
-    transform: scaleX(1) rotate(-45deg);
-    right: 39px;
-
+    transform: scaleX(1) rotate(-37deg);
+    right: 58px;
+    color: #C38154;
   ` : css`
-    transform: scaleX(-1) rotate(-45deg);
-    left: 39px;
+    transform: scaleX(-1) rotate(-37deg);
+    left: 58px;
+    color: #50577a;
   `}
 `;

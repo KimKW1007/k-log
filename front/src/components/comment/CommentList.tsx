@@ -21,11 +21,11 @@ const CommentList = ({id} : {id :string}) => {
         <p>첫 댓글을 작성해주세요!</p>
         </EmptyCommentBox>}
       {comments?.length > 0 && comments.map((comment: any, index : number) => (
-        <CommentItemBox key={comment.id}>
-          <CommentItem writerId={writerId} ownerId={comment.authorId} setReplyIndex={setReplyIndex} comment={comment} boardId={id}/>
+        <CommentItemBox key={'comment'+ comment.id}>
+          <CommentItem boardWriterId={writerId} commentWriterId={comment.authorId} setReplyIndex={setReplyIndex} comment={comment} boardId={id}/>
           {replyIndex === comment.id && <CommentForm isReply id={id} commentId={comment.id} setReplyIndex={setReplyIndex}/>}
           {comment.replies.length > 0 && comment.replies.map((reply : any) =>(
-            <CommentItem isReply writerId={writerId} ownerId={comment.authorId} setReplyIndex={setReplyIndex} comment={reply} boardId={id}/>
+            <CommentItem key={'reply'+ reply.id} isReply boardWriterId={writerId} commentWriterId={comment.authorId} setReplyIndex={setReplyIndex} comment={reply} boardId={id}/>
           ))}
         </CommentItemBox>
       ))}
