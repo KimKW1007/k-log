@@ -9,6 +9,7 @@ import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import useHandleClickOutside from 'src/hooks/useHandleClickOutside';
+import { PencilSquare } from '@styled-icons/bootstrap'
 
 const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -48,7 +49,7 @@ const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
         <Trash/>
       </BoardDeleteBtn>
       <BoardUpdateBtn isActive={isActive} title='게시물 수정' onClick={handleUpdateBtn}>
-        <Scissors/>
+        <PencilSquare/>
       </BoardUpdateBtn>
     </UDBtnArea>
     {isOpenModal && <DeleteModal mutate={()=>mutate({})} onClose={()=> setIsOpenModal(false)} />}
