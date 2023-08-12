@@ -28,13 +28,11 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
 
   const onClickLink = (board: SearchBoardProps) => () => {
     const isDuplicate = recentBoard.some(({ id }: any) => id === board.id);
-
     if (!isDuplicate) {
-      if (recentBoard.length > 5) {
-        setRecentBoard((prev) => {
-          prev = prev.filter((x) => x !== prev.at(-1));
-          return [board, ...prev];
-        });
+      if (recentBoard.length >= 3) {
+        const copiedPrev = [...recentBoard];
+        const filterRecent = copiedPrev.slice(0, -1);
+        setRecentBoard([board, ...filterRecent]);
       } else {
         setRecentBoard((prev) => [board, ...prev]);
       }
@@ -63,23 +61,6 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
     return text;
   };
 
-  useEffect(() => {
-    if (recentBoard) {
-      const copiedRecentBoard = [...recentBoard];
-      Promise.all(copiedRecentBoard.map(async (board) => {
-        const { getApi } = customApi(`/board/getBoard/${board.id}`);
-        const { currentBoard: { contents, boardTitle, tags } } = await getApi();
-        return {
-          ...board,
-          contents,
-          boardTitle,
-          tags
-        };
-      })).then(updatedBoards => {
-        setRecentBoard(updatedBoards)
-      });
-    }
-  }, []);
 
   return (
     <>
@@ -91,7 +72,7 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
           {data.map((board: any) => {
             const { id, boardTitle, contents, tags } = board;
             return (
-              <SearchItem>
+              <SearchItem key={isRecent ? 'isRecent' + id : 'SeachItem' + id}>
                 <SearchItemLink href={`/${id}`} onClick={onClickLink(board)} $isRecent={isRecent}>
                   <SearchItemIconBox>
                     {isRecent ? <AccessTime/> : <Clipboard />}
