@@ -32,11 +32,24 @@ export class BoardService {
     if (!checkBoard) {
       throw new NotFoundException('없는 Board Id입니다.');
     }
-    const currentBoard = await this.boardRepository.findOne({ where: { id }, relations: { subCategory: { category: { user: true } } } });
+    const currentBoard = await this.boardRepository.findOne({ where: { id }, relations: { subCategory: { category: { user: true }}}});
+    const user = {
+      id: currentBoard.subCategory.category.user.id,
+    };
+    const processedBoard = {
+      ...currentBoard,
+      subCategory: {
+        ...currentBoard.subCategory,
+        category: {
+          ...currentBoard.subCategory.category,
+          user,
+        },
+      },
+    }
     const prevBoard = await this.boardRepository.findOne({ where: { boardTitle: Not(''), id: LessThan(id), subCategory: { categorySubTitle: currentBoard.subCategory.categorySubTitle } }, relations: { subCategory: true }, order: { id: 'desc' } });
     const nextBoard = await this.boardRepository.findOne({ where: { boardTitle: Not(''), id: MoreThan(id), subCategory: { categorySubTitle: currentBoard.subCategory.categorySubTitle } }, relations: { subCategory: true }, order: { id: 'asc' } });
     return {
-      currentBoard,
+      currentBoard : processedBoard,
       prevBoard: prevBoard ?? {},
       nextBoard: nextBoard ?? {},
     };
