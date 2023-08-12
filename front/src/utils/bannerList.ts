@@ -1,6 +1,3 @@
-import winterBg from '@assets/images/winterBg.jpg';
-import fallBg from '@assets/images/fallBg.jpg';
-import springBg from '@assets/images/springBg.jpg';
 import bg1 from '@assets/images/mainslide_01.jpg';
 import bg2 from '@assets/images/blank_space.jpg';
 import bg3 from '@assets/images/simple.jpg';
