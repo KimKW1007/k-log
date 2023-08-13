@@ -72,7 +72,7 @@ const PageNationArea = ({lastPage} : {lastPage :number;}) => {
         <PageBtn onClick={handlePageNation(1)} isActive={1 === currentPage}>1</PageBtn>
         {pageDotState[0] && <PageDot>&#183;&#183;&#183;</PageDot>}
         { lastPage > 2 && pageNation.slice(1,lastPage-1).map(page =>(
-          <PageBtn onClick={handlePageNation(page)} isDisappear={conditionOfDisappear(page)} isActive={page === currentPage}>{page}</PageBtn>
+          <PageBtn key={page} onClick={handlePageNation(page)} isDisappear={conditionOfDisappear(page)} isActive={page === currentPage}>{page}</PageBtn>
         ))}
         {pageDotState[1] && <PageDot>&#183;&#183;&#183;</PageDot>}
         {lastPage >= 2 && <PageBtn onClick={handlePageNation(lastPage)} isActive={lastPage === currentPage}>{lastPage}</PageBtn>}
