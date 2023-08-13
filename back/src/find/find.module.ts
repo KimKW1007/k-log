@@ -6,14 +6,12 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FindRepository } from './find.repository';
 import { UserRepository } from 'src/auth/user.repository';
-import * as config from "config"
 import { BoardModule } from 'src/board/board.module';
 import { BoardRepository } from 'src/board/board.repository';
 import { SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
-const mailConfig = config.get("nodeMail");
 
 @Module({
   imports: [
@@ -23,8 +21,8 @@ const mailConfig = config.get("nodeMail");
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: process.env.NODEMAIL_MAIL_ID || mailConfig.mailId,
-          pass: process.env.NODEMAIL_MAIL_PW || mailConfig.mailPw,
+          user: process.env.NODEMAIL_MAIL_ID,
+          pass: process.env.NODEMAIL_MAIL_PW,
         },
       },
       template: {

@@ -2,13 +2,11 @@ import { DataSource, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
 import { ConflictException, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common/exceptions';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcryptjs';
 import { AuthRegistrationDto } from './dto/auth-registration.dto';
 import { AuthCheckEmailDto } from './dto/auth-checkEmail.dto';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { BoardRepository } from 'src/board/board.repository';
-import * as config from "config"
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
 import { FileRepository } from 'src/file/file.repository';
@@ -18,7 +16,6 @@ import * as fs from 'fs';
 
 
 
-const jwtConfig = config.get("jwt")
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -190,7 +187,7 @@ export class UserRepository extends Repository<User> {
   async getCurrentRefreshTokenExp(): Promise<Date> {
     const currentDate = new Date();
   	// Date 형식으로 데이터베이스에 저장하기 위해 문자열을 숫자 타입으로 변환 (paresInt) 
-    const currentRefreshTokenExp = new Date(currentDate.getTime() + parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME || jwtConfig.JWT_REFRESH_TOKEN_EXPIRATION_TIME));
+    const currentRefreshTokenExp = new Date(currentDate.getTime() + parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME));
     return currentRefreshTokenExp;
   }
 

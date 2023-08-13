@@ -7,8 +7,6 @@ import { User } from 'src/auth/user.entity';
 import { FileRepository } from 'src/file/file.repository';
 import { UserRepository } from 'src/auth/user.repository';
 import { MailerService } from '@nestjs-modules/mailer';
-import * as config from "config"
-const mailConfig = config.get("nodeMail");
 @Injectable()
 export class CommentRepository extends Repository<Comment> {
     constructor(private dataSource: DataSource, private boardRepository : BoardRepository, private fileRepository : FileRepository,  private readonly mailerService: MailerService,) {
@@ -45,8 +43,8 @@ export class CommentRepository extends Repository<Comment> {
     }
     await this.mailerService
     .sendMail({
-      from: `"K : log" <${process.env.NODEMAIL_MAIL_ID || mailConfig.mailId}>`,
-      to: process.env.NODEMAIL_MAIL_ID || mailConfig.mailId,
+      from: `"K : log" <${process.env.NODEMAIL_MAIL_ID}>`,
+      to: process.env.NODEMAIL_MAIL_ID,
       subject: `K : Log : ${userName}님의 댓글 - ${foundBoard.boardTitle}`,
       html: `<div style='width: 100%; max-width: 700px; margin: 0 auto; min-height: 500px; background :#23262d; color :#fff; padding : 30px 60px; box-sizing: border-box;'>
       <h2 style='font-size: 40px; text-align:center;'>K : Log</h2>

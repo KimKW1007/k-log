@@ -9,9 +9,8 @@ import { SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { ReplyRepository } from './reply.repository';
 import { MailerModule } from '@nestjs-modules/mailer';
-import * as config from "config"
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-const mailConfig = config.get("nodeMail");
+
 
 @Module({
   imports: [TypeOrmModule.forFeature([CommentRepository]), TypeOrmModule.forFeature([ReplyRepository]), AuthModule,MailerModule.forRoot({
@@ -19,8 +18,8 @@ const mailConfig = config.get("nodeMail");
       host: 'smtp.gmail.com',
       port: 587,
       auth: {
-        user: process.env.NODEMAIL_MAIL_ID || mailConfig.mailId,
-        pass: process.env.NODEMAIL_MAIL_PW || mailConfig.mailPw,
+        user: process.env.NODEMAIL_MAIL_ID,
+        pass: process.env.NODEMAIL_MAIL_PW,
       },
     },
     template: {

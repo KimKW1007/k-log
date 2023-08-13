@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import * as config from 'config';
-import * as AWS from 'aws-sdk';
+// import * as config from 'config';
+// import * as AWS from 'aws-sdk';
 import { User } from 'src/auth/user.entity';
 import { FileRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,7 +9,7 @@ import { BoardRepository } from 'src/board/board.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
 
-const S3Config = config.get('S3');
+// const S3Config = config.get('S3');
 
 @Injectable()
 export class FileService {
