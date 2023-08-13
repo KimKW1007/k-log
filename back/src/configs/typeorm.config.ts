@@ -22,4 +22,4 @@ export const typeORMConfig: DataSourceOptions = {
   }
 };
 
-// export default new DataSource(typeORMConfig)
+export default new DataSource(typeORMConfig)
