@@ -1,16 +1,19 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import * as config from "config"
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 
-const dbConfig = config.get("db");
+config();
+const configService = new ConfigService();
+
 
 export const typeORMConfig: DataSourceOptions = {
-  type: dbConfig.type,
-  host: process.env.RDS_HOSTNAME || dbConfig.host,
-  port: process.env.RDS_PORT || dbConfig.port,
-  username: process.env.RDS_USERNAME || dbConfig.username,
-  password: process.env.RDS_PASSWORD || dbConfig.password,
-  database: process.env.RDS_DB_NAME || dbConfig.database,
+  type: 'postgres',
+  host: configService.get('DB_HOST'),
+  port: configService.get('DB_PORT'),
+  username: configService.get('DB_USERNAME'),
+  password: configService.get('DB_PASSWORD'),
+  database: configService.get('DB_DATABASE'),
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: false,
   migrations: [__dirname + '/../**/migrations/*.ts'],

@@ -8,22 +8,22 @@ import {
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Banner } from './banner.entity';
-import * as config from "config"
-const defaultURLConfig = config.get("defaultURL");
+
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 
 
 @Injectable()
 export class BannerRepository extends Repository<Banner> {
-  constructor(private dataSource: DataSource) {
+  constructor(private dataSource: DataSource, private configService : ConfigService) {
     super(Banner, dataSource.createEntityManager());
   }
   
 
 
   async updateImage(listNumber : string ,file: Express.Multer.File){
-    const IMG_URL = `${process.env.BASE_HOST_URL || defaultURLConfig.hostURL}api/uploads/${file.filename}`;
+    const IMG_URL = `${this.configService.get('BASE_HOST_URL')}api/uploads/${file.filename}`;
     const foundBanner = await this.findOne({where: {listNumber}, order : {id : "ASC"}})
     if(!foundBanner){
       const creatUrl = this.create({
