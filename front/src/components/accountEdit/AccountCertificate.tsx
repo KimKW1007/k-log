@@ -104,8 +104,8 @@ const AccountCertificateArea = styled.div`
 
 const AccountCertificateDescBox = styled.div`
   text-align:center;
-  padding-top: ${({theme}) => theme.rem.p30};
-  margin-bottom: ${({theme}) => theme.rem.p50};
+  padding-top: 30px;
+  margin-bottom: 50px;
 `
 
 const AccountCertificateSubmitBox = styled(SubmitBox)`

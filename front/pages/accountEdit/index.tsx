@@ -153,7 +153,7 @@ const SideProfileEditBox = styled.div<{isEnter :boolean; isForward : boolean;}>`
   border : 1px solid #DDE6ED;
   border-radius: 30px;
   overflow:hidden;
-  padding: ${({theme}) => theme.rem.p20};
+  padding: 20px;
   background:#fff;
   ${({isEnter, isForward}) => isEnter ? css`
     @media(max-width: 1200px){

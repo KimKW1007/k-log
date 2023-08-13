@@ -52,7 +52,7 @@ export const CheckBoxInput = styled.input`
 export const Label = styled.label`
   position: relative;
   display: inline-flex;
-  align-items:center;
+  align-items: center;
   font-size: 24px;
   &:before {
     position: relative;
@@ -65,8 +65,8 @@ export const Label = styled.label`
     transition: background-color 0.3s;
     border-radius: 4px;
   }
-  @media(max-width:660px){
-  font-size: 3.6363vw;
+  @media (max-width: 660px) {
+    font-size: 3.6363vw;
     &:before {
       margin-right: 10px;
     }
@@ -74,6 +74,6 @@ export const Label = styled.label`
 `;
 
 const DetailBtn = styled.button`
-  width: ${({ theme }) => theme.rem.p24};
-  height: ${({ theme }) => theme.rem.p24};
+  width: 24px;
+  height: 24px;
 `;

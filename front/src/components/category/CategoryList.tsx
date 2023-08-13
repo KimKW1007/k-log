@@ -4,21 +4,23 @@ import CategoryItems from './CategoryItems';
 import Link from 'next/link';
 
 export interface CategoryBackProps {
-  id ?: string;
+  id?: string;
   categoryTitle: string;
   subCategories: SubCategoryBackProps[];
   dndNumber: number;
 }
-export  interface SubCategoryBackProps {
-  id ?: string;
+export interface SubCategoryBackProps {
+  id?: string;
   categorySubTitle: string;
 }
-const CategoryList = ({isOverHeader} : {isOverHeader :boolean}) => {
+const CategoryList = ({ isOverHeader }: { isOverHeader: boolean }) => {
   return (
     <CategoryNav>
       <CategoryListBox $isOverHeader={isOverHeader}>
-        <CategoryAllListLink href={'/category'} $isOverHeader={isOverHeader}>분류 전체보기</CategoryAllListLink>
-        <CategoryItems isOverHeader={isOverHeader}/>
+        <CategoryAllListLink href={'/category'} $isOverHeader={isOverHeader}>
+          분류 전체보기
+        </CategoryAllListLink>
+        <CategoryItems isOverHeader={isOverHeader} />
       </CategoryListBox>
     </CategoryNav>
   );
@@ -40,27 +42,28 @@ const CategoryNav = styled.nav`
   position: absolute;
   margin-top: 2px;
   animation: ${DropAni} 0.4s forwards;
-
 `;
 
-export const CategoryAllListLink = styled(Link)<{$isOverHeader ?:boolean}>`
+export const CategoryAllListLink = styled(Link)<{ $isOverHeader?: boolean }>`
   display: block;
-  font-size: ${({ theme }) => theme.rem.p14};
+  font-size: 14px;
   border-bottom: 1px solid #858585;
   padding: 10px 5px 8px;
-  margin-bottom: ${({ theme }) => theme.rem.p10};
-  &:hover{
-    color: ${({theme}) => theme.color.err};
+  margin-bottom: 10px;
+  &:hover {
+    color: ${({ theme }) => theme.color.err};
   }
-  ${({$isOverHeader, theme}) => $isOverHeader && `
+  ${({ $isOverHeader, theme }) =>
+    $isOverHeader &&
+    `
     color: #232323;
     &:hover{
       color: ${theme.color.success};
     }
   `}
-`
+`;
 
-const CategoryListBox = styled.div<{$isOverHeader : boolean}>`
+const CategoryListBox = styled.div<{ $isOverHeader: boolean }>`
   display: flex;
   flex-direction: column;
   width: 230px;
@@ -73,7 +76,9 @@ const CategoryListBox = styled.div<{$isOverHeader : boolean}>`
   border-top: 4px solid ${({ theme }) => theme.color.err};
   border-radius: 0 0 20px 20px;
   overflow: hidden;
-  ${({$isOverHeader, theme}) => $isOverHeader && `
+  ${({ $isOverHeader, theme }) =>
+    $isOverHeader &&
+    `
     background: #fff;
     color:#232323;
     border-top: 4px solid ${theme.color.success};

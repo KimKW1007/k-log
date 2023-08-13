@@ -55,12 +55,12 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
         <PlMenuInnerBox>
           {MenuItemList.map(({ link, text, title }: MenuItemsType, idx) => (
             <React.Fragment key={link + title}>
-              <PlMeunItem >
+              <PlMeunItem>
                 <Link href={`/${link}`} onClick={logoutFn(title)} title={text}>
                   {text}
                 </Link>
               </PlMeunItem>
-            {idx === 0 && isInSideMenu && <ShortLine/>}
+              {idx === 0 && isInSideMenu && <ShortLine />}
             </React.Fragment>
           ))}
         </PlMenuInnerBox>
@@ -84,10 +84,10 @@ const MenuAni = keyframes`
 
 const UserPlInnerBox = styled.div<{ $isInSideMenu: boolean }>`
   position: relative;
-  font-size: ${({ theme }) => theme.rem.p14};
+  font-size: 14px;
   overflow: hidden;
   pointer-events: none;
-  user-select:none;
+  user-select: none;
   span {
     font-weight: bold;
     letter-spacing: 0.5px;
@@ -95,41 +95,37 @@ const UserPlInnerBox = styled.div<{ $isInSideMenu: boolean }>`
   ${({ $isInSideMenu, theme }) =>
     $isInSideMenu
       ? css`
-      text-align:center;
-      span{
-        display: inline-block;
-        padding: 8px 20px;
-        background: rgba(128, 128, 128, 0.2);
-        border-radius: 6px;
-
-      }
-      `
+          text-align: center;
+          span {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(128, 128, 128, 0.2);
+            border-radius: 6px;
+          }
+        `
       : css`
-          border-radius: ${theme.rem.p10};
+          border-radius: 10px;
           background: rgba(128, 128, 128, 0.2);
           span {
             display: block;
-            padding: 8px ${theme.rem.p34} 8px 16px;
-            
+            padding: 8px 34px 8px 16px;
           }
         `}
 `;
 
-
-
 const PlMenuInnerBox = styled.ul`
   background: #292929;
   border-radius: 8px 0 0 8px;
-  padding: ${({ theme }) => theme.rem.p10} 0;
+  padding: 10px 0;
   border-right: 4px solid ${({ theme }) => theme.color.err};
 `;
 const PlMeunItem = styled.li`
   width: 160px;
-  margin: 0.313rem ${({ theme }) => theme.rem.p16};
+  margin: 0.313rem 16px;
   a {
     display: block;
     font-size: 14px;
-    padding: ${({ theme }) => theme.rem.p10};
+    padding: 10px;
     border-radius: 4px;
     color: #fff;
     &:hover {
@@ -141,27 +137,27 @@ const UserPlMenuBox = styled.div<{ $isInSideMenu: boolean }>`
   ${({ $isInSideMenu, theme }) =>
     $isInSideMenu
       ? css`
-          ${PlMenuInnerBox}{
+          ${PlMenuInnerBox} {
             margin-top: 0;
             background: transparent;
             border-radius: 0;
             padding: 0;
             border-right: 0;
-            margin-top : 20px;
-            display:flex;
-            align-items:center;
-            ${PlMeunItem}{
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            ${PlMeunItem} {
               width: auto;
               margin: 0;
-              a{
-                padding: 0.5rem ${({ theme }) => theme.rem.p12};
+              a {
+                padding: 0.5rem 12px;
                 font-size: 15px;
-                color:rgba(255,255,255,.5);
+                color: rgba(255, 255, 255, 0.5);
                 border-radius: 0;
-                transition: .3s;
+                transition: 0.3s;
                 &:hover {
                   background: transparent;
-                  color:rgba(255,255,255,1);
+                  color: rgba(255, 255, 255, 1);
                 }
               }
             }
@@ -173,7 +169,7 @@ const UserPlMenuBox = styled.div<{ $isInSideMenu: boolean }>`
           right: 0;
           top: 0;
           opacity: 0;
-          padding-top: ${({ theme }) => theme.rem.p12};
+          padding-top: 12px;
         `}
 `;
 const ArrowIcon = styled(ArrowDropDown)`
@@ -186,23 +182,21 @@ const ArrowIcon = styled(ArrowDropDown)`
 `;
 const UserPlBox = styled.div<{ $isInSideMenu: boolean }>`
   position: relative;
- 
+
   ${({ $isInSideMenu }) =>
-  $isInSideMenu
-      ? css`
-          
-        `
+    $isInSideMenu
+      ? css``
       : css`
-      &:hover {
-        ${UserPlInnerBox} {
-          svg {
-            transform: translateY(-50%) rotate(180deg);
+          &:hover {
+            ${UserPlInnerBox} {
+              svg {
+                transform: translateY(-50%) rotate(180deg);
+              }
+            }
+            ${UserPlMenuBox} {
+              display: block;
+              animation: ${MenuAni} 0.4s forwards;
+            }
           }
-        }
-        ${UserPlMenuBox} {
-          display: block;
-          animation: ${MenuAni} 0.4s forwards;
-        }
-      }
         `}
 `;

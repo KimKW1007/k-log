@@ -90,7 +90,7 @@ const FindTabBox = styled.div`
 
 const FormBox = styled.div`
   height: 500px;
-  padding: ${({ theme }) => theme.rem.p50} ${({ theme }) => theme.rem.p40} ${({ theme }) => theme.rem.p60};
+  padding: 50px 40px 60px;
   background: #fefefe;
   border: 1px solid #e5e5e5;
   border-top: 0;

@@ -148,7 +148,7 @@ export const FlexEmptyBox = styled.div`
 const SignUpForm = styled(Form)`
   height: 100%;
   justify-content: space-between;
-  padding: 0 0 ${({ theme }) => theme.rem.p80};
+  padding: 0 0 80px;
 `;
 
 export const SubmitBox = styled.div`

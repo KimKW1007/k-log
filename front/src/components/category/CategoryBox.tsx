@@ -17,7 +17,7 @@ const CategoryBox = () => {
     setIsCategoryOn(false);
   }, [router]);
 
-  useHandleClickOutside(categoryRef, setIsCategoryOn)
+  useHandleClickOutside(categoryRef, setIsCategoryOn);
 
   return (
     <CategoryWrap ref={categoryRef}>
@@ -39,8 +39,8 @@ export default CategoryBox;
 const CategoryWrap = styled.div`
   position: fixed;
   z-index: 44;
-  @media(max-width: 700px){
-    display:none;
+  @media (max-width: 700px) {
+    display: none;
   }
 `;
 
@@ -49,30 +49,30 @@ const CategoryBtn = styled.button<{ isOverHeader: boolean }>`
   align-items: center;
   justify-content: space-between;
   width: 10rem;
-  height: ${({ theme }) => theme.rem.p40};
+  height: 40px;
   transition: 0.4s ease-in-out;
   border: 2px solid transparent;
   border-bottom: 2px solid #f5f5f5;
-  padding-left: ${({ theme }) => theme.rem.p10};
+  padding-left: 10px;
   text-align: left;
-  font-size: ${({ theme }) => theme.rem.p12};
+  font-size: 12px;
   font-family: 'Pretendard-Regular';
   font-weight: bold;
   background: #232323;
   color: #fff;
   ${({ isOverHeader, theme }) =>
-  isOverHeader &&
+    isOverHeader &&
     `
     border: 2px solid #232323;
     background: #fff;
     color:#232323;
-    margin-top: ${theme.rem.p30}
+    margin-top: 30px
   `}
 `;
 
 const DownDirection = styled(ChevronDown)`
-  width: ${({ theme }) => theme.rem.p20};
+  width: 20px;
 `;
 const UpDirection = styled(ChevronUp)`
-  width: ${({ theme }) => theme.rem.p20};
+  width: 20px;
 `;

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import logo_white from '@images/white.svg';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
@@ -18,23 +18,23 @@ export const Header = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isReactive, setIsReactive] = useRecoilState(isRemoveSidebar);
-  const [notShowCategory , setNotShowCategory] = useState(false);
+  const [notShowCategory, setNotShowCategory] = useState(false);
   const { isMount } = useIsMount();
 
-  useEffect(()=>{
-    if(router.pathname !== '/'){
+  useEffect(() => {
+    if (router.pathname !== '/') {
       setIsReactive(true);
-      setNotShowCategory(true)
-    }else{
-      setNotShowCategory(false)
+      setNotShowCategory(true);
+    } else {
+      setNotShowCategory(false);
     }
-  },[router])
+  }, [router]);
 
   return (
-    <HeaderBox >
+    <HeaderBox>
       <HeaderInnerBox>
         <LogoAndCategoryBox>
-          {notShowCategory && <CategoryBox></CategoryBox> }
+          {notShowCategory && <CategoryBox></CategoryBox>}
           <LogoBox isReactive={notShowCategory}>
             <Link href={'/'} title="홈">
               <Image src={logo_white} alt={'로고'}></Image>
@@ -60,17 +60,17 @@ const KlogTextLogo = styled(Link)`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  h2{
+  h2 {
     font-size: 34px;
-    transition: text-shadow .2s;
+    transition: text-shadow 0.2s;
   }
-  &:hover{
-    h2{
+  &:hover {
+    h2 {
       text-shadow: #fc0 1px 0 10px;
     }
   }
-  @media (max-width:700px){
-    h2{
+  @media (max-width: 700px) {
+    h2 {
       font-size: 24px;
     }
   }
@@ -80,10 +80,9 @@ const HeaderBox = styled.header`
   position: relative;
   z-index: 14;
   width: 100%;
-  height: ${({ theme }) => theme.rem.p70};
+  height: 70px;
   background: #111111;
   color: #fff;
-  
 `;
 const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
   position: relative;
@@ -91,19 +90,21 @@ const HeaderInnerBox = styled(OnlyAlignCenterFlex)`
   max-width: 1800px;
   margin: 0 auto;
   height: 100%;
-  padding: 0 ${({ theme }) => theme.rem.p30};
+  padding: 0 30px;
   justify-content: space-between;
 `;
-const LogoBox = styled(OnlyAlignCenterFlex)<{isReactive : boolean;}>`
-  width: ${({ theme }) => theme.rem.p50};
+const LogoBox = styled(OnlyAlignCenterFlex)<{ isReactive: boolean }>`
+  width: 50px;
   height: 100%;
-  ${({isReactive}) => isReactive &&`
+  ${({ isReactive }) =>
+    isReactive &&
+    `
     margin-left: 180px;
   `}
   img {
     max-width: 100%;
   }
-  @media (max-width:700px){
+  @media (max-width: 700px) {
     margin-left: 0;
   }
 `;

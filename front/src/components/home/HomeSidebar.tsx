@@ -26,7 +26,7 @@ const SidebarBox = styled(OnlyAlignCenterFlex)`
   border: 1px solid #dde6ed;
   border-radius: 30px;
   overflow: hidden;
-  padding: ${({ theme }) => theme.rem.p20} 0;
+  padding: 20px 0;
   background: #343434;
   row-gap: 40px;
   flex-shrink: 0;

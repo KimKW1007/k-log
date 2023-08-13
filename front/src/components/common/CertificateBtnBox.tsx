@@ -1,22 +1,22 @@
 import { ChildrenProps } from '@src/types/children';
-import React from 'react'
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 interface CertificateBtnBoxProps extends ChildrenProps {
-  onClick: () => Promise<void> | void
+  onClick: () => Promise<void> | void;
 }
 
-const CertificateBtnBox = ({children, onClick,} : CertificateBtnBoxProps) => {
+const CertificateBtnBox = ({ children, onClick }: CertificateBtnBoxProps) => {
   return (
-    <CertificateBtnArea >
+    <CertificateBtnArea>
       <CertificateBtn type="button" onClick={onClick}>
         {children}
       </CertificateBtn>
     </CertificateBtnArea>
-  )
-}
+  );
+};
 
-export default CertificateBtnBox
+export default CertificateBtnBox;
 
 export const CertificateBtnArea = styled.div`
   position: absolute;
@@ -24,12 +24,11 @@ export const CertificateBtnArea = styled.div`
   right: 3%;
   top: 50%;
   transform: translateY(-50%);
-  width: ${({ theme }) => theme.rem.p90};
-  height: ${({ theme }) => theme.rem.p40};
+  width: 90px;
+  height: 40px;
   border-radius: 8px;
   overflow: hidden;
 `;
-
 
 export const CertificateBtn = styled.button`
   width: 100%;

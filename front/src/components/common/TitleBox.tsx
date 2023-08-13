@@ -16,9 +16,9 @@ export default Title;
 
 const TitleBox = styled.div<{ isLogin?: boolean; idListPage?: boolean }>`
   text-align: center;
-  margin: 0 0 ${({ theme }) => theme.rem.p90};
+  margin: 0 0 90px;
   h2 {
-    font-size: ${({ theme }) => theme.rem.p36};
+    font-size: 36px;
     ${({ idListPage }) =>
       idListPage &&
       css`
@@ -34,17 +34,17 @@ const TitleBox = styled.div<{ isLogin?: boolean; idListPage?: boolean }>`
   ${({ isLogin }) =>
     isLogin &&
     css`
-      margin: 0 0 ${({ theme }) => theme.rem.p60};
+      margin: 0 0 60px;
     `}
-    @media(max-width: 660px){
-      h2 {
-        font-size: 30px;
-      }
-      h3 {
-        padding: 0 4.54545vw;
-        font-size: 16px;
-      }
+  @media(max-width: 660px) {
+    h2 {
+      font-size: 30px;
     }
+    h3 {
+      padding: 0 4.54545vw;
+      font-size: 16px;
+    }
+  }
 `;
 
 const TipBox = styled.div``;

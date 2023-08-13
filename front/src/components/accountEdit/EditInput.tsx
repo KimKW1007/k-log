@@ -62,9 +62,9 @@ const EditInputTitleBox = styled.div<{isPassword ?: boolean;}>`
 const Input = styled.input<{ isError?: boolean }>`
   border: 2px solid #a5a5a5;
   width: 280px;
-  line-height: ${({ theme }) => theme.rem.p26};
-  padding: ${({ theme }) => theme.rem.p10} ${({ theme }) => theme.rem.p10};
-  font-size: ${({ theme }) => theme.rem.p16};
+  line-height: 26px;
+  padding: 10px;
+  font-size: 16px;
   background: #f0f0f0;
   border-radius: 5px;
   transition: 0.2s;
