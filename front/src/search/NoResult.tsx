@@ -11,7 +11,7 @@ const NoResult = ({value} :{value : string}) => {
         <SearchOff/>
       </NoResultIconBox>
       <NoResultTextBox>
-        <p>"{value}"</p>
+        <p>&#34;{value}&#34;</p>
         <p>에 대한 검색결과가 없습니다.</p>
       </NoResultTextBox>
     </NoResultBox>

@@ -65,7 +65,7 @@ const Withdraw = () => {
       </WithdrawDescription>
       <WithdrawValidation>
         <p>
-          회원 탈퇴를 하시려면 <i>"회원탈퇴"</i> 를 입력해주세요
+          회원 탈퇴를 하시려면 <i>&#34;회원탈퇴&#34;</i> 를 입력해주세요
         </p>
         <EditInput type="text" register={register('withdraw', { required: true, validate: { checkValue: (value) => value === '회원탈퇴' || 'Error' } })} isError={Boolean(errors.withdraw?.message)} />
       </WithdrawValidation>
