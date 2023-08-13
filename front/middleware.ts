@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse, userAgent } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
   let cookie = req.cookies.get('access_token')?.value;
   if (Boolean(cookie)) {
     if (req.url.includes('/login') || req.url.includes('/signup')) {
@@ -11,8 +11,6 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
