@@ -9,12 +9,12 @@ const configService = new ConfigService();
 export const typeORMConfig: DataSourceOptions = {
   type: 'postgres',
   host: configService.get('DB_HOST'),
-  port: 5432,
+  port: configService.get('DB_PORT'),
   username: configService.get('DB_USERNAME'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_DATABASE'),
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  synchronize: true,
+  synchronize: false,
   migrations: [__dirname + '/../**/migrations/*.ts'],
   migrationsTableName: 'migrations',
   extra:{
