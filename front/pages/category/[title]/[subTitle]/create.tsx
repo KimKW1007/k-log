@@ -10,17 +10,17 @@ import { CategoryPageProps } from '.';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 import customApi from '@utils/customApi';
 
-const createPage = ({ title, subTitle }: CategoryPageProps) => {
+const CreatePage = ({ title, subTitle }: CategoryPageProps) => {
   const { isMount } = useIsMount();
   const [currentTitle, setCurrentTitle] = useState<string[]>([]);
 
   useEffect(() => {
     setCurrentTitle([title, subTitle]);
-  }, [isMount]);
+  }, [title, subTitle]);
   return (
     <CreateWrap>
       <CreateContainer>
-        <BoardTitleBox>{isMount && currentTitle && currentTitle.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>)}</BoardTitleBox>
+        <BoardTitleBox>{currentTitle && currentTitle.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>)}</BoardTitleBox>
         <BoardForm subTitle={subTitle} />
       </CreateContainer>
     </CreateWrap>
@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = withGetServerSideProps(asy
       }
     }
 });
-export default createPage;
+export default CreatePage;
 
 export const CreateWrap = styled.div`
   padding: 0 50px;
