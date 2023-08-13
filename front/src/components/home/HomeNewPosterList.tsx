@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import HomeNewPosterBigItem from './HomeNewPosterBigItem';
-import HomeNewPosterSmItem from './HomeNewPosterSmItem';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
