@@ -1,7 +1,6 @@
-import customApi from "@utils/customApi";
-import { NextRequest, NextResponse, userAgent } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(req: NextRequest, res: NextResponse  ) {
+export async function middleware( req: NextRequest ) {
   let cookie = req.cookies.get('access_token')?.value
   if(Boolean(cookie)){
     if(req.url.includes('/login') || req.url.includes('/signup')){
