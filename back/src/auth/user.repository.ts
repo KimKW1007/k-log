@@ -13,6 +13,7 @@ import { FileRepository } from 'src/file/file.repository';
 import { selectedImage } from 'src/utils/defaultRandomImage';
 import axios from 'axios';
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 
 
@@ -23,7 +24,9 @@ export class UserRepository extends Repository<User> {
       private boardRepository: BoardRepository,
       private commentRepository: CommentRepository,
       private replyRepository: ReplyRepository,
-      private fileRepository: FileRepository
+      private fileRepository: FileRepository,
+      private configService : ConfigService ,
+
       ) {   
     super(User, dataSource.createEntityManager());
   }
@@ -187,7 +190,7 @@ export class UserRepository extends Repository<User> {
   async getCurrentRefreshTokenExp(): Promise<Date> {
     const currentDate = new Date();
   	// Date 형식으로 데이터베이스에 저장하기 위해 문자열을 숫자 타입으로 변환 (paresInt) 
-    const currentRefreshTokenExp = new Date(currentDate.getTime() + parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME));
+    const currentRefreshTokenExp = new Date(currentDate.getTime() + parseInt(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')));
     return currentRefreshTokenExp;
   }
 

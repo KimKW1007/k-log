@@ -12,7 +12,12 @@ import { SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
+import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 
+
+config();
+const configService = new ConfigService();
 @Module({
   imports: [
     TypeOrmModule.forFeature([FindRepository]),
@@ -21,8 +26,8 @@ import { ReplyRepository } from 'src/comment/reply.repository';
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: process.env.NODEMAIL_MAIL_ID,
-          pass: process.env.NODEMAIL_MAIL_PW,
+          user: configService.get('NODEMAIL_MAIL_ID'),
+          pass: configService.get('NODEMAIL_MAIL_PW'),
         },
       },
       template: {

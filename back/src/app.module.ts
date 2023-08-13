@@ -8,8 +8,12 @@ import { FileModule } from './file/file.module';
 import { BoardModule } from './board/board.module';
 import { CommentModule } from './comment/comment.module';
 import { BannerModule } from './banner/banner.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig),AuthModule, FindModule, CategoryModule, FileModule, BoardModule, CommentModule, BannerModule],
+  imports: [ConfigModule.forRoot({
+    isGlobal: true,
+  }),
+TypeOrmModule.forRoot(typeORMConfig),AuthModule, FindModule, CategoryModule, FileModule, BoardModule, CommentModule, BannerModule],
 })
 export class AppModule {}

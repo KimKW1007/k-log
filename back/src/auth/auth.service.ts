@@ -17,6 +17,7 @@ import axios from 'axios';
 import { BoardRepository } from 'src/board/board.repository';
 import { CategoryRepository, SubCategoryRepository } from 'src/category/category.repository';
 import { FileRepository } from 'src/file/file.repository';
+import { ConfigService } from '@nestjs/config';
 
 
 
@@ -26,10 +27,7 @@ export class AuthService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private jwtService: JwtService,
-    private commentRepository: CommentRepository,
-    private replyRepository: ReplyRepository,
-    private categoryRepository: CategoryRepository,
-    private fileRepository: FileRepository,
+    private configService: ConfigService
   ) {}
   private readonly DATA_BOARD_DELETE = 'http://localhost:8000/api';
 
@@ -45,8 +43,8 @@ export class AuthService {
     delete user.categories
     const payload = { ...user };
     return this.jwtService.signAsync({id: payload.id}, {
-      secret:  process.env.JWT_REFRESH_TOKEN_SECRET,
-      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
+      secret:  this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
     });
   }
 
@@ -129,7 +127,7 @@ export class AuthService {
 
     // Verify refresh token
     // JWT Refresh Token 검증 로직
-    const decodedRefreshToken = this.jwtService.verify(refresh_token, { secret: process.env.JWT_REFRESH_TOKEN_SECRET});
+    const decodedRefreshToken = this.jwtService.verify(refresh_token, { secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET')});
 
     // Check if user exists
     const userId = decodedRefreshToken.id;

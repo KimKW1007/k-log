@@ -10,16 +10,18 @@ import { FileRepository } from 'src/file/file.repository';
 import { ReplyRepository } from './reply.repository';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-
-
+import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
+config();
+const configService = new ConfigService();
 @Module({
   imports: [TypeOrmModule.forFeature([CommentRepository]), TypeOrmModule.forFeature([ReplyRepository]), AuthModule,MailerModule.forRoot({
     transport: {
       host: 'smtp.gmail.com',
       port: 587,
       auth: {
-        user: process.env.NODEMAIL_MAIL_ID,
-        pass: process.env.NODEMAIL_MAIL_PW,
+        user: configService.get('NODEMAIL_MAIL_ID'),
+        pass: configService.get('NODEMAIL_MAIL_PW'),
       },
     },
     template: {

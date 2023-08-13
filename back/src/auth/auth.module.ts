@@ -11,16 +11,19 @@ import { CategoryRepository, SubCategoryRepository } from 'src/category/category
 import { FileRepository } from 'src/file/file.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
+import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 
-
+config();
+const configService = new ConfigService();
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
     JwtModule.register({
-      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      secret: configService.get('JWT_ACCESS_TOKEN_SECRET'),
       signOptions: {
-        expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
+        expiresIn: configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' })

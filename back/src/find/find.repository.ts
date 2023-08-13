@@ -3,12 +3,14 @@ import { DataSource, Repository } from 'typeorm';
 import { FindId } from './findId.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SendEmaildDto } from './dto/sendEmail.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FindRepository extends Repository<FindId> {
   constructor(
     private dataSource: DataSource,
     private readonly mailerService: MailerService,
+    private configService : ConfigService
   ) {
     super(FindId, dataSource.createEntityManager());
   }
@@ -26,7 +28,7 @@ export class FindRepository extends Repository<FindId> {
     try{
       await this.mailerService
       .sendMail({
-        from: `"K : log" <${process.env.NODEMAIL_MAIL_ID}>`,
+        from: `"K : log" <${this.configService.get('NODEMAIL_MAIL_ID')}>`,
         to: `${userEmail}`,
         subject: 'K : log 인증 코드',
         html: `
