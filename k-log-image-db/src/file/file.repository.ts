@@ -20,7 +20,7 @@ export class ImagesRepository extends Repository<Images> {
   }
   
   async createImageUrl (body ,file: Express.Multer.File){
-    const IMG_URL = `${this.configService.get('BASE_HOST_URL')}api/uploads/${file.filename}`;
+    const IMG_URL = `${(this.configService.get('BASE_HOST_URL') || 'http://localhost:8000/')}api/uploads/${file.filename}`;
     if(!body.isProfile){
       const creatUrl = this.create({
         imageUrl : IMG_URL,

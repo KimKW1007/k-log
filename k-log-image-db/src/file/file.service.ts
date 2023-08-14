@@ -5,12 +5,14 @@ import { ImagesRepository } from './file.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { Images } from './file.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FileService {
   constructor(
     @InjectRepository(ImagesRepository)
     private imagesRepository: ImagesRepository,
+    private configService: ConfigService,
   ) {}
   async uploadFile(body, file: Express.Multer.File) {
     if (!file) {
@@ -72,7 +74,7 @@ export class FileService {
       }
       filtered.map(async (deleteImageName) => {
         const fsFileName = deleteImageName.imageUrl
-          .split('http://localhost:8000/api/uploads/')
+          .split(`${this.configService.get('BASE_HOST_UPLOADS_URL') || 'http://localhost:8000/api/uploads/'}`)
           .at(-1);
         fs.unlinkSync(`${process.cwd()}/uploads/${fsFileName}`);
         await this.imagesRepository.delete({

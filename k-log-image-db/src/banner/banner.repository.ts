@@ -23,7 +23,7 @@ export class BannerRepository extends Repository<Banner> {
 
 
   async updateImage(listNumber : string ,file: Express.Multer.File){
-    const IMG_URL = `${this.configService.get('BASE_HOST_URL')}api/uploads/${file.filename}`;
+    const IMG_URL = `${(this.configService.get('BASE_HOST_URL')|| 'http://localhost:8000/')}api/uploads/${file.filename}`;
     const foundBanner = await this.findOne({where: {listNumber}, order : {id : "ASC"}})
     if(!foundBanner){
       const creatUrl = this.create({
