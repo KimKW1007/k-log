@@ -10,10 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   config()
   const configService = app.get(ConfigService);
-  app.enableCors({
-    origin:['http://localhost:3000', configService.get("BASE_HOST_URL") || 'http://localhost:5000'],
-    credentials:true
-  });
+  app.enableCors();
   app.setGlobalPrefix('api');
   app.useStaticAssets(path.join(__dirname, '../..', 'public'), {
     prefix: `/api/`,
