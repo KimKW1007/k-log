@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.3.0",
+    "@netlify/plugin-nextjs": "^4.39.4",
     "@next/bundle-analyzer": "^13.4.6",
     "@styled-icons/bootstrap": "^10.47.0",
     "@styled-icons/entypo": "^10.46.0",
