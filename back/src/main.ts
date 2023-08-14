@@ -12,10 +12,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.use(cookieParser());
 
-  app.enableCors({
-    origin: ['http://localhost:3000'],
-    credentials: true,
-  });
+  app.enableCors();
   const port = configService.get("SERVER_PORT");
   await app.listen(port);
   Logger.log(`Application running on port ${port}`)
