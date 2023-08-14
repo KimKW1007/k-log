@@ -8,6 +8,7 @@ import axios from 'axios';
 import { BoardRepository } from 'src/board/board.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
+import { ConfigService } from '@nestjs/config';
 
 // const S3Config = config.get('S3');
 
@@ -18,9 +19,10 @@ export class FileService {
     private fileRepository: FileRepository,
     private boardRepository: BoardRepository,
     private commentRepository: CommentRepository,
-    private replyRepository: ReplyRepository
+    private replyRepository: ReplyRepository,
+    private configService : ConfigService ,
   ) {}
-  private readonly DATA_URL = 'http://localhost:8000/api/uploads';
+  private readonly DATA_URL = this.configService.get("IMAGE_SERVER_UPLOADS_URL") || 'http://localhost:8000/api/uploads';
   
   async uploadFile(description : string, file: Express.Multer.File, user: User){
     if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
