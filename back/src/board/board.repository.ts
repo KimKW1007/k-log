@@ -7,19 +7,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { FileRepository } from 'src/file/file.repository';
 import { UserRepository } from 'src/auth/user.repository';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BoardRepository extends Repository<Board> {
   constructor(private dataSource: DataSource, 
     private subCategoryRepository: SubCategoryRepository, 
     private fileRepository: FileRepository,
+    private configService : ConfigService ,
     ) {
     super(Board, dataSource.createEntityManager());
   }
-  private readonly DATA_IMAGE_URL = 'http://localhost:8000/api/uploads';
-  private readonly DATA_BOARD_ID_UPDATE = 'http://localhost:8000/api/createdBoard';
-  private readonly DATA_BOARD_DELETE_UNNECESSARY = 'http://localhost:8000/api/unnecessary';
-  private readonly DATA_BOARD_DELETE = 'http://localhost:8000/api';
+  private readonly DATA_IMAGE_URL =  this.configService.get("IMAGE_SERVER_UPLOADS_URL") ||'http://localhost:8000/api/uploads';
+  private readonly DATA_BOARD_ID_UPDATE =  this.configService.get("IMAGE_SERVER_CREATE_BOARD_URL") ||'http://localhost:8000/api/createdBoard';
+  private readonly DATA_BOARD_DELETE_UNNECESSARY =  this.configService.get("IMAGE_SERVER_UNNECESSARY_URL") ||'http://localhost:8000/api/unnecessary';
+  private readonly DATA_BOARD_DELETE = this.configService.get("IMAGE_SERVER_URL") || 'http://localhost:8000/api';
 
 
   async createLastBoardId(categorySubTitle : string, user :User){
@@ -136,7 +138,7 @@ export class BoardRepository extends Repository<Board> {
           return res
         }).then(async res=>{
           let imgArr = [];
-          const pattern = /http:\/\/localhost:8000[^"]*"/g;
+          const pattern = /http:\/\/port-0-k-log-image-server[^"]*"/g;
           const result = res.contents.match(pattern);
           if(result){
             const extractedStrings = result.map(str => str.slice(0, -1));
@@ -178,7 +180,7 @@ export class BoardRepository extends Repository<Board> {
           return res
         }).then(async res=>{
           let imgArr = [];
-          const pattern = /http:\/\/localhost:8000[^"]*"/g;
+          const pattern = /http:\/\/port-0-k-log-image-server[^"]*"/g;
           const result = res.contents.match(pattern);
           if(result){
             const extractedStrings = result.map(str => str.slice(0, -1));

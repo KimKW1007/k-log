@@ -30,7 +30,7 @@ export class UserRepository extends Repository<User> {
       ) {   
     super(User, dataSource.createEntityManager());
   }
-  private readonly DATA_URL = 'http://localhost:8000/api/uploads';
+  private readonly DATA_URL = this.configService.get("IMAGE_SERVER_UPLOADS_URL") || 'http://localhost:8000/api/uploads';
 
  
 

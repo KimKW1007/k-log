@@ -10,14 +10,17 @@ import { DataSource, Repository } from 'typeorm';
 import { Banner } from './banner.entity';
 import { User } from 'src/auth/user.entity';
 import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
 export class BannerRepository extends Repository<Banner> {
-  constructor(private dataSource: DataSource) {
+  constructor(private dataSource: DataSource,
+    private configService : ConfigService ,
+    ) {
     super(Banner, dataSource.createEntityManager());
   }
-  private readonly CREATE_URL = 'http://localhost:8000/api/banner/updateImage';
+  private readonly CREATE_URL =  this.configService.get("IMAGE_SERVER_BANNER_UPDATE_URL") || 'http://localhost:8000/api/banner/updateImage';
   
 
   async updateBanner(listNumber: string, file: Express.Multer.File, user: User){

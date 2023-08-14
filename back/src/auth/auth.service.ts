@@ -29,7 +29,7 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService
   ) {}
-  private readonly DATA_BOARD_DELETE = 'http://localhost:8000/api';
+  private readonly DATA_BOARD_DELETE = this.configService.get("IMAGE_SERVER_URL") || 'http://localhost:8000/api';
 
   async accessToken(user : User): Promise<string>{
     delete user.password
