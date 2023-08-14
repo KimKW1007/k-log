@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import HomeNewPosterBigItem from './HomeNewPosterBigItem';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';

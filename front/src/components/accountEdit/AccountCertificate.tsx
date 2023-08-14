@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { EditTitleBox } from './AccountEdit';
-import { AbsoluteBox, EditForm, EditInputArea, EditInputInnerArea } from './AccountEditBox';
+import { AbsoluteBox,  EditInputArea, EditInputInnerArea } from './AccountEditBox';
 import EditInput from './EditInput';
 import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,6 @@ const AccountCertificate = ({setIsCertificated} : {setIsCertificated: React.Disp
     formState: { errors, isDirty },
     setError,
     clearErrors,
-    setValue
   } = useForm({ mode: 'all' });
   const name = 'password'
   const {postApi} = customApi("/auth/checkCertificate");

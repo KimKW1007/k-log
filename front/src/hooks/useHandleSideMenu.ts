@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {useRouter} from 'next/router';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const useHandleSideMenu = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const useHandleSideMenu = () => {
       handleClickMenu();
     }
   }, [router.asPath]);
-  return {handleClickMenu , isOpen, isActive}
-}
+  return { handleClickMenu, isOpen, isActive };
+};
 
-export default useHandleSideMenu
+export default useHandleSideMenu;

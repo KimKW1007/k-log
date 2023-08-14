@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useIsMount from 'src/hooks/useIsMount';
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import BoardItem from './BoardItem';
-import Link from 'next/link';
 import night_BG from '@assets/images/dark_night.jpg';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import Loading from '@components/common/Loading/Loading';
 import LoadingText from '@components/common/Loading/LoadingText';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
-import { Pen } from '@styled-icons/bootstrap'
+import { Pen } from '@styled-icons/bootstrap';
 import PageNationArea from './PageNationArea';
 
-
-
 interface BoardWrapProps {
-  title:  string[];
+  title: string[];
   currentList: any;
   isLoading: boolean;
   lastPage: number;
@@ -28,32 +24,32 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const router = useRouter();
   const onClickRouterPushCreatePage = () => {
-    router.push(`/category/${title[0].replaceAll("/","-")}/${title[1].replaceAll("/","-")}/create`);
+    router.push(`/category/${title[0].replaceAll('/', '-')}/${title[1].replaceAll('/', '-')}/create`);
   };
-
-
- 
-
-
 
   return (
     <CategoryWrap>
       <CategoryContainer>
         <BoardTitleBox>
-          <BoardTitleInnerBox>{isMount && title.map((ele, idx) => <p key={ele + 'title' + idx}>{ele}</p>) }</BoardTitleInnerBox>
+          <BoardTitleInnerBox>{isMount && title.map((ele, idx) => <p key={ele + 'title' + idx}>{ele}</p>)}</BoardTitleInnerBox>
         </BoardTitleBox>
         <ListBox isLoading={isLoading} isEmpty={Boolean(currentList?.length < 1)}>
-          {isMount && currentUser?.isAdmin && title.length > 1 && <CreateBoardBtn onClick={onClickRouterPushCreatePage}><Pen/>글쓰기</CreateBoardBtn>}
+          {isMount && currentUser?.isAdmin && title.length > 1 && (
+            <CreateBoardBtn onClick={onClickRouterPushCreatePage}>
+              <Pen />
+              글쓰기
+            </CreateBoardBtn>
+          )}
           {isLoading && <LoadingText />}
           {isLoading ||
             (currentList?.length >= 1 ? (
               <>
-              <ListInnerBox>
-                {currentList?.map((board: any) => (
-                  <BoardItem {...board} key={board.id}></BoardItem>
-                ))}
-              </ListInnerBox>
-              <PageNationArea lastPage={lastPage} />
+                <ListInnerBox>
+                  {currentList?.map((board: any) => (
+                    <BoardItem {...board} key={board.id}></BoardItem>
+                  ))}
+                </ListInnerBox>
+                <PageNationArea lastPage={lastPage} />
               </>
             ) : (
               <EmptyIconBox>
@@ -166,9 +162,8 @@ const ListBox = styled(OnlyAlignCenterFlex)<{ isLoading: boolean; isEmpty: boole
 `;
 
 const ListInnerBox = styled.div`
-width:100%;
-`
-
+  width: 100%;
+`;
 
 export const EmptyIconBox = styled(AllCenterFlex)`
   width: 100%;
@@ -180,19 +175,18 @@ export const EmptyIconBox = styled(AllCenterFlex)`
   }
 `;
 
-
 const CreateBoardBtn = styled.button`
   position: absolute;
   right: 8%;
   top: 40px;
   line-height: 15px;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   padding: 12px 30px 12px 24px;
   background: #e1e1e1;
   border-radius: 20px;
   transition: 0.2s;
-  svg{
+  svg {
     width: 15px;
     margin-right: 6px;
   }

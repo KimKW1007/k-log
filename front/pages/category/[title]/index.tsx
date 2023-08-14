@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react';
 import type { GetServerSideProps, NextPage } from 'next';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
@@ -12,45 +12,44 @@ import { CategoryPageProps } from './[subTitle]';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 import PageLoading from '@components/common/Loading/PageLoading';
 
-const CategoryPage: NextPage = ({title} : CategoryPageProps) => {
+const CategoryPage: NextPage = ({ title }: CategoryPageProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
-  const {isMount} = useIsMount();
-  const {getApi} = customApi(`/board/category/${title.replaceAll("/","-")}?page=${currentPage ?? 1}`)
-  const { data ,isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi(), {
+  const { isMount } = useIsMount();
+  const { getApi } = customApi(`/board/category/${title.replaceAll('/', '-')}?page=${currentPage ?? 1}`);
+  const { data, isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi(), {
     enabled: !!Boolean(title) && isMount
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     refetch();
-  },[currentPage,isMount])
+  }, [currentPage, isMount]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentPage(1);
-  },[router])
-
+  }, [router]);
 
   return (
     <>
-      <PageLoading isLoading={isLoading!}/>
+      <PageLoading isLoading={isLoading!} />
       <BoardWrapComp title={[title]} isLoading={isLoading} currentList={data?.boards} lastPage={data?.last_page} />
     </>
-  )
-}
-export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
-  const {query} = context;
-  const {title} = query;
+  );
+};
+export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
+  const { query } = context;
+  const { title } = query;
   const { getApi } = customApi('/category');
   const data = await getApi();
-  const checkTitleInData = data.find((x : {categoryTitle : string}) => x.categoryTitle === String(title)?.replaceAll("-","/"));
-  if(!checkTitleInData){
-    return{
-      props:{},
-      notFound : true
-    }
+  const checkTitleInData = data.find((x: { categoryTitle: string }) => x.categoryTitle === String(title)?.replaceAll('-', '/'));
+  if (!checkTitleInData) {
+    return {
+      props: {},
+      notFound: true
+    };
   }
   return {
-    props : {title : String(title)?.replaceAll("-","/")}
-  }
+    props: { title: String(title)?.replaceAll('-', '/') }
+  };
 });
-export default CategoryPage
+export default CategoryPage;

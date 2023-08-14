@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react'
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Settings } from "@styled-icons/material-rounded/Settings"
 import { Trash } from '@styled-icons/bootstrap/Trash';
-import { Scissors } from '@styled-icons/entypo/Scissors';
 import { AllCenterFlex } from '@components/common/CommonFlex';
 import DeleteModal from '@components/modal/DeleteModal';
 import customApi from '@utils/customApi';
@@ -20,11 +19,7 @@ const UDBtnBox = ({id, returnUrl} :{ id:string, returnUrl:string }) => {
 
   const {deleteApi} = customApi(`/board/deleteBoard/${id}`)
   const {mutate} = useMutation(deleteApi,{
-    onError(error) {
-        console.log({error})
-    },
     onSuccess(data) {
-      console.log({data})
       router.replace(returnUrl)
     },
   })

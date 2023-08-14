@@ -1,7 +1,6 @@
 import React from 'react';
 import type { GetServerSideProps, NextPage } from 'next';
 import LoginForm from '@components/login/LoginForm';
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import styled from 'styled-components';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 

@@ -1,25 +1,15 @@
 import Certificate from '@components/common/Certificate';
-import { InputListBox } from '@components/login/LoginForm';
 import EmailInput from '@components/common/EmailInput';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import customApi from '@utils/customApi';
 import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import { useFormContext } from 'react-hook-form';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
 
-
-
-const CertificateEmail = ({
-  small,
-  inputName,
-  setIsPassCertificate,
-  isPassCertificate
-}: CertificateEmailProps) => {
+const CertificateEmail = ({ small, inputName, setIsPassCertificate, isPassCertificate }: CertificateEmailProps) => {
   const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
-
 
   const [isComplete, setIsComplete] = useState(false);
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
@@ -33,7 +23,14 @@ const CertificateEmail = ({
       setIsComplete(true);
     }
   });
-  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
+  const {
+    register,
+    watch,
+    formState: { errors },
+    setError,
+    setValue,
+    clearErrors
+  } = useFormContext();
 
   const certificateEmail = () => {
     if (!watch('userEmail')) {
@@ -51,19 +48,19 @@ const CertificateEmail = ({
     clearErrors('token');
   };
 
-  const onClickRewrite = ()=>{
-    setIsPassCertificate(false)
-    setIsComplete(false)
+  const onClickRewrite = () => {
+    setIsPassCertificate(false);
+    setIsComplete(false);
     setValue!('token', '');
-  }
+  };
 
-  useEffect(()=>{
-    setIsFailed(false)
-  },[watch(['userName','userEmail'])])
-  
   useEffect(() => {
-    if(isFailed){
-      onClickRewrite()
+    setIsFailed(false);
+  }, [watch(['userName', 'userEmail'])]);
+
+  useEffect(() => {
+    if (isFailed) {
+      onClickRewrite();
     }
   }, [isFailed]);
 
@@ -85,7 +82,7 @@ const CertificateEmail = ({
         isComplete={isComplete}
         onClickRewrite={onClickRewrite}
       />
-      {isComplete && <Certificate isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate} ></Certificate>}
+      {isComplete && <Certificate isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate}></Certificate>}
     </>
   );
 };

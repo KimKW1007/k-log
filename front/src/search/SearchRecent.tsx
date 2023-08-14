@@ -1,5 +1,4 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components';
 import SearchListBox from './SearchListBox';
 import { searchRecent } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';

@@ -1,6 +1,6 @@
 import { ChildrenProps } from '@src/types/children';
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface CertificateBtnBoxProps extends ChildrenProps {
   onClick: () => Promise<void> | void;

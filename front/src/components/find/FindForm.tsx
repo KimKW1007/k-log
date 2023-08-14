@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { Form, InputListBox } from '@components/login/LoginForm';
+import { Form } from '@components/login/LoginForm';
 import { FormProvider, useForm } from 'react-hook-form';
 import { RegisterInputs, User } from '@src/types/user';
 import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
@@ -9,7 +9,6 @@ import { useMutation } from '@tanstack/react-query';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
 import { ListTypes } from '@utils/mapList';
-import { useRouter } from 'next/router';
 import CommonModal from '@components/modal/CommonModal';
 import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
@@ -17,7 +16,6 @@ import { useRecoilState } from 'recoil';
 const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; textById?: ListTypes }) => {
   const [resetState, setResetState] = useRecoilState(inputResetBoolean);
   const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);
-  const router = useRouter();
 
   const [isPassCertificate, setIsPassCertificate] = useState<boolean>(false);
 
@@ -38,7 +36,6 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       setIsFailed(true);
     },
     onSuccess(data) {
-      console.log(data);
       setIsClickFindBtn(true);
       setUserIds(data.user || data);
     }
@@ -110,13 +107,8 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
   });
 
   const {
-    register,
     handleSubmit,
     watch,
-    formState: { errors },
-    setError,
-    setValue,
-    clearErrors,
     reset
   } = methods;
 

@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useIsMount from 'src/hooks/useIsMount';
-import ReactQuill, { ReactQuillProps, UnprivilegedEditor } from 'react-quill';
+import ReactQuill, { ReactQuillProps } from 'react-quill';
 import useCustomQuill from '@utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import ifInImageApi from '@utils/ifInImageApi';
 import useConfirm from 'src/hooks/useConfirm';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -22,11 +22,9 @@ import { GET_BOARD } from '@utils/queryKeys';
 
 /* agate / base16/dracula */
 
-
 interface ForwardedQuillComponent extends ReactQuillProps {
   forwardedRef: React.RefObject<ReactQuill>;
 }
-
 
 const QuillNoSSRWrapper = dynamic(
   async () => {
@@ -34,26 +32,26 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['javascript', 'typescript', 'python',  'css'],
-    })
-    
+      languages: ['javascript', 'typescript', 'python', 'css']
+    });
+
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
     return function forwardRef({ forwardedRef, ...props }: ForwardedQuillComponent) {
-      return <QuillComponent ref={forwardedRef} theme={"snow"} {...props}  />;
+      return <QuillComponent ref={forwardedRef} theme={'snow'} {...props} />;
     };
   },
   {
-    ssr: false,
+    ssr: false
   }
 );
 
 interface BoardFormProps {
-  subTitle:string;
-  id ?: string;
-  isEdit ?: boolean;
+  subTitle: string;
+  id?: string;
+  isEdit?: boolean;
 }
 
-const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
+const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   const methods = useForm({
     mode: 'all'
   });
@@ -62,10 +60,9 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     handleSubmit,
     register,
     setValue,
-    trigger,
-    watch,
     formState: { errors }
   } = methods;
+
   const router = useRouter();
   const quillRef = useRef<ReactQuill>(null);
   const { isMount } = useIsMount();
@@ -73,26 +70,20 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
   const [currentTags, setCurrentTags] = useState<string[]>([]);
   const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
   const [isSuccess, setIsSuccess] = useState(false);
-  
 
-  const  {convertContent} = useConvert();
+  const { convertContent } = useConvert();
 
   /* 로딩 */
   const [isLoading, setIsLoading] = useState(true);
 
-
   /* 생성 및 수정 */
   const { postApi: editApi } = ifInImageApi('/board/category/edit', true);
-  const { postApi:createApi } = ifInImageApi('/board/createBoard', true);
-  const {mutate: boardMutate} = useMutation(isEdit ? editApi : createApi,{
-    onError(error) {
-        console.log({error})
-    },
+  const { postApi: createApi } = ifInImageApi('/board/createBoard', true);
+  const { mutate: boardMutate } = useMutation(isEdit ? editApi : createApi, {
     onSuccess(data) {
-      console.log({data})
-      if(isEdit){
+      if (isEdit) {
         router.replace(`/${id}`);
-      }else{
+      } else {
         let boardIdTimeout: string | number | NodeJS.Timeout | undefined;
         const checkBoardId = () => {
           if (data.boardId) {
@@ -100,43 +91,44 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
             router.replace(`/${data.boardId}`);
           } else {
             boardIdTimeout = setTimeout(checkBoardId, 100); // 100ms 마다 체크
-        }
+          }
         };
         checkBoardId();
       }
-    },
-  })
+    }
+  });
 
   /* Edit 일 경우 data */
   const { getApi } = customApi(`/board/getBoard/${id}`);
   const { data } = useQuery([GET_BOARD, id], () => getApi(), {
-    enabled: !!isEdit,
+    enabled: !!isEdit
   });
   const { currentBoard } = data ?? {};
-
 
   useEffect(() => {
     if (data) {
       setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : []);
-      setValue('boardTitle', currentBoard.boardTitle)
+      setValue('boardTitle', currentBoard.boardTitle);
     }
   }, [data, isMount, isEdit]);
 
   /* 작성중인 data 삭제 */
   const { deleteApi: imageDeleteApi } = ifInImageApi(`deleteFiles/작성중/${currentUser?.id!}`);
-  const { mutate : deleteImageMutate } = useMutation(imageDeleteApi, {
-    onError(error) {console.log({ error }); }
+  const { mutate: deleteImageMutate } = useMutation(imageDeleteApi, {
+    onError(error) {
+      console.log({ error });
+    }
   });
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
 
-  useEffect(()=>{
-      if(boardLastId){
-        deleteImageMutate({})
-      }
-  },[boardLastId])
-  
   useEffect(() => {
-    if(!isSuccess){
+    if (boardLastId) {
+      deleteImageMutate({});
+    }
+  }, [boardLastId]);
+
+  useEffect(() => {
+    if (!isSuccess) {
       window.addEventListener('beforeunload', handlePageLeave);
       router.events.on('routeChangeStart', handleRouteChangeStart);
     }
@@ -146,44 +138,40 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
     };
   }, [isMount, isSuccess]);
 
-
-
-  useEffect(()=>{
+  useEffect(() => {
     let isLoadingTimer: string | number | NodeJS.Timeout | undefined;
-    clearInterval(isLoadingTimer)
-    isLoadingTimer=  setInterval(()=>{
-      if(quillRef.current?.editor?.root){
+    clearInterval(isLoadingTimer);
+    isLoadingTimer = setInterval(() => {
+      if (quillRef.current?.editor?.root) {
         setIsLoading(false);
-        clearInterval(isLoadingTimer)
+        clearInterval(isLoadingTimer);
       }
-      },1000)
-  },[data])
+    }, 1000);
+  }, [data]);
 
-  const mutateFn = ({boardTitle, image}: any)=>{
-    const contents = quillRef.current?.editor?.root.innerHTML!
+  const mutateFn = ({ boardTitle, image }: any) => {
+    const contents = quillRef.current?.editor?.root.innerHTML!;
     const formData = new FormData();
-    formData.append("boardTitle", boardTitle)
-    formData.append("boardImage", image)
-    formData.append("contents", contents === '<p><br></p>' ? '' : convertContent(contents))
-    formData.append("categorySubTitle", subTitle)
-    formData.append("boardId",  isEdit ? id! : '작성중' )
-    formData.append("tags", currentTags.toString())
-    boardMutate(formData)
-    setIsSuccess(true)
-    handleClickMenu()
-  }
-
-  const onSubmit = ({boardTitle, image, contents}:  any) => {
-    if(image.length <= 0){
-      if(confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')){
-        mutateFn({boardTitle, image, contents})
-      }
-    }else{
-      mutateFn({boardTitle, image, contents})
-    }
+    formData.append('boardTitle', boardTitle);
+    formData.append('boardImage', image);
+    formData.append('contents', contents === '<p><br></p>' ? '' : convertContent(contents));
+    formData.append('categorySubTitle', subTitle);
+    formData.append('boardId', isEdit ? id! : '작성중');
+    formData.append('tags', currentTags.toString());
+    boardMutate(formData);
+    setIsSuccess(true);
+    handleClickMenu();
   };
 
-
+  const onSubmit = ({ boardTitle, image, contents }: any) => {
+    if (image.length <= 0) {
+      if (confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')) {
+        mutateFn({ boardTitle, image, contents });
+      }
+    } else {
+      mutateFn({ boardTitle, image, contents });
+    }
+  };
 
   return (
     <>
@@ -192,7 +180,7 @@ const BoardForm = ({subTitle, id ,isEdit = false} : BoardFormProps) => {
         <FormProvider {...methods}>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <BoardTitleBox>
-              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete='off' />
+              <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete="off" />
             </BoardTitleBox>
             <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
             <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={data ? convertContent(currentBoard.contents) : ''} />
@@ -243,8 +231,8 @@ export const TitleInput = styled.input<{ isError: boolean }>`
 `;
 
 export const CustomQuill = styled(QuillNoSSRWrapper)`
-  .ql-editor *{
-    font-size : 14px;
+  .ql-editor * {
+    font-size: 14px;
     font-family: 'Pretendard-Regular' !important;
   }
   .ql-toolbar {
@@ -273,27 +261,25 @@ export const CustomQuill = styled(QuillNoSSRWrapper)`
     margin: 3px;
     border: 1px solid #a5a5a5a1;
   }
-  .ql-snow .ql-editor pre.ql-syntax{
-    white-space:pre;
-    overflow:auto;
+  .ql-snow .ql-editor pre.ql-syntax {
+    white-space: pre;
+    overflow: auto;
     padding: 20px;
     &::-webkit-scrollbar {
       width: 8px;
       height: 4px;
     }
-  
+
     &::-webkit-scrollbar-thumb:horizontal {
       background-color: #fff;
       border-radius: 10px;
     }
-   
-  
+
     &::-webkit-scrollbar-corner {
       display: none;
     }
   }
 `;
-
 
 export const CompletionBtnBox = styled.div`
   width: 100%;
@@ -313,4 +299,3 @@ export const CompletionBtn = styled.button`
     background: #fff;
   }
 `;
-

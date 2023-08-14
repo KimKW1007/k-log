@@ -1,10 +1,9 @@
-import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import FindForm from '@components/find/FindForm';
 import type { GetServerSideProps, NextPage } from 'next';
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { inputResetBoolean } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { ListTypes, findList, tabList } from '@utils/mapList';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
 
@@ -43,21 +42,21 @@ const FindPage: NextPage = () => {
     </FindPageWrap>
   );
 };
-export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
   return {
-    props : {}
-  }
+    props: {}
+  };
 });
 export default FindPage;
 
 const FindPageWrap = styled.div`
   width: 33rem;
   height: 100%;
-  margin : 0 auto;
+  margin: 0 auto;
 `;
 
 const FindInnerBox = styled.div`
-width: 100%; 
+  width: 100%;
 `;
 
 const SelectTabBox = styled.div`
@@ -76,7 +75,8 @@ const FindBtn = styled.button<{ currentId: string; textById?: string }>`
   transform: scale(1);
   transition: 0.3s;
   ${({ currentId, textById }) =>
-    currentId !== textById &&`
+    currentId !== textById &&
+    `
       transform: scale(0.99);
       background: #232323;
       color: #bbb;

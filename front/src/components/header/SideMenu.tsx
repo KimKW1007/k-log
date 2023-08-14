@@ -1,17 +1,16 @@
 import SearchBox from 'src/search/SearchBox';
 import SidebarCategoryBox from '@components/sideBar/SidebarCategoryBox';
 import SidebarHeader from '@components/sideBar/SidebarHeader';
-import React, { useEffect, useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import React from 'react';
+import styled, { css } from 'styled-components';
 import HamburgerMenuBtn from './HamburgerMenuBtn';
-import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
 import useIsMount from 'src/hooks/useIsMount';
 import HeaderUserMenu from './HeaderUserMenu';
 import LoginSignUpBox from './LoginSignUpBox';
-import { OnDeviceTraining } from '@styled-icons/material-rounded';
 import Link from 'next/link';
 
 const SideMenu = () => {
@@ -110,11 +109,11 @@ const RelevantToTheUser = styled(AllCenterFlex)`
 `;
 
 const LogoBox = styled.div`
-  user-select:none;
-  a{
-    display:inline-block;
-    transition: text-shadow .2s;
-    &:hover{
+  user-select: none;
+  a {
+    display: inline-block;
+    transition: text-shadow 0.2s;
+    &:hover {
       text-shadow: #fc0 1px 0 10px;
     }
   }

@@ -1,57 +1,51 @@
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import { vaildaters } from '@utils/userInfoEdit';
-import React from 'react'
-import { FieldValues, UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
+import styled from 'styled-components';
 
-interface EditInputProps{
-  title ?: string;
-  defaultValue ?: string;
-  type ?: string;
-  register: UseFormRegisterReturn<string>
-  isError : boolean;
-  disabled ?: boolean;
-  isPassword ?:boolean;
+interface EditInputProps {
+  title?: string;
+  defaultValue?: string;
+  type?: string;
+  register: UseFormRegisterReturn<string>;
+  isError: boolean;
+  disabled?: boolean;
+  isPassword?: boolean;
 }
 
-const EditInput = ({title, defaultValue, type = 'text', register, isError, disabled, isPassword = false} : EditInputProps) => {
+const EditInput = ({ title, defaultValue, type = 'text', register, isError, disabled, isPassword = false }: EditInputProps) => {
   return (
-      <EditInputInnerBox>
-        {title && <EditInputTitleBox isPassword={isPassword}>
+    <EditInputInnerBox>
+      {title && (
+        <EditInputTitleBox isPassword={isPassword}>
           <h4>{title}</h4>
-        </EditInputTitleBox>}
-        <Input
-          defaultValue={defaultValue}
-          type={type}
-          {...register}
-          isError={isError}
-          disabled={disabled}
-          autoComplete="off"
-        />
-      </EditInputInnerBox>
-     
-  )
-}
+        </EditInputTitleBox>
+      )}
+      <Input defaultValue={defaultValue} type={type} {...register} isError={isError} disabled={disabled} autoComplete="off" />
+    </EditInputInnerBox>
+  );
+};
 
-export default EditInput
-
+export default EditInput;
 
 export const EditInputInnerBox = styled(OnlyAlignCenterFlex)`
   column-gap: 20px;
-  @media(max-width: 660px){
-    display:block;
+  @media (max-width: 660px) {
+    display: block;
   }
 `;
 
-const EditInputTitleBox = styled.div<{isPassword ?: boolean;}>`
+const EditInputTitleBox = styled.div<{ isPassword?: boolean }>`
   width: 80px;
-  ${({isPassword})=>isPassword && `
+  ${({ isPassword }) =>
+    isPassword &&
+    `
   width: 120px;
   `}
   h4 {
     font-size: 18px;
   }
-  @media(max-width: 660px){
+  @media (max-width: 660px) {
     margin-bottom: 12px;
     h4 {
       font-size: 16px;
@@ -89,4 +83,3 @@ const Input = styled.input<{ isError?: boolean }>`
     pointer-events: none;
   }
 `;
-

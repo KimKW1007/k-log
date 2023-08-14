@@ -1,9 +1,8 @@
 import { CurrentInputName, ErrMsg, ErrMsgBox, Input, InputBox } from '@components/common/UserInfoInput';
 import { EMAIL_REGEX } from '@constant/regex';
-import { RegisterInputs, UserInfoInputProps } from '@src/types/user';
-import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
+import { UserInfoInputProps } from '@src/types/user';
 import React, { useEffect, useState } from 'react';
-import { UseFormRegister, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import styled, { css, keyframes } from 'styled-components';
 import ErrorMsgBox from './error/ErrorMsgBox';
 import { Reload } from '@styled-icons/ionicons-solid/Reload';

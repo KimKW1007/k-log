@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { AbsoluteBox, EditForm, EditInputArea, EditInputInnerArea } from './AccountEditBox';
 import { changeNewPasswordInputList } from '@utils/userInfoEdit';
 import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
@@ -9,11 +9,8 @@ import { errMsg } from '@utils/singupThirdErrMsg';
 import { PASSWORD_REGEX } from '@constant/regex';
 import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
 import { errorFn } from '@utils/singupErrorFn';
-import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
 import customApi from '@utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import { SubmitBox, SubmitBtn } from '@components/signup/signupForm';
 
 const ChangePassword = () => {
@@ -21,15 +18,13 @@ const ChangePassword = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isDirty },
+    formState: { errors },
     setError,
     clearErrors,
     setValue
   } = useForm({ mode: 'all' });
-  const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const { patchApi } = customApi('/auth/changePassword');
   const { mutate: changePasswordMutate } = useMutation(patchApi, {
-    onError(error: any) {},
     onSuccess(data) {
       alert('비밀번호가 변경 되었습니다.');
       setValue('password', '');

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { useRouter } from 'next/router';
 import CategoryList from './CategoryList';

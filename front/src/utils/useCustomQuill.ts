@@ -1,22 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import ifInImageApi from './ifInImageApi';
 import ReactQuill from 'react-quill';
 import customApi from './customApi';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import hljs from 'highlight.js/lib/core';
 import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 import useIsMount from 'src/hooks/useIsMount';
-import "highlight.js/styles/atom-one-dark.css";
+import 'highlight.js/styles/atom-one-dark.css';
 
-const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle : string) =>{
+const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle: string) => {
   const { postApi } = ifInImageApi('uploads');
-  const {isMount} = useIsMount();
-  const { getApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/','-')}`);
-  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], ()=> getApi(true));
+  const { getApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/', '-')}`);
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], () => getApi(true));
 
- 
   const handleImage = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -24,7 +21,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
     input.click();
     input.addEventListener('change', async () => {
       if (input.files) {
-        const file = new File([input.files[0]], removeEmptyBetweenString(input.files[0].name), {type : input.files[0].type});
+        const file = new File([input.files[0]], removeEmptyBetweenString(input.files[0].name), { type: input.files[0].type });
         const formData = new FormData();
         formData.append('image', file);
         formData.append('userId', userId);
@@ -39,8 +36,8 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
           editor?.setSelection(range?.index! + 1, 0);
           const insertedImage = editor?.root.querySelector('img[src="' + IMG_URL + '"]');
           if (insertedImage) {
-            insertedImage.setAttribute('width', '300px')
-            insertedImage.setAttribute('height', 'auto')
+            insertedImage.setAttribute('width', '300px');
+            insertedImage.setAttribute('height', 'auto');
           }
         } catch (err) {
           return '실패';
@@ -66,7 +63,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
           ['image', 'link']
         ],
         handlers: {
-          image: handleImage,
+          image: handleImage
         }
       }
     };

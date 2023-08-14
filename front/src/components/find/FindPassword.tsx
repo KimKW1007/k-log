@@ -16,7 +16,7 @@ const FindPassword = ({
   isClickFindBtn,
   isSuccessChangePassword
 }: FindPasswordProps) => {
-  const { register, watch, formState:{errors}, setError, setValue, clearErrors } = useFormContext();
+  const { register, watch, formState:{errors} } = useFormContext();
 
   return (
     <InputListBox>

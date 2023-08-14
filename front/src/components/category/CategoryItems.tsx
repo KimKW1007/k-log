@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Link from 'next/link';
 import customApi from '@utils/customApi';
 import { useQuery } from '@tanstack/react-query';
@@ -8,30 +8,26 @@ import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { EmptyIconBox } from '@components/board/BoardWrapComp';
 
-const CategoryItems = ({isOverHeader} : {isOverHeader ?:boolean}) => {
+const CategoryItems = ({ isOverHeader }: { isOverHeader?: boolean }) => {
   const { getApi } = customApi('/category');
-  const { data, isLoading, isSuccess } = useQuery([GET_ALL_CATEGORY], () => getApi());
+  const { data } = useQuery([GET_ALL_CATEGORY], () => getApi());
   return (
     <>
-    {data?.length > 0 || 
-          <EmptyCategoryBox>
-            <EmojiDizzyFill />
-            <p>준비된 카테고리가 없어요..</p>
-          </EmptyCategoryBox>
-        }
+      {data?.length > 0 || (
+        <EmptyCategoryBox>
+          <EmojiDizzyFill />
+          <p>준비된 카테고리가 없어요..</p>
+        </EmptyCategoryBox>
+      )}
       {data?.length > 0 &&
         data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
           <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
             <CategoryTitle>
-              <Link href={`/category/${categoryTitle.replaceAll("/", "-")}`}>
-                {categoryTitle}
-              </Link>
+              <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}</Link>
             </CategoryTitle>
             {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
               <CategoryItem key={'categorySubTitle' + categorySubTitle}>
-                <Link href={`/category/${categoryTitle.replaceAll("/", "-")}/${categorySubTitle.replaceAll("/", "-")}`}>
-                  {categorySubTitle}
-                </Link>
+                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle}</Link>
               </CategoryItem>
             ))}
           </CategoryItmeList>
@@ -44,15 +40,17 @@ export default CategoryItems;
 
 const EmptyCategoryBox = styled(EmptyIconBox)`
   min-height: 300px;
-`
+`;
 
-const CategoryItmeList = styled.dl<{$isOverHeader ?: boolean}>`
-& + & {
-  margin-top: 5px;
-  padding-top: 5px;
-  border-top: 1px solid rgba(128,128,128,0.3);
-}
-${({$isOverHeader, theme}) => $isOverHeader &&`
+const CategoryItmeList = styled.dl<{ $isOverHeader?: boolean }>`
+  & + & {
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
+  }
+  ${({ $isOverHeader, theme }) =>
+    $isOverHeader &&
+    `
 
   dt, dd{
     a{
@@ -71,7 +69,7 @@ ${({$isOverHeader, theme}) => $isOverHeader &&`
   }
 
 `}
-`
+`;
 
 const CategoryTitle = styled.dt`
   font-size: 14px;

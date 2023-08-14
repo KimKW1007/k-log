@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import ModalPortal from '@components/modal/ModalPortal';
 import { ModalWrap, Dim } from '@components/modal/CommonModal';
 import { DeleteModalBox } from '@components/modal/DeleteModal';
-import { Search } from '@styled-icons/fluentui-system-filled/Search';
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { searchModalState, searchRecent } from '@atoms/atoms';
 import customApi from '@utils/customApi';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import Esc from '@assets/images/esc.svg';
 import SearchListBox from './SearchListBox';
 import NoResult from './NoResult';
@@ -21,9 +20,9 @@ import useIsMount from 'src/hooks/useIsMount';
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const methods = useForm({ mode: 'onSubmit' });
-  const { register, setValue, watch } = methods;
+  const { watch } = methods;
 
-  const {isMount} = useIsMount();
+  const { isMount } = useIsMount();
 
   const [searchedData, setSearchedData] = useState([]);
   const [searchedDataWithTag, setSearchedDataWithTag] = useState([]);
@@ -32,25 +31,21 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
 
   const [recentBoard, setRecentBoard] = useRecoilState(searchRecent);
 
-
-
- 
   const { postApi } = customApi('/board/search');
-  const { mutate, isLoading } = useMutation(postApi,{
+  const { mutate, isLoading } = useMutation(postApi, {
     onError(error, variables, context) {
-        console.log({error})
+      console.log({ error });
     },
     onSuccess(data, variables, context) {
-      console.log({data})
+      console.log({ data });
       setIsTyping(false);
-      const value = watch('search').trim()
+      const value = watch('search').trim();
       const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(value.toLowerCase()) || item.contents.toLowerCase().includes(value.toLowerCase()));
       const filteredDataWithTag = data.filter((item: any) => item.tags.toLowerCase().includes(value.toLowerCase()));
-      setSearchedData(filteredData.slice(0,5));
-      setSearchedDataWithTag(filteredDataWithTag.slice(0,5));
-    },
+      setSearchedData(filteredData.slice(0, 5));
+      setSearchedDataWithTag(filteredDataWithTag.slice(0, 5));
+    }
   });
-  
 
   const handleKeyDown = (e: { code: string }) => {
     if (e.code === 'Escape') {
@@ -67,24 +62,22 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     };
   }, [isOpenSearchModal]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     let mutateTimer: NodeJS.Timeout | undefined;
-    if(watch('search')?.length > 0){
+    if (watch('search')?.length > 0) {
       clearTimeout(mutateTimer);
       mutateTimer = setTimeout(() => {
-        mutate({searchValue : watch('search').trim()})
+        mutate({ searchValue: watch('search').trim() });
       }, 500);
-    }else{
+    } else {
       setIsTyping(false);
     }
-    return ()=>clearTimeout(mutateTimer);
-  },[watch('search'), isMount])
+    return () => clearTimeout(mutateTimer);
+  }, [watch('search'), isMount]);
 
-  const isTyping_REGEX = (isTyping || isLoading);
+  const isTyping_REGEX = isTyping || isLoading;
   const isValueOverZero = watch('search')?.length > 0;
-  const noRecentSearches_REGEX = isTyping_REGEX || (isValueOverZero || recentBoard.length > 0);
-
+  const noRecentSearches_REGEX = isTyping_REGEX || isValueOverZero || recentBoard.length > 0;
 
   return (
     <ModalPortal>
@@ -96,24 +89,25 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
               <SearchInputBox setIsTyping={setIsTyping} />
               <SearchListArea className="customScroll">
                 <SearchRecent />
-                {isTyping_REGEX && <TypingLoading/>}
+                {isTyping_REGEX && <TypingLoading />}
                 {noRecentSearches_REGEX || (
                   <NoRecentSearches>
                     <p>No Recent Searches</p>
                   </NoRecentSearches>
                 )}
-                {isTyping_REGEX || isValueOverZero && (
-                  <>
-                    {searchedData.length > 0 || searchedDataWithTag.length > 0 ? (
-                      <>
-                        <SearchListBox data={searchedData} title={'Title | Contents'} currentValue={watch('search').trim()} />
-                        <SearchListBox data={searchedDataWithTag} title={'Tags'} currentValue={watch('search').trim()} />
-                      </>
-                    ) : (
-                      <NoResult value={watch('search').trim()} />
-                    )}
-                  </>
-                )}
+                {isTyping_REGEX ||
+                  (isValueOverZero && (
+                    <>
+                      {searchedData.length > 0 || searchedDataWithTag.length > 0 ? (
+                        <>
+                          <SearchListBox data={searchedData} title={'Title | Contents'} currentValue={watch('search').trim()} />
+                          <SearchListBox data={searchedDataWithTag} title={'Tags'} currentValue={watch('search').trim()} />
+                        </>
+                      ) : (
+                        <NoResult value={watch('search').trim()} />
+                      )}
+                    </>
+                  ))}
               </SearchListArea>
             </ModalInnerBox>
             <SearchFooter>
@@ -130,8 +124,6 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
 };
 
 export default SearchModal;
-
-
 
 const SearchListArea = styled.div`
   width: 100%;
@@ -157,8 +149,6 @@ const CommandsIcon = styled.div`
   background: url(${Esc.src}) no-repeat center center/100% auto;
   margin-right: 6px;
 `;
-
-
 
 const SearchModalBox = styled(DeleteModalBox)`
   margin: 100px auto auto;
@@ -187,5 +177,3 @@ const NoRecentSearches = styled.div`
 const ModalInnerBox = styled.div`
   width: 100%;
 `;
-
-

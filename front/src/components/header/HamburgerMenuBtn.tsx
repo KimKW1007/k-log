@@ -1,6 +1,6 @@
-import React from "react";
-import useScrollOverHeader from "src/hooks/useScrollOverHeader";
-import styled, { keyframes, css } from 'styled-components';
+import React from 'react';
+import useScrollOverHeader from 'src/hooks/useScrollOverHeader';
+import styled from 'styled-components';
 
 interface MenuProps {
   isOpen: boolean;
@@ -11,8 +11,7 @@ const HamburgerMenuBtn = ({ isOpen, handleClickMenu }: MenuProps) => {
   const { isOverHeader } = useScrollOverHeader();
 
   return (
-    
-    <MenuBtnBox className={isOpen ? "active" : ""} isOverHeader={isOverHeader}>
+    <MenuBtnBox className={isOpen ? 'active' : ''} isOverHeader={isOverHeader}>
       <MenuBtn onClick={handleClickMenu}>
         <LineBox>
           <span />
@@ -25,7 +24,7 @@ const HamburgerMenuBtn = ({ isOpen, handleClickMenu }: MenuProps) => {
 };
 export default HamburgerMenuBtn;
 
-const MenuBtnBox = styled.div<{isOverHeader : boolean}>`
+const MenuBtnBox = styled.div<{ isOverHeader: boolean }>`
   position: fixed;
   right: 0;
   top: 0;
@@ -37,13 +36,15 @@ const MenuBtnBox = styled.div<{isOverHeader : boolean}>`
   box-shadow: -5px 5px 12px rgba(78, 83, 188, 0);
   overflow: hidden;
   transition: 0.6s;
-  ${({isOverHeader}) => isOverHeader &&`
+  ${({ isOverHeader }) =>
+    isOverHeader &&
+    `
     background: #454545;
     box-shadow: -2px 0px 12px 2px rgba(255, 255, 255, .5);
   `}
 
   &.active {
-    background: #A0BFE0;
+    background: #a0bfe0;
     box-shadow: -5px 5px 12px rgba(78, 83, 188, 0.5);
     button {
       div {
@@ -59,16 +60,12 @@ const MenuBtnBox = styled.div<{isOverHeader : boolean}>`
       }
     }
   }
-
-
-
 `;
 const MenuBtn = styled.button`
   width: 100%;
   height: 100%;
   padding: 24px 20px;
   background: transparent;
-
 `;
 
 const LineBox = styled.div`
@@ -85,6 +82,5 @@ const LineBox = styled.div`
     border-radius: 4px;
     background: #fff;
     transition: transform 0.6s, width 0.6s, background 0.6s;
-    
   }
 `;

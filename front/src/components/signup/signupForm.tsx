@@ -1,5 +1,5 @@
 import { Form } from '@components/login/LoginForm';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Title from '@components/common/TitleBox';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
@@ -16,10 +16,10 @@ import { RegisterInputs, User } from '@src/types/user';
 import { CurrentTitle } from '@utils/signupList';
 
 const SignupForm = () => {
-  const methods  = useForm<RegisterInputs>({
+  const methods = useForm<RegisterInputs>({
     mode: 'all'
   });
-  const {handleSubmit, setError} = methods;
+  const { handleSubmit, setError } = methods;
 
   const router = useRouter();
 
@@ -39,9 +39,7 @@ const SignupForm = () => {
   const [userIds, setUserIds] = useState<User[]>([]);
 
   // title , submitText  관련
-  const {title, submitText} = CurrentTitle[currentLevel](userIds);
-
-
+  const { title, submitText } = CurrentTitle[currentLevel](userIds);
 
   const { postApi: createAccountPostApi } = customApi('/auth/signup');
   const { postApi: checkEmailPostApi } = customApi('/auth/checkemail');
@@ -52,9 +50,8 @@ const SignupForm = () => {
   // 아이디 중복확인
   const { mutate: createAccountMutate } = useMutation(createAccountPostApi, {
     onError(error: any) {
-      console.log({ error: error.config.data.userId });
       setIsOpenModal(true);
-      setError("userId",{type:'custom', message:`${error.response.data.message}`})
+      setError('userId', { type: 'custom', message: `${error.response.data.message}` });
       setModalErrMsg(error.response.data.message);
     },
     onSuccess(data) {
@@ -63,15 +60,11 @@ const SignupForm = () => {
   });
   // 이메일 인증
   const { mutate: checkEmailMutate } = useMutation(checkEmailPostApi, {
-    onError(error: any) {
-      console.log({ error });
-    },
     async onSuccess(data) {
       if (data.message) {
         setIsOpenCheckErrIdModal(true);
         setCheckErrMsg(data.message);
       }
-      console.log({ data });
       setUserIds(data.user || data);
     }
   });
@@ -103,7 +96,6 @@ const SignupForm = () => {
     }
   };
 
-  
   return (
     <FormProvider {...methods}>
       <SignUpForm onSubmit={handleSubmit(onSubmit)}>
@@ -115,17 +107,9 @@ const SignupForm = () => {
         )}
         {isOpenCheckErrIdModal && <CommonModal setIsOpenModal={setIsOpenCheckErrIdModal}>{checkErrMsg}</CommonModal>}
         {currentLevel === 'first' && <FirstPage setIsAllChecked={setIsAllChecked}></FirstPage>}
-        {currentLevel === 'second' && (
-          <SecondPage
-            setIsAllChecked={setIsAllChecked}
-            isPassCertificate={isPassCertificate}
-            setIsPassCertificate={setIsPassCertificate}></SecondPage>
-        )}
+        {currentLevel === 'second' && <SecondPage setIsAllChecked={setIsAllChecked} isPassCertificate={isPassCertificate} setIsPassCertificate={setIsPassCertificate}></SecondPage>}
         {currentLevel === 'idListByEmail' && <IdListByEmail userIds={userIds}></IdListByEmail>}
-        {currentLevel === 'third' && (
-          <ThirdPage
-            setIsAllChecked={setIsAllChecked}></ThirdPage>
-        )}
+        {currentLevel === 'third' && <ThirdPage setIsAllChecked={setIsAllChecked}></ThirdPage>}
         {currentLevel === 'finally' && <FinallPage isSignupFinal></FinallPage>}
         <FlexEmptyBox />
         <SubmitBox>
@@ -156,7 +140,7 @@ export const SubmitBox = styled.div`
   height: 50px;
   border-radius: 10px;
   overflow: hidden;
-  margin : 50px auto 0;
+  margin: 50px auto 0;
 `;
 
 export const SubmitBtn = styled.button<{ currentLevel?: string }>`

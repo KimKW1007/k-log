@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import SearchBox from '../../search/SearchBox';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import SidebarHeader from '@components/sideBar/SidebarHeader';

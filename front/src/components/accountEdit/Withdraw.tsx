@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import EditInput, { EditInputInnerBox } from './EditInput';
 import { CheckSecretInput, CheckSecretLabel } from '@components/comment/CommentForm';
 import { SubmitBtn } from '@components/signup/signupForm';
@@ -19,11 +19,7 @@ const Withdraw = () => {
 
   const { postApi } = customApi('/auth/withdraw');
   const { mutate } = useMutation(postApi, {
-    onError(error) {
-      console.log({ error });
-    },
     onSuccess(data) {
-      console.log({ data });
       setUserInfo(null);
       sessionStorage.removeItem('access_token');
       sessionStorage.removeItem('access_token_expiration');

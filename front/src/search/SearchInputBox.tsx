@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Search } from '@styled-icons/fluentui-system-filled/Search';
 import { useFormContext } from 'react-hook-form';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import styled, { keyframes } from 'styled-components';
 import { X } from '@styled-icons/bootstrap/X';
 
-
 interface SearchInputBoxProps {
-  setIsTyping: React.Dispatch<React.SetStateAction<boolean>>
-
+  setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SearchInputBox = ({setIsTyping} : SearchInputBoxProps) => {
-  const {register, watch, setValue, setFocus} = useFormContext();
-
+const SearchInputBox = ({ setIsTyping }: SearchInputBoxProps) => {
+  const { register, watch, setValue, setFocus } = useFormContext();
 
   useEffect(() => {
-    setFocus("search")
-  }, [])
+    setFocus('search');
+  }, []);
 
   return (
     <SeachInputBox>
@@ -26,8 +23,8 @@ const SearchInputBox = ({setIsTyping} : SearchInputBoxProps) => {
           <Search />
         </SearchIconBox>
         <SearchInput
-          {...register('search',{
-            onChange: ()=>setIsTyping(true)
+          {...register('search', {
+            onChange: () => setIsTyping(true)
           })}
           type="text"
           placeholder="검색어를 입력하세요"
@@ -39,17 +36,17 @@ const SearchInputBox = ({setIsTyping} : SearchInputBoxProps) => {
             type="button"
             onClick={() => {
               setValue('search', '');
-              setFocus("search")
+              setFocus('search');
             }}>
             <X />
           </CleanBtn>
         )}
       </SeachInputInnerBox>
     </SeachInputBox>
-  )
-}
+  );
+};
 
-export default SearchInputBox
+export default SearchInputBox;
 
 const CleanBtnAni = keyframes`
   0%{

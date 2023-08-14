@@ -1,4 +1,3 @@
-import { CategoryBackProps } from '@components/category/CategoryList';
 import { SearchBoardProps } from '@src/types/board';
 import { User } from '@src/types/user';
 import { atom } from 'recoil';

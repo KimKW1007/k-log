@@ -1,5 +1,5 @@
-import React, { MouseEventHandler, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import Link from 'next/link';
 import { Clipboard } from '@styled-icons/bootstrap/Clipboard';
 import { ArrowEnterLeft } from '@styled-icons/fluentui-system-filled/ArrowEnterLeft';
@@ -8,10 +8,8 @@ import { useRecoilState } from 'recoil';
 import { searchModalState, searchRecent } from '@atoms/atoms';
 import { X } from '@styled-icons/bootstrap/X';
 import { CleanBtn } from './SearchInputBox';
-import customApi from '@utils/customApi';
 import { SearchBoardProps } from '@src/types/board';
-import { AccessTime } from '@styled-icons/material-rounded/AccessTime'
-import { useFormContext } from 'react-hook-form';
+import { AccessTime } from '@styled-icons/material-rounded/AccessTime';
 
 interface SearchListBoxProps {
   data: any;
@@ -61,7 +59,6 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
     return text;
   };
 
-
   return (
     <>
       {data.length > 0 && (
@@ -74,9 +71,7 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
             return (
               <SearchItem key={isRecent ? 'isRecent' + id : 'SeachItem' + id}>
                 <SearchItemLink href={`/${id}`} onClick={onClickLink(board)} $isRecent={isRecent}>
-                  <SearchItemIconBox>
-                    {isRecent ? <AccessTime/> : <Clipboard />}
-                  </SearchItemIconBox>
+                  <SearchItemIconBox>{isRecent ? <AccessTime /> : <Clipboard />}</SearchItemIconBox>
                   <SearchItemContents>
                     <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(boardTitle) }} />
                     <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />

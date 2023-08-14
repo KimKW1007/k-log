@@ -7,7 +7,7 @@ import customApi from '@utils/customApi';
 import { BOARD_ALL, GET_BOARDS } from '@utils/queryKeys';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import useIsMount from 'src/hooks/useIsMount';
 

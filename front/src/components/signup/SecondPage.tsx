@@ -1,9 +1,7 @@
 import UserInfoInput from '@components/common/UserInfoInput';
 import { NAME_REGEX } from '@constant/regex';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { InputListBox } from '@components/login/LoginForm';
-import customApi from '@utils/customApi';
-import { useMutation } from '@tanstack/react-query';
 import CertificateEmail from '@components/common/CertificateEmail';
 import { useFormContext } from 'react-hook-form';
 import { RegisterPageProps } from '@src/types/register';
@@ -15,19 +13,6 @@ const SecondPage = ({
   setIsPassCertificate,
   isPassCertificate,
 }: RegisterPageProps) => {
-  const [isComplete, setIsComplete] = useState(false);
-
-  const { postApi: certificatePostApi } = customApi('/find/sendEmail');
-  const { mutate, isLoading, isSuccess } = useMutation(certificatePostApi, {
-    onError(error, variables, context) {
-      console.log({ error });
-    },
-    onSuccess(data, variables, context) {
-      setIsComplete(true);
-      setIsPassCertificate!(false);
-    }
-  });
-
   const {watch, register, formState: { errors },} = useFormContext();
 
   useEffect(() => {

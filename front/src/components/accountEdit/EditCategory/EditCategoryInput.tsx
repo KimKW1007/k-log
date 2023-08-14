@@ -1,45 +1,48 @@
 import React, { useState } from 'react';
-import {  UseFieldArrayRemove,  useFormContext } from 'react-hook-form';
+import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
 import styled, { keyframes, css } from 'styled-components';
 import { Trash } from '@styled-icons/bootstrap/Trash';
 
-import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
+import { ExclamationCircleFill } from '@styled-icons/bootstrap';
 import DeleteModal from '@components/modal/DeleteModal';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 
-
 export interface CategoryInputProps {
-  subCategoriesIndex ?: number;
-  categoryIndex ?: number;
-  sub ?: boolean;
+  subCategoriesIndex?: number;
+  categoryIndex?: number;
+  sub?: boolean;
   name: string;
-  remove: UseFieldArrayRemove
+  remove: UseFieldArrayRemove;
 }
 
-const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name, remove} :  CategoryInputProps) => {
+const EditCategoryInput = ({ sub = false, categoryIndex, subCategoriesIndex, name, remove }: CategoryInputProps) => {
   const [isOnDeleteBtn, setIsOnDeleteBtn] = useState(false);
   const { register } = useFormContext();
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const onClickDeleteInput =()=> {
-    remove(sub ? subCategoriesIndex : categoryIndex)
-  }
+  const onClickDeleteInput = () => {
+    remove(sub ? subCategoriesIndex : categoryIndex);
+  };
 
-  const handleDeleteModal = ()=>{
-    setIsOpenDeleteModal(true)
-  }
+  const handleDeleteModal = () => {
+    setIsOpenDeleteModal(true);
+  };
 
   const DeleteTipText = () => {
     if (!sub) {
       return (
         <>
-        해당 카테고리 삭제 시<br />하위 카테고리 및 하위 카테고리에 작성된 게시물 모두 삭제됩니다.
+          해당 카테고리 삭제 시<br />
+          하위 카테고리 및 하위 카테고리에 작성된 게시물 모두 삭제됩니다.
         </>
       );
     } else {
       return (
         <>
-        해당 카테고리 삭제 시<br />해당 카테고리에 작성된<br />게시물 모두 삭제됩니다.
+          해당 카테고리 삭제 시<br />
+          해당 카테고리에 작성된
+          <br />
+          게시물 모두 삭제됩니다.
         </>
       );
     }
@@ -49,7 +52,7 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
     <EditInputBox>
       <EditInput {...register(name)} name={name} placeholder="카테고리를 입력해주세요"></EditInput>
       <DeleteBox>
-        <DeleteBtn type="button" onClick={handleDeleteModal} onMouseLeave={() => setIsOnDeleteBtn(false)}  onMouseOver={() => setIsOnDeleteBtn(true)} isOnDeleteBtn={isOpenDeleteModal || isOnDeleteBtn}>
+        <DeleteBtn type="button" onClick={handleDeleteModal} onMouseLeave={() => setIsOnDeleteBtn(false)} onMouseOver={() => setIsOnDeleteBtn(true)} isOnDeleteBtn={isOpenDeleteModal || isOnDeleteBtn}>
           <Trash></Trash>
         </DeleteBtn>
         {(isOpenDeleteModal || isOnDeleteBtn) && (
@@ -60,7 +63,7 @@ const EditCategoryInput = ({sub = false, categoryIndex, subCategoriesIndex, name
             </DeleteTipTextBox>
           </DeleteTip>
         )}
-        {isOpenDeleteModal && <DeleteModal onClose={()=>setIsOpenDeleteModal(false)} mutate={onClickDeleteInput}/>}
+        {isOpenDeleteModal && <DeleteModal onClose={() => setIsOpenDeleteModal(false)} mutate={onClickDeleteInput} />}
       </DeleteBox>
     </EditInputBox>
   );
@@ -74,7 +77,7 @@ const TipAni = keyframes`
 `;
 
 const EditInputBox = styled(OnlyAlignCenterFlex)`
-  flex : 1;
+  flex: 1;
 `;
 const DeleteBox = styled.div`
   position: relative;
@@ -90,9 +93,9 @@ const DeleteTipTextBox = styled.div`
   word-break: keep-all;
   text-align: center;
   border-radius: 6px;
-  background: #A084E8;
+  background: #a084e8;
   font-size: 13px;
-  border: 2px solid #6F61C0;
+  border: 2px solid #6f61c0;
   svg {
     position: absolute;
     left: 8px;
@@ -106,7 +109,7 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
   top: -96px;
   color: #fff;
   pointer-events: none;
-  transition : .4s;
+  transition: 0.4s;
   &:after {
     content: '';
     position: absolute;
@@ -118,13 +121,15 @@ const DeleteTip = styled.div<{ isOnDeleteBtn: boolean }>`
     height: 15px;
     transform: rotate(45deg);
     border-radius: 0 0 2px 0;
-    background: #A084E8;
-    border-bottom: 2px solid #6F61C0;
-    border-right: 2px solid #6F61C0;
+    background: #a084e8;
+    border-bottom: 2px solid #6f61c0;
+    border-right: 2px solid #6f61c0;
   }
-  ${({isOnDeleteBtn}) => isOnDeleteBtn && css`
-    animation: ${TipAni} 1.5s infinite;
-  `}
+  ${({ isOnDeleteBtn }) =>
+    isOnDeleteBtn &&
+    css`
+      animation: ${TipAni} 1.5s infinite;
+    `}
 `;
 const DeleteBtn = styled.button<{ isOnDeleteBtn: boolean }>`
   width: 42px;
@@ -150,7 +155,7 @@ const EditInput = styled.input`
   border: 1px solid #a5a5a5;
   outline: none;
   background: #f0f0f0;
-  padding: 6px 10px 4px ;
+  padding: 6px 10px 4px;
   transition: 0.2s;
   &:focus {
     border: 1px solid #000;

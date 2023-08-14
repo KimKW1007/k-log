@@ -1,10 +1,8 @@
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import React from 'react'
-import styled, { keyframes } from 'styled-components';
-import Image from "next/image";
+import styled from 'styled-components';
 import defaultImage from '@assets/images/defaultImage.png';
 import useConvert from 'src/hooks/useConvert';
-import changeCreatedAt from '@utils/changeCreatedAt';
 import AuthorBox from './AuthorBox';
 import Link from 'next/link';
 import DOMPurify from 'dompurify';

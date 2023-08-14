@@ -1,4 +1,4 @@
-import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import customApi from '@utils/customApi';
@@ -7,7 +7,7 @@ import { GET_COOKIE, GET_USER } from '@utils/queryKeys';
 import { accountEditInputListProps, vaildaters } from '@utils/userInfoEdit';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import EditInput from './EditInput';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@atoms/atoms';
@@ -19,8 +19,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     watch,
     formState: { errors, isDirty },
     setError,
-    clearErrors,
-    setValue
+    clearErrors
   } = useForm({ mode: 'all' });
 
   const [currentUserInfo, setCurrentUserInfo] = useState<any>({});
@@ -29,24 +28,22 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   const { patchApi } = customApi('/auth/changeThings');
   const { mutate } = useMutation(patchApi, {
     onError(error: any) {
-      console.log({ error });
       setError(name, { type: 'custom', message: error.response.data.message });
     },
     onSuccess(data) {
-      refetch()
-      cookieRefetch()
+      refetch();
+      cookieRefetch();
       alert(`"${title}"이(가) 변경 되었습니다.`);
     }
   });
 
   // 현재 쿠키값
   const { getApi: cookieApi } = customApi('/auth/cookies');
-  const { data: cookieData, refetch : cookieRefetch } = useQuery([GET_COOKIE], ()=> cookieApi());
-  const [checkCookie, setCheckCookie] = useState(false);
+  const { data: cookieData, refetch: cookieRefetch } = useQuery([GET_COOKIE], () => cookieApi());
+  
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
   const { data, refetch } = useQuery([GET_USER], () => getApi(true));
-
 
   const onSubmit = (data: any) => {
     if (name === 'userEmail') {
@@ -64,8 +61,6 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
     if (isDirty) clearErrors(name);
   }, [isDirty, watch(name)]);
 
-
-
   useEffect(() => {
     if (data) {
       setCurrentUserInfo(data);
@@ -74,12 +69,12 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   }, [data]);
 
   useEffect(() => {
-    if (localStorage.getItem("isOpenPopup")) {
-      refetch()
-      cookieRefetch()
-      sessionStorage.setItem("access_token" , cookieData);
+    if (localStorage.getItem('isOpenPopup')) {
+      refetch();
+      cookieRefetch();
+      sessionStorage.setItem('access_token', cookieData);
     }
-  },[localStorage.getItem("isOpenPopup")]);
+  }, [localStorage.getItem('isOpenPopup')]);
 
   return (
     <EditForm onSubmit={handleSubmit(onSubmit)}>
@@ -114,14 +109,14 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
 export default AccountEditBox;
 const EditInputBox = styled(AllCenterFlex)`
   column-gap: 10px;
-  width:100%;
+  width: 100%;
 `;
 const SubmitBtnBox = styled.div`
-  @media(max-width: 660px){
-    display:flex;
-    height:100%;
+  @media (max-width: 660px) {
+    display: flex;
+    height: 100%;
     align-items: end;
-    padding-bottom :5px;
+    padding-bottom: 5px;
   }
 `;
 const SubmitBtn = styled.button`
@@ -131,16 +126,15 @@ const SubmitBtn = styled.button`
   font-size: 15px;
   font-weight: 900;
   letter-spacing: -1.4px;
-  
 `;
 
 export const AbsoluteBox = styled.div`
   position: absolute;
   width: 100%;
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   left: 50%;
-  transform:translateX(-50%);
+  transform: translateX(-50%);
   bottom: -50%;
 `;
 
@@ -151,12 +145,11 @@ export const EditForm = styled.form`
 `;
 export const EditInputArea = styled(OnlyJustifyCenterFlex)`
   padding: 30px 30px;
-  @media(max-width: 660px){
+  @media (max-width: 660px) {
     padding: 30px 10px;
   }
 `;
 export const EditInputInnerArea = styled(OnlyJustifyCenterFlex)`
   position: relative;
-  width:100%;
+  width: 100%;
 `;
-

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components';
 import AccountEditInputsBox from './AccountEditInputsBox';
 import { accountEditTabList, accountEditMobTabList, bannerEditTabList } from '@utils/accountEditTabList';

@@ -1,5 +1,5 @@
 import { AllCenterFlex } from '@components/common/CommonFlex';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ModalPortal from './ModalPortal';
 import { ChildrenProps } from '@src/types/children';
@@ -64,8 +64,8 @@ export const ModalBox = styled(AllCenterFlex)`
 export const ModalInnerText = styled.div`
   font-size: 24px;
   margin: 0 0 30px;
-  word-break:keep-all;
-  text-align:center;
+  word-break: keep-all;
+  text-align: center;
 `;
 
 export const ModalTitle = styled.h2`

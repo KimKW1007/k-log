@@ -1,12 +1,10 @@
-import Waves from '@components/common/Waves';
 import { useQuery } from '@tanstack/react-query';
 import changeCreatedAt from '@utils/changeCreatedAt';
 import customApi from '@utils/customApi';
 import DOMPurify from 'dompurify';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import useConvert from 'src/hooks/useConvert';
-import useIsMount from 'src/hooks/useIsMount';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { ContentsWrap } from '@styles/boardContents-style';
 import createBlockquoteBox from '@utils/createBlockquoteBox';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
@@ -28,11 +26,10 @@ import codeBlockStyler from '@utils/codeBlockStyler';
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { getApi } = customApi(`/board/getBoard/${id}`);
-  const { isMount } = useIsMount();
   const { convertContent } = useConvert();
-  const { data, isLoading, refetch } = useQuery([GET_BOARD, id], () => getApi());
+  const { data, isLoading } = useQuery([GET_BOARD, id], () => getApi());
   const { currentBoard, prevBoard, nextBoard } = data ?? {};
-  const { author, authorImage, boardTitle, contents, createdAt, thumbnail, tags, subCategory } = currentBoard ?? {};
+  const { author, boardTitle, contents, createdAt, tags, subCategory } = currentBoard ?? {};
   const { categorySubTitle, category } = subCategory ?? {};
   const { categoryTitle, user } = category ?? {};
 

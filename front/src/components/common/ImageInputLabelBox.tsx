@@ -1,26 +1,25 @@
 import { getBase64 } from '@utils/getBase64';
-import React, { useCallback } from 'react'
-import { RefCallBack, useFormContext } from 'react-hook-form';
+import React, { useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { Add } from '@styled-icons/ionicons-solid/Add';
 import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 
-interface InputLabelProps{
-  setImage: React.Dispatch<React.SetStateAction<string>>
-  setIsChangeValue ?: React.Dispatch<React.SetStateAction<boolean>>
-  id : string
+interface InputLabelProps {
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+  setIsChangeValue?: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string;
 }
 /**
  * - 부모 컴포넌트에 position : relative 필수
- * 
- * @param setImage: React.Dispatch<React.SetStateAction<undefined>> 
+ *
+ * @param setImage: React.Dispatch<React.SetStateAction<undefined>>
  * @param setIsChangeValue ?: React.Dispatch<React.SetStateAction<boolean>>
- * 
- * 
+ *
+ *
  */
-const ImageInputLabelBox = ({setImage, setIsChangeValue, id} :InputLabelProps) => {
-
-  const {register, setValue} = useFormContext();
+const ImageInputLabelBox = ({ setImage, setIsChangeValue, id }: InputLabelProps) => {
+  const { register, setValue } = useFormContext();
   const { onChange, ref } = register('image');
 
   const onAvatarChange = useCallback(async (event: any) => {
@@ -29,7 +28,7 @@ const ImageInputLabelBox = ({setImage, setIsChangeValue, id} :InputLabelProps) =
       const base64 = await getBase64(imageFile).then((res: any) => {
         setImage(res);
       });
-      const newImage = new File([imageFile], removeEmptyBetweenString(imageFile.name), {type : imageFile.type})
+      const newImage = new File([imageFile], removeEmptyBetweenString(imageFile.name), { type: imageFile.type });
       setValue('image', newImage);
       setIsChangeValue && setIsChangeValue(true);
       onChange(event);
@@ -38,15 +37,15 @@ const ImageInputLabelBox = ({setImage, setIsChangeValue, id} :InputLabelProps) =
 
   return (
     <InputLabelBox>
-        <input ref={ref} onChange={onAvatarChange} type="file" className="blind" name={id} id={id} />
-        <label htmlFor={id}>
-          <Add />
-        </label>
+      <input ref={ref} onChange={onAvatarChange} type="file" className="blind" name={id} id={id} />
+      <label htmlFor={id}>
+        <Add />
+      </label>
     </InputLabelBox>
-  )
-}
+  );
+};
 
-export default ImageInputLabelBox
+export default ImageInputLabelBox;
 
 const InputLabelBox = styled.div`
   position: absolute;

@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { RegisterInputs, User } from '@src/types/user';
 import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
 import customApi from '@utils/customApi';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import IdListByEmail from '@components/common/IdListByEmail';
 import { FinalBox, FinalText } from '@components/common/FinallPage';
 import CommonModal from '@components/modal/CommonModal';
@@ -32,9 +32,9 @@ const ChangeEmailPage: NextPage = () => {
   const { patchApi: ChangeEmailPatchApi } = customApi('/auth/changeThings');
 
   const { mutate } = useMutation(isFineChangeEmail ? ChangeEmailPatchApi : checkFineChangePostApi, {
-    onError(error : any) {
+    onError(error: any) {
       setIsFailed(true);
-      setErrMsg(error.response.data.message)
+      setErrMsg(error.response.data.message);
       setIsOpenModal(true);
     },
     onSuccess(data) {
@@ -44,11 +44,10 @@ const ChangeEmailPage: NextPage = () => {
       } else {
         setIsSuccess(true);
         sessionStorage.setItem('access_token', data);
-        localStorage.removeItem("isOpenPopup");
+        localStorage.removeItem('isOpenPopup');
       }
     }
   });
-
 
   const methods = useForm<RegisterInputs>({
     mode: 'all'
@@ -58,17 +57,17 @@ const ChangeEmailPage: NextPage = () => {
 
   const onSubmit = (data: RegisterInputs) => {
     if (isError || isSuccess) {
-      localStorage.removeItem("isOpenPopup");
+      localStorage.removeItem('isOpenPopup');
       window.close();
       return;
     }
     delete data.token;
     mutate(data);
-    localStorage.setItem("isOpenPopup", 'true');
+    localStorage.setItem('isOpenPopup', 'true');
   };
 
   const submitText = () => {
-    if(isError) return '창 닫기';
+    if (isError) return '창 닫기';
     if (!isSuccess) {
       if (!isFineChangeEmail) {
         return '해당 이메일로 연동된 아이디 보기';
@@ -80,27 +79,27 @@ const ChangeEmailPage: NextPage = () => {
     return '창 닫기';
   };
 
+  const changeSubmitBtnColor = () => {
+    if (isError || isSuccess) return '';
+    return 'third';
+  };
 
-  const changeSubmitBtnColor = ()=>{
-    if(isError || isSuccess) return "";
-    return 'third' ;
-  }
-
-  useEffect(()=>{
-    if(userIds.length >= 5){
-      setIsOpenModal(true)
-      setErrMsg('해당 이메일은 연동할 수 있는 아이디의 갯수가 초과하였습니다.')
-      setIsError(true)
+  useEffect(() => {
+    if (userIds.length >= 5) {
+      setIsOpenModal(true);
+      setErrMsg('해당 이메일은 연동할 수 있는 아이디의 갯수가 초과하였습니다.');
+      setIsError(true);
     }
-  },[userIds])
+  }, [userIds]);
 
-  useEffect(()=>{
-    window.addEventListener("beforeunload",()=>{
-      localStorage.removeItem("isOpenPopup");
-    })
-    return ()=>{ window.removeEventListener("beforeunload",()=>{})}
-  },[])
-
+  useEffect(() => {
+    window.addEventListener('beforeunload', () => {
+      localStorage.removeItem('isOpenPopup');
+    });
+    return () => {
+      window.removeEventListener('beforeunload', () => {});
+    };
+  }, []);
 
   return (
     <ChangeEmailArea>
@@ -133,17 +132,17 @@ const ChangeEmailPage: NextPage = () => {
     </ChangeEmailArea>
   );
 };
-export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
+export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
   return {
-    props : {}
-  }
+    props: {}
+  };
 });
 export default ChangeEmailPage;
 const ChangeEmailArea = styled.div`
   width: 33rem;
   height: 100%;
   margin: 0 auto;
-  color : #232323;
+  color: #232323;
 `;
 
 const ChangeEmailForm = styled.form`
@@ -165,4 +164,4 @@ const ChangeEmailTitleBox = styled.div`
 
 const ChangeEmailSubmitBtn = styled(SubmitBtn)`
   font-size: 18px;
-`
+`;

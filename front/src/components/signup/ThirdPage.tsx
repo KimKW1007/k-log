@@ -5,13 +5,14 @@ import { InputListBox } from '@components/login/LoginForm';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { errorFn } from '@utils/singupErrorFn';
 import BundleOfPasswords from '@components/common/BundleOfPasswords';
-import { RegisterPageProps } from '@src/types/register';
 import { useFormContext } from 'react-hook-form';
 
-const ThirdPage = ({  setIsAllChecked }: {setIsAllChecked : React.Dispatch<React.SetStateAction<boolean>>}) => {
-
-  const {watch, register, formState: { errors },} = useFormContext();
-
+const ThirdPage = ({ setIsAllChecked }: { setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const {
+    watch,
+    register,
+    formState: { errors }
+  } = useFormContext();
 
   useEffect(() => {
     if (watch('userId') && watch('password') && watch('confirmPassword')) {

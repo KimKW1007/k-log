@@ -1,45 +1,43 @@
-import BoardDetail from '@components/board/BoardDetail'
+import BoardDetail from '@components/board/BoardDetail';
 import type { GetServerSideProps, NextPage } from 'next';
-import React from 'react'
-import customApi from '@utils/customApi'
-import withGetServerSideProps from '@utils/Seo/withGetServerSideProps'
-import Comment from '@components/comment/Comment'
-import styled, { keyframes } from 'styled-components';
-import Waves from '@components/common/Waves'
+import React from 'react';
+import customApi from '@utils/customApi';
+import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';
+import Comment from '@components/comment/Comment';
+import styled from 'styled-components';
+import Waves from '@components/common/Waves';
 import { CategoryPageProps } from '@pages/category/[title]/[subTitle]';
 
-
-
-const BoardPage : NextPage = ({id} : CategoryPageProps) => {
+const BoardPage: NextPage = ({ id }: CategoryPageProps) => {
   return (
     <DetailWrap>
       <DetailContainer>
         <Waves />
-        <BoardDetail id={id}/>
-        <Comment id={id}/>
+        <BoardDetail id={id} />
+        <Comment id={id} />
       </DetailContainer>
     </DetailWrap>
-  )
-}
-export const getServerSideProps : GetServerSideProps = withGetServerSideProps(async (context) => {
-  const {query} = context;
-  const {id} = query;
-  try{
+  );
+};
+export const getServerSideProps: GetServerSideProps = withGetServerSideProps(async (context) => {
+  const { query } = context;
+  const { id } = query;
+  try {
     const { getApi } = customApi(`/board/getBoard/${id}`);
     const data = await getApi();
-    const {currentBoard} = data;
+    const { currentBoard } = data;
     return {
-      props : { id, title : currentBoard.boardTitle }
-    }
-  }catch(e){
+      props: { id, title: currentBoard.boardTitle }
+    };
+  } catch (e) {
     return {
-      props : {},
-      notFound : true
-    }
+      props: {},
+      notFound: true
+    };
   }
 });
 
-export default BoardPage
+export default BoardPage;
 
 const DetailWrap = styled.div`
   position: relative;

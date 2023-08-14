@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import { AllCenterFlex } from '../CommonFlex';
 import LoadingText from './LoadingText';
 

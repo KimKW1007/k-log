@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
 import styled, { css } from 'styled-components';
-import { ExclamationDiamondFill, ExclamationCircleFill } from '@styled-icons/bootstrap';
 import { OnlyAlignCenterFlex } from './CommonFlex';
 import { UserInfoInputProps } from '@src/types/user';
 import ErrorMsgBox from './error/ErrorMsgBox';

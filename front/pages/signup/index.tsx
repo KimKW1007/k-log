@@ -1,4 +1,3 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import SignupForm from '@components/signup/signupForm';
 import { PageInnerBox } from '@pages/login';
 import withGetServerSideProps from '@utils/Seo/withGetServerSideProps';

@@ -1,12 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { ErrMsg, ErrMsgBox } from './UserInfoInput';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import customApi from '@utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
 import { CertificateEmailProps } from '@src/types/certificateEmail';
-import { useRecoilState } from 'recoil';
-import { inputResetBoolean } from '@atoms/atoms';
 import CertificateBtnBox from './CertificateBtnBox';
 
 const Certificate = ({ setIsPassCertificate, isPassCertificate }: CertificateEmailProps) => {
@@ -26,11 +24,9 @@ const Certificate = ({ setIsPassCertificate, isPassCertificate }: CertificateEma
     if (errors?.token?.message) return;
     await postApi({ userEmail: watch('userEmail'), token: watch('token') })
       .then((res) => {
-        console.log({ res });
         setIsPassCertificate(true);
       })
       .catch((e) => {
-        console.log({ e });
         setError('token', { type: 'custom', message: '인증번호가 일치하지 않습니다.' });
       });
   };

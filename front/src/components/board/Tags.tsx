@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import TagItem from './TagItem';
 const Tags = ({ setCurrentTags, currentTags }: { setCurrentTags: React.Dispatch<React.SetStateAction<string[]>>; currentTags: string[] }) => {
@@ -27,9 +27,9 @@ const Tags = ({ setCurrentTags, currentTags }: { setCurrentTags: React.Dispatch<
       } else {
         setCurrentTags((prev: string[]) => [...prev, watch('tagsInput')]);
       }
-      return
+      return;
     }
-    if(key === 'Enter'){
+    if (key === 'Enter') {
       alert('태그를 추가하시려면\n태그 앞에 "#"을 붙혀주세요.');
     }
   };
@@ -52,11 +52,13 @@ const Tags = ({ setCurrentTags, currentTags }: { setCurrentTags: React.Dispatch<
           onKeyUp={(e) => {
             handleAddTag(e.key);
           }}
-          placeholder='ex) #태그할 래용'
+          placeholder="ex) #태그할 래용"
         />
         {currentTags.length >= 1 && (
           <TagItemBox>
-            {currentTags.map((tag, idx) => <TagItem key={tag + idx} tag={tag} handleRemoveTag={handleRemoveTag(tag)} />)}
+            {currentTags.map((tag, idx) => (
+              <TagItem key={tag + idx} tag={tag} handleRemoveTag={handleRemoveTag(tag)} />
+            ))}
           </TagItemBox>
         )}
       </TagsInnerBox>
@@ -76,7 +78,7 @@ const TagsBox = styled.div`
 `;
 const TagsInnerBox = styled.div`
   border: 1px solid rgba(128, 128, 128, 0.8);
-  padding: 5px 10px ;
+  padding: 5px 10px;
 `;
 const TagsInput = styled.input`
   width: 100%;
@@ -87,8 +89,7 @@ const TagsInput = styled.input`
   color: #fff;
 `;
 const TagItemBox = styled(OnlyAlignCenterFlex)`
-  width:100%;
+  width: 100%;
   padding: 5px 0 8px;
-  flex-wrap:wrap;
-
-`
+  flex-wrap: wrap;
+`;

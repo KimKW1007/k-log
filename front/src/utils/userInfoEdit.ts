@@ -1,32 +1,28 @@
-import { ACCOUNT_ID_REGEX, EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX } from "@constant/regex";
-import { errMsg } from "./singupThirdErrMsg";
-import { User } from "@src/types/user";
+import { ACCOUNT_ID_REGEX, NAME_REGEX } from '@constant/regex';
+import { errMsg } from './singupThirdErrMsg';
 
-
-
-export interface accountEditInputListProps{
-  [key: string] : string
+export interface accountEditInputListProps {
+  [key: string]: string;
 }
 
 export const accountEditInputList: accountEditInputListProps[] = [
   {
-    name : 'userId',
-    title : "아이디"
+    name: 'userId',
+    title: '아이디'
   },
   {
-    name : 'userName',
-    title : "이름"
+    name: 'userName',
+    title: '이름'
   },
   {
-    name : 'userEmail',
-    title : "이메일"
-  },
+    name: 'userEmail',
+    title: '이메일'
+  }
 ];
 
 interface vaildateType {
   [key: string]: (value?: any) => boolean | string;
 }
-
 
 export const vaildaters: vaildateType = {
   userId: (value?: any) => {
@@ -37,20 +33,18 @@ export const vaildaters: vaildateType = {
   }
 };
 
-export const currentTipText ={
+export const currentTipText = {
   userId: errMsg['userIdRegexMsg'],
-  userName : '2~4자의 한글,영문만 입력해주세요.',
-}
+  userName: '2~4자의 한글,영문만 입력해주세요.'
+};
 
-
-export const changeNewPasswordInputList : accountEditInputListProps[] = [
+export const changeNewPasswordInputList: accountEditInputListProps[] = [
   {
-    name : 'password',
-    title : "새 비밀번호"
+    name: 'password',
+    title: '새 비밀번호'
   },
   {
-    name : 'confirmPassword',
-    title : "새 비밀번호 확인"
-  },
+    name: 'confirmPassword',
+    title: '새 비밀번호 확인'
+  }
 ];
-

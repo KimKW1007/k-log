@@ -1,31 +1,26 @@
-import { FlexEmptyBox } from '@components/signup/signupForm';
-import React, { useCallback, useEffect, useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
 import Image from 'next/image';
 import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
-import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 
 interface CompletionProps {
   handleClickMenu: () => void;
   isOpen: boolean;
   boardLastId: number;
-  defaultThumbnail ?: any;
+  defaultThumbnail?: any;
 }
 
 const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail }: CompletionProps) => {
   const { watch, setValue } = useFormContext();
   const [image, setImage] = useState('');
-  const router = useRouter();
 
-
-  useEffect(()=>{
-    if(defaultThumbnail){
-      setImage(defaultThumbnail)
+  useEffect(() => {
+    if (defaultThumbnail) {
+      setImage(defaultThumbnail);
     }
-  },[defaultThumbnail])
-
+  }, [defaultThumbnail]);
 
   return (
     <CompletionArea>
@@ -125,10 +120,10 @@ const CompletionContent = styled.div`
   padding: 40px 0 30px;
   display: flex;
   column-gap: 80px;
-  @media(max-width: 700px){
+  @media (max-width: 700px) {
     column-gap: 9.3023vw;
   }
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     display: block;
   }
 `;
@@ -137,7 +132,7 @@ const AboutBoardBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     margin-bottom: 40px;
   }
 `;
@@ -161,7 +156,6 @@ const UrlBox = styled(OnlyAlignCenterFlex)`
   }
 `;
 
-
 const ImageBox = styled(AllCenterFlex)`
   position: relative;
   width: 168px;
@@ -174,11 +168,10 @@ const ImageBox = styled(AllCenterFlex)`
     z-index: 1;
     max-width: 100%;
   }
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     margin: 0 auto;
   }
 `;
-
 
 const SubmitBox = styled(OnlyJustifyCenterFlex)``;
 const CommonBtn = styled.button`

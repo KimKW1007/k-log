@@ -2,15 +2,12 @@ import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ifInImageApi from '@utils/ifInImageApi';
 import customApi from '@utils/customApi';
-import { GetServerSideProps } from 'next';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {  useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Image from 'next/image';
 import defaultAuthorImage from '@assets/images/500_94.jpg';
-import { PlusSquareDotted } from '@styled-icons/bootstrap/PlusSquareDotted';
 import { EditBtn } from '../EditCategory/EditCategoryList';
-import { getBase64 } from '@utils/getBase64';
 import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
 import { GET_USER_MINI_PL, USERS } from '@utils/queryKeys';
 import { useRecoilState } from 'recoil';
@@ -25,9 +22,6 @@ const EditSidebarHeader = () => {
   const { data } = useQuery([GET_USER_MINI_PL,USERS], ()=> getApi(true));
   const { postApi } = ifInImageApi('/file/upload', true);
   const { mutate } = useMutation(postApi, {
-    onError(error: any) {
-      console.log({ error });
-    },
     onSuccess(data) {
       setIsChangeValue(false);
       queryClient.invalidateQueries([GET_USER_MINI_PL, USERS]);
@@ -49,7 +43,6 @@ const EditSidebarHeader = () => {
   const {
     handleSubmit,
     register,
-    setValue,
     watch,
     reset,
     formState: { isDirty }

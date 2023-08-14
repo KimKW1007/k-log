@@ -1,7 +1,7 @@
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { X } from '@styled-icons/bootstrap';
 import React, { useState } from 'react'
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 interface TagItemProps {
   tag : string; 

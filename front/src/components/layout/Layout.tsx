@@ -1,13 +1,10 @@
 import { ChildrenProps } from '@src/types/children';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { useRouter } from 'next/router';
 import { Header } from '@components/header/Header';
 import IconLinkListBox from '@components/common/IconLinkListBox';
 import Footer from '@components/footer/Footer';
-import customApi from '@utils/customApi';
-import { useQuery } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import { searchModalState } from '@atoms/atoms';
 import SearchModal from 'src/search/SearchModal';
@@ -20,8 +17,7 @@ const Layout = ({ children }: ChildrenProps) => {
     return router.pathname.includes(value);
   };
 
-
-  const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail')
+  const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail');
   useEffect(() => {
     if (routerPathCheck('login') || routerPathCheck('signup') || popupPage) {
       setIsAboutAuth(true);
@@ -35,7 +31,7 @@ const Layout = ({ children }: ChildrenProps) => {
       {isAboutAuth ? <IconLinkListBox popupPage={popupPage} /> : <Header />}
       {children}
       <Footer />
-      {isOpenSearchModal && <SearchModal  onClose={()=>setIsOpenSearchModal(false)}/>}
+      {isOpenSearchModal && <SearchModal onClose={() => setIsOpenSearchModal(false)} />}
     </Root>
   );
 };

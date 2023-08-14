@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import logo_white from '@images/white.svg';
 import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { isRemoveSidebar, userInfomation } from '@atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';

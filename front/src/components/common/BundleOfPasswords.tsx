@@ -1,5 +1,5 @@
 import React from 'react';
-import UserInfoInput, { ErrMsg, ErrMsgBox } from './UserInfoInput';
+import UserInfoInput from './UserInfoInput';
 import { errMsg } from '@utils/singupThirdErrMsg';
 import { PASSWORD_REGEX } from '@constant/regex';
 import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';

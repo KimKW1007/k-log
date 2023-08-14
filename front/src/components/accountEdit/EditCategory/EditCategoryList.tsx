@@ -10,7 +10,6 @@ import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
 import { removeTwoMoreEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
 import { CategoryBackProps } from '@components/category/CategoryList';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
-import Loading from '@components/common/Loading/Loading';
 
 const EditCategoryList = () => {
   // mutate - putApi 관련
@@ -18,19 +17,17 @@ const EditCategoryList = () => {
   const [isChangeValue, setIsChangeValue] = useState(false);
   const queryClient = useQueryClient();
   const { putApi } = customApi('category/updateCategories');
-  const { mutate, isLoading } = useMutation(putApi, {
+  const { mutate } = useMutation(putApi, {
     onError(error: any) {
       setIsError(true);
       alert(error.response.data.message);
     },
     onSuccess(data) {
-      console.log({ data });
       setIsChangeValue(false);
-      setTimeout(()=>{
-        queryClient.invalidateQueries([GET_ALL_CATEGORY])
-      },500)
-    },
-    
+      setTimeout(() => {
+        queryClient.invalidateQueries([GET_ALL_CATEGORY]);
+      }, 500);
+    }
   });
 
   // getAPI 관련
@@ -50,9 +47,9 @@ const EditCategoryList = () => {
     handleSubmit,
     reset,
     watch,
-    formState: { isDirty, dirtyFields }
+    formState: { isDirty }
   } = methods;
-  const { append, remove, fields, move } = useFieldArray<{category : any }>({
+  const { append, remove, fields, move } = useFieldArray<{ category: any }>({
     control,
     name: 'category'
   });
@@ -71,8 +68,8 @@ const EditCategoryList = () => {
       return;
     }
     const copiedCategoryData = [...categoryData];
-    const result = copiedCategoryData.map((cateTitle: CategoryBackProps, idx : number) => {
-      cateTitle = { ...cateTitle, categoryTitle: removeTwoMoreEmptyBetweenString(cateTitle.categoryTitle), dndNumber : idx + 1 };
+    const result = copiedCategoryData.map((cateTitle: CategoryBackProps, idx: number) => {
+      cateTitle = { ...cateTitle, categoryTitle: removeTwoMoreEmptyBetweenString(cateTitle.categoryTitle), dndNumber: idx + 1 };
       const cateSubTitle = cateTitle.subCategories.map((cateSubTitle: { categorySubTitle: string }) => {
         return { ...cateSubTitle, categorySubTitle: removeTwoMoreEmptyBetweenString(cateSubTitle.categorySubTitle) };
       });
@@ -93,15 +90,15 @@ const EditCategoryList = () => {
   // input에 변화가 일어나면 error false
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      value.category?.map((category: any, index :number) =>{
-        if(category.dndNumber !== index + 1){
+      value.category?.map((category: any, index: number) => {
+        if (category.dndNumber !== index + 1) {
           setIsChangeValue(true);
           return;
-        }else{
+        } else {
           setIsChangeValue(false);
           return;
         }
-      })
+      });
       if (type === 'change') {
         setIsError(false);
         setIsChangeValue(true);
@@ -115,12 +112,9 @@ const EditCategoryList = () => {
     reset({ category: data });
   }, [data]);
 
-
-  const onDragEnd =(result : DropResult)=>{
+  const onDragEnd = (result: DropResult) => {
     move(result.source.index, result.destination?.index!);
-  }
-  
-  
+  };
 
   return (
     <CategoryNav>
@@ -132,23 +126,16 @@ const EditCategoryList = () => {
               <Droppable droppableId="category">
                 {(magic) => (
                   <div ref={magic.innerRef} {...magic.droppableProps}>
-                    {fields.map((category, index) =>  (
-                        <Draggable key={String(category.id)} draggableId={String(category.id)} index={index}>
-                          {(magic, snapshot) => (
-                              <DraggableInnerBox
-                              ref={magic.innerRef}
-                              {...magic.draggableProps}
-                              {...magic.dragHandleProps}
-                              isDragging={snapshot.isDragging}
-                              >
-                                <EditCategoryItemBox categoryIndex={index} key={category.id} remove={remove} />
-                              </DraggableInnerBox>
-                            )
-                          }
-                        </Draggable>
-                      )
-                    )}
-                  {magic.placeholder}
+                    {fields.map((category, index) => (
+                      <Draggable key={String(category.id)} draggableId={String(category.id)} index={index}>
+                        {(magic, snapshot) => (
+                          <DraggableInnerBox ref={magic.innerRef} {...magic.draggableProps} {...magic.dragHandleProps} isDragging={snapshot.isDragging}>
+                            <EditCategoryItemBox categoryIndex={index} key={category.id} remove={remove} />
+                          </DraggableInnerBox>
+                        )}
+                      </Draggable>
+                    ))}
+                    {magic.placeholder}
                   </div>
                 )}
               </Droppable>
@@ -157,7 +144,8 @@ const EditCategoryList = () => {
               <AddCategoryBtn
                 onClick={() => {
                   append({ dndNumber: fields.length, categoryTitle: '', subCategories: [] });
-                }}/>
+                }}
+              />
             </AddCategoryBtnBox>
             <EditBtnBox>
               <EditBtn disabled={!isChangeValue} isError={isError} isChangeValue={isChangeValue}>
@@ -248,26 +236,30 @@ const CategoryListBox = styled.div`
     pointer-events: none;
   }
 `;
-const DraggableInnerBox = styled.div<{isDragging :boolean;}>`
-padding: 0px 15px 15px;
-margin-bottom : 10px;
-border-radius: 10px;
-background: transparent;
-${({isDragging, theme}) => isDragging && `
+const DraggableInnerBox = styled.div<{ isDragging: boolean }>`
+  padding: 0px 15px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background: transparent;
+  ${({ isDragging, theme }) =>
+    isDragging &&
+    `
   background: #23232381;
 `}
-&:hover{
-  ${MoveAttraction}{
-    span{
-      background: #454545;
+  &:hover {
+    ${MoveAttraction} {
+      span {
+        background: #454545;
+      }
     }
   }
-}
-`
+`;
 
-const AddCategoryBtnBox =styled.div<{isNotItem : boolean}>`
-${({isNotItem}) => isNotItem && `
+const AddCategoryBtnBox = styled.div<{ isNotItem: boolean }>`
+  ${({ isNotItem }) =>
+    isNotItem &&
+    `
 border-top : 2px solid #999;
 `}
   padding: 5px 0 0;
-`
+`;
