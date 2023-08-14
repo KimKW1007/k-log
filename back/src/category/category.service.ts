@@ -20,7 +20,7 @@ export class CategoryService {
       where: { user: { id: 1 } },
       order: { dndNumber: 'ASC', subCategories: { id: 'ASC' } },
     });
-    return category;
+    return category ?? [];
   }
   async getAllSubCategory(categoryTitle : string): Promise<Category> {
     const category = await this.categoryRepository.findOneBy({
