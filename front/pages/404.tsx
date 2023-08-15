@@ -4,7 +4,7 @@ import NotFoundImage from "@assets/images/notFound.svg"
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
 import { NextPage } from 'next';
 
-const NotFoundPage : NextPage = () => {
+const NotFoundPage = () => {
   return (
     <NotFoundWrap>
       <NotFoundContainer>

@@ -19,7 +19,7 @@ interface CustomAppProps extends AppProps {
 }
 
 const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAppProps) => {
-  const getNewAccessTokenByrefreshToken = async () => {
+  /* const getNewAccessTokenByrefreshToken = async () => {
     try {
       // 현재 시간과 토큰의 만료 시간을 비교하여 갱신 여부 결정
       const tokenExpiration = sessionStorage.getItem('access_token_expiration'); // 세션 스토리지에 저장된 토큰 만료 시간
@@ -73,7 +73,7 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
       };
       logoutAsync();
     }
-  }, []);
+  }, []); */
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -90,7 +90,7 @@ const MyApp = ({ Component, pageProps, refresh_token, hasAccessToken }: CustomAp
     </QueryClientProvider>
   );
 };
-MyApp.getInitialProps = async (appContext: any) => {
+/* MyApp.getInitialProps = async (appContext: any) => {
   let hasAccessToken = false;
   let refresh_token;
 
@@ -112,5 +112,5 @@ MyApp.getInitialProps = async (appContext: any) => {
   }
 
   return { refresh_token, hasAccessToken };
-};
+}; */
 export default MyApp;
