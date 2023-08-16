@@ -48,10 +48,13 @@ const QuestionAni = keyframes`
 
 
 const NotFoundWrap = styled.div<{isSmallWidth ?: boolean}>`
-  max-height: calc(100% - 70px - 141px);
+  height: calc(100% - 70px - 121px);
   overflow:hidden;
+  @media(max-width: 700px){
+    height: calc(100% - 70px - 81px);
+  }
   ${({isSmallWidth})=> isSmallWidth && `
-  max-height: 100%;
+  height: 100%;
   `}
 `
 const NotFoundContainer =styled(OnlyAlignCenterFlex)`
