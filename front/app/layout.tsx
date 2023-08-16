@@ -38,6 +38,7 @@ const RootLayout = ({
           </RecoilRoot>
           <ReactQueryDevtools />
         </QueryClientProvider>
+        <div id="modal-root"></div>
       </body>
     </html>
   )
