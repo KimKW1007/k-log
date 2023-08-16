@@ -1,6 +1,6 @@
-import { ChildrenProps } from '@src/types/children';
+import useIsMount from '@/src/hooks/useIsMount';
+import { ChildrenProps } from '@/src/types/children';
 import ReactDOM from 'react-dom';
-import useIsMount from 'src/hooks/useIsMount';
 
 const ModalPortal = ({ children }: ChildrenProps) => {
   const { isMount } = useIsMount();

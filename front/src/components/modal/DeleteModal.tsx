@@ -1,64 +1,64 @@
-import React from 'react'
+import React from 'react';
 import ModalPortal from './ModalPortal';
 import { Dim, ModalBox, ModalInnerText, ModalTitle, ModalWrap } from './CommonModal';
 import styled from 'styled-components';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 
 interface DeleteMadalProps {
-  onClose: ()=> void;
-  mutate : any;
-  isWithdraw ?: boolean;
+  onClose: () => void;
+  mutate: any;
+  isWithdraw?: boolean;
 }
-const DeleteModal = ({onClose, mutate, isWithdraw}: DeleteMadalProps) => {
+const DeleteModal = ({ onClose, mutate, isWithdraw }: DeleteMadalProps) => {
   return (
     <ModalPortal>
       <ModalWrap>
-        <Dim/>
+        <Dim />
         <DeleteModalBox>
           <ModalTitle>안내</ModalTitle>
           <ModalInnerText>
-            <p>정말 {isWithdraw? "탈퇴" : '삭제'} 하시겠습니까?</p>
+            <p>정말 {isWithdraw ? '탈퇴' : '삭제'} 하시겠습니까?</p>
           </ModalInnerText>
           <ConfirmBtnBox>
-            <DeleteBtn onClick={()=>{mutate(); onClose();}}>
-              네! {isWithdraw? "탈퇴" : '삭제'}할래요!
+            <DeleteBtn
+              onClick={() => {
+                mutate();
+                onClose();
+              }}>
+              네! {isWithdraw ? '탈퇴' : '삭제'}할래요!
             </DeleteBtn>
-            <CancelBtn onClick={onClose}>
-              다시 생각해볼게요..
-            </CancelBtn>
+            <CancelBtn onClick={onClose}>다시 생각해볼게요..</CancelBtn>
           </ConfirmBtnBox>
         </DeleteModalBox>
       </ModalWrap>
     </ModalPortal>
-  )
-}
+  );
+};
 
-export default DeleteModal
+export default DeleteModal;
 
 export const DeleteModalBox = styled(ModalBox)`
   max-width: 560px;
-  width:100%;
-`
+  width: 100%;
+`;
 
-const ConfirmBtnBox = styled(OnlyAlignCenterFlex)`
-
-`
+const ConfirmBtnBox = styled(OnlyAlignCenterFlex)``;
 const DefaultBtn = styled.button`
   padding: 10px 20px;
   margin: 0 10px;
-  border-radius :10px;
+  border-radius: 10px;
   color: #fff;
-  transition: .2s;
-`
+  transition: 0.2s;
+`;
 const DeleteBtn = styled(DefaultBtn)`
-  background :${({theme }) => theme.color.err};
-  &:hover{
-    background: #F31559;
+  background: ${({ theme }) => theme.color.err};
+  &:hover {
+    background: #f31559;
   }
-`
+`;
 const CancelBtn = styled(DefaultBtn)`
-  background :#454545;
-  &:hover{
-    background :#676767;
+  background: #454545;
+  &:hover {
+    background: #676767;
   }
-`
+`;

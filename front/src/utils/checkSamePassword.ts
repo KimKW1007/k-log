@@ -1,5 +1,5 @@
-import { PASSWORD_REGEX } from '@constant/regex';
-import { RegisterInputs } from '@src/types/user';
+import { PASSWORD_REGEX } from '@/src/constant/regex';
+import { RegisterInputs } from '@/src/types/user';
 import { FieldValues, UseFormClearErrors, UseFormSetError, UseFormWatch } from 'react-hook-form';
 import { errMsg } from './singupThirdErrMsg';
 
@@ -17,8 +17,8 @@ export const checkSamePassword = (watch: UseFormWatch<RegisterInputs>) => {
     // 2단계 : 두개의 password가 같은지
     if (watchPw === watchConfirmPw) {
       // 3단계 : regex test
-      if(!PASSWORD_REGEX.test(watchPw!) || !PASSWORD_REGEX.test(watchConfirmPw!)){
-        return errMsg['passwordRegexMsg']
+      if (!PASSWORD_REGEX.test(watchPw!) || !PASSWORD_REGEX.test(watchConfirmPw!)) {
+        return errMsg['passwordRegexMsg'];
       }
       return '비밀번호가 일치합니다.';
     }

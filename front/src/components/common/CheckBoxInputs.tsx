@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { OnlyAlignCenterFlex } from './CommonFlex';
-import checkedIcon from '@images/check.svg';
+import checkedIcon from '@/src/assets/images/check.svg';
 import { ArrowUpRightSquareFill } from '@styled-icons/bootstrap';
-import CommonModal from '@components/modal/CommonModal';
-import { ChildrenProps } from '@src/types/children';
+import CommonModal from '@/src/components/modal/CommonModal';
+import { ChildrenProps } from '@/src/types/children';
 
 interface CheckBoxProps extends ChildrenProps {
   id: string;

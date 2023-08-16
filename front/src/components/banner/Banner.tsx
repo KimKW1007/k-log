@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import BannerItem from './BannerItem';
-import { currentBanner } from '@atoms/atoms';
+import { currentBanner } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
-import { banner } from '@utils/bannerList';
-import { AllCenterFlex } from '@components/common/CommonFlex';
-import { useRouter } from 'next/router';
-import customApi from '@utils/customApi';
-import { GET_BANNER_LIST } from '@utils/queryKeys';
+import { banner } from '@/src/utils/bannerList';
+import { AllCenterFlex } from '@/src/components/common/CommonFlex';
+import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { GET_BANNER_LIST } from '@/src/utils/queryKeys';
+import customApi from '@/src/utils/customApi';
 
 const Banner = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const innerBoxRef = useRef<HTMLDivElement>(null);
   const bannerList = new Array(24).fill(undefined).map((val, idx) => idx);
 
@@ -30,7 +30,7 @@ const Banner = () => {
     let turnTimer: string | number | NodeJS.Timeout | undefined;
     if (!document.hasFocus()) clearInterval(turnTimer);
     turnTimer = setInterval(() => {
-      if (document.hasFocus() && router.pathname === '/') {
+      if (document.hasFocus() && pathname === '/') {
         setCurrentBannerNum((prev) => (prev >= 3 ? (prev = 1) : prev + 1));
         setCurrentRotate((prev) => prev - 120);
       }

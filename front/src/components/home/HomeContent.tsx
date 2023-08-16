@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import HomeNewPoster from './HomeNewPoster';
 import HomeSidebar from './HomeSidebar';
 import { useRecoilState } from 'recoil';
-import { isRemoveSidebar } from '@atoms/atoms';
-import useIsMount from 'src/hooks/useIsMount';
-import { useRouter } from 'next/router';
+import { isRemoveSidebar } from '@/src/atoms/atoms';
+import { usePathname } from 'next/navigation';
+import useIsMount from '@/src/hooks/useIsMount';
+
+
 const HomeContent = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [isRemove, setIsRemove] = useRecoilState(isRemoveSidebar);
   const { isMount } = useIsMount();
 
@@ -24,17 +26,17 @@ const HomeContent = () => {
       checkNowWindowWidth();
     };
 
-    if (router.pathname === '/') {
+    if (pathname === '/') {
       window.addEventListener('resize', handleResize);
       checkNowWindowWidth(); // 초기 렌더링 시에도 체크를 수행
     }
 
     return () => {
-      if (router.pathname === '/') {
+      if (pathname === '/') {
         window.removeEventListener('resize', handleResize);
       }
     };
-  }, [router.pathname]);
+  }, [pathname]);
 
   return (
     <ContentsWrap>

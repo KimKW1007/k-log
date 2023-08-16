@@ -1,4 +1,4 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import React from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import styled from 'styled-components';

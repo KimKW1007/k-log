@@ -3,12 +3,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { EditInputInnerArea } from '../AccountEditBox';
 import EditInput from '../EditInput';
-import { AllCenterFlex } from '@components/common/CommonFlex';
-import { SubmitBox, SubmitBtn } from '@components/signup/signupForm';
-import customApi from '@utils/customApi';
+import { AllCenterFlex } from '@/src/components/common/CommonFlex';
+import { SubmitBox, SubmitBtn } from '@/src/components/signup/signupForm';
+import customApi from '@/src/utils/customApi';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ProjectList from './ProjectList';
-import { GET_PROJECTS } from '@utils/queryKeys';
+import { GET_PROJECTS } from '@/src/utils/queryKeys';
 
 const EditProject = () => {
   const queryClient = useQueryClient();

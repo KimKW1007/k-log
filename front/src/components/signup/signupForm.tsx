@@ -1,19 +1,19 @@
-import { Form } from '@components/login/LoginForm';
+import { Form } from '@/src/components/login/LoginForm';
 import React, { useState } from 'react';
-import Title from '@components/common/TitleBox';
+import Title from '@/src/components/common/TitleBox';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import SecondPage from './SecondPage';
 import ThirdPage from './ThirdPage';
 import FirstPage from './FirstPage';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import IdListByEmail from '../common/IdListByEmail';
-import CommonModal from '@components/modal/CommonModal';
-import { useRouter } from 'next/router';
+import CommonModal from '@/src/components/modal/CommonModal';
+import { useRouter } from 'next/navigation';
 import FinallPage from '../common/FinallPage';
-import { RegisterInputs, User } from '@src/types/user';
-import { CurrentTitle } from '@utils/signupList';
+import { RegisterInputs, User } from '@/src/types/user';
+import { CurrentTitle } from '@/src/utils/signupList';
 
 const SignupForm = () => {
   const methods = useForm<RegisterInputs>({

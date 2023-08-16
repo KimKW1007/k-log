@@ -1,8 +1,8 @@
-import { AllCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex } from '@/src/components/common/CommonFlex';
 import React from 'react';
 import styled from 'styled-components';
 import ModalPortal from './ModalPortal';
-import { ChildrenProps } from '@src/types/children';
+import { ChildrenProps } from '@/src/types/children';
 
 interface MadalProps extends ChildrenProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;

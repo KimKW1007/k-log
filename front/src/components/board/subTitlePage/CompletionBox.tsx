@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
+import ImageInputLabelBox from '@/src/components/common/ImageInputLabelBox';
 import Image from 'next/image';
-import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex, OnlyJustifyCenterFlex } from '@/src/components/common/CommonFlex';
 import { useFormContext } from 'react-hook-form';
 
 interface CompletionProps {

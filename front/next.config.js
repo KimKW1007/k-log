@@ -2,9 +2,14 @@
 const nextConfig = {
   images: {
     domains: ["localhost", "*"],
+    minimumCacheTTL: 60,
   },
-  // reactStrictMode: false,
-  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
+  experimental: {
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig

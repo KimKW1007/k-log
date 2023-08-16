@@ -1,6 +1,6 @@
-import { CurrentInputName, ErrMsg, ErrMsgBox, Input, InputBox } from '@components/common/UserInfoInput';
-import { EMAIL_REGEX } from '@constant/regex';
-import { UserInfoInputProps } from '@src/types/user';
+import { CurrentInputName, Input, InputBox } from '@/src/components/common/UserInfoInput';
+import { EMAIL_REGEX } from '@/src/constant/regex';
+import { UserInfoInputProps } from '@/src/types/user';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled, { css, keyframes } from 'styled-components';

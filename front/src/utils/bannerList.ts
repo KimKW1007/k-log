@@ -1,6 +1,6 @@
-import bg1 from '@assets/images/mainslide_01.jpg';
-import bg2 from '@assets/images/blank_space.jpg';
-import bg3 from '@assets/images/simple.jpg';
+import bg1 from '@/src/assets/images/mainslide_01.jpg';
+import bg2 from '@/src/assets/images/blank_space.jpg';
+import bg3 from '@/src/assets/images/simple.jpg';
 import { ListTypes } from './mapList';
 
 //  배경은 3개만

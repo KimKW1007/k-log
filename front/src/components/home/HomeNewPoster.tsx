@@ -1,8 +1,8 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import React from 'react';
 import styled from 'styled-components';
 import HomeNewPosterList from './HomeNewPosterList';
-import ProjectSlide from '@components/projectBanner/ProjectSlide';
+import ProjectSlide from '@/src/components/projectBanner/ProjectSlide';
 
 const HomeNewPoster = () => {
   return (

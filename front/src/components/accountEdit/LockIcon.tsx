@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ShieldLock} from "@styled-icons/bootstrap/ShieldLock"
-import { FlexEmptyBox } from '@components/signup/signupForm';
+import { ShieldLock } from '@styled-icons/bootstrap/ShieldLock';
+import { FlexEmptyBox } from '@/src/components/signup/signupForm';
 
 const LockIcon = () => {
   return (
@@ -15,16 +15,14 @@ const LockIcon = () => {
 
 export default LockIcon;
 
-
 const LockIconBox = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
-  align-items:center;
-  height:100%;
+  align-items: center;
+  height: 100%;
   min-height: 354px;
-  svg{
+  svg {
     width: 50%;
-    color:${({theme}) => theme.color.success};
+    color: ${({ theme }) => theme.color.success};
   }
-  
-`
+`;

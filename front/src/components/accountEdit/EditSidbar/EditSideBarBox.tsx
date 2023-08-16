@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import EditSidebarHeader from './EditSidebarHeader';
-import EditCategoryList from '@components/accountEdit/EditCategory/EditCategoryList';
+import EditCategoryList from '@/src/components/accountEdit/EditCategory/EditCategoryList';
 import LockIcon from '../LockIcon';
 
 const EditSideBar = ({ isAdmin }: { isAdmin: boolean }) => {

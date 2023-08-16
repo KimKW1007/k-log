@@ -1,10 +1,8 @@
-import CertificateEmail from '@components/common/CertificateEmail';
-import IdListByEmail from '@components/common/IdListByEmail';
-import { InputListBox } from '@components/login/LoginForm';
-import { FindIdProps } from '@src/types/find';
+import CertificateEmail from '@/src/components/common/CertificateEmail';
+import IdListByEmail from '@/src/components/common/IdListByEmail';
+import { InputListBox } from '@/src/components/login/LoginForm';
+import { FindIdProps } from '@/src/types/find';
 import React from 'react';
-
-
 
 const FindId = ({ isClickFindBtn, userIds, setIsPassCertificate, isPassCertificate }: FindIdProps) => {
   return (

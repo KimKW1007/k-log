@@ -1,19 +1,17 @@
-import UserInfoInput from '@components/common/UserInfoInput';
-import { NAME_REGEX } from '@constant/regex';
+import UserInfoInput from '@/src/components/common/UserInfoInput';
+import { NAME_REGEX } from '@/src/constant/regex';
 import React, { useEffect } from 'react';
-import { InputListBox } from '@components/login/LoginForm';
-import CertificateEmail from '@components/common/CertificateEmail';
+import { InputListBox } from '@/src/components/login/LoginForm';
+import CertificateEmail from '@/src/components/common/CertificateEmail';
 import { useFormContext } from 'react-hook-form';
-import { RegisterPageProps } from '@src/types/register';
+import { RegisterPageProps } from '@/src/types/register';
 
-
-
-const SecondPage = ({
-  setIsAllChecked,
-  setIsPassCertificate,
-  isPassCertificate,
-}: RegisterPageProps) => {
-  const {watch, register, formState: { errors },} = useFormContext();
+const SecondPage = ({ setIsAllChecked, setIsPassCertificate, isPassCertificate }: RegisterPageProps) => {
+  const {
+    watch,
+    register,
+    formState: { errors }
+  } = useFormContext();
 
   useEffect(() => {
     if (watch('userName') && watch('userEmail') && watch('token') && isPassCertificate) {
@@ -40,11 +38,7 @@ const SecondPage = ({
           errors={errors?.userName?.message}
           errColor={Boolean(errors?.userName?.message)}
         />
-        <CertificateEmail
-          small
-          setIsPassCertificate={setIsPassCertificate}
-          isPassCertificate={isPassCertificate}
-        />
+        <CertificateEmail small setIsPassCertificate={setIsPassCertificate} isPassCertificate={isPassCertificate} />
       </InputListBox>
     </>
   );

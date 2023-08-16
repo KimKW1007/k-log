@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { OnlyAlignCenterFlex } from './CommonFlex';
-import { UserInfoInputProps } from '@src/types/user';
+import { UserInfoInputProps } from '@/src/types/user';
 import ErrorMsgBox from './error/ErrorMsgBox';
 
 const UserInfoInput = ({ type, inputName, watch, register, bold = false, small = false, errColor, errors }: UserInfoInputProps) => {

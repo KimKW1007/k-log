@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { Form } from '@components/login/LoginForm';
+import { Form } from '@/src/components/login/LoginForm';
 import { FormProvider, useForm } from 'react-hook-form';
-import { RegisterInputs, User } from '@src/types/user';
-import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
-import customApi from '@utils/customApi';
+import { RegisterInputs, User } from '@/src/types/user';
+import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@/src/components/signup/signupForm';
+import customApi from '@/src/utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
-import { ListTypes } from '@utils/mapList';
-import CommonModal from '@components/modal/CommonModal';
-import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
+import { ListTypes } from '@/src/utils/mapList';
+import CommonModal from '@/src/components/modal/CommonModal';
+import { NotFoundByEmail, inputResetBoolean } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
 
 const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; textById?: ListTypes }) => {
@@ -106,12 +106,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     mode: 'all'
   });
 
-  const {
-    handleSubmit,
-    watch,
-    reset
-  } = methods;
-
+  const { handleSubmit, watch, reset } = methods;
 
   const onSubmit = ({ userEmail, userId, password }: RegisterInputs) => {
     if (submitText?.includes('아이디')) {
@@ -122,7 +117,7 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
       window.close();
     }
     if (submitText?.includes('회원가입')) {
-      opener.location.replace('/signup')
+      opener.location.replace('/signup');
       window.close();
     }
     if (submitText?.includes('비밀번호 찾기')) {
@@ -145,19 +140,9 @@ const FindForm = ({ isOnPasswordTab, textById }: { isOnPasswordTab: boolean; tex
     <FormProvider {...methods}>
       <FindBoxForm onSubmit={handleSubmit(onSubmit)}>
         {!isOnPasswordTab ? (
-          <FindId
-            isClickFindBtn={isClickFindBtn}
-            userIds={userIds}
-            setIsPassCertificate={setIsPassCertificate}
-            isPassCertificate={isPassCertificate}
-          />
+          <FindId isClickFindBtn={isClickFindBtn} userIds={userIds} setIsPassCertificate={setIsPassCertificate} isPassCertificate={isPassCertificate} />
         ) : (
-          <FindPassword
-            isClickFindBtn={isClickFindBtn}
-            setIsPassCertificate={setIsPassCertificate}
-            isPassCertificate={isPassCertificate}
-            isSuccessChangePassword={isSuccessChangePassword}
-          />
+          <FindPassword isClickFindBtn={isClickFindBtn} setIsPassCertificate={setIsPassCertificate} isPassCertificate={isPassCertificate} isSuccessChangePassword={isSuccessChangePassword} />
         )}
         <FlexEmptyBox />
         <SubmitBox>

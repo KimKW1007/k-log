@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import hljs from 'highlight.js/lib/core';
 import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
-import useIsMount from 'src/hooks/useIsMount';
 import 'highlight.js/styles/atom-one-dark.css';
 
 const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle: string) => {

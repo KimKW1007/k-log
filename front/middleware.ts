@@ -14,5 +14,5 @@ export const middleware =  (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/((?!api|_next/static|favicon.ico|static).*)']
+  matcher: ['/category/:path*, /accountEdit, /accountEdit/changeEmail, /login, /signup ']
 };

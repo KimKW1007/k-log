@@ -1,14 +1,14 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import logo_white from '@images/white.svg';
+import logo_white from '@/src/assets/images/white.svg';
 const Footer = () => {
   return (
     <FooterWrap>
       <FooterContainer>
         <FooterLogoBox>
-          <Image src={logo_white} alt={'로고'}></Image>
+          <Image src={logo_white} alt={'로고'}  ></Image>
           <h2>K : Log</h2>
         </FooterLogoBox>
         <FooterCopyRight>
@@ -51,16 +51,18 @@ const FooterContainer = styled(OnlyAlignCenterFlex)`
 const FooterLogoBox = styled(OnlyAlignCenterFlex)`
   flex-shrink: 0;
 
-  img {
-    width: 40px;
-  }
   h2 {
     margin-left: 10px;
+  }
+  img{
+    width: 40px;
+    height: 40px;
   }
   @media (max-width: 700px) {
     margin-right: 30px;
     img {
       width: 30px;
+      height: 30px;
     }
     h2 {
       font-size: 20px;

@@ -1,12 +1,12 @@
-import Certificate from '@components/common/Certificate';
-import EmailInput from '@components/common/EmailInput';
+import Certificate from '@/src/components/common/Certificate';
+import EmailInput from '@/src/components/common/EmailInput';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import customApi from '@utils/customApi';
-import { NotFoundByEmail, inputResetBoolean } from '@atoms/atoms';
+import customApi from '@/src/utils/customApi';
+import { NotFoundByEmail, inputResetBoolean } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
 import { useFormContext } from 'react-hook-form';
-import { CertificateEmailProps } from '@src/types/certificateEmail';
+import { CertificateEmailProps } from '@/src/types/certificateEmail';
 
 const CertificateEmail = ({ small, inputName, setIsPassCertificate, isPassCertificate }: CertificateEmailProps) => {
   const [isFailed, setIsFailed] = useRecoilState(NotFoundByEmail);

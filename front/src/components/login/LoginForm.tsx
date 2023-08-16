@@ -1,20 +1,20 @@
-import UserInfoInput from '@components/common/UserInfoInput';
+import UserInfoInput from '@/src/components/common/UserInfoInput';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { LogIn } from '@styled-icons/ionicons-solid';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
-import { useRouter } from 'next/router';
+import customApi from '@/src/utils/customApi';
+import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
-import Title from '@components/common/TitleBox';
+import { userInfomation } from '@/src/atoms/atoms';
+import Title from '@/src/components/common/TitleBox';
 import LoginErrBox from './LoginErrBox';
-import Loading from '@components/common/Loading/Loading';
-import { AllCenterFlex } from '@components/common/CommonFlex';
-import { RegisterInputs } from '@src/types/user';
-import { handleOpenPopup } from '@utils/handleOpenPopup';
+import Loading from '@/src/components/common/Loading/Loading';
+import { AllCenterFlex } from '@/src/components/common/CommonFlex';
+import { RegisterInputs } from '@/src/types/user';
+import { handleOpenPopup } from '@/src/utils/handleOpenPopup';
 
 const LoginForm = () => {
   const router = useRouter();

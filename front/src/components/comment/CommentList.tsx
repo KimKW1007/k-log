@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useQuery } from '@tanstack/react-query';
-import { GET_COMMENTS } from '@utils/queryKeys';
+import { GET_COMMENTS } from '@/src/utils/queryKeys';
 
 const CommentList = ({ id }: { id: string }) => {
   const [replyIndex, setReplyIndex] = useState(-1);

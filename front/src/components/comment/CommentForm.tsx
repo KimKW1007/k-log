@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Comment } from '@styled-icons/fluentui-system-filled/Comment';
 import { useForm } from 'react-hook-form';
-import { CheckBoxInput, Label } from '@components/common/CheckBoxInputs';
-import customApi from '@utils/customApi';
+import { CheckBoxInput, Label } from '@/src/components/common/CheckBoxInputs';
+import customApi from '@/src/utils/customApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 import { User5 } from '@styled-icons/remix-fill/User5';
 import { X } from '@styled-icons/bootstrap';
-import useIsMount from 'src/hooks/useIsMount';
-import { GET_COMMENTS } from '@utils/queryKeys';
-import useCheckLogin from 'src/hooks/useCheckLogin';
+import { GET_COMMENTS } from '@/src/utils/queryKeys';
 import TextareaAutosize from 'react-textarea-autosize';
+import useIsMount from '@/src/hooks/useIsMount';
+import useCheckLogin from '@/src/hooks/useCheckLogin';
 
 interface CommentFormProps {
   isReply?: boolean;

@@ -2,16 +2,16 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { AbsoluteBox, EditForm, EditInputArea, EditInputInnerArea } from './AccountEditBox';
-import { changeNewPasswordInputList } from '@utils/userInfoEdit';
-import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
+import { changeNewPasswordInputList } from '@/src/utils/userInfoEdit';
+import ErrorMsgBox from '@/src/components/common/error/ErrorMsgBox';
 import EditInput from './EditInput';
-import { errMsg } from '@utils/singupThirdErrMsg';
-import { PASSWORD_REGEX } from '@constant/regex';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
-import { errorFn } from '@utils/singupErrorFn';
-import customApi from '@utils/customApi';
+import { errMsg } from '@/src/utils/singupThirdErrMsg';
+import { PASSWORD_REGEX } from '@/src/constant/regex';
+import { checkSamePassword, onChangePasswordValidate } from '@/src/utils/checkSamePassword';
+import { errorFn } from '@/src/utils/singupErrorFn';
+import customApi from '@/src/utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { SubmitBox, SubmitBtn } from '@components/signup/signupForm';
+import { SubmitBox, SubmitBtn } from '@/src/components/signup/signupForm';
 
 const ChangePassword = () => {
   const {

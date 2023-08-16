@@ -1,9 +1,9 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import defaultAuthorImage from '@assets/images/500_94.jpg';
-import changeCreatedAt from '@utils/changeCreatedAt';
+import defaultAuthorImage from '@/src/assets/images/500_94.jpg';
+import changeCreatedAt from '@/src/utils/changeCreatedAt';
 
 const AuthorBox = ({ authorImage, author, createdAt }: { [key: string]: string }) => {
   return (

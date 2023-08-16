@@ -1,11 +1,11 @@
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import { useQuery } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
-import { GET_PROJECTS } from '@utils/queryKeys';
+import customApi from '@/src/utils/customApi';
+import { GET_PROJECTS } from '@/src/utils/queryKeys';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import useInfinityRolling from 'src/hooks/useInfinityRolling';
 import styled, { keyframes } from 'styled-components';
+import useInfinityRolling from '@/src/hooks/useInfinityRolling';
 
 const ProjectSlide = () => {
   const containerList = new Array(2).fill(undefined).map((val, idx) => idx);

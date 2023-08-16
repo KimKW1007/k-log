@@ -1,4 +1,4 @@
-import { ChildrenProps } from '@src/types/children';
+import { ChildrenProps } from '@/src/types/children';
 import React from 'react';
 import styled from 'styled-components';
 

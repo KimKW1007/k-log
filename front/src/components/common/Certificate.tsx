@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { ErrMsg, ErrMsgBox } from './UserInfoInput';
 import { useFormContext } from 'react-hook-form';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { ExclamationCircleFill, ExclamationDiamondFill } from '@styled-icons/bootstrap';
-import { CertificateEmailProps } from '@src/types/certificateEmail';
+import { CertificateEmailProps } from '@/src/types/certificateEmail';
 import CertificateBtnBox from './CertificateBtnBox';
 
 const Certificate = ({ setIsPassCertificate, isPassCertificate }: CertificateEmailProps) => {

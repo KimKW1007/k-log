@@ -1,41 +1,41 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { EditTitleBox } from './AccountEdit';
-import { AbsoluteBox,  EditInputArea, EditInputInnerArea } from './AccountEditBox';
+import { AbsoluteBox, EditInputArea, EditInputInnerArea } from './AccountEditBox';
 import EditInput from './EditInput';
-import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
+import ErrorMsgBox from '@/src/components/common/error/ErrorMsgBox';
 import { useForm } from 'react-hook-form';
-import { errMsg } from '@utils/singupThirdErrMsg';
-import { PASSWORD_REGEX } from '@constant/regex';
-import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@components/signup/signupForm';
+import { errMsg } from '@/src/utils/singupThirdErrMsg';
+import { PASSWORD_REGEX } from '@/src/constant/regex';
+import { FlexEmptyBox, SubmitBox, SubmitBtn } from '@/src/components/signup/signupForm';
 import { useMutation } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 
-const AccountCertificate = ({setIsCertificated} : {setIsCertificated: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const AccountCertificate = ({ setIsCertificated }: { setIsCertificated: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isDirty },
     setError,
-    clearErrors,
+    clearErrors
   } = useForm({ mode: 'all' });
-  const name = 'password'
-  const {postApi} = customApi("/auth/checkCertificate");
-  const {mutate} = useMutation(postApi,{
-    onError(error : any) {
-      setError("password", {type:'custom',message:`비밀번호가 일치하지 않습니다.`})
+  const name = 'password';
+  const { postApi } = customApi('/auth/checkCertificate');
+  const { mutate } = useMutation(postApi, {
+    onError(error: any) {
+      setError('password', { type: 'custom', message: `비밀번호가 일치하지 않습니다.` });
     },
     onSuccess(data) {
       setIsCertificated(true);
-    },
-  })
-  useEffect(()=>{
-    clearErrors('password')
-  },[isDirty, watch('password')])
+    }
+  });
+  useEffect(() => {
+    clearErrors('password');
+  }, [isDirty, watch('password')]);
 
   const onSubmit = (data: any) => {
-    mutate(data)
+    mutate(data);
   };
   return (
     <AccountCertificateArea>
@@ -47,66 +47,66 @@ const AccountCertificate = ({setIsCertificated} : {setIsCertificated: React.Disp
         <p>K-log 비밀번호를 입력해주세요.</p>
       </AccountCertificateDescBox>
       <AccountCertificateForm onSubmit={handleSubmit(onSubmit)}>
-      <EditInputArea>
-        <EditInputInnerArea>
-          <EditInput
-            title={'비밀번호 확인'}
-            type='password'
-            register={register(name, {
-              required: '값을 입력해주세요',
-              minLength: {
-                value: 8,
-                message: errMsg['passwordMinLength']
-              },
-              validate: {
-                checkPasswordValidate: (value) => PASSWORD_REGEX.test(value!) || errMsg['passwordRegexMsg']
-              }
-            })}
-            isError={Boolean(errors[name])}
-            isPassword
-          />
-          <AbsoluteBox>{errors[name] && <ErrorMsgBox errColor errors={`${errors[name]?.message}`} isEditPage />}</AbsoluteBox>
-        </EditInputInnerArea>
-      </EditInputArea>
-      <FlexEmptyBox/>
-      <AccountCertificateSubmitBox>
-        <SubmitBtn>확인</SubmitBtn>
-      </AccountCertificateSubmitBox>
-    </AccountCertificateForm>
+        <EditInputArea>
+          <EditInputInnerArea>
+            <EditInput
+              title={'비밀번호 확인'}
+              type="password"
+              register={register(name, {
+                required: '값을 입력해주세요',
+                minLength: {
+                  value: 8,
+                  message: errMsg['passwordMinLength']
+                },
+                validate: {
+                  checkPasswordValidate: (value) => PASSWORD_REGEX.test(value!) || errMsg['passwordRegexMsg']
+                }
+              })}
+              isError={Boolean(errors[name])}
+              isPassword
+            />
+            <AbsoluteBox>{errors[name] && <ErrorMsgBox errColor errors={`${errors[name]?.message}`} isEditPage />}</AbsoluteBox>
+          </EditInputInnerArea>
+        </EditInputArea>
+        <FlexEmptyBox />
+        <AccountCertificateSubmitBox>
+          <SubmitBtn>확인</SubmitBtn>
+        </AccountCertificateSubmitBox>
+      </AccountCertificateForm>
     </AccountCertificateArea>
-  )
-}
+  );
+};
 
-export default AccountCertificate
+export default AccountCertificate;
 
 const AccountCertificateForm = styled.form`
-  display:flex;
+  display: flex;
   flex-direction: column;
-  height:100%;
-`
+  height: 100%;
+`;
 
 const AccountCertificateArea = styled.div`
   background: #fff;
   height: 650px;
-  border : 1px solid #DDE6ED;
+  border: 1px solid #dde6ed;
   border-radius: 30px;
-  overflow:hidden;
+  overflow: hidden;
   padding: 60px 20px;
-  display:flex;
+  display: flex;
   flex-direction: column;
-  @media(max-width: 980px){
+  @media (max-width: 980px) {
     border-radius: 0;
-    border : 0;
+    border: 0;
     background: transparent;
   }
-`
+`;
 
 const AccountCertificateDescBox = styled.div`
-  text-align:center;
+  text-align: center;
   padding-top: 30px;
   margin-bottom: 50px;
-`
+`;
 
 const AccountCertificateSubmitBox = styled(SubmitBox)`
   width: 200px;
-`
+`;

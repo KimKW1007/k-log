@@ -1,14 +1,20 @@
 import React from 'react';
 import UserInfoInput from './UserInfoInput';
-import { errMsg } from '@utils/singupThirdErrMsg';
-import { PASSWORD_REGEX } from '@constant/regex';
-import { checkSamePassword, onChangePasswordValidate } from '@utils/checkSamePassword';
-import { errorFn } from '@utils/singupErrorFn';
+import { errMsg } from '@/src/utils/singupThirdErrMsg';
+import { PASSWORD_REGEX } from '@/src/constant/regex';
+import { checkSamePassword, onChangePasswordValidate } from '@/src/utils/checkSamePassword';
+import { errorFn } from '@/src/utils/singupErrorFn';
 import ErrorMsgBox from './error/ErrorMsgBox';
 import { useFormContext } from 'react-hook-form';
 
-const BundleOfPasswords = ({isNew = false}:{isNew ?: boolean}) => {
-  const {watch, register, formState: { errors }, setError, clearErrors} = useFormContext();
+const BundleOfPasswords = ({ isNew = false }: { isNew?: boolean }) => {
+  const {
+    watch,
+    register,
+    formState: { errors },
+    setError,
+    clearErrors
+  } = useFormContext();
 
   const Is_ErrColor = Boolean(errors?.password?.message) || Boolean(errors?.confirmPassword?.message);
   return (
@@ -16,7 +22,7 @@ const BundleOfPasswords = ({isNew = false}:{isNew ?: boolean}) => {
       <UserInfoInput
         small
         type="password"
-        inputName={isNew ? "새 비밀번호" : "비밀번호"}
+        inputName={isNew ? '새 비밀번호' : '비밀번호'}
         register={register('password', {
           required: errMsg['passwordMinLength'],
           minLength: {
@@ -34,7 +40,7 @@ const BundleOfPasswords = ({isNew = false}:{isNew ?: boolean}) => {
       <UserInfoInput
         small
         type="password"
-        inputName={isNew ? "새 비밀번호 확인" : "비밀번호 확인"}
+        inputName={isNew ? '새 비밀번호 확인' : '비밀번호 확인'}
         register={register('confirmPassword', {
           required: errMsg['passwordMinLength'],
           minLength: {

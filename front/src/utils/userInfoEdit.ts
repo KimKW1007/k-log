@@ -1,4 +1,4 @@
-import { ACCOUNT_ID_REGEX, NAME_REGEX } from '@constant/regex';
+import { ACCOUNT_ID_REGEX, NAME_REGEX } from '@/src/constant/regex';
 import { errMsg } from './singupThirdErrMsg';
 
 export interface accountEditInputListProps {

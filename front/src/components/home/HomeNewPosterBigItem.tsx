@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import AuthorBox from '@components/board/AuthorBox';
-import defaultImage from '@assets/images/defaultImage.png';
+import AuthorBox from '@/src/components/board/AuthorBox';
+import defaultImage from '@/src/assets/images/defaultImage.png';
 import Link from 'next/link';
 import DOMPurify from 'dompurify';
-import useConvert from 'src/hooks/useConvert';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import useConvert from '@/src/hooks/useConvert';
 
 const HomeNewPosterBigItem = (board: any) => {
   const { id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory } = board;

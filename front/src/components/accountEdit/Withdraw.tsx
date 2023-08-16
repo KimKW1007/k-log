@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import EditInput, { EditInputInnerBox } from './EditInput';
-import { CheckSecretInput, CheckSecretLabel } from '@components/comment/CommentForm';
-import { SubmitBtn } from '@components/signup/signupForm';
+import { CheckSecretInput, CheckSecretLabel } from '@/src/components/comment/CommentForm';
+import { SubmitBtn } from '@/src/components/signup/signupForm';
 import { ChangePasswordSubmitBox } from './ChangePassword';
-import DeleteModal from '@components/modal/DeleteModal';
-import customApi from '@utils/customApi';
+import DeleteModal from '@/src/components/modal/DeleteModal';
+import customApi from '@/src/utils/customApi';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 
 const Withdraw = () => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);

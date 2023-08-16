@@ -1,4 +1,4 @@
-import { defaultBanner1, defaultBanner2, defaultBanner3 } from '@utils/bannerList';
+import { defaultBanner1, defaultBanner2, defaultBanner3 } from '@/src/utils/bannerList';
 import React from 'react';
 import styled from 'styled-components';
 

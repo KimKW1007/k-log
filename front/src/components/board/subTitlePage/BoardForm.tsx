@@ -2,23 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import useIsMount from 'src/hooks/useIsMount';
+import { useRouter, usePathname } from 'next/navigation';
+import Router from 'next/router';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
-import useCustomQuill from '@utils/useCustomQuill';
+import useCustomQuill from '@/src/utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import ifInImageApi from '@utils/ifInImageApi';
-import useConfirm from 'src/hooks/useConfirm';
+import ifInImageApi from '@/src/utils/ifInImageApi';
 import { FormProvider, useForm } from 'react-hook-form';
 import CompletionBox from './CompletionBox';
-import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
-import useConvert from 'src/hooks/useConvert';
 import Tags from '../Tags';
-import PageLoading from '@components/common/Loading/PageLoading';
-import customApi from '@utils/customApi';
-import { GET_BOARD } from '@utils/queryKeys';
+import PageLoading from '@/src/components/common/Loading/PageLoading';
+import customApi from '@/src/utils/customApi';
+import { GET_BOARD } from '@/src/utils/queryKeys';
+import useIsMount from '@/src/hooks/useIsMount';
+import useConfirm from '@/src/hooks/useConfirm';
+import useHandleSideMenu from '@/src/hooks/useHandleSideMenu';
+import useConvert from '@/src/hooks/useConvert';
 
 /* agate / base16/dracula */
 
@@ -64,6 +65,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   } = methods;
 
   const router = useRouter();
+  const pathname = usePathname();
   const quillRef = useRef<ReactQuill>(null);
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
@@ -119,7 +121,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
       console.log({ error });
     }
   });
-  const { handlePageLeave, handleRouteChangeStart } = useConfirm(router, deleteImageMutate);
+  const { handlePageLeave, handleRouteChangeStart } = useConfirm(pathname, deleteImageMutate);
 
   useEffect(() => {
     if (boardLastId) {
@@ -130,11 +132,11 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   useEffect(() => {
     if (!isSuccess) {
       window.addEventListener('beforeunload', handlePageLeave);
-      router.events.on('routeChangeStart', handleRouteChangeStart);
+      Router.events.on('routeChangeStart', handleRouteChangeStart);
     }
     return () => {
       window.removeEventListener('beforeunload', handlePageLeave);
-      router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
     };
   }, [isMount, isSuccess]);
 

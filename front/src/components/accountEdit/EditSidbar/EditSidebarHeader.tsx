@@ -1,25 +1,25 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import ifInImageApi from '@utils/ifInImageApi';
-import customApi from '@utils/customApi';
-import React, {  useEffect, useMemo, useState } from 'react';
+import ifInImageApi from '@/src/utils/ifInImageApi';
+import customApi from '@/src/utils/customApi';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Image from 'next/image';
-import defaultAuthorImage from '@assets/images/500_94.jpg';
+import defaultAuthorImage from '@/src/assets/images/500_94.jpg';
 import { EditBtn } from '../EditCategory/EditCategoryList';
-import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
-import { GET_USER_MINI_PL, USERS } from '@utils/queryKeys';
+import ImageInputLabelBox from '@/src/components/common/ImageInputLabelBox';
+import { GET_USER_MINI_PL, USERS } from '@/src/utils/queryKeys';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
-import useIsMount from 'src/hooks/useIsMount';
+import { userInfomation } from '@/src/atoms/atoms';
+import useIsMount from '@/src/hooks/useIsMount';
 
 const EditSidebarHeader = () => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const {isMount} = useIsMount();
+  const { isMount } = useIsMount();
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery([GET_USER_MINI_PL,USERS], ()=> getApi(true));
+  const { data } = useQuery([GET_USER_MINI_PL, USERS], () => getApi(true));
   const { postApi } = ifInImageApi('/file/upload', true);
   const { mutate } = useMutation(postApi, {
     onSuccess(data) {
@@ -87,10 +87,10 @@ const EditSidebarHeader = () => {
         <SidebarHeaderBox>
           <ImgBox>
             <Image src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
-            <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={"userImage"} />
+            <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={'userImage'} />
           </ImgBox>
           <DescBox>
-            <TextArea className='customScroll' disabled={!isMount && !Boolean(currentUser?.isAdmin)} {...register('description')}></TextArea>
+            <TextArea className="customScroll" disabled={!isMount && !Boolean(currentUser?.isAdmin)} {...register('description')}></TextArea>
           </DescBox>
           <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue}>
             저장
@@ -152,8 +152,8 @@ const TextArea = styled.textarea`
     background-color: #000 !important;
   }
   &::-webkit-scrollbar-track {
-    background-color: rgba(0,0,0,.1);
-    margin : 3px 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 3px 0;
   }
   &:focus {
     border: 1px solid #000;

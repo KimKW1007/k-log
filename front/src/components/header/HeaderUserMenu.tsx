@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
 import { ArrowDropDown } from '@styled-icons/material-rounded';
 import Link from 'next/link';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useMutation } from '@tanstack/react-query';
 import { ShortLine } from './LoginSignUpBox';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { ArrowBack, ArrowForward } from '@styled-icons/ionicons-solid';
 import Link from 'next/link';
-import defaultImage from '@assets/images/defaultImage.png';
+import defaultImage from '@/src/assets/images/defaultImage.png';
 
 interface NextPrevBoardBoxProps {
   [key: string]: any;

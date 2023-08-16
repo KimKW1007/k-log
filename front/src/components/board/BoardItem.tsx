@@ -1,30 +1,43 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import React from 'react'
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import React from 'react';
 import styled from 'styled-components';
-import defaultImage from '@assets/images/defaultImage.png';
-import useConvert from 'src/hooks/useConvert';
+import defaultImage from '@/src/assets/images/defaultImage.png';
 import AuthorBox from './AuthorBox';
 import Link from 'next/link';
 import DOMPurify from 'dompurify';
+import useConvert from '@/src/hooks/useConvert';
 
-
-
-const BoardItem = (board : any) => {
-  const {id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory : {categorySubTitle}  }  = board;
-  const  {convertContent} = useConvert();
+const BoardItem = (board: any) => {
+  const {
+    id,
+    author,
+    authorImage,
+    boardTitle,
+    contents,
+    createdAt,
+    thumbnail,
+    subCategory: { categorySubTitle }
+  } = board;
+  const { convertContent } = useConvert();
   return (
     <ItemLink href={`/${id}`}>
       <ItemWrap>
         <ContentsBox>
           <ItemCategory>
-            <span>
-              {categorySubTitle}
-            </span>
+            <span>{categorySubTitle}</span>
           </ItemCategory>
           <ItemTitleBox>
             <p>{boardTitle}</p>
           </ItemTitleBox>
-          <ItemDescBox dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '').slice(0,500)) }} />
+          <ItemDescBox
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                convertContent(contents)
+                  .replace(/(<([^>]+)>)/gi, '')
+                  .slice(0, 500)
+              )
+            }}
+          />
           <ItemDetailBox>
             <AuthorBox author={author} authorImage={authorImage} createdAt={createdAt} />
           </ItemDetailBox>
@@ -34,14 +47,14 @@ const BoardItem = (board : any) => {
         </ImageBox>
       </ItemWrap>
     </ItemLink>
-  )
-}
+  );
+};
 
-export default BoardItem
+export default BoardItem;
 
 const ItemLink = styled(Link)`
   display: block;
-  width:100%;
+  width: 100%;
   border-radius: 10px;
   overflow: hidden;
   background: #39486755;
@@ -60,99 +73,97 @@ const ItemLink = styled(Link)`
 `;
 
 const ItemWrap = styled(OnlyAlignCenterFlex)`
-  width:100%;
-  justify-content:space-between;
-  @media(max-width:750px){
+  width: 100%;
+  justify-content: space-between;
+  @media (max-width: 750px) {
     padding: 0;
-    flex-direction : column;
+    flex-direction: column;
   }
-
-`
-const ContentsBox =styled.div`
-  @media(max-width:750px){
+`;
+const ContentsBox = styled.div`
+  @media (max-width: 750px) {
     padding: 20px;
     order: 2;
   }
-`
-const ItemCategory =styled.div`
-margin-bottom: 24px;
-span{
-  font-size : 12px;
-  background: #75C2F6;
-  display:inline-block;
-  padding: 10px 15px;
-  border-radius: 20px;
-}
-@media(max-width:750px){
-  margin-bottom : 16px;
-}
-`
-const ItemTitleBox =styled.div`
-font-size : 20px;
-margin-bottom : 24px;
-p{
-  white-space : nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media(max-width:750px){
-  margin-bottom : 16px;
-}
-`
-const ItemDescBox =styled.div`
-  width:100%;
+`;
+const ItemCategory = styled.div`
+  margin-bottom: 24px;
+  span {
+    font-size: 12px;
+    background: #75c2f6;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+  }
+  @media (max-width: 750px) {
+    margin-bottom: 16px;
+  }
+`;
+const ItemTitleBox = styled.div`
+  font-size: 20px;
+  margin-bottom: 24px;
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 750px) {
+    margin-bottom: 16px;
+  }
+`;
+const ItemDescBox = styled.div`
+  width: 100%;
   min-height: 60px;
   line-height: 20px;
-  font-size : 14px;
+  font-size: 14px;
   margin-bottom: 24px;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
   word-break: keep-all;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; 
-`
-const ItemDetailBox =styled(OnlyAlignCenterFlex)`
+  -webkit-line-clamp: 3;
+`;
+const ItemDetailBox = styled(OnlyAlignCenterFlex)`
   font-size: 14px;
-  @media(max-width:750px){
+  @media (max-width: 750px) {
     font-size: 1.8666vw;
   }
-  @media(max-width:600px){
+  @media (max-width: 600px) {
     font-size: 12px;
   }
-`
+`;
 
-export const CreatedDateBox = styled.div`
+export const CreatedDateBox = styled.div``;
 
-
-`
-
-const ImageBox = styled.div<{isDefaultImg : boolean;}>`
+const ImageBox = styled.div<{ isDefaultImg: boolean }>`
   position: relative;
   width: 168px;
   height: 168px;
   background: #fff;
-  overflow : hidden;
-  flex-shrink : 0;
-  margin-left:30px;
-  img{
-    width:100%;
-    height:100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-left: 30px;
+  img {
+    width: 100%;
+    height: 100%;
   }
-  ${({isDefaultImg}) => isDefaultImg && `
+  ${({ isDefaultImg }) =>
+    isDefaultImg &&
+    `
     padding:30px;
   `}
-  @media(max-width:750px){
+  @media(max-width:750px) {
     width: 100%;
     height: 46.6666vw;
     order: 1;
-    padding:0;
+    padding: 0;
     width: 100%;
   }
-`
+`;
 
-const ImageBg =styled.div<{thumbnailUrl : string;}>`
-  width:100%;
-  height:100%;
-  background: url(${({thumbnailUrl}) => thumbnailUrl}) no-repeat center center/auto 100%;
-`
+const ImageBg = styled.div<{ thumbnailUrl: string }>`
+  width: 100%;
+  height: 100%;
+  background: url(${({ thumbnailUrl }) => thumbnailUrl}) no-repeat center center/auto 100%;
+`;

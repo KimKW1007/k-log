@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { banner } from '@utils/bannerList';
-import ImageInputLabelBox from '@components/common/ImageInputLabelBox';
-import ifInImageApi from '@utils/ifInImageApi';
+import { banner } from '@/src/utils/bannerList';
+import ImageInputLabelBox from '@/src/components/common/ImageInputLabelBox';
+import ifInImageApi from '@/src/utils/ifInImageApi';
 import { ProjectSubmitBox } from './EditProject';
-import { SubmitBtn } from '@components/signup/signupForm';
-import { GET_BANNER_LIST } from '@utils/queryKeys';
+import { SubmitBtn } from '@/src/components/signup/signupForm';
+import { GET_BANNER_LIST } from '@/src/utils/queryKeys';
 
 const EditBanner = () => {
   const queryClient = useQueryClient();

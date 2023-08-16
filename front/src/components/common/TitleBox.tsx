@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React from 'react';
-import { ChildrenProps } from '@src/types/children';
+import { ChildrenProps } from '@/src/types/children';
 
 const Title = ({ children }: ChildrenProps) => {
   const idListPage = children === '해당 이메일로 가입된 아이디';

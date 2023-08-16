@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 const useHandleSideMenu = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
@@ -25,7 +25,7 @@ const useHandleSideMenu = () => {
     if (isOpen) {
       handleClickMenu();
     }
-  }, [router.asPath]);
+  }, [pathname]);
   return { handleClickMenu, isOpen, isActive };
 };
 

@@ -1,27 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import changeCreatedAt from '@utils/changeCreatedAt';
-import customApi from '@utils/customApi';
+import changeCreatedAt from '@/src/utils/changeCreatedAt';
+import customApi from '@/src/utils/customApi';
 import DOMPurify from 'dompurify';
 import React, { useEffect, useRef } from 'react';
-import useConvert from 'src/hooks/useConvert';
 import styled from 'styled-components';
-import { ContentsWrap } from '@styles/boardContents-style';
-import createBlockquoteBox from '@utils/createBlockquoteBox';
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import NextPrevBoardBox from './NextPrevBoardBox';
 import Link from 'next/link';
 import UDBtnBox from './UpdateDelete/UDBtnBox';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
-import { GET_BOARD } from '@utils/queryKeys';
-import PageLoading from '@components/common/Loading/PageLoading';
-import { User5 } from '@styled-icons/remix-fill/User5'
-import { AccessTime } from '@styled-icons/material-rounded/AccessTime'
-import codeBlockStyler from '@utils/codeBlockStyler';
-
-
-
-
+import { userInfomation } from '@/src/atoms/atoms';
+import { GET_BOARD } from '@/src/utils/queryKeys';
+import PageLoading from '@/src/components/common/Loading/PageLoading';
+import { User5 } from '@styled-icons/remix-fill/User5';
+import { AccessTime } from '@styled-icons/material-rounded/AccessTime';
+import codeBlockStyler from '@/src/utils/codeBlockStyler';
+import useConvert from '@/src/hooks/useConvert';
+import createBlockquoteBox from '@/src/utils/createBlockquoteBox';
+import { ContentsWrap } from '@/src/styles/boardContents-style';
 
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
@@ -37,15 +33,14 @@ const BoardDetail = ({ id }: { id: string }) => {
 
   const { wrapConsecutiveBlockquotes } = createBlockquoteBox(contentsWrapRef);
   useEffect(() => {
-    if(contentsWrapRef.current){
-      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(convertContent(contents))
-      if(contentsWrapRef.current.innerHTML){
+    if (contentsWrapRef.current) {
+      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(convertContent(contents));
+      if (contentsWrapRef.current.innerHTML) {
         wrapConsecutiveBlockquotes();
         codeBlockStyler(contentsWrapRef);
       }
     }
   }, [data, contentsWrapRef]);
-
 
   return (
     <>
@@ -58,15 +53,25 @@ const BoardDetail = ({ id }: { id: string }) => {
             </CategoryBox>
             <h2>{boardTitle}</h2>
             <CreatedDateBox>
-              <div><User5 /><span>{author}</span></div>
+              <div>
+                <User5 />
+                <span>{author}</span>
+              </div>
               &#183;
-              <div><AccessTime /><span>{changeCreatedAt(createdAt)}</span></div>
+              <div>
+                <AccessTime />
+                <span>{changeCreatedAt(createdAt)}</span>
+              </div>
             </CreatedDateBox>
           </DetailTitleBox>
-          <ContentsWrap ref={contentsWrapRef}  />
-          {tags.length > 0 && <TagBox>
-            {tags.split(',').map((tag: string, idx: number) => <TagBtn key={"tags" + tag + idx}>{tag}</TagBtn>)}
-            </TagBox>}
+          <ContentsWrap ref={contentsWrapRef} />
+          {tags.length > 0 && (
+            <TagBox>
+              {tags.split(',').map((tag: string, idx: number) => (
+                <TagBtn key={'tags' + tag + idx}>{tag}</TagBtn>
+              ))}
+            </TagBox>
+          )}
           <AnotherBoardArea>
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
             <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
@@ -107,27 +112,26 @@ const CategoryBox = styled.div`
 const CreatedDateBox = styled(AllCenterFlex)`
   font-size: 16px;
 
-  > div{
-    display:flex;
-    aling-items:center;
-    margin : 0 10px;
-    svg{
+  > div {
+    display: flex;
+    aling-items: center;
+    margin: 0 10px;
+    svg {
       width: 1.1em;
       margin: -1px 4px 0 0;
     }
-    span{
-      display:inline-block;
+    span {
+      display: inline-block;
       line-height: 1.5em;
-      flex-shrink : 0;
+      flex-shrink: 0;
     }
   }
-
 `;
 
 const TagBox = styled(OnlyAlignCenterFlex)`
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   padding: 30px 0;
-  border-bottom: 1px solid rgba(128,128,128,0.3);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
   gap: 10px;
 `;
 const TagBtn = styled.div`
@@ -137,7 +141,7 @@ const TagBtn = styled.div`
   color: #fff;
   background: #454545;
   transition: 0.3s;
-  cursor:default;
+  cursor: default;
   &:hover {
     background: ${({ theme }) => theme.color.success};
   }

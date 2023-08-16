@@ -1,33 +1,33 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import logo_white from '@images/white.svg';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import { isRemoveSidebar, userInfomation } from '@atoms/atoms';
+import logo_white from '@/src/assets/images/white.svg';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import { isRemoveSidebar, userInfomation } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
 import LoginSignUpBox from './LoginSignUpBox';
 import HeaderUserMenu from './HeaderUserMenu';
-import CategoryBox from '@components/category/CategoryBox';
-import { useRouter } from 'next/router';
-import useIsMount from 'src/hooks/useIsMount';
+import CategoryBox from '@/src/components/category/CategoryBox';
 import SideMenu from './SideMenu';
+import useIsMount from '@/src/hooks/useIsMount';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export const Header = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const [isReactive, setIsReactive] = useRecoilState(isRemoveSidebar);
   const [notShowCategory, setNotShowCategory] = useState(false);
   const { isMount } = useIsMount();
 
   useEffect(() => {
-    if (router.pathname !== '/') {
+    if (pathname !== '/') {
       setIsReactive(true);
       setNotShowCategory(true);
     } else {
       setNotShowCategory(false);
     }
-  }, [router]);
+  }, [pathname]);
 
   return (
     <HeaderBox>
@@ -36,7 +36,7 @@ export const Header = () => {
           {notShowCategory && <CategoryBox></CategoryBox>}
           <LogoBox isReactive={notShowCategory}>
             <Link href={'/'} title="홈">
-              <Image src={logo_white} alt={'로고'}></Image>
+              <Image src={logo_white} alt={'로고'} width={50}></Image>
             </Link>
           </LogoBox>
         </LogoAndCategoryBox>
@@ -100,9 +100,6 @@ const LogoBox = styled(OnlyAlignCenterFlex)<{ isReactive: boolean }>`
     `
     margin-left: 180px;
   `}
-  img {
-    max-width: 100%;
-  }
   @media (max-width: 700px) {
     margin-left: 0;
   }

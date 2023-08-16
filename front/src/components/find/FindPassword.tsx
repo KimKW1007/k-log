@@ -1,22 +1,21 @@
-import BundleOfPasswords from '@components/common/BundleOfPasswords';
-import CertificateEmail from '@components/common/CertificateEmail';
-import FinallPage from '@components/common/FinallPage';
-import UserInfoInput from '@components/common/UserInfoInput';
-import { InputListBox } from '@components/login/LoginForm';
-import { ACCOUNT_ID_REGEX } from '@constant/regex';
+import BundleOfPasswords from '@/src/components/common/BundleOfPasswords';
+import CertificateEmail from '@/src/components/common/CertificateEmail';
+import FinallPage from '@/src/components/common/FinallPage';
+import UserInfoInput from '@/src/components/common/UserInfoInput';
+import { InputListBox } from '@/src/components/login/LoginForm';
+import { ACCOUNT_ID_REGEX } from '@/src/constant/regex';
 import React from 'react';
-import { errorFn } from '@utils/singupErrorFn';
-import { errMsg } from '@utils/singupThirdErrMsg';
-import { FindPasswordProps } from '@src/types/find';
+import { errorFn } from '@/src/utils/singupErrorFn';
+import { errMsg } from '@/src/utils/singupThirdErrMsg';
+import { FindPasswordProps } from '@/src/types/find';
 import { useFormContext } from 'react-hook-form';
 
-const FindPassword = ({
-  setIsPassCertificate,
-  isPassCertificate,
-  isClickFindBtn,
-  isSuccessChangePassword
-}: FindPasswordProps) => {
-  const { register, watch, formState:{errors} } = useFormContext();
+const FindPassword = ({ setIsPassCertificate, isPassCertificate, isClickFindBtn, isSuccessChangePassword }: FindPasswordProps) => {
+  const {
+    register,
+    watch,
+    formState: { errors }
+  } = useFormContext();
 
   return (
     <InputListBox>
@@ -45,11 +44,7 @@ const FindPassword = ({
               errors={`${errorFn(errMsg['userIdRegexMsg'], errors?.userId)}`}
               errColor={Boolean(errors?.userId?.message)}
             />
-            <CertificateEmail
-              small
-              setIsPassCertificate={setIsPassCertificate}
-              isPassCertificate={isPassCertificate}
-            />
+            <CertificateEmail small setIsPassCertificate={setIsPassCertificate} isPassCertificate={isPassCertificate} />
           </>
         ))}
     </InputListBox>

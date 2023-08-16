@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import UserInfoInput from '@components/common/UserInfoInput';
-import { ACCOUNT_ID_REGEX } from '@constant/regex';
-import { InputListBox } from '@components/login/LoginForm';
-import { errMsg } from '@utils/singupThirdErrMsg';
-import { errorFn } from '@utils/singupErrorFn';
-import BundleOfPasswords from '@components/common/BundleOfPasswords';
+import UserInfoInput from '@/src/components/common/UserInfoInput';
+import { ACCOUNT_ID_REGEX } from '@/src/constant/regex';
+import { InputListBox } from '@/src/components/login/LoginForm';
+import { errMsg } from '@/src/utils/singupThirdErrMsg';
+import { errorFn } from '@/src/utils/singupErrorFn';
+import BundleOfPasswords from '@/src/components/common/BundleOfPasswords';
 import { useFormContext } from 'react-hook-form';
 
 const ThirdPage = ({ setIsAllChecked }: { setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>> }) => {

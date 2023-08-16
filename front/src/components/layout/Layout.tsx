@@ -1,20 +1,21 @@
-import { ChildrenProps } from '@src/types/children';
+"use client";
+import { ChildrenProps } from '@/src/types/children';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
-import { Header } from '@components/header/Header';
-import IconLinkListBox from '@components/common/IconLinkListBox';
-import Footer from '@components/footer/Footer';
+import { Header } from '@/src/components/header/Header';
+import IconLinkListBox from '@/src/components/common/IconLinkListBox';
+import Footer from '@/src/components/footer/Footer';
 import { useRecoilState } from 'recoil';
-import { searchModalState } from '@atoms/atoms';
-import SearchModal from 'src/search/SearchModal';
+import { searchModalState } from '@/src/atoms/atoms';
+import SearchModal from '../search/SearchModal';
+import { usePathname } from 'next/navigation';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const [isAboutAuth, setIsAboutAuth] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
   const routerPathCheck = (value: string) => {
-    return router.pathname.includes(value);
+    return pathname.includes(value);
   };
 
   const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail');
@@ -24,7 +25,7 @@ const Layout = ({ children }: ChildrenProps) => {
     } else {
       setIsAboutAuth(false);
     }
-  }, [router]);
+  }, [pathname]);
 
   return (
     <Root>
@@ -43,3 +44,4 @@ const Root = styled.div`
   width: 100%;
   height: 100%;
 `;
+

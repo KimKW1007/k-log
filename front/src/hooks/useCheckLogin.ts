@@ -1,4 +1,4 @@
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 

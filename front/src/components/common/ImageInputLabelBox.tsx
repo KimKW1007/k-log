@@ -1,9 +1,9 @@
-import { getBase64 } from '@utils/getBase64';
+import { getBase64 } from '@/src/utils/getBase64';
 import React, { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { Add } from '@styled-icons/ionicons-solid/Add';
-import { removeEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
+import { removeEmptyBetweenString } from '@/src/utils/removeTwoMoreEmptyBetweenString';
 
 interface InputLabelProps {
   setImage: React.Dispatch<React.SetStateAction<string>>;

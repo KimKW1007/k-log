@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import HomeNewPosterBigItem from './HomeNewPosterBigItem';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useQuery } from '@tanstack/react-query';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
-import { EmptyIconBox } from '@components/board/BoardWrapComp';
-import BoardItem from '@components/board/BoardItem';
-import { GET_NEW_BOARDS } from '@utils/queryKeys';
+import { EmptyIconBox } from '@/src/components/board/BoardWrapComp';
+import BoardItem from '@/src/components/board/BoardItem';
+import { GET_NEW_BOARDS } from '@/src/utils/queryKeys';
 
 const HomeNewPosterList = () => {
   const { getApi } = customApi('/board/getNewBoards');

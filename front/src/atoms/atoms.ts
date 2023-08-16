@@ -1,7 +1,7 @@
-import { SearchBoardProps } from '@src/types/board';
-import { User } from '@src/types/user';
+import { SearchBoardProps } from '../types/board';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { User } from '../types/user';
 
 const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
 

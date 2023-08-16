@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { GET_ALL_CATEGORY } from '@utils/queryKeys';
+import { GET_ALL_CATEGORY } from '@/src/utils/queryKeys';
 import AddCategoryBtn from './AddCategoryBtn';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import EditCategoryItemBox, { MoveAttraction } from './EditCategoryItemBox';
-import { OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
-import { removeTwoMoreEmptyBetweenString } from '@utils/removeTwoMoreEmptyBetweenString';
-import { CategoryBackProps } from '@components/category/CategoryList';
+import { OnlyJustifyCenterFlex } from '@/src/components/common/CommonFlex';
+import { removeTwoMoreEmptyBetweenString } from '@/src/utils/removeTwoMoreEmptyBetweenString';
+import { CategoryBackProps } from '@/src/components/category/CategoryList';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
 
 const EditCategoryList = () => {

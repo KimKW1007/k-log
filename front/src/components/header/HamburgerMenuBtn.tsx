@@ -1,5 +1,5 @@
+import useScrollOverHeader from '@/src/hooks/useScrollOverHeader';
 import React from 'react';
-import useScrollOverHeader from 'src/hooks/useScrollOverHeader';
 import styled from 'styled-components';
 
 interface MenuProps {

@@ -4,8 +4,8 @@ import styled, { keyframes, css } from 'styled-components';
 import { Trash } from '@styled-icons/bootstrap/Trash';
 
 import { ExclamationCircleFill } from '@styled-icons/bootstrap';
-import DeleteModal from '@components/modal/DeleteModal';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import DeleteModal from '@/src/components/modal/DeleteModal';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 
 export interface CategoryInputProps {
   subCategoriesIndex?: number;

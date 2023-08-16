@@ -1,7 +1,7 @@
-import CheckBoxInputs from '@components/common/CheckBoxInputs';
+import CheckBoxInputs from '@/src/components/common/CheckBoxInputs';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { agreeList } from '@utils/mapList';
+import { agreeList } from '@/src/utils/mapList';
 
 interface isAllCheckedProps {
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;

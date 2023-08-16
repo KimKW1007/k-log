@@ -1,17 +1,17 @@
-import SearchBox from 'src/search/SearchBox';
-import SidebarCategoryBox from '@components/sideBar/SidebarCategoryBox';
-import SidebarHeader from '@components/sideBar/SidebarHeader';
+import SidebarCategoryBox from '@/src/components/sideBar/SidebarCategoryBox';
+import SidebarHeader from '@/src/components/sideBar/SidebarHeader';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import HamburgerMenuBtn from './HamburgerMenuBtn';
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import { userInfomation } from '@atoms/atoms';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import { userInfomation } from '@/src/atoms/atoms';
 import { useRecoilState } from 'recoil';
-import useHandleSideMenu from 'src/hooks/useHandleSideMenu';
-import useIsMount from 'src/hooks/useIsMount';
 import HeaderUserMenu from './HeaderUserMenu';
 import LoginSignUpBox from './LoginSignUpBox';
 import Link from 'next/link';
+import SearchBox from '../search/SearchBox';
+import useIsMount from '@/src/hooks/useIsMount';
+import useHandleSideMenu from '@/src/hooks/useHandleSideMenu';
 
 const SideMenu = () => {
   const { handleClickMenu, isOpen, isActive } = useHandleSideMenu();

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { LinkTypes, iconLinks } from '@utils/iconLinkList';
+import { LinkTypes, iconLinks } from '@/src/utils/iconLinkList';
 import IconButtonBox from './IconLinkBox';
-import { useRouter } from 'next/router';
-const IconLinkListBox = ({popupPage}:{popupPage: boolean}) => {
-  const [currentLinkRemoveList, setCurrentLinkRemoveList] = useState<LinkTypes[]>([]);
-  const router = useRouter();
+import { usePathname } from 'next/navigation';
 
+const IconLinkListBox = ({ popupPage }: { popupPage: boolean }) => {
+  const [currentLinkRemoveList, setCurrentLinkRemoveList] = useState<LinkTypes[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const filterdCntPath = iconLinks.filter((x) => x.link !== router.pathname);
+    const filterdCntPath = iconLinks.filter((x) => x.link !== pathname);
     setCurrentLinkRemoveList(filterdCntPath);
-  }, [router]);
+  }, [pathname]);
 
   return (
     <ListBox>
       {popupPage ||
         currentLinkRemoveList.map(({ link, title, icon, color }) => (
-            <IconButtonBox key={link + title} link={link} title={title} color={color}>
-              {icon}
-            </IconButtonBox>
+          <IconButtonBox key={link + title} link={link} title={title} color={color}>
+            {icon}
+          </IconButtonBox>
         ))}
     </ListBox>
   );

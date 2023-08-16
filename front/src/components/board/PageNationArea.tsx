@@ -1,10 +1,10 @@
-import { AllCenterFlex } from '@components/common/CommonFlex';
+import { AllCenterFlex } from '@/src/components/common/CommonFlex';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { IosArrowLtr, IosArrowRtl } from '@styled-icons/fluentui-system-filled';
 import { useRecoilState } from 'recoil';
-import { currentPagenation } from '@atoms/atoms';
-import useIsMount from 'src/hooks/useIsMount';
+import { currentPagenation } from '@/src/atoms/atoms';
+import useIsMount from '@/src/hooks/useIsMount';
 
 const PageNationArea = ({ lastPage }: { lastPage: number }) => {
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);

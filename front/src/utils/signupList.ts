@@ -1,4 +1,4 @@
-import { User } from '@src/types/user';
+import { User } from '@/src/types/user';
 
 export interface CurrentTitleType {
   [key: string]: (userIds?: User[]) => {

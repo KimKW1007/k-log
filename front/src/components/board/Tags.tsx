@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import TagItem from './TagItem';
 const Tags = ({ setCurrentTags, currentTags }: { setCurrentTags: React.Dispatch<React.SetStateAction<string[]>>; currentTags: string[] }) => {
   const { register, setValue, watch } = useFormContext();

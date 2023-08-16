@@ -1,9 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { LinkTypes } from '@utils/iconLinkList';
-import { useRouter } from 'next/router';
-import { ChildrenProps } from '@src/types/children';
-
+import { LinkTypes } from '@/src/utils/iconLinkList';
+import { useRouter } from 'next/navigation';
+import { ChildrenProps } from '@/src/types/children';
 
 interface IconButtonProps extends ChildrenProps, LinkTypes {}
 

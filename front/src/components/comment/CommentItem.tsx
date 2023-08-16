@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Image from 'next/image';
-import defaultAuthorImage from '@assets/images/500_94.jpg';
+import defaultAuthorImage from '@/src/assets/images/500_94.jpg';
 import { Author } from './CommentForm';
 import { CommentMultiple, CommentOff } from '@styled-icons/fluentui-system-filled/';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import { Reply } from '@styled-icons/entypo/Reply';
 import { User5 } from '@styled-icons/remix-fill/User5';
 import { Lock2 } from '@styled-icons/remix-fill/Lock2';
 import { LockOpen } from '@styled-icons/ionicons-solid/LockOpen';
-import changeCreatedAt from '@utils/changeCreatedAt';
-import customApi from '@utils/customApi';
+import changeCreatedAt from '@/src/utils/changeCreatedAt';
+import customApi from '@/src/utils/customApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { GET_COMMENTS } from '@utils/queryKeys';
-import DeleteModal from '@components/modal/DeleteModal';
+import { GET_COMMENTS } from '@/src/utils/queryKeys';
+import DeleteModal from '@/src/components/modal/DeleteModal';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
-import useCheckLogin from 'src/hooks/useCheckLogin';
+import { userInfomation } from '@/src/atoms/atoms';
+import useCheckLogin from '@/src/hooks/useCheckLogin';
 
 interface CommentItemProps {
   isReply?: boolean;

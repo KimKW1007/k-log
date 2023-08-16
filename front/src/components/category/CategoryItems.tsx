@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useQuery } from '@tanstack/react-query';
-import { GET_ALL_CATEGORY } from '@utils/queryKeys';
+import { GET_ALL_CATEGORY } from '@/src/utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
-import { EmptyIconBox } from '@components/board/BoardWrapComp';
+import { EmptyIconBox } from '@/src/components/board/BoardWrapComp';
 
 const CategoryItems = ({ isOverHeader }: { isOverHeader?: boolean }) => {
   const { getApi } = customApi('/category');

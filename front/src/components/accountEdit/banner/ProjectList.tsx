@@ -1,11 +1,11 @@
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { X } from '@styled-icons/bootstrap/X';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import DeleteModal from '@components/modal/DeleteModal';
-import { GET_PROJECTS } from '@utils/queryKeys';
+import DeleteModal from '@/src/components/modal/DeleteModal';
+import { GET_PROJECTS } from '@/src/utils/queryKeys';
 
 interface ProjectsListProps {
   projects: {

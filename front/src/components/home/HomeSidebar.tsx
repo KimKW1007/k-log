@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchBox from '../../search/SearchBox';
-import { OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import SidebarHeader from '@components/sideBar/SidebarHeader';
-import SidebarCategoryBox from '@components/sideBar/SidebarCategoryBox';
+import { OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import SidebarHeader from '@/src/components/sideBar/SidebarHeader';
+import SidebarCategoryBox from '@/src/components/sideBar/SidebarCategoryBox';
+import SearchBox from '../search/SearchBox';
 
 const HomeSidebar = () => {
   return (

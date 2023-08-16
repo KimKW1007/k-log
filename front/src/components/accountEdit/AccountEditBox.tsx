@@ -1,16 +1,16 @@
-import { AllCenterFlex, OnlyJustifyCenterFlex } from '@components/common/CommonFlex';
-import ErrorMsgBox from '@components/common/error/ErrorMsgBox';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
-import { handleOpenPopup } from '@utils/handleOpenPopup';
-import { GET_COOKIE, GET_USER } from '@utils/queryKeys';
-import { accountEditInputListProps, vaildaters } from '@utils/userInfoEdit';
+import { AllCenterFlex, OnlyJustifyCenterFlex } from '@/src/components/common/CommonFlex';
+import ErrorMsgBox from '@/src/components/common/error/ErrorMsgBox';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import customApi from '@/src/utils/customApi';
+import { handleOpenPopup } from '@/src/utils/handleOpenPopup';
+import { GET_COOKIE, GET_USER } from '@/src/utils/queryKeys';
+import { accountEditInputListProps, vaildaters } from '@/src/utils/userInfoEdit';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import EditInput from './EditInput';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 
 const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   const {
@@ -40,7 +40,7 @@ const AccountEditBox = ({ name, title }: accountEditInputListProps) => {
   // 현재 쿠키값
   const { getApi: cookieApi } = customApi('/auth/cookies');
   const { data: cookieData, refetch: cookieRefetch } = useQuery([GET_COOKIE], () => cookieApi());
-  
+
   // 유저 데이터
   const { getApi } = customApi('/auth/authenticate');
   const { data, refetch } = useQuery([GET_USER], () => getApi(true));

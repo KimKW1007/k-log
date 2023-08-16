@@ -1,29 +1,24 @@
-import { DescBox, ImgBox, SidebarHeaderBox } from '@components/accountEdit/EditSidbar/EditSidebarHeader';
+import { DescBox, ImgBox, SidebarHeaderBox } from '@/src/components/accountEdit/EditSidbar/EditSidebarHeader';
 import { useQuery } from '@tanstack/react-query';
-import customApi from '@utils/customApi';
+import customApi from '@/src/utils/customApi';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import defaultImage from '@assets/images/500_94.jpg';
-import { ADMIN, GET_USER_MINI_PL } from '@utils/queryKeys';
+import defaultImage from '@/src/assets/images/500_94.jpg';
+import { ADMIN, GET_USER_MINI_PL } from '@/src/utils/queryKeys';
 
 const SidebarHeader = () => {
   const { getApi } = customApi('/file/getAdminPl');
-  const { data } = useQuery([GET_USER_MINI_PL,ADMIN], () => getApi());
+  const { data } = useQuery([GET_USER_MINI_PL, ADMIN], () => getApi());
 
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
-  const descriptionMapping = ()=>{
-    if(description){
-      return description.split("\r\n").map((ele,idx)=>(
-        <React.Fragment key={`${idx + 'description' + ele}`}>
-        {ele === ''? <br /> : <p>{ele}</p>}
-        </React.Fragment>
-        
-      ))
+  const descriptionMapping = () => {
+    if (description) {
+      return description.split('\r\n').map((ele, idx) => <React.Fragment key={`${idx + 'description' + ele}`}>{ele === '' ? <br /> : <p>{ele}</p>}</React.Fragment>);
     }
-  }
+  };
 
   useEffect(() => {
     if (data) {
@@ -45,16 +40,15 @@ const SidebarHeader = () => {
 export default SidebarHeader;
 
 const HomeSidebarHeaderBox = styled(SidebarHeaderBox)`
-  width:260px;
-`
+  width: 260px;
+`;
 
 const UserDescBox = styled(DescBox)`
-  width:100%;
-  text-align:center;
-  p{
+  width: 100%;
+  text-align: center;
+  p {
     font-size: 14px;
     line-height: 18px;
     color: #a9a9a9;
   }
-`
-
+`;

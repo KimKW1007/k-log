@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import CategoryList from './CategoryList';
-import useScrollOverHeader from 'src/hooks/useScrollOverHeader';
-import useHandleClickOutside from 'src/hooks/useHandleClickOutside';
+import useScrollOverHeader from '@/src/hooks/useScrollOverHeader';
+import useHandleClickOutside from '@/src/hooks/useHandleClickOutside';
 
 const CategoryBox = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const categoryRef = useRef<HTMLDivElement>(null);
 
   const [isCategoryOn, setIsCategoryOn] = useState(false);
@@ -15,7 +15,7 @@ const CategoryBox = () => {
 
   useEffect(() => {
     setIsCategoryOn(false);
-  }, [router]);
+  }, [pathname]);
 
   useHandleClickOutside(categoryRef, setIsCategoryOn);
 

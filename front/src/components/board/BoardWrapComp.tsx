@@ -1,16 +1,16 @@
 import React from 'react';
-import useIsMount from 'src/hooks/useIsMount';
 import styled from 'styled-components';
 import BoardItem from './BoardItem';
-import night_BG from '@assets/images/dark_night.jpg';
+import night_BG from '@/src/assets/images/dark_night.jpg';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
-import { AllCenterFlex, OnlyAlignCenterFlex } from '@components/common/CommonFlex';
-import LoadingText from '@components/common/Loading/LoadingText';
-import { useRouter } from 'next/router';
+import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
+import LoadingText from '@/src/components/common/Loading/LoadingText';
+import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
-import { userInfomation } from '@atoms/atoms';
+import { userInfomation } from '@/src/atoms/atoms';
 import { Pen } from '@styled-icons/bootstrap';
 import PageNationArea from './PageNationArea';
+import useIsMount from '@/src/hooks/useIsMount';
 
 interface BoardWrapProps {
   title: string[];
@@ -40,7 +40,6 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
               글쓰기
             </CreateBoardBtn>
           )}
-          {isLoading && <LoadingText />}
           {isLoading ||
             (currentList?.length >= 1 ? (
               <>
