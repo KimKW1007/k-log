@@ -19,6 +19,8 @@ const LoginWrap = styled.div`
   position:relative;
   z-index: 3;
   width: 100%;
+  height:100%;
+  min-height:1000px;
   padding:150px  50px ;
   display:flex;
   @media(max-width: 660px){
