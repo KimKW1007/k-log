@@ -10,7 +10,7 @@ async function bootstrap() {
   config()
   const configService = app.get(ConfigService);
   app.enableCors({
-    origin:[configService.get("CLIENT_URL"),'http://localhost:3000' , configService.get("BASE_HOST_URL"),'http://localhost:5000'],
+    origin:['https://k-log.vercel.app','http://localhost:3000' , configService.get("BASE_HOST_URL"),'http://localhost:5000'],
     credentials:true
   });
   app.setGlobalPrefix('api');
