@@ -22,11 +22,13 @@ import {  GetUser } from 'src/auth/get-user.decorator';
 import { AuthChangeThingsDto } from './dto/auth-changeThings.dto';
 import { AuthPasswordCertificateDto } from './dto/auth-checkPasswordCertificate.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { ConfigService } from '@nestjs/config';
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private configService: ConfigService) {}
+  private readonly DOMAIN = this.configService.get<string>('CLIENT_URL')
 
   @Post('/signup')
   signUp(
@@ -45,11 +47,11 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      domain: 'localhost'
+      domain : this.DOMAIN
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      domain: 'localhost'
+      domain : this.DOMAIN
     });
     return res.json({
       message:'login_success',
@@ -83,6 +85,7 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
+      domain : this.DOMAIN
     });
     return res.json(accessToken)
   }
@@ -151,6 +154,7 @@ export class AuthController {
       res.setHeader('Authorization', 'Bearer ' + newAccessToken);
       res.cookie('access_token', newAccessToken, {
         httpOnly: true,
+        domain : this.DOMAIN
       });
       return res.json({newAccessToken});
     } catch(err) {
