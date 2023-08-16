@@ -9,18 +9,20 @@ import { useRecoilState } from 'recoil';
 import { searchModalState } from '@/src/atoms/atoms';
 import SearchModal from '../search/SearchModal';
 import { usePathname } from 'next/navigation';
-import useIsMount from '@/src/hooks/useIsMount';
+import getNewAccessToken from '@/src/app/getNewAccessToken';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const pathname = usePathname();
-  const {isMount} = useIsMount();
   const routerPathCheck = (value: string) => {
     return pathname.includes(value);
   };
 
   const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail');
   const isAboutAuth = routerPathCheck('login') || routerPathCheck('signup') || popupPage
+
+  getNewAccessToken()
+
 
   return (
     <Root>
