@@ -20,6 +20,8 @@ const SidebarHeader = () => {
     }
   };
 
+  const externaImageLoader = ({ src }: { src: string }) => `${src}`;
+
   useEffect(() => {
     if (data) {
       setImageUrl(data?.imageUrl);
@@ -30,7 +32,7 @@ const SidebarHeader = () => {
   return (
     <HomeSidebarHeaderBox>
       <ImgBox isBgBlack>
-        <Image src={imageUrl || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
+        <Image loader={externaImageLoader} src={imageUrl || defaultImage.src} alt={'프로필 이미지'} width={120} height={120} />
       </ImgBox>
       <UserDescBox>{descriptionMapping()}</UserDescBox>
     </HomeSidebarHeaderBox>

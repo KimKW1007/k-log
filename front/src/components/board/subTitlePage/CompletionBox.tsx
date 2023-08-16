@@ -21,6 +21,7 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
       setImage(defaultThumbnail);
     }
   }, [defaultThumbnail]);
+  const externaImageLoader = ({ src }: { src: string }) => `${src}`;
 
   return (
     <CompletionArea>
@@ -40,7 +41,7 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
               </UrlBox>
             </AboutBoardBox>
             <ImageBox>
-              {image ? <Image src={image} alt={'대표 이미지'} width={168} height={168} /> : <span>대표이미지</span>}
+              {image ? <Image loader={externaImageLoader} src={image} alt={'대표 이미지'} width={168} height={168} /> : <span>대표이미지</span>}
               <ImageInputLabelBox setImage={setImage} id={'boardImage'} />
             </ImageBox>
           </CompletionContent>

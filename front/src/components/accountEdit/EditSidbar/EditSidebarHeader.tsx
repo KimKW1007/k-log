@@ -80,13 +80,15 @@ const EditSidebarHeader = () => {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+  const externaImageLoader = ({ src }: { src: string }) => `${src}`;
+
 
   return (
     <FormProvider {...methods}>
       <EditSidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <SidebarHeaderBox>
           <ImgBox>
-            <Image src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
+            <Image loader={externaImageLoader} src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
             <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={'userImage'} />
           </ImgBox>
           <DescBox>

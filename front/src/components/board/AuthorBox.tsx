@@ -6,11 +6,13 @@ import defaultAuthorImage from '@/src/assets/images/500_94.jpg';
 import changeCreatedAt from '@/src/utils/changeCreatedAt';
 
 const AuthorBox = ({ authorImage, author, createdAt }: { [key: string]: string }) => {
+  const externaImageLoader = ({ src }: { src: string }) => `${src}`;
+
   return (
     <ItemAuthorBox>
       <Author>
         <AuthorImageBox>
-          <AuthorImage src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={30} height={30} />
+          <AuthorImage loader={externaImageLoader} src={authorImage || defaultAuthorImage.src} alt={'프로필 이미지'} width={30} height={30} />
         </AuthorImageBox>
         <span>{author}</span>
       </Author>

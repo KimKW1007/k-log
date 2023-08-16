@@ -70,12 +70,13 @@ const CommentItem = ({ boardWriterId, setReplyIndex, commentWriterId, isReply, c
       setReplyIndex(id);
     });
   };
+  const externaImageLoader = ({ src }: { src: string }) => `${src}`;
 
   return (
     <CommentItemBox isWriter={isWriter}>
       <Icon $isWriter={isWriter} />
       <AuthorImageBox isWriter={isWriter}>
-        <Image src={authorImage || defaultAuthorImage.src} alt={'유저 이미지'} width={50} height={50} />
+        <Image loader={externaImageLoader} src={authorImage || defaultAuthorImage.src} alt={'유저 이미지'} width={50} height={50} />
       </AuthorImageBox>
       <CommentBox>
         <CommentInnerBox isWriter={isWriter}>
