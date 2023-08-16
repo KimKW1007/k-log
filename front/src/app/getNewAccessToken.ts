@@ -2,11 +2,9 @@
 import React, { useEffect } from 'react'
 import customApi, { baseApi } from '../utils/customApi';
 import actions from '@/app/actions';
-import { useRecoilState } from 'recoil';
-import { userInfomation } from '../atoms/atoms';
 
-const getNewAccessToken = () => {
-  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+
+const GetNewAccessToken = () => {
   const TOKEN_REFRESH_INTERVAL = 5 * 60 * 1000;
   
   const getNewAccessTokenByrefreshToken = async () => {
@@ -42,33 +40,7 @@ const getNewAccessToken = () => {
       }
     }
   };
-  useEffect(() => {
-    let interval: string | number | NodeJS.Timeout | undefined;
-    (async()=>{
-      const {refresh_token, hasAccessToken} = await actions();
-      if (refresh_token) {
-        checkAccessToken();
-        getNewAccessTokenByrefreshToken();
-        interval = setInterval(getNewAccessTokenByrefreshToken, 60 * 1000);
-      }
-      return () => clearInterval(interval);
-    })()
-    return () => clearInterval(interval);
-  }, [currentUser]);
-
-  const { postApi: logoutApi } = customApi('/auth/cleanCookie');
-  useEffect(() => {
-    if (!sessionStorage.getItem('access_token')) {
-      const logoutAsync = async () => {
-        try {
-          await logoutApi({});
-        } catch (e) {
-          console.log('Error logging out:', e);
-        }
-      };
-      logoutAsync();
-    }
-  }, []);
+ return {getNewAccessTokenByrefreshToken, checkAccessToken}
 }
 
-export default getNewAccessToken
+export default GetNewAccessToken

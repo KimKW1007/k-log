@@ -6,10 +6,12 @@ import { Header } from '@/src/components/header/Header';
 import IconLinkListBox from '@/src/components/common/IconLinkListBox';
 import Footer from '@/src/components/footer/Footer';
 import { useRecoilState } from 'recoil';
-import { searchModalState } from '@/src/atoms/atoms';
+import { searchModalState, userInfomation } from '@/src/atoms/atoms';
 import SearchModal from '../search/SearchModal';
 import { usePathname } from 'next/navigation';
-import getNewAccessToken from '@/src/app/getNewAccessToken';
+import actions from '@/app/actions';
+import customApi, { baseApi } from '@/src/utils/customApi';
+import GetNewAccessToken from '@/src/app/getNewAccessToken';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
@@ -21,7 +23,32 @@ const Layout = ({ children }: ChildrenProps) => {
   const popupPage = routerPathCheck('/identity/find') || routerPathCheck('/accountEdit/changeEmail');
   const isAboutAuth = routerPathCheck('login') || routerPathCheck('signup') || popupPage
 
-  getNewAccessToken()
+  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
+  const {getNewAccessTokenByrefreshToken, checkAccessToken} = GetNewAccessToken();
+  
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined;
+    if (currentUser) {
+      checkAccessToken();
+      getNewAccessTokenByrefreshToken();
+      interval = setInterval(getNewAccessTokenByrefreshToken, 60 * 1000);
+    }
+    return () => clearInterval(interval);
+  }, [currentUser]);
+
+  const { postApi: logoutApi } = customApi('/auth/cleanCookie');
+  useEffect(() => {
+    if (!sessionStorage.getItem('access_token')) {
+      const logoutAsync = async () => {
+        try {
+          await logoutApi({});
+        } catch (e) {
+          console.log('Error logging out:', e);
+        }
+      };
+      logoutAsync();
+    }
+  }, []);
 
 
   return (
