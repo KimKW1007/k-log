@@ -6,13 +6,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 async function bootstrap() {
-  let clientUrl;
-  let serverUrl;
-  const app = await NestFactory.create<NestExpressApplication>(AppModule,{cors : {origin : [`${clientUrl}`,'http://localhost:3000' , `${serverUrl}`,'http://localhost:5000'] , credentials:true}});
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   config()
   const configService = app.get(ConfigService);
-  clientUrl = configService.get("CLIENT_URL");
-  serverUrl = configService.get("BACK_SERVER_URL");
+  const clientUrl = configService.get("CLIENT_URL");
+  const serverUrl = configService.get("BACK_SERVER_URL");
 
   app.enableCors({
     origin:[`${clientUrl}`,'http://localhost:3000' , `${serverUrl}`,'http://localhost:5000'],

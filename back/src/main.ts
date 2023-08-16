@@ -7,11 +7,14 @@ import { config } from 'dotenv';
 
 
 async function bootstrap() {
-  let clientUrl;
-  const app = await NestFactory.create(AppModule,{cors :{ origin : [`${clientUrl}`,'http://localhost:3000'] , credentials:true}});
+  const app = await NestFactory.create(AppModule);
   config()
   const configService = app.get(ConfigService);
-  clientUrl = configService.get("CLIENT_URL");
+  const clientUrl = configService.get("CLIENT_URL");
+  app.enableCors({
+    origin:[`${clientUrl}`,'http://localhost:3000' ],
+    credentials:true
+  });
   app.use(cookieParser());
 
   const port = configService.get("SERVER_PORT");
