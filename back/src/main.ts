@@ -10,10 +10,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   config()
   const configService = app.get(ConfigService);
+  const clientUrl = configService.get("CLIENT_URL");
   app.use(cookieParser());
 
   app.enableCors({
-    origin:['https://k-log.vercel.app','http://localhost:3000' ],
+    origin:[`${clientUrl}`,'http://localhost:3000' ],
     credentials:true
   });
   const port = configService.get("SERVER_PORT");

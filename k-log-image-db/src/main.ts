@@ -9,8 +9,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   config()
   const configService = app.get(ConfigService);
+  const clientUrl = configService.get("CLIENT_URL");
+  const serverUrl = configService.get("BACK_SERVER_URL");
+
   app.enableCors({
-    origin:['https://k-log.vercel.app','http://localhost:3000' , configService.get("BASE_HOST_URL"),'http://localhost:5000'],
+    origin:[`${clientUrl}`,'http://localhost:3000' , `${serverUrl}`,'http://localhost:5000'],
     credentials:true
   });
   app.setGlobalPrefix('api');
