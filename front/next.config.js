@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost", "*"],
+    domains: ["localhost", `sel3.cloudtype.app`, "*"],
     minimumCacheTTL: 60,
   },
   compiler: {
