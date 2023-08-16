@@ -8,13 +8,17 @@ import { ThemeProvider } from 'styled-components';
 import { RecoilRoot } from 'recoil';
 import Layout from '@/src/components/layout/Layout';
 import { GlobalStyle } from '@/src/styles/global-style';
+import customApi from '@/src/utils/customApi';
+import { useEffect } from 'react';
+import actions from './actions';
 
 
-export default function RootLayout({
+
+const RootLayout = ({
   children,
 }: {
-  children: React.ReactNode
-}) {
+  children: React.ReactNode,
+}) => {
 
   const queryClient = new QueryClient();
 
@@ -38,3 +42,4 @@ export default function RootLayout({
     </html>
   )
 }
+export default RootLayout
