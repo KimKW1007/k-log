@@ -10,7 +10,7 @@ async function bootstrap() {
   config()
   const configService = app.get(ConfigService);
   app.enableCors({
-    origin:['http://localhost:3000', configService.get("BASE_HOST_URL") || 'http://localhost:5000'],
+    origin:[configService.get("CLIENT_URL") , configService.get("BASE_HOST_URL")],
     credentials:true
   });
   app.setGlobalPrefix('api');
