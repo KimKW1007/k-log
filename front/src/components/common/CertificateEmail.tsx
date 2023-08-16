@@ -16,9 +16,6 @@ const CertificateEmail = ({ small, inputName, setIsPassCertificate, isPassCertif
 
   const { postApi: certificatePostApi } = customApi('/find/sendEmail');
   const { mutate, isLoading, isSuccess } = useMutation(certificatePostApi, {
-    onError(error, variables, context) {
-      console.log({ error });
-    },
     onSuccess(data, variables, context) {
       setIsComplete(true);
     }

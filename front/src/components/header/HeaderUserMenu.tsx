@@ -30,11 +30,7 @@ const HeaderUserMenu = ({ isInSideMenu = false }: { isInSideMenu: boolean }) => 
   const [userInfo, setUserInfo] = useRecoilState(userInfomation);
   const { postApi } = customApi('/auth/logout');
   const { mutate } = useMutation(postApi, {
-    onError(error) {
-      console.log({ error });
-    },
     onSuccess(data) {
-      console.log({ data });
       sessionStorage.removeItem('access_token');
       sessionStorage.removeItem('access_token_expiration');
     }

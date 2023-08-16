@@ -116,11 +116,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
 
   /* 작성중인 data 삭제 */
   const { deleteApi: imageDeleteApi } = ifInImageApi(`deleteFiles/작성중/${currentUser?.id!}`);
-  const { mutate: deleteImageMutate } = useMutation(imageDeleteApi, {
-    onError(error) {
-      console.log({ error });
-    }
-  });
+  const { mutate: deleteImageMutate } = useMutation(imageDeleteApi);
   const { handlePageLeave, handleRouteChangeStart } = useConfirm(pathname, deleteImageMutate);
 
   useEffect(() => {

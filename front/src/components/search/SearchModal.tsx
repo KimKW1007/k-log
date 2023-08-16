@@ -33,11 +33,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
 
   const { postApi } = customApi('/board/search');
   const { mutate, isLoading } = useMutation(postApi, {
-    onError(error, variables, context) {
-      console.log({ error });
-    },
     onSuccess(data, variables, context) {
-      console.log({ data });
       setIsTyping(false);
       const value = watch('search').trim();
       const filteredData = data.filter((item: any) => item.boardTitle.toLowerCase().includes(value.toLowerCase()) || item.contents.toLowerCase().includes(value.toLowerCase()));

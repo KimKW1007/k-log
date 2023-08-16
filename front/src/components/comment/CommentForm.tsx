@@ -43,7 +43,6 @@ const CommentForm = ({ isReply, id, commentId, setReplyIndex }: CommentFormProps
   const { register, handleSubmit, setValue } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = ({ comment, isSecret }: any) => {
-    console.log({ isReply });
     checkLogin(() => {
       if (comment?.trim() === '' || !comment) {
         alert('댓글을 입력해주세요');
