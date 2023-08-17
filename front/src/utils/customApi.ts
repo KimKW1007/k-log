@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const axiosBase = axios.create({
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'x-cors-api-key': process.env.NEXT_PUBLIC_PROXY_KEY
   }
 });
 export const baseApi = () => {

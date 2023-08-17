@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const axiosBase = axios.create({
   headers: {
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
+    'x-cors-api-key': process.env.NEXT_PUBLIC_PROXY_KEY
   }
 });
 const baseApi = () => {
