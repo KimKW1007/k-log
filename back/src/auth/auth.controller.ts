@@ -47,11 +47,13 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      domain : ".vercel.app"
+      sameSite: 'none', 
+      secure: true 
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      domain : ".vercel.app"
+      sameSite: 'none', 
+      secure: true 
     });
     return res.json({
       message:'login_success',
