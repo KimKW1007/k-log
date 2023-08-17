@@ -19,8 +19,10 @@ axiosBase.defaults.baseURL = process.env.NEXT_PUBLIC_PROXY_URL
 axiosBase.defaults.withCredentials = true;
 
 export default function ifInImageApi<T = any>(url: string, isOriginServer?: boolean) {
+  const mainServer = process.env.NEXT_PUBLIC_PROXY_URL + (process.env.NEXT_PUBLIC_BACK_SERVER_URL || `http://localhost:5000`)
+  const imageServer = process.env.NEXT_PUBLIC_IMAGE_SERVER_URL || `http://localhost:8000/api/`
   const postApi = async (data: T) => {
-    const result = await baseApi().post(`${isOriginServer ? process.env.NEXT_PUBLIC_BACK_SERVER_URL || `http://localhost:5000` : process.env.NEXT_PUBLIC_IMAGE_SERVER_URL || 'http://localhost:8000/api/'}${url}`, data, {
+    const result = await baseApi().post(`${isOriginServer ? mainServer : imageServer}${url}`, data, {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
       }
@@ -28,7 +30,7 @@ export default function ifInImageApi<T = any>(url: string, isOriginServer?: bool
     return result.data;
   };
   const deleteApi = async (data: T) => {
-    const result = await baseApi().delete(`${isOriginServer ? process.env.NEXT_PUBLIC_BACK_SERVER_URL || `http://localhost:5000` : process.env.NEXT_PUBLIC_IMAGE_SERVER_URL || 'http://localhost:8000/api/'}${url}`, {
+    const result = await baseApi().delete(`${isOriginServer ? mainServer : imageServer}${url}`, {
       data,
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
