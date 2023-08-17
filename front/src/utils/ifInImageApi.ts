@@ -15,7 +15,7 @@ const baseApi = () => {
 
   return axiosBase;
 };
-
+axiosBase.defaults.baseURL = process.env.NEXT_PUBLIC_PROXY_URL
 axiosBase.defaults.withCredentials = true;
 
 export default function ifInImageApi<T = any>(url: string, isOriginServer?: boolean) {

@@ -16,7 +16,7 @@ export const baseApi = () => {
   return axiosBase;
 };
 
-axiosBase.defaults.baseURL = process.env.NEXT_PUBLIC_BACK_SERVER_URL || 'http://localhost:5000';
+axiosBase.defaults.baseURL = process.env.NEXT_PUBLIC_PROXY_URL + (process.env.NEXT_PUBLIC_BACK_SERVER_URL || 'http://localhost:5000');
 axiosBase.defaults.withCredentials = true;
 
 
