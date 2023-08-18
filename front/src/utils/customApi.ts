@@ -3,7 +3,7 @@ import axios from 'axios';
 const axiosBase = axios.create({
   headers: {
     'Content-Type': 'application/json',
-    'x-cors-api-key': process.env.NEXT_PUBLIC_PROXY_KEY
+    "Origin" : process.env.NEXT_PUBLIC_CLIENT_URL
   }
 });
 export const baseApi = () => {
@@ -25,7 +25,8 @@ export default function customApi<T = any>(url: string) {
   const postApi = async (data: T) => {
     const result = await baseApi().post(url, data, {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('access_token'),
+        
       }
     });
     return result.data;
