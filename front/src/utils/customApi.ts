@@ -3,7 +3,6 @@ import axios from 'axios';
 const axiosBase = axios.create({
   headers: {
     'Content-Type': 'application/json',
-    "Origin" : process.env.NEXT_PUBLIC_CLIENT_URL
   }
 });
 export const baseApi = () => {
