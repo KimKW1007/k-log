@@ -15,11 +15,10 @@ const baseApi = () => {
 
   return axiosBase;
 };
-axiosBase.defaults.baseURL = process.env.NEXT_PUBLIC_PROXY_URL
 axiosBase.defaults.withCredentials = true;
 
 export default function ifInImageApi<T = any>(url: string, isOriginServer?: boolean) {
-  const mainServer = process.env.NEXT_PUBLIC_PROXY_URL + (process.env.NEXT_PUBLIC_BACK_SERVER_URL || `http://localhost:5000`)
+  const mainServer =  (process.env.NEXT_PUBLIC_BACK_SERVER_URL || `http://localhost:5000`)
   const imageServer = process.env.NEXT_PUBLIC_IMAGE_SERVER_URL || `http://localhost:8000/api/`
   const postApi = async (data: T) => {
     const result = await baseApi().post(`${isOriginServer ? mainServer : imageServer}${url}`, data, {
