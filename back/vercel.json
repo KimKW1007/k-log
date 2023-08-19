@@ -5,6 +5,7 @@
     "JWT_ACCESS_TOKEN_EXPIRATION_TIME" : "@jwt_access_token_exp_time",
     "JWT_REFRESH_TOKEN_SECRET" : "@jwt_refresh_token_secret",
     "JWT_REFRESH_TOKEN_EXPIRATION_TIME" : "@jwt_refresh_token_exp_time",
+    "SERVER_PORT" : "@server_port",
     "DB_TYPE" : "@db_type",
     "DB_PORT" : "@db_port",
     "DB_HOST" : "@db_host",
