@@ -32,13 +32,13 @@ const CategoryBox = styled.div<{ isMenu?: boolean }>`
   dt {
     margin-bottom: 5px;
     a {
-      font-size: 18px;
+      font-size: 16px;
       padding: 10px 7px;
     }
   }
   dd {
     a {
-      font-size: 16px;
+      font-size: 14px;
       padding: 10px 30px;
       &:after {
         left: 14px;
@@ -47,6 +47,6 @@ const CategoryBox = styled.div<{ isMenu?: boolean }>`
     }
   }
   ${CategoryAllListLink} {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
