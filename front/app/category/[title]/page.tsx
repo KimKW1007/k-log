@@ -20,7 +20,7 @@ export const generateMetadata = async ({ params: { title } }: { params: { title:
 
 const CategoryPage: NextPage = ({ params }: any) => {
   const { title } = params;
-  const decodeTitle = decodeURI(title);
+  const decodeTitle = decodeURI(title).replaceAll('-', '/');
 
   return <TitlePageInner title={decodeTitle} />;
 };
