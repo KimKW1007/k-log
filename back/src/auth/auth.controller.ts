@@ -47,11 +47,11 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      domain: '.vercel.app'
+      domain: '.sel3.cloudtype.app'
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      domain: '.vercel.app'
+      domain: '.sel3.cloudtype.app'
     });
     return res.json({
       message:'login_success',
@@ -85,7 +85,7 @@ export class AuthController {
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      domain: '.vercel.app'
+      domain: '.sel3.cloudtype.app'
     });
     return res.json(accessToken)
   }
@@ -154,7 +154,7 @@ export class AuthController {
       res.setHeader('Authorization', 'Bearer ' + newAccessToken);
       res.cookie('access_token', newAccessToken, {
         httpOnly: true,
-        domain: '.vercel.app'
+        domain: '.sel3.cloudtype.app'
       });
       return res.json({newAccessToken});
     } catch(err) {
