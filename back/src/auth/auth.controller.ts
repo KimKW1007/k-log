@@ -129,16 +129,16 @@ export class AuthController {
   @UseGuards(AuthGuard())
   async logout(@Res() res: Response, @GetUser() user :User): Promise<any> {
     await this.authService.removeRefreshToken(user.id);
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    res.clearCookie('access_token',{domain: '.sel3.cloudtype.app'});
+    res.clearCookie('refresh_token',{domain: '.sel3.cloudtype.app'});
     return res.send({
       message: 'success',
     });
   }
   @Post('/cleanCookie')
   async cleanCookie(@Res() res: Response, @GetUser() user :User): Promise<any> {
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    res.clearCookie('access_token',{domain: '.sel3.cloudtype.app'});
+    res.clearCookie('refresh_token',{domain: '.sel3.cloudtype.app'});
     return res.send({
       message: 'success',
     });
@@ -168,8 +168,8 @@ export class AuthController {
   async withdraw(@Res() res: Response,@GetUser() user :User){
     const message = await this.authService.withdraw(user).then(async result =>{
       await this.authService.removeRefreshToken(user.id);
-      res.clearCookie('access_token');
-      res.clearCookie('refresh_token');
+      res.clearCookie('access_token',{domain: '.sel3.cloudtype.app'});
+      res.clearCookie('refresh_token',{domain: '.sel3.cloudtype.app'});
     });
     
     return res.send(message)
