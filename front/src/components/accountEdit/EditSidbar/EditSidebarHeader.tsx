@@ -145,7 +145,7 @@ const TextArea = styled.textarea`
   border: 1px solid #a5a5a5;
   outline: none;
   background: #f0f0f0;
-  padding: 10px 10px 10px 20px;
+  padding: 10px;
   border-radius: 5px;
   transition: 0.2s;
   resize: none;
