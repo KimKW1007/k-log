@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import actions from '@/app/actions';
 import customApi, { baseApi } from '@/src/utils/customApi';
 import GetNewAccessToken from '@/src/app/getNewAccessToken';
+import { useMutation } from '@tanstack/react-query';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
@@ -37,16 +38,10 @@ const Layout = ({ children }: ChildrenProps) => {
   }, [currentUser]);
 
   const { postApi: logoutApi } = customApi('/auth/cleanCookie');
+  const { mutate } = useMutation(logoutApi)
   useEffect(() => {
     if (!sessionStorage.getItem('access_token')) {
-      const logoutAsync = async () => {
-        try {
-          await logoutApi({});
-        } catch (e) {
-          console.log('Error logging out:', e);
-        }
-      };
-      logoutAsync();
+      mutate({});
     }
   }, []);
 
