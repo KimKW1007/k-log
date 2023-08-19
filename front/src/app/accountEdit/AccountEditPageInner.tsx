@@ -52,7 +52,7 @@ const AccountEditPageInner = () => {
   }, [isDisappear]);
   return (
     <EditWrap>
-    <EditInnerBox>
+    <EditInnerBox isCertificated={isCertificated} isTabBanner={currentTab === '배너설정'}>
       {isDisappear || (
         <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={() => isCertificated && !isDisappear && setIsForward(false)}>
           {isEnter || <LockIcon />}
@@ -79,12 +79,25 @@ const EditWrap = styled(OnlyJustifyCenterFlex)`
     background: #fff;
   }
 `;
-const EditInnerBox = styled.div`
+const EditInnerBox = styled.div<{isCertificated ?: boolean; isTabBanner ?: boolean;}>`
   position: relative;
   max-width: 1300px;
   width: 100%;
   display: flex;
   column-gap: 30px;
+  
+  ${({ isCertificated, isTabBanner }) => isCertificated && `
+  align-items: start;
+  @media (max-width: 1500px) {
+    display: block;
+    min-height: 900px;
+  }
+  ${isTabBanner && css`
+  @media (max-width: 1500px) {
+    min-height: 1350px;
+  }
+  `}
+  `}
 `;
 
 const AccountEditArea = styled.div<{ isCertificated: boolean; isForward: boolean }>`
@@ -97,6 +110,7 @@ const AccountEditArea = styled.div<{ isCertificated: boolean; isForward: boolean
         position: absolute;
         z-index: 1;
         right: 73px;
+        top:0;
         width: 910px;
         &:after {
           content: '';
@@ -123,10 +137,8 @@ const AccountEditArea = styled.div<{ isCertificated: boolean; isForward: boolean
       @media (max-width: 1150px) {
         width: 79.1304vw;
       }
-      @media (max-width: 1050px) {
-        width: 79.1304vw;
-      }
       @media (max-width: 980px) {
+        width:100%;
         position: relative;
         right: auto;
         &:after {
