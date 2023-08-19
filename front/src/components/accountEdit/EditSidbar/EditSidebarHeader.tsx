@@ -195,4 +195,5 @@ export const InputLabelBox = styled.div`
 
 export const DescBox = styled.div`
   width: 100%;
+  max-width: 320px;
 `;
