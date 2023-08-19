@@ -8,9 +8,8 @@ import { CategoryPageProps } from '../page';
 
 export const generateMetadata  = async ({ params : { title, subTitle} } :{params : CategoryPageProps}, parent: ResolvingMetadata): Promise<Metadata> =>{
   try {
-    const decodeTitle = decodeURI(title).replaceAll('-', '/');
     const decodeSubTitle = decodeURI(subTitle).replaceAll('-', '/');
-    const { getApi } = customApi(`/category/getSubCategory/${decodeTitle}`);
+    const { getApi } = customApi(`/category/getSubCategory/${title}`);
     const data = await getApi();
     const checkSubTitleInData = data.subCategories.find((x: { categorySubTitle: string }) => x.categorySubTitle === decodeSubTitle);
     if (!checkSubTitleInData) {
