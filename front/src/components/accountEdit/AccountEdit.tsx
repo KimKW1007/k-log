@@ -111,18 +111,20 @@ const MobTabBox = styled(AllCenterFlex)`
   }
 `;
 
-const Tab = styled.button<{ isCurrent: boolean; isForward: boolean }>`
+const Tab = styled(AllCenterFlex)<{ isCurrent: boolean; isForward: boolean }>`
   position: relative;
   font-size: 16px;
-  padding: 50px 25px 50px 35px;
+  width: 76px;
+  padding: 40px 0;
   font-weight: 900;
   border-radius: 0 20px 20px 0;
   color: #bbb;
   background: #656565;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 5px 12px 5px 3px rgba(0, 0, 0, 0.2);
-  writing-mode: vertical-lr;
-  transform: translateX(-20px);
+  writing-mode: vertical-rl;
+  cursor:pointer;
+  transform: translateX(-15px);
   transition: 0.2s;
   ${({ isCurrent }) =>
     isCurrent &&
