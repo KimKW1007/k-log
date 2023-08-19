@@ -1,5 +1,25 @@
 {
   "version" : 2,
+  "env":{
+    "JWT_ACCESS_TOKEN_SECRET" : "@jwt_access_token_secret",
+    "JWT_ACCESS_TOKEN_EXPIRATION_TIME" : "@jwt_access_token_exp_time",
+    "JWT_REFRESH_TOKEN_SECRET" : "@jwt_refresh_token_secret",
+    "JWT_REFRESH_TOKEN_EXPIRATION_TIME" : "@jwt_refresh_token_exp_time",
+    "DB_TYPE" : "@db_type",
+    "DB_PORT" : "@db_port",
+    "DB_HOST" : "@db_host",
+    "DB_USERNAME" : "@db_username",
+    "DB_PASSWORD" : "@db_password",
+    "DB_DATABASE" : "@db_database",
+    "NODEMAIL_MAIL_ID" : "@nodemail_mail_id",
+    "NODEMAIL_MAIL_PW" : "@nodemail_mail_pw",
+    "CLIENT_URL" : "@client_url",
+    "IMAGE_SERVER_URL" : "@image_server_url",
+    "IMAGE_SERVER_UPLOADS_URL" : "@image_server_uploads_url",
+    "IMAGE_SERVER_CREATE_BOARD_URL" : "@image_server_create_board_url",
+    "IMAGE_SERVER_UNNECESSARY_URL" : "@image_server_unnecessary_url",
+    "IMAGE_SERVER_BANNER_UPDATE_URL" : "@image_server_banner_update_url"
+  },
   "builds":[
     {
       "src" : "src/main.ts",
@@ -9,7 +29,7 @@
   "routes":[
     {
       "src" : "/(.*)",
-      "dest" : "dist/main.js",
+      "dest" : "src/main.ts",
       "methods":[
         "GET",
         "POST",
