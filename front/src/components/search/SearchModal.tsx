@@ -5,7 +5,6 @@ import { DeleteModalBox } from '../modal/DeleteModal';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
-import Esc from '@/src/assets/images/esc.svg';
 import SearchListBox from './SearchListBox';
 import NoResult from './NoResult';
 import SearchRecent from './SearchRecent';
@@ -108,8 +107,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
             </ModalInnerBox>
             <SearchFooter>
               <SearchCommands>
-                <CommandsIcon />
-                <span>to close</span>
+                <button type='button' onClick={onClose}>Esc</button>
               </SearchCommands>
             </SearchFooter>
           </SearchModalBox>
@@ -130,21 +128,27 @@ const SearchListArea = styled.div`
 
 const SearchFooter = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 20px 20px 14px;
 `;
 
 const SearchCommands = styled(OnlyAlignCenterFlex)`
   justify-content: end;
-  span {
-    font-size: 14px;
+  button {
+    font-size: 13px;
+    display:inline-block;
+    padding: 4px 6px;
+    border : 1px solid rgba(128,128,128,1);
+    background: transparent;
+    color: rgba(188,188,188,1);
+    border-radius: 4px;
+    transition: .2s;
+    &:hover{
+      border : 1px solid rgba(118,118,118,1);
+      color: rgba(158,158,158,1);
+    }
   }
 `;
-const CommandsIcon = styled.div`
-  width: 24px;
-  height: 18px;
-  background: url(${Esc.src}) no-repeat center center/100% auto;
-  margin-right: 6px;
-`;
+
 
 const SearchModalBox = styled(DeleteModalBox)`
   margin: 100px auto auto;
