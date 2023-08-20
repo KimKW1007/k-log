@@ -1,4 +1,3 @@
-import { NextRouter } from 'next/router';
 
 const useConfirm = (pathname: string, mutate: any) => {
   const handlePageLeave = (e: BeforeUnloadEvent) => {
