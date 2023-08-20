@@ -8,9 +8,6 @@ import { ThemeProvider } from 'styled-components';
 import { RecoilRoot } from 'recoil';
 import Layout from '@/src/components/layout/Layout';
 import { GlobalStyle } from '@/src/styles/global-style';
-import customApi from '@/src/utils/customApi';
-import { useEffect } from 'react';
-import actions from './actions';
 
 
 
