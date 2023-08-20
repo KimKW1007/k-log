@@ -159,7 +159,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   };
 
   const onSubmit = ({ boardTitle, image, contents }: any) => {
-    if (image.length <= 0) {
+    if (isEdit ? !currentBoard.thumbnail : image.length <= 0) {
       if (confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')) {
         mutateFn({ boardTitle, image, contents });
       }
