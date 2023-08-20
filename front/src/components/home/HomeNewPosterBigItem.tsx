@@ -99,6 +99,12 @@ const PosterCategory = styled.div`
   padding: 0 0 20px;
   h3 {
     font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 `;
 const PosterTitle = styled.div`
