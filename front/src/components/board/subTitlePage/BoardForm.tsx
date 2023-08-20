@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { useRouter, usePathname } from 'next/navigation';
-import Router from 'next/router';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import useCustomQuill from '@/src/utils/useCustomQuill';
 import { useRecoilState } from 'recoil';
@@ -128,11 +127,9 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   useEffect(() => {
     if (!isSuccess) {
       window.addEventListener('beforeunload', handlePageLeave);
-      Router.events.on('routeChangeStart', handleRouteChangeStart);
     }
     return () => {
       window.removeEventListener('beforeunload', handlePageLeave);
-      Router.events.off('routeChangeStart', handleRouteChangeStart);
     };
   }, [isMount, isSuccess]);
 
