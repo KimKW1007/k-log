@@ -14,6 +14,4 @@ const Comment = ({ id }: { id: string }) => {
 
 export default Comment;
 
-const CommentArea = styled.div`
-  margin-top: 100px;
-`;
+const CommentArea = styled.div``;
