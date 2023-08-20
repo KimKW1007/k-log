@@ -52,51 +52,58 @@ const AccountEditPageInner = () => {
   }, [isDisappear]);
   return (
     <EditWrap>
-    <EditInnerBox isCertificated={isCertificated} isTabBanner={currentTab === '배너설정'}>
-      {isDisappear || (
-        <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={() => isCertificated && !isDisappear && setIsForward(false)}>
-          {isEnter || <LockIcon />}
-          {isEnter && <EditSideBar isAdmin={Boolean(currentUser?.isAdmin)}></EditSideBar>}
-        </SideProfileEditBox>
-      )}
-      <AccountEditArea isCertificated={isCertificated} isForward={isForward} onClick={() => isCertificated && !isDisappear && setIsForward(true)}>
-        {isCertificated && <AccountEdit isForward={isForward} isDisappear={isDisappear} currentTab={currentTab} setCurrentTab={setCurrentTab}></AccountEdit>}
-        {isCertificated || <AccountCertificate setIsCertificated={setIsCertificated}></AccountCertificate>}
-      </AccountEditArea>
-    </EditInnerBox>
-  </EditWrap>
-  )
-}
+      <EditInnerBox isCertificated={isCertificated} isTabBanner={currentTab === '배너설정'}>
+        {isDisappear || (
+          <SideProfileEditBox isEnter={!isEnter} isForward={isForward} onClick={() => isCertificated && !isDisappear && setIsForward(false)}>
+            {isEnter || <LockIcon />}
+            {isEnter && <EditSideBar isAdmin={Boolean(currentUser?.isAdmin)}></EditSideBar>}
+          </SideProfileEditBox>
+        )}
+        <AccountEditArea isCertificated={isCertificated} isForward={isForward} onClick={() => isCertificated && !isDisappear && setIsForward(true)}>
+          {isCertificated || <AccountCertificate setIsCertificated={setIsCertificated}></AccountCertificate>}
+          {isCertificated && <AccountEdit isForward={isForward} isDisappear={isDisappear} currentTab={currentTab} setCurrentTab={setCurrentTab}></AccountEdit>}
+        </AccountEditArea>
+      </EditInnerBox>
+    </EditWrap>
+  );
+};
 
-export default AccountEditPageInner
+export default AccountEditPageInner;
 
 const EditWrap = styled(OnlyJustifyCenterFlex)`
   width: 100%;
   padding: 100px 30px;
+  height: calc(100% - 70px);
+  overflow:hidden;
   color: #232323;
   @media (max-width: 980px) {
     padding: 0 0 100px;
     background: #fff;
   }
 `;
-const EditInnerBox = styled.div<{isCertificated ?: boolean; isTabBanner ?: boolean;}>`
+const EditInnerBox = styled.div<{ isCertificated?: boolean; isTabBanner?: boolean }>`
   position: relative;
   max-width: 1300px;
   width: 100%;
   display: flex;
   column-gap: 30px;
-  
-  ${({ isCertificated, isTabBanner }) => isCertificated && `
+
+  ${({ isCertificated, isTabBanner }) =>
+    isCertificated &&
+    `
   align-items: start;
   @media (max-width: 1500px) {
     display: block;
     min-height: 900px;
   }
-  ${isTabBanner && css`
-  @media (max-width: 1500px) {
-    min-height: 1350px;
+  ${
+    isTabBanner &&
+    css`
+      @media (max-width: 1500px) {
+        min-height: 1350px;
+      }
+    `
   }
-  `}
   `}
 `;
 
@@ -104,13 +111,13 @@ const AccountEditArea = styled.div<{ isCertificated: boolean; isForward: boolean
   position: relative;
   flex-grow: 1;
   ${({ isCertificated, isForward }) =>
-    isCertificated &&
+    isCertificated ?
     css`
       @media (max-width: 1500px) {
         position: absolute;
         z-index: 1;
         right: 73px;
-        top:0;
+        top: 0;
         width: 910px;
         &:after {
           content: '';
@@ -127,24 +134,27 @@ const AccountEditArea = styled.div<{ isCertificated: boolean; isForward: boolean
         }
 
         ${isForward &&
-        `
-        z-index : 3;
-        &:after{
-          display:none;
-        }
-      `}
+          `
+          z-index : 3;
+          &:after{
+            display:none;
+          }
+        `}
       }
       @media (max-width: 1150px) {
         width: 79.1304vw;
       }
       @media (max-width: 980px) {
-        width:100%;
+        width: 100%;
         position: relative;
         right: auto;
         &:after {
           border-radius: 0;
         }
       }
+    ` : css`
+    height: 650px;
+    margin: auto 0;
     `}
 `;
 const SideProfileEditBox = styled.div<{ isEnter: boolean; isForward: boolean }>`
@@ -160,6 +170,8 @@ const SideProfileEditBox = styled.div<{ isEnter: boolean; isForward: boolean }>`
   ${({ isEnter, isForward }) =>
     isEnter
       ? css`
+          height: 650px;
+          margin: auto 0;
           @media (max-width: 1200px) {
             display: none;
           }
@@ -168,20 +180,20 @@ const SideProfileEditBox = styled.div<{ isEnter: boolean; isForward: boolean }>`
           @media (max-width: 1500px) {
             ${isForward &&
             `
-        cursor: pointer;
-        &:after{
-          content: '';
-          display:block;
-          position :absolute;
-          z-index :4;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height:100%;
-          background : rgba(0,0,0,.4);
-          border-radius: 30px;
-        }
-      `}
+              cursor: pointer;
+              &:after{
+                content: '';
+                display:block;
+                position :absolute;
+                z-index :4;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height:100%;
+                background : rgba(0,0,0,.4);
+                border-radius: 30px;
+              }
+            `}
           }
         `}
   @media(max-width: 980px) {
