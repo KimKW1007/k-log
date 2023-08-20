@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from 'next/navigation';
+import { notFound, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import customApi from '@/src/utils/customApi';
 import { useQuery } from '@tanstack/react-query';
@@ -13,11 +13,10 @@ import PageLoading from '@/src/components/common/Loading/PageLoading';
 
 const TitlePageInner = ({title} : {title : string}) => {
   const pathname = usePathname();
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const { isMount } = useIsMount();
-  const { getApi } = customApi(`/board/category/${title.split("/").join("-")}?page=${currentPage ?? 1}`);
-  const { data, isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi().catch(e => router.push('/not-found')), {
+  const { getApi } = customApi(`/board/category/${title.replaceAll('/', '-')}?page=${currentPage ?? 1}`);
+  const { data, isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi().catch(e => notFound()), {
     enabled: !!Boolean(title) && isMount
   });
 
