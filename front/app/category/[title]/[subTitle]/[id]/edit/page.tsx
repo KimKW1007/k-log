@@ -30,8 +30,8 @@ export const generateMetadata  = async ({ params : { title, subTitle, id} } :{pa
 
 const EditPage: NextPage = ({params} : any) => {
   const {title, subTitle, id} = params;
-  const decodeTitle = decodeURI(title);
-  const decodeSubTitle = decodeURI(subTitle);
+  const decodeTitle = decodeURI(title).replaceAll('-', '/');
+  const decodeSubTitle = decodeURI(subTitle).replaceAll('-', '/');
   return (
     <CreateEditPageInner id={id} title={decodeTitle} subTitle={decodeSubTitle} isEdit/>
   )
