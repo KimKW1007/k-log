@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import CategoryItems from '@/src/components/category/CategoryItems';
 import { CategoryAllListLink } from '@/src/components/category/CategoryList';
 const SidebarCategoryBox = ({ isMenu }: { isMenu?: boolean }) => {
@@ -14,20 +14,16 @@ const SidebarCategoryBox = ({ isMenu }: { isMenu?: boolean }) => {
 export default SidebarCategoryBox;
 
 const CategoryBox = styled.div<{ isMenu?: boolean }>`
-  width: 90%;
-  padding: 0 0 20px;
-  max-height: 500px;
-  overflow-y: scroll;
-  padding: 0 40px;
-  margin: 0 auto;
   ${({ isMenu }) =>
-    isMenu &&
-    `
+    isMenu ?css`
     width:100%;
-    padding: 0;
-    margin: 0;
     min-height: 300px;
-    height: auto;
+  `: css`
+    width: 90%;
+    padding: 0 30px;
+    margin: 0 auto;
+    max-height: 500px;
+    overflow-y: scroll;
   `}
   dt {
     margin-bottom: 5px;
