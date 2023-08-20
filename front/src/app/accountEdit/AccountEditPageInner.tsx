@@ -73,7 +73,7 @@ export default AccountEditPageInner;
 const EditWrap = styled(OnlyJustifyCenterFlex)`
   width: 100%;
   padding: 100px 30px;
-  height: calc(100% - 70px);
+  min-height: calc(100% - 70px);
   overflow:hidden;
   color: #232323;
   @media (max-width: 980px) {
