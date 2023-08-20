@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import customApi from '@/src/utils/customApi';
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ import PageLoading from '@/src/components/common/Loading/PageLoading';
 import { CategoryPageProps } from '@/app/category/[title]/[subTitle]/page';
 
 const SubTitlePageInner = ({title, subTitle} : CategoryPageProps) => {
-    const router = useRouter();
+    const pathname = usePathname();
     const { isMount } = useIsMount();
     const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
     const { getApi } = customApi(`/board/subCategory/${subTitle.replaceAll('/', '-')}?page=${currentPage ?? 1}`);
@@ -26,7 +26,7 @@ const SubTitlePageInner = ({title, subTitle} : CategoryPageProps) => {
 
     useEffect(() => {
       setCurrentPage(1);
-    }, [router]);
+    }, [pathname]);
   return (
     <>
       <PageLoading isLoading={isLoading!} />
