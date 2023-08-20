@@ -132,7 +132,6 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.contents = contents;
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '',
-        foundBoard.thumbnail = "";
         await this.save(foundBoard).then(async res=>{
           const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
           return res
@@ -149,7 +148,6 @@ export class BoardRepository extends Repository<Board> {
           }
           const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr : imgArr.flat()}})
         });
-
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
