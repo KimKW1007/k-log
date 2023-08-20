@@ -37,7 +37,7 @@ const CompletionBox = ({ handleClickMenu, isOpen, boardLastId, defaultThumbnail 
               </BoradTitle>
               <UrlBox>
                 <span>URL</span>
-                <span className="customScroll">{`http://localhost:3000/${boardLastId}`}</span>
+                <span className="customScroll">{`${process.env.NEXT_PUBLIC_CLIENT_URL}${boardLastId}`}</span>
               </UrlBox>
             </AboutBoardBox>
             <ImageBox>
