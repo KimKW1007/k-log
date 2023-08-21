@@ -137,7 +137,7 @@ export class BoardRepository extends Repository<Board> {
           return res
         }).then(async res=>{
           let imgArr = [];
-          const pattern = /http:\/\/port-0-k-log-image-server[^"]*"/g;
+          const pattern = /https?\/\/port-0-k-log-image-server[^"]*"/g;
           const result = res.contents.match(pattern);
           if(result){
             const extractedStrings = result.map(str => str.slice(0, -1));
