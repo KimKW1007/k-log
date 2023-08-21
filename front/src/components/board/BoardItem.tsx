@@ -158,6 +158,7 @@ const ImageBox = styled.div<{ isDefaultImg: boolean }>`
     height: 46.6666vw;
     order: 1;
     padding: 0;
+    margin-left: 0;
     width: 100%;
   }
 `;
