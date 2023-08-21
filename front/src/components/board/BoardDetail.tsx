@@ -149,7 +149,7 @@ const TagBtn = styled.div`
 
 const AnotherBoardArea = styled(OnlyAlignCenterFlex)`
   width: 100%;
-  margin-top: 50px;
+  margin: 50px 0 50px;
   justify-content: space-between;
   @media (max-width: 900px) {
     display: block;
