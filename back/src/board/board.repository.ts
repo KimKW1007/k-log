@@ -137,16 +137,15 @@ export class BoardRepository extends Repository<Board> {
           return res
         }).then(async res=>{
           let imgArr = [];
-          const pattern = /https?\/\/port-0-k-log-image-server[^"]+"/g;
+          const pattern = /https?:\/\/port-0-k-log-image-server[^"]+/g;
           const result = res.contents.match(pattern);
           if(result){
-            const extractedStrings = result.map(str => str.slice(0, -1));
-            imgArr.push(extractedStrings)
+            result.map(value => imgArr.push(value));
           }
           if(res.thumbnail){
             imgArr.push(res.thumbnail)
           }
-          const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr : imgArr.flat()}})
+          const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr}})
         });
       } catch (e) {
         console.log('오류 발생');
