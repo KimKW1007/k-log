@@ -72,11 +72,15 @@ export class FileService {
       if (!filtered) {
         return { message: '삭제 할 Image가 없습니다' };
       }
+      const file = fs.readdirSync(`${process.cwd()}/uploads`, 'utf8')
       filtered.map(async (deleteImageName) => {
         const fsFileName = deleteImageName.imageUrl
           .split(`${this.configService.get('BASE_HOST_UPLOADS_URL') || 'http://localhost:8000/api/uploads/'}`)
           .at(-1);
-        fs.unlinkSync(`${process.cwd()}/uploads/${fsFileName}`);
+          const deleteOneByFileName = file.find(x => x.includes(fsFileName));
+          if(deleteOneByFileName){
+            fs.unlinkSync(`${process.cwd()}/uploads/${fsFileName}`);
+          }
         await this.imagesRepository.delete({
           boardId,
           userId,
