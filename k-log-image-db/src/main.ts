@@ -17,7 +17,7 @@ async function bootstrap() {
     credentials:true
   });
   app.setGlobalPrefix('api');
-  app.useStaticAssets(path.join(__dirname, '../..', 'public'), {
+  app.useStaticAssets(path.join(__dirname + '/app', '../..', 'public'), {
     prefix: `/api/`,
   });
   const port = configService.get("SERVER_PORT");
