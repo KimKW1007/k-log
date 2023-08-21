@@ -63,7 +63,7 @@ export default ProjectSlide;
 
 const bannerAni = keyframes`
   50%{
-    text-shadow: #fc0 0px 0 5px;
+    text-shadow: #fc0 0px 0 10px;
   }
 
 `;
@@ -79,7 +79,7 @@ const SlideItem = styled(AllCenterFlex)`
   }
   &:nth-child(3n) {
     a {
-      animation: ${bannerAni} 2s 1.7s infinite;
+      animation: ${bannerAni} 2s 1.3s infinite;
     }
   }
   a {
@@ -92,7 +92,7 @@ const SlideItem = styled(AllCenterFlex)`
 
     &:hover {
       animation: none;
-      text-shadow: #0cf 0px 0 5px;
+      text-shadow: #0cf 0px 0 10px;
     }
   }
 `;
