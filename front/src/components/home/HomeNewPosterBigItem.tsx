@@ -107,6 +107,7 @@ const PosterTitle = styled.div`
   margin-bottom: 30px;
   h4 {
     font-size: 40px;
+    line-height: 130%;
   }
   @media(max-width: 600px){
     h4 {
