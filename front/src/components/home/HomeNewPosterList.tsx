@@ -61,6 +61,7 @@ const ListContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  align-items: start;
   @media (max-width: 1200px) {
     display: block;
   }
