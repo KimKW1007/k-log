@@ -92,4 +92,5 @@ const TagItemBox = styled(OnlyAlignCenterFlex)`
   width: 100%;
   padding: 5px 0 8px;
   flex-wrap: wrap;
+  gap : 10px;
 `;

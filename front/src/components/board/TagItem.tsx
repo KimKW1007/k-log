@@ -29,9 +29,6 @@ const TagItemBox = styled(OnlyAlignCenterFlex)<{ isHover: boolean }>`
   background: ${({ theme }) => theme.color.success};
   border-radius: 5px;
   transition: 0.3s;
-  & + & {
-    margin-left: 10px;
-  }
   user-select: none;
   ${({ isHover, theme }) =>
     isHover &&
