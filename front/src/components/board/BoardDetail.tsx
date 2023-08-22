@@ -92,6 +92,7 @@ const DetailTitleBox = styled.div`
   h2 {
     font-size: 50px;
     margin-bottom: 20px;
+    word-break: keep-all;
   }
   @media (max-width: 930px) {
     h2 {
