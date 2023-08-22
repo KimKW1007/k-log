@@ -1,42 +1,41 @@
 import styled, { keyframes } from 'styled-components';
 
 export const ContentsWrap = styled.div`
-  *{
+  * {
     font-family: 'Pretendard-Regular' !important;
   }
-padding: 150px 0 100px;
-min-height: 1000px;
+  padding: 150px 0 100px;
+  min-height: 1000px;
 
-line-height: 200%;
-border-bottom: 1px solid rgba(128,128,128,0.3);
-// 내부 css
+  line-height: 200%;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
 
-  img{
-    max-width:100%;
+  img {
+    max-width: 100%;
   }
   pre[class^='ql-syntax'] {
     position: relative;
   }
-  .blockquote-box{
+  .blockquote-box {
     margin: 20px 0;
-    display:flex;
-    justify-content:center;
-    .blockquote-inner-box{
-      display:block;
-      overflow:hidden;
-      border: 1px solid rgba(128,128,128,0.3);
+    display: flex;
+    justify-content: center;
+    .blockquote-inner-box {
+      display: block;
+      overflow: hidden;
+      border: 1px solid rgba(128, 128, 128, 0.3);
       border-left: 4px solid #fff;
       border-radius: 5px;
-      > blockquote{
-        position:relative;
-        z-index:2;
+      > blockquote {
+        position: relative;
+        z-index: 2;
         padding: 20px 40px;
         background: #454545;
-        box-shadow: 0 3px 12px rgba(255,255,255,.5);
+        box-shadow: 0 3px 12px rgba(255, 255, 255, 0.5);
       }
-      > div{
-        position:relative;
-        z-index:1;
+      > div {
+        position: relative;
+        z-index: 1;
         padding: 40px 40px 20px;
         background: #232323;
       }
@@ -67,7 +66,7 @@ border-bottom: 1px solid rgba(128,128,128,0.3);
     counter-increment: line-idx;
     line-height: 1.5;
     margin: 2px 0;
-    white-space:pre-wrap;
+    white-space: pre-wrap;
   }
 
   pre[class^='ql-syntax'] .line:hover {
@@ -133,9 +132,11 @@ border-bottom: 1px solid rgba(128,128,128,0.3);
   pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-track:horizontal {
     margin: 0 30px;
   }
- 
 
   pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-corner {
     display: none;
+  }
+  @media(max-width : 930px){
+    padding : 16.129vw 0 100px;
   }
 `;
