@@ -39,10 +39,7 @@ const HomeNewPosterBigItem = (board: any) => {
 export default HomeNewPosterBigItem;
 
 const PosterItemLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
   padding: 40px 30px 30px;
-  height: 100%;
 `;
 const AuthorAndDateBox = styled(OnlyAlignCenterFlex)`
   margin-top: 20px;
@@ -50,7 +47,7 @@ const AuthorAndDateBox = styled(OnlyAlignCenterFlex)`
 
 const ImageBox = styled.div`
   position: relative;
-  height: 300px;
+  height: 250px;
   background: #fff;
   margin-bottom: 30px;
   overflow: hidden;
@@ -74,7 +71,6 @@ const PosterItem = styled.div`
   position: sticky;
   top: 100px;
   left: 0;
-  max-height: 656px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -111,6 +107,11 @@ const PosterTitle = styled.div`
   margin-bottom: 30px;
   h4 {
     font-size: 40px;
+  }
+  @media(max-width: 600px){
+    h4 {
+      font-size: 6vw;
+    }
   }
 `;
 const PostDesc = styled.div`
