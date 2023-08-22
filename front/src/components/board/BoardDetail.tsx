@@ -93,6 +93,16 @@ const DetailTitleBox = styled.div`
     font-size: 50px;
     margin-bottom: 20px;
   }
+  @media (max-width: 930px) {
+    h2 {
+      font-size: 5.3763vw;
+    }
+  }
+  @media (max-width: 720px) {
+    h2 {
+      font-size: 40px;
+    }
+  }
 `;
 
 const CategoryBox = styled.div`
