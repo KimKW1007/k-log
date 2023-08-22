@@ -81,8 +81,10 @@ const ItemWrap = styled(OnlyAlignCenterFlex)`
   }
 `;
 const ContentsBox = styled.div`
+  width: calc(100% - 200px);
   @media (max-width: 750px) {
-    padding: 20px;
+    width: 100%;
+    padding: 20px 10px;
     order: 2;
   }
 `;
@@ -126,12 +128,6 @@ const ItemDescBox = styled.div`
 `;
 const ItemDetailBox = styled(OnlyAlignCenterFlex)`
   font-size: 14px;
-  @media (max-width: 750px) {
-    font-size: 1.8666vw;
-  }
-  @media (max-width: 600px) {
-    font-size: 12px;
-  }
 `;
 
 export const CreatedDateBox = styled.div``;
