@@ -105,6 +105,7 @@ const ItemTitleBox = styled.div`
   font-size: 20px;
   margin-bottom: 24px;
   p {
+    line-height: 1.3;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
