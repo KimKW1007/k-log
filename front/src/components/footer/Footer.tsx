@@ -19,7 +19,7 @@ const Footer = () => {
           <br /> ALL RIGHTS RESERVED.
         </FooterCopyRight>
         <SNSBox>
-          <Link href={'https://www.notion.so/5cc93c00074a43c2834d67c2276a2153?pvs=4'} title='노션'>
+          <Link href={'https://www.notion.so/5cc93c00074a43c2834d67c2276a2153?pvs=4'} target="_blank" title='노션'>
             <span className='blind'>노션</span>
           </Link>
         </SNSBox>
