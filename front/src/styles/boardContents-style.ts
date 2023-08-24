@@ -8,7 +8,7 @@ export const ContentsWrap = styled.div`
   min-height: 1000px;
 
   line-height: 200%;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid ${({theme}) => theme.color.lightGrey};
 
   img {
     max-width: 100%;
@@ -17,26 +17,24 @@ export const ContentsWrap = styled.div`
     position: relative;
   }
   .blockquote-box {
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
+    border-left: 4px solid #63E6BE;
+    overflow: hidden;
     .blockquote-inner-box {
       display: block;
       overflow: hidden;
-      border: 1px solid rgba(128, 128, 128, 0.3);
-      border-left: 4px solid #fff;
-      border-radius: 5px;
+      border: 1px solid ${({theme}) => theme.color.lightGrey};
+      border-left: 0;
+      border-radius: 0 5px 5px 0;
       > blockquote {
         position: relative;
         z-index: 2;
-        padding: 20px 40px;
-        background: #454545;
-        box-shadow: 0 3px 12px rgba(255, 255, 255, 0.5);
+        padding: 16px 16px 16px 32px;
+        background: #323232;
       }
       > div {
         position: relative;
         z-index: 1;
-        padding: 40px 40px 20px;
+        padding: 20px 16px 20px 32px;
         background: #232323;
       }
     }
