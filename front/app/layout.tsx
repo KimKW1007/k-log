@@ -21,6 +21,9 @@ const RootLayout = ({
 
   return (
     <html lang="ko">
+      <head>
+        <meta name="google-site-verification" content="VvpjQ-ESMNYv92u1qSWXgpQmAekpM5jvSmc3vkYZoQQ" />
+      </head>
       <body suppressHydrationWarning={true}>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
