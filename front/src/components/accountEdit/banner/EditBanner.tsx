@@ -106,7 +106,7 @@ const BannerImageBox = styled.div`
 const BannerItem = styled.li<{ notPointer?: boolean }>`
   width: 45%;
   padding: 20px;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 1px solid ${({ theme }) => theme.color.lightGrey};
   margin: 0 auto;
   cursor: pointer;
   background: #d5d5d5;
@@ -130,6 +130,6 @@ const BannerNumber = styled.div`
 const EditBannerWrap = styled.div``;
 
 const Form = styled.form`
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid ${({ theme }) => theme.color.lightGrey};
   margin-bottom: 30px;
 `;

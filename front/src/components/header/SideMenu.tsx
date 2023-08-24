@@ -105,7 +105,7 @@ const SidebarBox = styled(OnlyAlignCenterFlex)`
 
 const RelevantToTheUser = styled(AllCenterFlex)`
   padding: 15px 0 20px;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid ${({ theme }) => theme.color.lightGrey};
 `;
 
 const LogoBox = styled.div`
@@ -126,7 +126,7 @@ const SideMenuContainer = styled.div`
 `;
 
 const SideMenuFooter = styled.div`
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  border-top: 1px solid ${({ theme }) => theme.color.lightGrey};
   font-size: 12px;
   padding: 20px 0 0;
   line-height: 20px;

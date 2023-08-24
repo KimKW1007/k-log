@@ -208,7 +208,7 @@ export const AuthorInnerBox = styled.div`
 
 const AuthorBox = styled.div`
   padding: 15px 30px 15px;
-  background: rgba(128, 128, 128, 0.3);
+  background: ${({ theme }) => theme.color.lightGrey};
   display: flex;
   justify-content: space-between;
 `;
@@ -219,7 +219,7 @@ const FormContainer = styled.div`
 
 const Form = styled.form<{ isReply?: boolean }>`
   width: 100%;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 1px solid ${({ theme }) => theme.color.lightGrey};
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   overflow: hidden;

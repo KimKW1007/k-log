@@ -239,9 +239,9 @@ const DateBox = styled.div`
 const AccessoryBox = styled(OnlyAlignCenterFlex)`
   column-gap: 10px;
   padding: 10px 10px 10px 30px;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 1px solid ${({ theme }) => theme.color.lightGrey};
   border-radius: 0 0 10px 10px;
-  background: rgba(128, 128, 128, 0.3);
+  background: ${({ theme }) => theme.color.lightGrey};
 `;
 
 const CommentInnerBox = styled.div<{ isWriter?: boolean }>`

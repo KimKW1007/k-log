@@ -55,6 +55,6 @@ export const ShortLine = styled.i`
   display: inline-block;
   width: 1px;
   height: 1em;
-  background: rgba(128, 128, 128, 0.3);
+  background: ${({ theme }) => theme.color.lightGrey};
   margin: 0 10px;
 `;

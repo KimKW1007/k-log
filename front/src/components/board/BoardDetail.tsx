@@ -143,7 +143,7 @@ const CreatedDateBox = styled(AllCenterFlex)`
 const TagBox = styled(OnlyAlignCenterFlex)`
   flex-wrap: wrap;
   padding: 30px 0;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid ${({ theme }) => theme.color.lightGrey};
   gap: 10px;
 `;
 const TagBtn = styled.div`

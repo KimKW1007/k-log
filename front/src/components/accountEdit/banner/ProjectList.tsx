@@ -72,7 +72,7 @@ const ProjectListTitle = styled.h3`
   padding: 10px 0 15px;
   margin-bottom: 15px;
   text-align: center;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid ${({ theme }) => theme.color.lightGrey};
 `;
 const ProjectListBox = styled(OnlyAlignCenterFlex)`
   flex-wrap: wrap;
@@ -88,7 +88,7 @@ const ProjectItem = styled.div`
   display: flex;
   width: 48%;
   min-height: 50px;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 1px solid ${({ theme }) => theme.color.lightGrey};
   border-radius: 2px;
   overflow: hidden;
   p {

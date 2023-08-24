@@ -111,7 +111,7 @@ const AnotherBoardTitleBox = styled.div<{ isNext: boolean }>`
 const AnotherBoardLink = styled(Link)<{ $isPrev: boolean }>`
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  border: 1px solid ${({ theme }) => theme.color.lightGrey};
   border-radius: 10px;
   display: block;
   width: 400px;

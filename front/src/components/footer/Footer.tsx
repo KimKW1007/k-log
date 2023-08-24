@@ -11,7 +11,7 @@ const Footer = () => {
     <FooterWrap>
       <FooterContainer>
         <FooterLogoBox>
-          <Image src={logo_white} alt={'로고'}  ></Image>
+          <Image src={logo_white} alt={'로고'}></Image>
           <h2>K : Log</h2>
         </FooterLogoBox>
         <FooterCopyRight>
@@ -19,8 +19,8 @@ const Footer = () => {
           <br /> ALL RIGHTS RESERVED.
         </FooterCopyRight>
         <SNSBox>
-          <Link href={'https://www.notion.so/5cc93c00074a43c2834d67c2276a2153?pvs=4'} target="_blank" title='노션'>
-            <span className='blind'>노션</span>
+          <Link href={'https://www.notion.so/5cc93c00074a43c2834d67c2276a2153?pvs=4'} target="_blank" title="노션">
+            <span className="blind">노션</span>
           </Link>
         </SNSBox>
       </FooterContainer>
@@ -30,25 +30,23 @@ const Footer = () => {
 
 export default Footer;
 
-
-
 const SNSBox = styled.div`
   width: 30px;
-  height:30px;
-  a{
-    display:block;
-    width:100%;
-    height:100%;
-    background : url(${notion.src}) no-repeat center center/100% 100%;
-    transition: opacity .2s;
-    &:hover{
-      opacity : .5;
+  height: 30px;
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(${notion.src}) no-repeat center center/100% 100%;
+    transition: opacity 0.2s;
+    &:hover {
+      opacity: 0.5;
     }
   }
-  @media(max-width: 470px){
-    display:none;
+  @media (max-width: 470px) {
+    display: none;
   }
-`
+`;
 
 const EmptyBox = styled.div`
   @media (max-width: 800px) {
@@ -68,7 +66,7 @@ const FooterContainer = styled(OnlyAlignCenterFlex)`
   width: 100%;
   margin: 0 auto;
   padding: 40px 40px;
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  border-top: 1px solid ${({ theme }) => theme.color.lightGrey};
   @media (max-width: 700px) {
     margin-right: 30px;
     padding: 20px 20px;
@@ -81,7 +79,7 @@ const FooterLogoBox = styled(OnlyAlignCenterFlex)`
   h2 {
     margin-left: 10px;
   }
-  img{
+  img {
     width: 40px;
     height: 40px;
   }

@@ -46,7 +46,7 @@ const CategoryItmeList = styled.dl<{ $isOverHeader?: boolean }>`
   & + & {
     margin-top: 5px;
     padding-top: 5px;
-    border-top: 1px solid rgba(128, 128, 128, 0.3);
+    border-top: 1px solid ${({ theme }) => theme.color.lightGrey};
   }
   ${({ $isOverHeader, theme }) =>
     $isOverHeader &&
