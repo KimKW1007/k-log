@@ -1,0 +1,12 @@
+const ContentsLinkTargetBlank = (ref: React.RefObject<HTMLDivElement>) => {
+  if (ref.current) {
+    const Links = ref.current.querySelectorAll('a');
+    if(Links.length > 0){
+      Links.forEach((Link)=>{
+        Link.target = "_blank";
+      })
+    }
+  }
+}
+
+export default ContentsLinkTargetBlank
