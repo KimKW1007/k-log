@@ -18,6 +18,7 @@ import codeBlockStyler from '@/src/utils/codeBlockStyler';
 import useConvert from '@/src/hooks/useConvert';
 import createBlockquoteBox from '@/src/utils/createBlockquoteBox';
 import { ContentsWrap } from '@/src/styles/boardContents-style';
+import ContentsLinkTargetBlank from '@/src/utils/ContentsLinkTargetBlank';
 
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
@@ -38,6 +39,7 @@ const BoardDetail = ({ id }: { id: string }) => {
       if (contentsWrapRef.current.innerHTML) {
         wrapConsecutiveBlockquotes();
         codeBlockStyler(contentsWrapRef);
+        ContentsLinkTargetBlank(contentsWrapRef);
       }
     }
   }, [data, contentsWrapRef]);
