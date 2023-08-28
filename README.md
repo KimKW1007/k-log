@@ -121,4 +121,18 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
    일반 유저는 이미지 변경, 내정보 변경, 비밀번호 변경, 회원탈퇴 만 가능합니다.
 
 
+## 시스템 아키텍쳐
+
+![Frame 11](https://github.com/KimKW1007/k-log/assets/90603614/3513944e-0ba6-4106-b88d-22ad9fcb56f2)
+
+![Frame 12](https://github.com/KimKW1007/k-log/assets/90603614/94514547-08cd-4736-8eec-2a662c598095)
+
+<br/>
+<br/>
+
+## 기능 목록
+
+![Frame 14](https://github.com/KimKW1007/k-log/assets/90603614/78702c54-337a-47ae-adcc-c2dc74d3d262)
+
+
 
