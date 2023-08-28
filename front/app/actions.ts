@@ -7,8 +7,7 @@ const actions = async () => {
   let refresh_token;
   for (let i = 0; i < cookieList.length; i++) {
     const cookie = cookieList[i];
-
-    if (cookie['name'] === 'access_token=') {
+    if (cookie['name'] === 'access_token') {
       hasAccessToken = true;
     }
     if (cookie['name'] === 'refresh_token') {
