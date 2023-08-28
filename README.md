@@ -9,6 +9,8 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
 <a href="https://port-0-k-log-ac2nll9brvee.sel3.cloudtype.app" target="_blank">K : Log 바로가기</a>
 </p>
 
+<br/>
+<br/>
 
 ## 기술 스택
 ### **FrontEnd**
@@ -31,6 +33,9 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
   <img src="https://img.shields.io/badge/typeorm-FF8700?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/multer-18A497?style=for-the-badge"/>
 </div>
+
+<br/>
+<br/>
 
 ## 상세 설명 및 미리보기
 ### **Client**
