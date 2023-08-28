@@ -9,6 +9,8 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
 <a href="https://port-0-k-log-ac2nll9brvee.sel3.cloudtype.app" target="_blank">K : Log 바로가기</a>
 </p>
 
+<br/>
+<br/>
 
 ## 기술 스택
 ### **FrontEnd**
@@ -31,6 +33,9 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
   <img src="https://img.shields.io/badge/typeorm-FF8700?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/multer-18A497?style=for-the-badge"/>
 </div>
+
+<br/>
+<br/>
 
 ## 상세 설명 및 미리보기
 ### **Client**
@@ -119,6 +124,23 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
 
  - 해당 페이지의 기능 중 카테고리 및 배너설정 기능은 관리자만 가능합니다.<br/>
    일반 유저는 이미지 변경, 내정보 변경, 비밀번호 변경, 회원탈퇴 만 가능합니다.
+
+
+<br/>
+<br/>
+
+## 시스템 아키텍쳐
+
+![Frame 11](https://github.com/KimKW1007/k-log/assets/90603614/3513944e-0ba6-4106-b88d-22ad9fcb56f2)
+
+![Frame 12](https://github.com/KimKW1007/k-log/assets/90603614/94514547-08cd-4736-8eec-2a662c598095)
+
+<br/>
+<br/>
+
+## 기능 목록
+
+![Frame 14](https://github.com/KimKW1007/k-log/assets/90603614/78702c54-337a-47ae-adcc-c2dc74d3d262)
 
 
 
