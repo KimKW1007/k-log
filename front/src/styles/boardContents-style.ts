@@ -134,6 +134,43 @@ export const ContentsWrap = styled.div`
   pre[class^='ql-syntax'] .code-body::-webkit-scrollbar-corner {
     display: none;
   }
+
+  ol, ul{
+    padding-left: 1.5em;
+  }
+
+  ol li:not(.ql-direction-rtl),
+  ul li:not(.ql-direction-rtl) {
+    padding-left: 1.5em;
+  }
+
+  ol li {
+    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+    counter-increment: list-0;
+  }
+
+  ol li:before {
+    content: counter(list-0, decimal) '. ';
+  } 
+  ul > li:before {
+    content: "•";
+  }
+
+  li:not(.ql-direction-rtl)::before {
+    margin-left: -1.5em;
+    margin-right: 0.3em;
+    text-align: right;
+  }
+
+  li::before {
+    display: inline-block;
+    white-space: nowrap;
+    width: 1.2em;
+  }
+
+  
+
+
   @media(max-width : 930px){
     padding : 16.129vw 0 100px;
   }
