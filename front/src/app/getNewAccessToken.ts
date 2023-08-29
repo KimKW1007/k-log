@@ -9,7 +9,6 @@ const GetNewAccessToken = () => {
   const getNewAccessTokenByrefreshToken = async () => {
     try {
       const {refresh_token} = await actions();
-      console.log(refresh_token);
       if(refresh_token){
         // 현재 시간과 토큰의 만료 시간을 비교하여 갱신 여부 결정
         const tokenExpiration = sessionStorage.getItem('access_token_expiration'); // 세션 스토리지에 저장된 토큰 만료 시간
