@@ -116,7 +116,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   /* 작성중인 data 삭제 */
   const { deleteApi: imageDeleteApi } = ifInImageApi(`deleteFiles/작성중/${currentUser?.id!}`);
   const { mutate: deleteImageMutate } = useMutation(imageDeleteApi);
-  const { handlePageLeave, handleRouteChangeStart } = useConfirm(pathname, deleteImageMutate);
+  const { handlePageLeave } = useConfirm(pathname, deleteImageMutate);
 
   useEffect(() => {
     if (boardLastId) {
@@ -158,13 +158,13 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
     handleClickMenu();
   };
 
-  const onSubmit = ({ boardTitle, image, contents }: any) => {
+  const onSubmit = ({ boardTitle, image }: any) => {
     if (isEdit ? (!currentBoard.thumbnail && image.length <= 0) : image.length <= 0) {
       if (confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')) {
-        mutateFn({ boardTitle, image, contents });
+        mutateFn({ boardTitle, image });
       }
     } else {
-      mutateFn({ boardTitle, image, contents });
+      mutateFn({ boardTitle, image });
     }
   };
 
