@@ -23,7 +23,7 @@ import ContentsLinkTargetBlank from '@/src/utils/ContentsLinkTargetBlank';
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { getApi } = customApi(`/board/getBoard/${id}`);
-  const { convertContent } = useConvert();
+  const { decodeHTMLEntities } = useConvert();
   const { data, isLoading } = useQuery([GET_BOARD, id], () => getApi());
   const { currentBoard, prevBoard, nextBoard } = data ?? {};
   const { author, boardTitle, contents, createdAt, tags, subCategory } = currentBoard ?? {};
@@ -35,7 +35,7 @@ const BoardDetail = ({ id }: { id: string }) => {
   const { wrapConsecutiveBlockquotes } = createBlockquoteBox(contentsWrapRef);
   useEffect(() => {
     if (contentsWrapRef.current) {
-      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(convertContent(contents));
+      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(decodeHTMLEntities(contents));
       if (contentsWrapRef.current.innerHTML) {
         wrapConsecutiveBlockquotes();
         codeBlockStyler(contentsWrapRef);

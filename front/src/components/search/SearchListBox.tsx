@@ -22,7 +22,7 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
   const [recentBoard, setRecentBoard] = useRecoilState(searchRecent);
 
-  const { convertContent } = useConvert();
+  const { decodeHTMLEntities } = useConvert();
 
   const onClickLink = (board: SearchBoardProps) => () => {
     const isDuplicate = recentBoard.some(({ id }: any) => id === board.id);
@@ -74,7 +74,7 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
                   <SearchItemIconBox>{isRecent ? <AccessTime /> : <Clipboard />}</SearchItemIconBox>
                   <SearchItemContents>
                     <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(boardTitle) }} />
-                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '')) }} />
                   </SearchItemContents>
                   <SearchItemIconBox className="enterIconBox">
                     <ArrowEnterLeft />

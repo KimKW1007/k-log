@@ -11,7 +11,7 @@ const HomeNewPosterBigItem = (board: any) => {
   const { id, author, authorImage, boardTitle, contents, createdAt, thumbnail, subCategory } = board;
   const { categorySubTitle, category } = subCategory ?? {};
   const { categoryTitle, user } = category ?? {};
-  const { convertContent } = useConvert();
+  const { decodeHTMLEntities } = useConvert();
 
   return (
     <PosterItem>
@@ -24,7 +24,7 @@ const HomeNewPosterBigItem = (board: any) => {
             <h4>{boardTitle}</h4>
           </PosterTitle>
         </PosterTop>
-        <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertContent(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+        <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '')) }} />
         <ImageBox>
           <ImageBg isDefault={!Boolean(thumbnail)} thumbnailUrl={thumbnail || defaultImage.src} />
         </ImageBox>

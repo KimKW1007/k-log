@@ -32,7 +32,7 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['javascript', 'typescript', 'python', 'css']
+      languages: ['typescript', 'css']
     });
 
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
@@ -72,7 +72,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const { convertContent } = useConvert();
+  const { convertContent, decodeHTMLEntities } = useConvert();
 
   /* 로딩 */
   const [isLoading, setIsLoading] = useState(true);
@@ -178,7 +178,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
               <TitleInput isError={Boolean(errors.boardTitle)} {...register('boardTitle', { required: true })} placeholder="게시물의 제목을 입력하세요" autoComplete="off" />
             </BoardTitleBox>
             <Tags currentTags={currentTags} setCurrentTags={setCurrentTags} />
-            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={data ? convertContent(currentBoard.contents) : ''} />
+            <CustomQuill forwardedRef={quillRef} modules={modules} formats={formats} defaultValue={data ? decodeHTMLEntities(currentBoard.contents) : ''} />
             <CompletionBtnBox>
               <CompletionBtn type="button" onClick={handleClickMenu}>
                 작성 완료

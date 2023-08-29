@@ -18,7 +18,7 @@ const BoardItem = (board: any) => {
     thumbnail,
     subCategory: { categorySubTitle }
   } = board;
-  const { convertContent } = useConvert();
+  const { decodeHTMLEntities } = useConvert();
   return (
     <ItemLink href={`/${id}`}>
       <ItemWrap>
@@ -32,7 +32,7 @@ const BoardItem = (board: any) => {
           <ItemDescBox
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
-                convertContent(contents)
+                decodeHTMLEntities(contents)
                   .replace(/(<([^>]+)>)/gi, '')
                   .slice(0, 500)
               )
