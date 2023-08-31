@@ -32,7 +32,7 @@ const QuillNoSSRWrapper = dynamic(
     const { default: BlotFormatter } = await import('quill-blot-formatter');
     const hljs = await import('highlight.js');
     hljs.default.configure({
-      languages: ['typescript', 'css']
+      languages: ['typescript', 'css', 'html']
     });
 
     QuillComponent.Quill.register('modules/blotFormatter', BlotFormatter);
