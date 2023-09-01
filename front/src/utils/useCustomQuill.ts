@@ -10,8 +10,8 @@ import 'highlight.js/styles/atom-one-dark.css';
 
 const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle: string) => {
   const { postApi } = ifInImageApi('uploads');
-  const { getApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/', '-')}`);
-  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], () => getApi(true));
+
+
 
   const handleImage = () => {
     const input = document.createElement('input');
@@ -69,7 +69,7 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
   }, []);
   const formats = ['header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image', 'color', 'background', 'align', 'code-block'];
 
-  return { formats, modules, boardLastId };
+  return { formats, modules };
 };
 
 export default useCustomQuill;

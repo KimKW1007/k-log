@@ -14,7 +14,7 @@ import CompletionBox from './CompletionBox';
 import Tags from '../Tags';
 import PageLoading from '@/src/components/common/Loading/PageLoading';
 import customApi from '@/src/utils/customApi';
-import { GET_BOARD } from '@/src/utils/queryKeys';
+import { GET_BOARD, GET_BOARD_LAST_ID } from '@/src/utils/queryKeys';
 import useIsMount from '@/src/hooks/useIsMount';
 import useConfirm from '@/src/hooks/useConfirm';
 import useHandleSideMenu from '@/src/hooks/useHandleSideMenu';
@@ -69,7 +69,11 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   const { isMount } = useIsMount();
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const [currentTags, setCurrentTags] = useState<string[]>([]);
-  const { formats, modules, boardLastId } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
+  const { formats, modules } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
+  const { getApi : boardLastIdApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/', '-')}`);
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], () => boardLastIdApi(true),{
+    enabled : !isEdit
+  });
   const [isSuccess, setIsSuccess] = useState(false);
 
   const { convertContent, decodeHTMLEntities } = useConvert();
