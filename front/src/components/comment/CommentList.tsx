@@ -44,5 +44,8 @@ const CommentListBox = styled.div`
 const EmptyCommentBox = styled.div`
   width: 100%;
   text-align: center;
-  padding: 100px 0 300px;
+  padding: 100px 0 250px;
+  p{
+    line-height: 1.5;
+  }
 `;
