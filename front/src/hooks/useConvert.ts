@@ -1,7 +1,15 @@
 const useConvert = () => {
   const convertContent = (contents: string) => {
     if (!contents) return '';
-    const convertValue = contents.replace(/&lt;/g, '@lt;').replace(/</g, '&lt;').replace(/@lt;/g, '<').replace(/&gt;/g, '@gt;').replace(/>/g, '&gt;').replace(/@gt;/g, '>').replaceAll(" ", '&nbsp;');
+    const convertValue = contents
+                              .replaceAll(" ", "&nbsp;")
+                              .replace(/\t/g, "&nbsp;".repeat(4))
+                              .replace(/&lt;/g, '@lt;')
+                              .replace(/</g, '&lt;')
+                              .replace(/@lt;/g, '<')
+                              .replace(/&gt;/g, '@gt;')
+                              .replace(/>/g, '&gt;')
+                              .replace(/@gt;/g, '>');
     return convertValue;
   };
 
