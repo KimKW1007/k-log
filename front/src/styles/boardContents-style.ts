@@ -7,7 +7,7 @@ export const ContentsWrap = styled.div`
   padding: 150px 0 100px;
   min-height: 1000px;
 
-  line-height: 200%;
+  line-height: 1.8;
   border-bottom: 1px solid ${({theme}) => theme.color.lightGrey};
 
   img {
@@ -16,9 +16,13 @@ export const ContentsWrap = styled.div`
   pre[class^='ql-syntax'] {
     position: relative;
   }
+  h1,h2,h3{
+    line-height: 1.5;
+  }
   .blockquote-box {
     border-left: 4px solid #63E6BE;
     overflow: hidden;
+    margin : 10px 0;
     .blockquote-inner-box {
       display: block;
       overflow: hidden;
@@ -168,8 +172,13 @@ export const ContentsWrap = styled.div`
     width: 1.2em;
   }
 
+  li.ql-indent-1:not(.ql-direction-rtl) {
+    padding-left: 4.5em;
+  }
+  li.ql-indent-2:not(.ql-direction-rtl) {
+    padding-left: 7.5em;
+  }
   
-
 
   @media(max-width : 930px){
     padding : 16.129vw 0 100px;
