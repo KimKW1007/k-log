@@ -19,7 +19,7 @@ const useConvert = () => {
     }
     return str
       .replace(/&amp;/g, '&')
-      .replace(/&nbsp;/g, ' ')
+      .replaceAll("&nbsp;class", ' class')
       .replace(/&lt;/g, '@lt;').replace(/</g, '&lt;').replace(/@lt;/g, '<').replace(/&gt;/g, '@gt;').replace(/>/g, '&gt;').replace(/@gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#039;/g, "'")
