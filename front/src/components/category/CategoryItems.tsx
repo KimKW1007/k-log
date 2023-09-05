@@ -7,31 +7,36 @@ import { GET_ALL_CATEGORY } from '@/src/utils/queryKeys';
 import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { EmptyIconBox } from '@/src/components/board/BoardWrapComp';
+import TypingLoading from '../common/Loading/TypingLoading';
 
 const CategoryItems = ({ isOverHeader }: { isOverHeader?: boolean }) => {
   const { getApi } = customApi('/category');
-  const { data } = useQuery([GET_ALL_CATEGORY], () => getApi());
+  const { data, isLoading } = useQuery([GET_ALL_CATEGORY], () => getApi());
   return (
     <>
+    {isLoading ? <TypingLoading /> :
+    <>
       {data?.length > 0 || (
-        <EmptyCategoryBox>
-          <EmojiDizzyFill />
-          <p>준비된 카테고리가 없어요..</p>
-        </EmptyCategoryBox>
-      )}
-      {data?.length > 0 &&
-        data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-          <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
-            <CategoryTitle>
-              <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}</Link>
-            </CategoryTitle>
-            {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
-              <CategoryItem key={'categorySubTitle' + categorySubTitle}>
-                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle}</Link>
-              </CategoryItem>
-            ))}
-          </CategoryItmeList>
-        ))}
+          <EmptyCategoryBox>
+            <EmojiDizzyFill />
+            <p>준비된 카테고리가 없어요..</p>
+          </EmptyCategoryBox>
+        )}
+        {data?.length > 0 &&
+          data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
+            <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
+              <CategoryTitle>
+                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}</Link>
+              </CategoryTitle>
+              {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
+                <CategoryItem key={'categorySubTitle' + categorySubTitle}>
+                  <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle}</Link>
+                </CategoryItem>
+              ))}
+            </CategoryItmeList>
+          ))}
+      </>
+      }
     </>
   );
 };
