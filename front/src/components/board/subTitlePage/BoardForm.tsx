@@ -82,8 +82,8 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   /* 생성 및 수정 */
-  const { postApi: editApi } = ifInImageApi('/board/category/edit', true);
-  const { postApi: createApi } = ifInImageApi('/board/createBoard', true);
+  const { postApi: editApi } = ifInImageApi('/board/category/edit');
+  const { postApi: createApi } = ifInImageApi('/board/createBoard');
   const { mutate: boardMutate } = useMutation(isEdit ? editApi : createApi, {
     onSuccess(data) {
       if (isEdit) {
@@ -118,15 +118,7 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   }, [data, isMount, isEdit]);
 
   /* 작성중인 data 삭제 */
-  const { deleteApi: imageDeleteApi } = ifInImageApi(`deleteFiles/작성중/${currentUser?.id!}`);
-  const { mutate: deleteImageMutate } = useMutation(imageDeleteApi);
-  const { handlePageLeave } = useConfirm(pathname, deleteImageMutate);
-
-  useEffect(() => {
-    if (boardLastId) {
-      deleteImageMutate({});
-    }
-  }, [boardLastId]);
+  const { handlePageLeave } = useConfirm(pathname);
 
   useEffect(() => {
     if (!isSuccess) {
