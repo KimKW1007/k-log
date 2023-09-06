@@ -35,7 +35,7 @@ const BoardDetail = ({ id }: { id: string }) => {
   const { wrapConsecutiveBlockquotes } = createBlockquoteBox(contentsWrapRef);
   useEffect(() => {
     if (contentsWrapRef.current) {
-      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(decodeHTMLEntities(contents));
+      contentsWrapRef.current.innerHTML = DOMPurify.sanitize(decodeHTMLEntities(contents).replaceAll(" ", '&nbsp;').replace(/\t/g, "&nbsp;".repeat(4)));
       if (contentsWrapRef.current.innerHTML) {
         wrapConsecutiveBlockquotes();
         codeBlockStyler(contentsWrapRef);
