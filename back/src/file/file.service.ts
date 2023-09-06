@@ -9,6 +9,7 @@ import { BoardRepository } from 'src/board/board.repository';
 import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
 import { ConfigService } from '@nestjs/config';
+import uploads from 'src/utils/imageUploads';
 
 // const S3Config = config.get('S3');
 
@@ -23,6 +24,7 @@ export class FileService {
     private configService : ConfigService ,
   ) {}
   private readonly DATA_URL = this.configService.get("IMAGE_SERVER_UPLOADS_URL") || 'http://localhost:8000/api/uploads';
+
   
   async uploadFile(description : string, file: Express.Multer.File, user: User){
     if (!user) throw new UnauthorizedException('유저정보를 확인해주세요');
@@ -32,40 +34,24 @@ export class FileService {
       await this.fileRepository.save(found);
       return { message: 'Only changed Description' };
     }
-    
-    const formData = new FormData();
-    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
-    const imageBuffer = Buffer.from(file.buffer);
-    const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
-    formData.append('image', imageBlob, file.originalname);
-    formData.append('userId', String(user.id));
-    formData.append('isProfile', 'true');
     const foundBoards = await this.boardRepository.find({where : {subCategory : {category : {user : {id : user.id}}}}})
     const foundComments = await this.commentRepository.find({where : {board : {subCategory : {category : {user : {id : user.id}}}}}})
     const foundReplies = await this.replyRepository.find({where : {connectedComment : {board : {subCategory : {category : {user : {id : user.id}}}}}}})
     try{
-      const response = await axios.post(this.DATA_URL, formData , {
-        headers:{
-          'Content-Type' : "multipart/form-data"
-        },
-        params:{
-          userId : user.userId
-        }
-      })
-      const IMG_URL = response.data.url;
-      found.imageUrl = IMG_URL;
+      const imageUrl = await uploads(file.buffer, file.mimetype, this.configService.get("IMGUR_ID"))
+      found.imageUrl = imageUrl;
       found.description = description;
       await this.fileRepository.save(found);
       if(foundBoards){
-        foundBoards.map(foundBoard => foundBoard.authorImage = IMG_URL)
+        foundBoards.map(foundBoard => foundBoard.authorImage = imageUrl)
         await this.boardRepository.save(foundBoards);
       }
       if(foundComments){
-        foundComments.map(foundComment => foundComment.authorImage = IMG_URL)
+        foundComments.map(foundComment => foundComment.authorImage = imageUrl)
         await this.commentRepository.save(foundComments);
       }
       if(foundReplies){
-        foundReplies.map(foundReply => foundReply.authorImage = IMG_URL)
+        foundReplies.map(foundReply => foundReply.authorImage = imageUrl)
         await this.boardRepository.save(foundBoards);
       }
 
