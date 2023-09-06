@@ -43,7 +43,15 @@ export const ContentsWrap = styled.div`
       }
     }
   }
-
+  .ql-align-center{
+    text-align: center;
+  }
+  .ql-align-right{
+    text-align: right;
+  }
+  .ql-align-justify {
+    text-align: justify;
+  }
   pre[class^='ql-syntax']::after {
     content: attr(data-ke-language);
     position: absolute;
