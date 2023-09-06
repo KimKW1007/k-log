@@ -8,6 +8,7 @@ import axios from 'axios';
 import { FileRepository } from 'src/file/file.repository';
 import { UserRepository } from 'src/auth/user.repository';
 import { ConfigService } from '@nestjs/config';
+import uploads from 'src/utils/imageUploads';
 
 @Injectable()
 export class BoardRepository extends Repository<Board> {
@@ -18,11 +19,6 @@ export class BoardRepository extends Repository<Board> {
     ) {
     super(Board, dataSource.createEntityManager());
   }
-  private readonly DATA_IMAGE_URL =  this.configService.get("IMAGE_SERVER_UPLOADS_URL") ||'http://localhost:8000/api/uploads';
-  private readonly DATA_BOARD_ID_UPDATE =  this.configService.get("IMAGE_SERVER_CREATE_BOARD_URL") ||'http://localhost:8000/api/createdBoard';
-  private readonly DATA_BOARD_DELETE_UNNECESSARY =  this.configService.get("IMAGE_SERVER_UNNECESSARY_URL") ||'http://localhost:8000/api/unnecessary';
-  private readonly DATA_BOARD_DELETE = this.configService.get("IMAGE_SERVER_URL") || 'http://localhost:8000/api';
-
 
   async createLastBoardId(categorySubTitle : string, user :User){
     const subCategory = await this.subCategoryRepository.findOneBy({ categorySubTitle });
@@ -59,41 +55,22 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '',
         foundBoard.createdAt = new Date();
-        const newBoard = await this.save(foundBoard).then(async res=>{
-          const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
-          return res
-        });
+        const newBoard = await this.save(foundBoard)
       return { message: 'success', boardId : newBoard.id };
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
       }
     } else {
-      const formData = new FormData();
-      file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-      const imageBuffer = Buffer.from(file.buffer);
-      const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
-      formData.append('image', imageBlob, file.originalname);
-      formData.append('userId', String(user.id));
-      formData.append('subTitle', categorySubTitle);
-      formData.append('boardId', '작성중');
       try {
-        const response = await axios.post(this.DATA_IMAGE_URL, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        const IMG_URL = response.data.url;
+        const imageUrl = await uploads(file.buffer, file.mimetype, this.configService.get("IMGUR_ID"))
         foundBoard.boardTitle = boardTitle;
         foundBoard.contents = contents;
-        foundBoard.thumbnail = IMG_URL;
+        foundBoard.thumbnail = imageUrl;
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '';
         foundBoard.createdAt = new Date();
-        const newBoard = await this.save(foundBoard).then(async res=>{
-          const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
-          return res
-        });
+        const newBoard = await this.save(foundBoard)
         return { message: 'success', boardId : newBoard.id };
       } catch (e) {
         console.log('오류 발생');
@@ -110,9 +87,7 @@ export class BoardRepository extends Repository<Board> {
       return {message : '삭제할 board가 없습니다.'}
     }
     try{
-      await axios.delete(`${this.DATA_BOARD_DELETE}/deleteFiles/${id}/${user.id}`).then(async res=>{
-        await this.delete({id})
-      })
+      await this.delete({id})
       return {message : '삭제 완료'}
     }catch(e){
       console.log({e})
@@ -132,62 +107,20 @@ export class BoardRepository extends Repository<Board> {
         foundBoard.contents = contents;
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '',
-        await this.save(foundBoard).then(async res=>{
-          const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
-          return res
-        }).then(async res=>{
-          let imgArr = [];
-          const pattern = /https?:\/\/port-0-k-log-image-server[^"]+/g;
-          const result = res.contents.match(pattern);
-          if(result){
-            result.map(value => imgArr.push(value));
-          }
-          if(res.thumbnail){
-            imgArr.push(res.thumbnail)
-          }
-          const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr}})
-        });
+        await this.save(foundBoard)
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
       }
     } else {
-      const formData = new FormData();
-      file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-      const imageBuffer = Buffer.from(file.buffer);
-      const imageBlob = new Blob([imageBuffer], { type: file.mimetype });
-      formData.append('image', imageBlob, file.originalname);
-      formData.append('userId', String(user.id));
-      formData.append('subTitle', categorySubTitle);
-      formData.append('boardId', `${boardId}`);
       try {
-        const response = await axios.post(this.DATA_IMAGE_URL, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        const IMG_URL = response.data.url;
+        const imageUrl = await uploads(file.buffer, file.mimetype, this.configService.get("IMGUR_ID"))
         foundBoard.boardTitle = boardTitle;
         foundBoard.contents = contents;
-        foundBoard.thumbnail = IMG_URL;
+        foundBoard.thumbnail = imageUrl;
         foundBoard.tags = tags;
         foundBoard.authorImage = authorImage?.imageUrl ??  '';
-        await this.save(foundBoard).then(async res=>{
-          const response = await axios.patch(`${this.DATA_BOARD_ID_UPDATE}/${user.id}`,{boardId : res.id})
-          return res
-        }).then(async res=>{
-          let imgArr = [];
-          const pattern = /http:\/\/port-0-k-log-image-server[^"]*"/g;
-          const result = res.contents.match(pattern);
-          if(result){
-            const extractedStrings = result.map(str => str.slice(0, -1));
-            imgArr.push(extractedStrings)
-          }
-          if(res.thumbnail){
-            imgArr.push(res.thumbnail)
-          }
-          const deleteUnnecessaryFile = await axios.delete(`${this.DATA_BOARD_DELETE_UNNECESSARY}/${boardId}/${user.id}`,{data :{imgArr : imgArr.flat()}})
-        });
+        await this.save(foundBoard)
       } catch (e) {
         console.log('오류 발생');
         throw new BadRequestException('board Create 중 오류 발생');
