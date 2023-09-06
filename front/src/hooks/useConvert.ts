@@ -1,16 +1,19 @@
 const useConvert = () => {
   const convertContent = (contents: string) => {
     if (!contents) return '';
+
     const convertValue = contents
-                              .replaceAll(" ", "&nbsp;")
-                              .replace(/\t/g, "&nbsp;".repeat(4))
                               .replace(/&lt;/g, '@lt;')
                               .replace(/</g, '&lt;')
                               .replace(/@lt;/g, '<')
                               .replace(/&gt;/g, '@gt;')
                               .replace(/>/g, '&gt;')
                               .replace(/@gt;/g, '>');
-    return convertValue;
+    const result = convertValue.replace(/&gt;([^&]+)&lt;/g, (match, p1) => {
+      const replacedText = p1.replaceAll(" ", '&nbsp;').replace(/\t/g, '&nbsp;'.repeat(4));
+      return `&gt;${replacedText}&lt;`;
+    });
+    return result;
   };
 
   const decodeHTMLEntities = (str: any) => {
@@ -19,10 +22,6 @@ const useConvert = () => {
     }
     return str
       .replace(/&amp;/g, '&')
-      .replaceAll("&nbsp;class", ' class')
-      .replaceAll("&nbsp;src", ' src')
-      .replaceAll("&nbsp;href", ' href')
-      .replaceAll("&nbsp;style", ' style')
       .replace(/&lt;/g, '@lt;').replace(/</g, '&lt;').replace(/@lt;/g, '<').replace(/&gt;/g, '@gt;').replace(/>/g, '&gt;').replace(/@gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#039;/g, "'")
