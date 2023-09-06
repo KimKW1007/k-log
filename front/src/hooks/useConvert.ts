@@ -22,6 +22,7 @@ const useConvert = () => {
       .replaceAll("&nbsp;class", ' class')
       .replaceAll("&nbsp;src", ' src')
       .replaceAll("&nbsp;href", ' href')
+      .replaceAll("&nbsp;style", ' style')
       .replace(/&lt;/g, '@lt;').replace(/</g, '&lt;').replace(/@lt;/g, '<').replace(/&gt;/g, '@gt;').replace(/>/g, '&gt;').replace(/@gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#039;/g, "'")
