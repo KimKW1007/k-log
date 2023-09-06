@@ -1,4 +1,3 @@
-import { defaultBanner1, defaultBanner2, defaultBanner3 } from '@/src/utils/bannerList';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,11 +5,7 @@ interface BannerItemProps {
   currentRotate: number;
   idx: number;
   resetRotate: boolean;
-  data: {
-    id: number;
-    imageUrl: string;
-    listNumber: string;
-  }[];
+  bannerItems: string[];
 }
 
 interface ItemProps {
@@ -22,16 +17,11 @@ interface ItemProps {
   banner3: string;
 }
 
-const BaanerItem = ({ currentRotate, idx, resetRotate, data }: BannerItemProps) => {
-  const banner1 = data?.[0]?.imageUrl || defaultBanner1;
-  const banner2 = data?.[1]?.imageUrl || defaultBanner2;
-  const banner3 = data?.[2]?.imageUrl || defaultBanner3;
-  return <Item currentRotate={currentRotate} resetRotate={resetRotate} idx={idx} banner1={banner1} banner2={banner2} banner3={banner3}></Item>;
+const BaanerItem = ({ currentRotate, idx, resetRotate, bannerItems }: BannerItemProps) => {
+  return <Item currentRotate={currentRotate} resetRotate={resetRotate} idx={idx} banner1={bannerItems[0]} banner2={bannerItems[1]} banner3={bannerItems[2]}></Item>;
 };
 
 export default BaanerItem;
-// ${({idx}) => idx * 32 }
-// ${({ currentRotate }) => currentRotate}
 
 const Item = styled.div<ItemProps>`
   position: absolute;
