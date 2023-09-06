@@ -158,7 +158,6 @@ export class AuthService {
       throw new BadRequestException("탈퇴할 유저가 없습니다.")
     }
       try{
-        await axios.delete(`${this.DATA_BOARD_DELETE}/withdraw/${user.userId}`)
         await this.userRepository.delete({id : user.id})
       }catch(e){
         console.log({e})
