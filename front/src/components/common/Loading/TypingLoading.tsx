@@ -1,9 +1,10 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components';
+import { AllCenterFlex } from '../CommonFlex';
 
-const TypingLoading = () => {
+const TypingLoading = ({isMargin = false} : {isMargin ?: boolean}) => {
   return (
-    <LoadingWrap>
+    <LoadingWrap isMargin={isMargin}>
       <LoadingCircleBox>
         <LoadingCircle/>
       </LoadingCircleBox>
@@ -24,14 +25,16 @@ const load8 = keyframes`
 }
 `
 
-const LoadingWrap = styled.div`
+const LoadingWrap = styled(AllCenterFlex)<{isMargin ?: boolean}>`
   width: 100%;
-  margin : 40px 0;
+  height:100%;
+  ${({isMargin})=> isMargin && `
+    margin : 60px 0;
+  `}
 `
 const LoadingCircleBox = styled.div`
   width: 60px;
   height: 60px;
-  margin: 0 auto;
 `
 
 const LoadingCircle = styled.div`
