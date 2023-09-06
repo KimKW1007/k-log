@@ -11,9 +11,9 @@ import { CommentRepository } from 'src/comment/comment.repository';
 import { ReplyRepository } from 'src/comment/reply.repository';
 import { FileRepository } from 'src/file/file.repository';
 import { selectedImage } from 'src/utils/defaultRandomImage';
-import axios from 'axios';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
+import uploads from 'src/utils/imageUploads';
 
 
 
@@ -30,9 +30,6 @@ export class UserRepository extends Repository<User> {
       ) {   
     super(User, dataSource.createEntityManager());
   }
-  private readonly DATA_URL = this.configService.get("IMAGE_SERVER_UPLOADS_URL") || 'http://localhost:8000/api/uploads';
-
- 
 
   deletePasswordInUsers(user : User[]){
     const deletePasswordUser = user.map(ele => {
@@ -65,31 +62,17 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
-
-    fs.readFile(selectedImage,async (err, data)=> {
+    
+    fs.readFile(selectedImage, async (err, data)=> {
       if (err) {
         console.error('Error reading image file:', err);
         return;
       }
-      const formData = new FormData();
-      const imageBuffer = Buffer.from(data);
-      const imageBlob = new Blob([imageBuffer], { type: 'image/jpg' });
-      formData.append('image', imageBlob, 'defaultImage.jpg');
-      formData.append('userId', String(user.id));
-      formData.append('isProfile', 'true');
 
       try{
-        const response = await axios.post(this.DATA_URL, formData , {
-          headers:{
-            'Content-Type' : "multipart/form-data"
-          },
-          params:{
-            userId : user.userId
-          }
-        })
-        const IMG_URL = response.data.url;
+        const imageUrl = await uploads(data, 'image/jpg' ,this.configService.get("IMGUR_ID"))
         const createUserPl = this.fileRepository.create({
-          imageUrl: IMG_URL,
+          imageUrl,
           description: "",
           user,
         });
