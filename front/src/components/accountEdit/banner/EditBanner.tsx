@@ -22,8 +22,7 @@ const EditBanner = () => {
 
   const { getApi } = customApi('/banner/banners');
   const { data } = useQuery([GET_BANNER_LIST], () => getApi());
-
-  const { postApi } = ifInImageApi('/banner/updateBanner', true);
+  const { postApi } = ifInImageApi('/banner/updateBanner');
   const { mutate } = useMutation(postApi, {
     onSuccess(data) {
       queryClient.invalidateQueries([GET_BANNER_LIST]);
@@ -54,6 +53,8 @@ const EditBanner = () => {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  const currentImg = data?.find((i : any) => Number(i.listNumber) === currentlistNumber)?.imageUrl;
+
   return (
     <EditBannerWrap>
       <FormProvider {...methods}>
@@ -61,7 +62,7 @@ const EditBanner = () => {
           <BannerItem notPointer>
             <BannerNumber>{currentlistNumber}</BannerNumber>
             <BannerImageBox>
-              <BannerImageBg bannerImage={image || data?.[currentlistNumber - 1]?.imageUrl || banner[`banner${currentlistNumber}`]} />
+              <BannerImageBg bannerImage={image || currentImg || banner[`banner${currentlistNumber}`]} />
               <ImageInputLabelBox setImage={setImage} id={'bannerImage'} />
             </BannerImageBox>
           </BannerItem>
@@ -73,14 +74,17 @@ const EditBanner = () => {
         </Form>
       </FormProvider>
       <BannerList>
-        {bannerList.map((listNumber: number, index: number) => (
-          <BannerItem key={'bannerList' + listNumber} onClick={() => setCurrentListNumber(listNumber)}>
+        {bannerList.map((listNumber: number, index: number) => {
+          const foundImg = data?.find((i : any) => Number(i.listNumber) === listNumber)?.imageUrl;
+          return(
+            <BannerItem key={'bannerList' + listNumber} onClick={() => setCurrentListNumber(listNumber)}>
             <BannerNumber>{listNumber}</BannerNumber>
             <BannerImageBox>
-              <BannerImageBg bannerImage={data?.[index]?.imageUrl || banner[`banner${listNumber}`]} />
+              <BannerImageBg bannerImage={foundImg || banner[`banner${listNumber}`]} />
             </BannerImageBox>
           </BannerItem>
-        ))}
+          )
+          })}
       </BannerList>
     </EditBannerWrap>
   );
