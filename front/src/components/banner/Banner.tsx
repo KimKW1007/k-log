@@ -69,8 +69,8 @@ const Banner = () => {
 
   /* bannerBgImage 초기화 */
   useEffect(() => {
-    if (data) {
-      const foundBg = data?.find((i: { listNumber: number; }) => Number(i.listNumber) === currentBannerNum )?.imageUrl;
+    const foundBg = data?.find((i: { listNumber: number; }) => Number(i.listNumber) === currentBannerNum )?.imageUrl;
+    if (foundBg) {
       setCurrentBg(foundBg);
     } else {
       setCurrentBg(banner[`banner${currentBannerNum}`]);
