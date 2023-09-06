@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import ifInImageApi from './ifInImageApi';
 import ReactQuill from 'react-quill';
-import customApi from './customApi';
-import { useQuery } from '@tanstack/react-query';
 import hljs from 'highlight.js/lib/core';
-import { GET_BOARD_LAST_ID } from './queryKeys';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 import 'highlight.js/styles/atom-one-dark.css';
 
 const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle: string) => {
-  const { postApi } = ifInImageApi('uploads');
+  const { postApi } = ifInImageApi('/file/boardImage');
 
 
 
