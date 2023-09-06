@@ -84,7 +84,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
               <SearchInputBox setIsTyping={setIsTyping} />
               <SearchListArea className="customScroll">
                 <SearchRecent />
-                {isTyping_REGEX && <TypingLoading />}
+                {isTyping_REGEX && <TypingLoading isMargin/>}
                 {noRecentSearches_REGEX || (
                   <NoRecentSearches>
                     <p>No Recent Searches</p>
