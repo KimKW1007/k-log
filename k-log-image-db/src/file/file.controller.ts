@@ -2,13 +2,10 @@ import {
   Body,
   Controller,
   Post,
-  Get,
   UploadedFile,
   UseInterceptors,
   Param,
-  Res,
   Delete,
-  ParseIntPipe,
   Patch,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -41,17 +38,4 @@ export class FileController {
     return this.fileService.checkDeleteUnnecessaryFile(body, boardId, userId)
   }
 
-  @Delete("/withdraw/:userId")
-  withdraw(@Param('userId') userId : string){
-    return this.fileService.withdraw(userId)
-  }
-
-
-  @Get('uploads/:filename')
-  async getImage(
-    @Param('filename') filename: string,
-    @Res() res
-  ) {
-    res.sendFile(filename, { root: 'uploads' });
-  }
 }
