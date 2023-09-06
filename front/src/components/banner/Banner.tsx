@@ -9,11 +9,15 @@ import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { GET_BANNER_LIST } from '@/src/utils/queryKeys';
 import customApi from '@/src/utils/customApi';
+import useIsMount from '@/src/hooks/useIsMount';
 
 const Banner = () => {
   const pathname = usePathname();
+  const isMount = useIsMount();
   const innerBoxRef = useRef<HTMLDivElement>(null);
   const bannerList = new Array(24).fill(undefined).map((val, idx) => idx);
+
+  const [bannerItemList, setBannerItemList] = useState<string[]>([]);
 
   const [currentRotate, setCurrentRotate] = useState<number>(0);
   const [currentBg, setCurrentBg] = useState('');
@@ -59,17 +63,19 @@ const Banner = () => {
 
   /* bannerBgImage */
   useEffect(() => {
-    setCurrentBg(data?.[currentBannerNum - 1]?.imageUrl || banner[`banner${currentBannerNum}`]);
+    const foundBg = data?.find((i: { listNumber: number; }) => Number(i.listNumber) === currentBannerNum )?.imageUrl;
+    setCurrentBg(foundBg || banner[`banner${currentBannerNum}`]);
   }, [currentBannerNum]);
 
   /* bannerBgImage 초기화 */
   useEffect(() => {
-    if (data?.[0]?.imageUrl) {
-      setCurrentBg(data?.[0]?.imageUrl);
+    if (data) {
+      const foundBg = data?.find((i: { listNumber: number; }) => Number(i.listNumber) === currentBannerNum )?.imageUrl;
+      setCurrentBg(foundBg);
     } else {
       setCurrentBg(banner[`banner${currentBannerNum}`]);
     }
-  }, []);
+  }, [isMount]);
 
   /* 마운트시 css 컨트롤 */
   useEffect(() => {
@@ -88,6 +94,16 @@ const Banner = () => {
     setCurrentRotate(0);
   }, []);
 
+  useEffect(()=>{
+    const bannerItems : string[] = [1,2,3].map((ele : any , idx : number) => {
+      const foundImg = data?.find((i : any) => Number(i.listNumber) === idx + 1)?.imageUrl
+      if(foundImg){
+        return foundImg
+      }
+      return banner[`banner${idx + 1}`]
+    })
+    setBannerItemList(bannerItems)
+  },[data])
   return (
     <BannerWrap>
       <BannerBgBox>
@@ -96,7 +112,7 @@ const Banner = () => {
       <BannerInnerBox ref={innerBoxRef}>
         <BannerSlideBox>
           {bannerList.map((ele, idx) => (
-            <BannerItem key={ele + 'bannerList' + idx} data={data} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
+            <BannerItem key={ele + 'bannerList' + idx} bannerItems={bannerItemList} currentRotate={currentRotate} idx={idx} resetRotate={resetRotate}></BannerItem>
           ))}
         </BannerSlideBox>
       </BannerInnerBox>
