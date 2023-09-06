@@ -13,14 +13,15 @@ import { GET_USER_MINI_PL, USERS } from '@/src/utils/queryKeys';
 import { useRecoilState } from 'recoil';
 import { userInfomation } from '@/src/atoms/atoms';
 import useIsMount from '@/src/hooks/useIsMount';
+import TypingLoading from '../../common/Loading/TypingLoading';
 
 const EditSidebarHeader = () => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const { isMount } = useIsMount();
   const queryClient = useQueryClient();
   const { getApi } = customApi('/file/getUserPl');
-  const { data } = useQuery([GET_USER_MINI_PL, USERS], () => getApi(true));
-  const { postApi } = ifInImageApi('/file/upload', true);
+  const { data, isLoading } = useQuery([GET_USER_MINI_PL, USERS], () => getApi(true));
+  const { postApi } = ifInImageApi('/file/upload');
   const { mutate } = useMutation(postApi, {
     onSuccess(data) {
       setIsChangeValue(false);
@@ -81,18 +82,22 @@ const EditSidebarHeader = () => {
     return () => subscription.unsubscribe();
   }, [watch]);
   const externaImageLoader = ({ src }: { src: string }) => `${src}`;
-
-
   return (
     <FormProvider {...methods}>
       <EditSidebarHeaderForm onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <SidebarHeaderBox>
           <ImgBox>
-            <Image loader={externaImageLoader} src={image || defaultAuthorImage.src} alt={'프로필 이미지'} width={120} height={120} />
-            <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={'userImage'} />
+            {isLoading ? (
+              <TypingLoading />
+            ) : (
+              <>
+                <Image loader={externaImageLoader} src={image} alt={'프로필 이미지'} width={120} height={120} />
+                <ImageInputLabelBox setIsChangeValue={setIsChangeValue} setImage={setImage} id={'userImage'} />
+              </>
+            )}
           </ImgBox>
           <DescBox>
-            <TextArea className="customScroll" disabled={!isMount && !Boolean(currentUser?.isAdmin)} {...register('description')}></TextArea>
+            <TextArea className="customScroll" disabled={!Boolean(currentUser?.isAdmin)} {...register('description')}></TextArea>
           </DescBox>
           <EditBtn isChangeValue={isChangeValue} disabled={!isChangeValue}>
             저장
