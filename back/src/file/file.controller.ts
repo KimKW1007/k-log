@@ -12,13 +12,22 @@ import { FileService } from './file.service';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
+import { ConfigService } from '@nestjs/config';
+import uploads from 'src/utils/imageUploads';
 
 
 
 
 @Controller('file')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(private readonly fileService: FileService, private configService : ConfigService) {}
+
+  @Post('/boardImage')
+  @UseInterceptors(FileInterceptor('image'))
+  async boardImageUpload(@UploadedFile() file: Express.Multer.File) {
+    const imageUrl = await uploads(file.buffer, file.mimetype, this.configService.get("IMGUR_ID"))
+    return {url : imageUrl}
+  }
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('image'))
