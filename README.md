@@ -131,9 +131,18 @@ K : Log는 개발공부를 기록하는 블로그 입니다.
 
 ## 시스템 아키텍쳐
 
+### image-db 제거 전
+
 ![Frame 11](https://github.com/KimKW1007/k-log/assets/90603614/3513944e-0ba6-4106-b88d-22ad9fcb56f2)
 
 ![Frame 12](https://github.com/KimKW1007/k-log/assets/90603614/94514547-08cd-4736-8eec-2a662c598095)
+
+### image-db 제거 후
+
+![new1](https://github.com/KimKW1007/k-log/assets/90603614/811ff9c9-1c7f-46cb-afab-190f0f96e567)
+
+![new2](https://github.com/KimKW1007/k-log/assets/90603614/9c348cd3-9e80-4722-adb9-045fce60a821)
+
 
 <br/>
 <br/>
