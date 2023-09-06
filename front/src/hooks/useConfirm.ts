@@ -1,5 +1,5 @@
 
-const useConfirm = (pathname: string, mutate: any) => {
+const useConfirm = (pathname: string) => {
   const handlePageLeave = (e: BeforeUnloadEvent) => {
     // 새로고침 시에만 경고 메시지 표시
     e.preventDefault();
@@ -14,9 +14,7 @@ const useConfirm = (pathname: string, mutate: any) => {
           history.pushState(null, '', pathname);
         }
         throw 'routeChange aborted.';
-      } else {
-        mutate({});
-      }
+      } 
     }
   };
   return { handlePageLeave, handleRouteChangeStart };
