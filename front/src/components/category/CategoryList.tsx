@@ -16,7 +16,7 @@ export interface SubCategoryBackProps {
 const CategoryList = ({ isOverHeader }: { isOverHeader: boolean }) => {
   return (
     <CategoryNav>
-      <CategoryListBox $isOverHeader={isOverHeader}>
+      <CategoryListBox className='customScroll' $isOverHeader={isOverHeader}>
         <CategoryAllListLink href={'/category'} $isOverHeader={isOverHeader}>
           분류 전체보기
         </CategoryAllListLink>
@@ -69,18 +69,28 @@ const CategoryListBox = styled.div<{ $isOverHeader: boolean }>`
   width: 230px;
   max-height: 70vh;
   background: #292929;
+  overflow-y:scroll;
   color: #fff;
   padding: 10px 15px 25px;
   transition: 0.4s ease-in-out;
   border: 1px solid #565656;
   border-top: 4px solid ${({ theme }) => theme.color.err};
   border-radius: 0 0 20px 20px;
-  overflow: hidden;
+  &::-webkit-scrollbar-thumb {
+    transition: background-color 0.4s ease-in-out;
+  }
+  &::-webkit-scrollbar-track {
+    margin : 10px 0;
+  }
+  
   ${({ $isOverHeader, theme }) =>
     $isOverHeader &&
     `
     background: #fff;
     color:#232323;
     border-top: 4px solid ${theme.color.success};
+    &::-webkit-scrollbar-thumb {
+      background-color: #292929;
+    }
   `}
 `;
