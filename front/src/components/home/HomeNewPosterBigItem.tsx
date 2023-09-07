@@ -24,7 +24,7 @@ const HomeNewPosterBigItem = (board: any) => {
             <h4>{boardTitle}</h4>
           </PosterTitle>
         </PosterTop>
-        <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+        <PostDesc dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '').replaceAll("&nbsp;"," ")) }} />
         <ImageBox>
           <ImageBg isDefault={!Boolean(thumbnail)} thumbnailUrl={thumbnail || defaultImage.src} />
         </ImageBox>

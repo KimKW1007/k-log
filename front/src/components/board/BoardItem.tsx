@@ -34,6 +34,7 @@ const BoardItem = (board: any) => {
               __html: DOMPurify.sanitize(
                 decodeHTMLEntities(contents)
                   .replace(/(<([^>]+)>)/gi, '')
+                  .replaceAll("&nbsp;"," ")
                   .slice(0, 500)
               )
             }}

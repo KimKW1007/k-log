@@ -74,7 +74,7 @@ const SearchListBox = ({ data, title, currentValue, isRecent }: SearchListBoxPro
                   <SearchItemIconBox>{isRecent ? <AccessTime /> : <Clipboard />}</SearchItemIconBox>
                   <SearchItemContents>
                     <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(boardTitle) }} />
-                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '')) }} />
+                    <p dangerouslySetInnerHTML={{ __html: highlightSearchTerm(title === 'Tags' ? tags : decodeHTMLEntities(contents).replace(/(<([^>]+)>)/gi, '').replaceAll("&nbsp;"," ")) }} />
                   </SearchItemContents>
                   <SearchItemIconBox className="enterIconBox">
                     <ArrowEnterLeft />
