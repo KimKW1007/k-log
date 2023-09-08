@@ -20,8 +20,13 @@ export class CategoryController {
   }
 
   @Get('/getSubCategory/:categoryTitle')
-  getAllSubCategory(@Param('categoryTitle') categoryTitle : string): Promise<Category>{
-    return this.categoryService.getAllSubCategory(categoryTitle.replace("-","/"));
+  getSubCategory(@Param('categoryTitle') categoryTitle : string): Promise<Category>{
+    return this.categoryService.getSubCategory(categoryTitle.replace("-","/"));
+  }
+
+  @Get('/getAllSubCategory')
+  getAllSubCategory(){
+    return this.categoryService.getAllSubCategory();
   }
 
 
