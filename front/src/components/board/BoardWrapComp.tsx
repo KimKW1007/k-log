@@ -4,11 +4,6 @@ import BoardItem from './BoardItem';
 import night_BG from '@/src/assets/images/dark_night.jpg';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
-import LoadingText from '@/src/components/common/Loading/LoadingText';
-import { useRouter } from 'next/navigation';
-import { useRecoilState } from 'recoil';
-import { userInfomation } from '@/src/atoms/atoms';
-import { Pen } from '@styled-icons/bootstrap';
 import PageNationArea from './PageNationArea';
 import useIsMount from '@/src/hooks/useIsMount';
 
@@ -21,11 +16,6 @@ interface BoardWrapProps {
 
 const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapProps) => {
   const { isMount } = useIsMount();
-  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
-  const router = useRouter();
-  const onClickRouterPushCreatePage = () => {
-    router.push(`/category/${title[0].replaceAll('/', '-')}/${title[1].replaceAll('/', '-')}/create`);
-  };
 
   return (
     <CategoryWrap>
@@ -34,12 +24,6 @@ const BoardWrapComp = ({ title, currentList, isLoading, lastPage }: BoardWrapPro
           <BoardTitleInnerBox>{isMount && title.map((ele, idx) => <p key={ele + 'title' + idx}>{ele}</p>)}</BoardTitleInnerBox>
         </BoardTitleBox>
         <ListBox isLoading={isLoading} isEmpty={Boolean(currentList?.length < 1)}>
-          {isMount && currentUser?.isAdmin && title.length > 1 && (
-            <CreateBoardBtn onClick={onClickRouterPushCreatePage}>
-              <Pen />
-              글쓰기
-            </CreateBoardBtn>
-          )}
           {isLoading ||
             (currentList?.length >= 1 ? (
               <>
@@ -171,25 +155,5 @@ export const EmptyIconBox = styled(AllCenterFlex)`
   svg {
     width: 70px;
     margin-bottom: 30px;
-  }
-`;
-
-const CreateBoardBtn = styled.button`
-  position: absolute;
-  right: 8%;
-  top: 40px;
-  line-height: 15px;
-  display: flex;
-  align-items: center;
-  padding: 12px 30px 12px 24px;
-  background: #e1e1e1;
-  border-radius: 20px;
-  transition: 0.2s;
-  svg {
-    width: 15px;
-    margin-right: 6px;
-  }
-  &:hover {
-    background: #fff;
   }
 `;
