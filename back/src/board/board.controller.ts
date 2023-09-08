@@ -9,10 +9,10 @@ import { User } from 'src/auth/user.entity';
 export class BoardController {
   constructor(private boardService: BoardService) {}
 
-  @Get('/lastBoardId/:categorySubTitle')
+  @Get('/lastBoardId')
   @UseGuards(AuthGuard())
-  createLastBoardId(@Param('categorySubTitle') categorySubTitle : string,@GetUser() user : User){
-    return this.boardService.createLastBoardId(categorySubTitle.replace("-","/"), user)
+  createLastBoardId(@GetUser() user : User){
+    return this.boardService.createLastBoardId(user)
   }
 
 @Delete('/deleteBoard/:id')
@@ -28,6 +28,12 @@ export class BoardController {
     return this.boardService.createBoard(body, file, user)
   }
 
+  @Post('/category/edit')
+  @UseInterceptors(FileInterceptor('boardImage'))
+  @UseGuards(AuthGuard())
+  updateBoard(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User){
+    return this.boardService.updateBoard(body, file, user)
+  }
 
   @Post("/search")
   searchBoard(@Body("searchValue") searchValue : string){
@@ -53,12 +59,6 @@ export class BoardController {
     return this.boardService.getBoardsForSubCategory(categorySubTitle.replace("-","/"), page)
   }
 
-  @Post('/category/edit')
-  @UseInterceptors(FileInterceptor('boardImage'))
-  @UseGuards(AuthGuard())
-  updateBoard(@Body() body, @UploadedFile() file: Express.Multer.File, @GetUser() user : User){
-    return this.boardService.updateBoard(body, file, user)
-  }
 
   @Get('/getNewBoards')
   getNewBoards(){
