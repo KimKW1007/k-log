@@ -5,10 +5,8 @@ import hljs from 'highlight.js/lib/core';
 import { removeEmptyBetweenString } from './removeTwoMoreEmptyBetweenString';
 import 'highlight.js/styles/atom-one-dark.css';
 
-const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, subTitle: string) => {
+const useCustomQuill = (quillRef: React.RefObject<ReactQuill>) => {
   const { postApi } = ifInImageApi('/file/boardImage');
-
-
 
   const handleImage = () => {
     const input = document.createElement('input');
@@ -20,9 +18,6 @@ const useCustomQuill = (quillRef: React.RefObject<ReactQuill>, userId: string, s
         const file = new File([input.files[0]], removeEmptyBetweenString(input.files[0].name), { type: input.files[0].type });
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('userId', userId);
-        formData.append('subTitle', subTitle);
-        formData.append('boardId', '작성중');
         try {
           const res = await postApi(formData);
           const IMG_URL = res.url;
