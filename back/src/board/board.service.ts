@@ -16,8 +16,8 @@ export class BoardService {
     return this.boardRepository.createBoard(body, file, user);
   }
 
-  async createLastBoardId(categorySubTitle: string, user: User) {
-    return this.boardRepository.createLastBoardId(categorySubTitle, user);
+  async createLastBoardId(user: User) {
+    return this.boardRepository.createLastBoardId(user);
   }
 
   async searchBoard(searchValue: string) {
