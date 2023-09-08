@@ -12,7 +12,7 @@ export interface CategoryBackProps {
 export interface SubCategoryBackProps {
   id?: string;
   categorySubTitle: string;
-  boards : any;
+  boards ?: any;
 }
 const CategoryList = ({ isOverHeader }: { isOverHeader: boolean }) => {
   const [allBoardLength, setAllBoardLength] = useState(0);
