@@ -6,6 +6,7 @@ import { ChevronDown, ChevronUp } from '@styled-icons/entypo';
 import { AllCenterFlex, OnlyAlignCenterFlex } from '@/src/components/common/CommonFlex';
 import { DropAni } from '@/src/components/category/CategoryList';
 import useHandleClickOutside from '@/src/hooks/useHandleClickOutside';
+import { CategoryText } from '@/src/components/category/CategoryBox';
 
 interface CategorySelectWrapProps{
   currentSubCategory: string;
@@ -30,7 +31,7 @@ const CategorySelectWrap = ({currentSubCategory, setCurrentSubCategory}:Category
     <CategorySelectArea>
       <CategorySelect ref={categoryRef}>
         <CurrentCategoryArea isFocus={isCategoryOn} onClick={() => setIsCategoryOn((prev) => !prev)}>
-          <span>{currentSubCategory}</span>
+          <CategoryText>{currentSubCategory}</CategoryText>
           <ArrowBox>{isCategoryOn ? <ChevronUp /> : <ChevronDown />}</ArrowBox>
         </CurrentCategoryArea>
         {isCategoryOn && (
@@ -69,17 +70,6 @@ const CurrentCategoryArea = styled.button<{isFocus : boolean;}>`
   color: #fff;
   cursor: pointer;
   ${({isFocus}) => isFocus && `border: 1px solid #fff;`}
-  span {
-    position:relative;
-    z-index:3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width:100%;
-    height:100%;
-    margin-left: 20px;
-    user-select: none;
-  }
 `;
 const ArrowBox = styled(AllCenterFlex)`
   position:absolute;
