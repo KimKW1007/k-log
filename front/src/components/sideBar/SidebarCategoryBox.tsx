@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
 import CategoryItems from '@/src/components/category/CategoryItems';
 import { CategoryAllListLink } from '@/src/components/category/CategoryList';
+
 const SidebarCategoryBox = ({ isMenu }: { isMenu?: boolean }) => {
+  const [allBoardLength, setAllBoardLength] = useState(0);
   return (
     <CategoryBox className="customScroll" isMenu={isMenu}>
-      <CategoryAllListLink href={'/category'}>분류 전체보기</CategoryAllListLink>
-      <CategoryItems />
+      <CategoryAllListLink href={'/category'}>분류 전체보기<span> &#40; {allBoardLength} &#41;</span></CategoryAllListLink>
+      <CategoryItems setAllBoardLength={setAllBoardLength} />
     </CategoryBox>
   );
 };
