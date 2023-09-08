@@ -49,9 +49,10 @@ interface BoardFormProps {
   subTitle: string;
   id?: string;
   isEdit?: boolean;
+  setCurrentSubCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
+const BoardForm = ({ subTitle, id, isEdit = false, setCurrentSubCategory }: BoardFormProps) => {
   const methods = useForm({
     mode: 'all'
   });
@@ -67,12 +68,11 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
   const pathname = usePathname();
   const quillRef = useRef<ReactQuill>(null);
   const { isMount } = useIsMount();
-  const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
   const [currentTags, setCurrentTags] = useState<string[]>([]);
-  const { formats, modules } = useCustomQuill(quillRef, String(currentUser?.id!), subTitle);
-  const { getApi : boardLastIdApi } = customApi(`/board/lastBoardId/${subTitle.replaceAll('/', '-')}`);
-  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], () => boardLastIdApi(true),{
-    enabled : !isEdit
+  const { formats, modules } = useCustomQuill(quillRef);
+  const { getApi: boardLastIdApi } = customApi(`/board/lastBoardId`);
+  const { data: boardLastId } = useQuery([GET_BOARD_LAST_ID], () => boardLastIdApi(true), {
+    enabled: !isEdit
   });
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -109,11 +109,11 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
     enabled: !!isEdit
   });
   const { currentBoard } = data ?? {};
-
   useEffect(() => {
     if (data) {
       setCurrentTags(currentBoard.tags?.length >= 1 ? currentBoard.tags.split(',') : []);
       setValue('boardTitle', currentBoard.boardTitle);
+      setCurrentSubCategory(currentBoard.subCategory.categorySubTitle);
     }
   }, [data, isMount, isEdit]);
 
@@ -153,9 +153,12 @@ const BoardForm = ({ subTitle, id, isEdit = false }: BoardFormProps) => {
     setIsSuccess(true);
     handleClickMenu();
   };
-
   const onSubmit = ({ boardTitle, image }: any) => {
-    if (isEdit ? (!currentBoard.thumbnail && image.length <= 0) : image.length <= 0) {
+    if (subTitle === '') {
+      alert('카테고리를 선택해주세요');
+      return;
+    }
+    if (isEdit ? !currentBoard.thumbnail && image.length <= 0 : image.length <= 0) {
       if (confirm('대표이미지가 비어있습니다.\n계속 진행 시 기본이미지로 저장됩니다.')) {
         mutateFn({ boardTitle, image });
       }
