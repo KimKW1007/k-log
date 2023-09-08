@@ -4,27 +4,25 @@ import { BoardTitleBox } from '@/src/components/board/BoardWrapComp';
 import BoardForm from '@/src/components/board/subTitlePage/BoardForm';
 import styled from 'styled-components';
 import night_BG from '@/src/assets/images/dark_night.jpg';
+import CategoryCheckList from './CategoryCheckList';
+import CategoryBox from '@/src/components/category/CategoryBox';
+
 
 
 interface CreateEditPageInnerProps{
-  title:  string;
-  subTitle:  string;
   id ?: string;
   isEdit ?: boolean;
 }
 
 
-const CreateEditPageInner = ({ title, subTitle, id, isEdit = false } : CreateEditPageInnerProps) => {
-  const [currentTitle, setCurrentTitle] = useState<string[]>([]);
-
-  useEffect(() => {
-    setCurrentTitle([title, subTitle]);
-  }, [title, subTitle]);
+const CreateEditPageInner = ({ id, isEdit = false } : CreateEditPageInnerProps) => {
+  const [currentSubCategory , setCurrentSubCategory] = useState('카테고리 선택');
   return (
     <CreateWrap>
       <CreateContainer>
-        <BoardTitleBox>{currentTitle && currentTitle.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>)}</BoardTitleBox>
-        <BoardForm subTitle={subTitle} id={isEdit ? id : undefined} isEdit={isEdit} />
+        {/* <BoardTitleBox>{currentTitle && currentTitle.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>)}</BoardTitleBox> */}
+        <CategoryCheckList currentSubCategory={currentSubCategory} setCurrentSubCategory={setCurrentSubCategory} />
+        <BoardForm subTitle={currentSubCategory} setCurrentSubCategory={setCurrentSubCategory} id={isEdit ? id : undefined} isEdit={isEdit} />
       </CreateContainer>
     </CreateWrap>
   )
