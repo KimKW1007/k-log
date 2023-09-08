@@ -78,7 +78,7 @@ const BoardDetail = ({ id }: { id: string }) => {
             <NextPrevBoardBox type="prev" title={prevBoard.boardTitle} thumbnail={prevBoard.thumbnail} id={prevBoard.id} />
             <NextPrevBoardBox type="next" title={nextBoard.boardTitle} thumbnail={nextBoard.thumbnail} id={nextBoard.id} />
           </AnotherBoardArea>
-          {currentUser?.id === user.id && <UDBtnBox id={id} returnUrl={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`} />}
+          {currentUser?.id === user.id && <UDBtnBox id={id} />}
         </>
       )}
     </>

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { PencilSquare } from '@styled-icons/bootstrap';
 import useHandleClickOutside from '@/src/hooks/useHandleClickOutside';
 
-const UDBtnBox = ({ id, returnUrl }: { id: string; returnUrl: string }) => {
+const UDBtnBox = ({ id }: { id: string;  }) => {
   const settingsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -20,7 +20,7 @@ const UDBtnBox = ({ id, returnUrl }: { id: string; returnUrl: string }) => {
   const { deleteApi } = customApi(`/board/deleteBoard/${id}`);
   const { mutate } = useMutation(deleteApi, {
     onSuccess(data) {
-      router.replace(returnUrl);
+      router.replace(`/category`);
     }
   });
 
@@ -29,7 +29,7 @@ const UDBtnBox = ({ id, returnUrl }: { id: string; returnUrl: string }) => {
   };
 
   const handleUpdateBtn = () => {
-    router.push(`${returnUrl}/${id}/edit`);
+    router.push(`/${id}/edit`);
   };
 
   useHandleClickOutside(settingsRef, setIsActive);
