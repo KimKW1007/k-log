@@ -1,6 +1,6 @@
 "use client";
 import { ChildrenProps } from '@/src/types/children';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Header } from '@/src/components/header/Header';
 import IconLinkListBox from '@/src/components/common/IconLinkListBox';
@@ -9,10 +9,11 @@ import { useRecoilState } from 'recoil';
 import { searchModalState, userInfomation } from '@/src/atoms/atoms';
 import SearchModal from '../search/SearchModal';
 import { usePathname } from 'next/navigation';
-import actions from '@/app/actions';
-import customApi, { baseApi } from '@/src/utils/customApi';
+import customApi from '@/src/utils/customApi';
 import GetNewAccessToken from '@/src/app/getNewAccessToken';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { Pen } from '@styled-icons/bootstrap';
 
 const Layout = ({ children }: ChildrenProps) => {
   const [isOpenSearchModal, setIsOpenSearchModal] = useRecoilState(searchModalState);
@@ -54,6 +55,7 @@ const Layout = ({ children }: ChildrenProps) => {
     <Root>
       {isAboutAuth ? <IconLinkListBox popupPage={popupPage} /> : <Header />}
       {children}
+      {routerPathCheck('/category') && currentUser?.isAdmin && <CreateBoardLink href={'/create'} title='글쓰기'><Pen/></CreateBoardLink>}
       <Footer />
       {isOpenSearchModal && <SearchModal onClose={() => setIsOpenSearchModal(false)} />}
     </Root>
@@ -68,3 +70,23 @@ const Root = styled.div`
   height: 100%;
 `;
 
+const CreateBoardLink = styled(Link)`
+  position: fixed;
+  z-index: 9;
+  right: 30px;
+  bottom: 30px;
+  width: 45px;
+  height: 45px;
+  padding: 12px;
+  border-radius: 50%;
+  overflow:hidden;
+  background : #fff;
+  transition: .4s ease-in-out;
+  &:hover{
+    background : #ffffffa1;
+  }
+  svg{
+    width:100%;
+    color: #232323;
+  }
+`
