@@ -22,7 +22,7 @@ export class CategoryService {
     });
     return category ?? [];
   }
-  async getAllSubCategory(categoryTitle : string): Promise<Category> {
+  async getSubCategory(categoryTitle : string): Promise<Category> {
     const category = await this.categoryRepository.findOneBy({
        categoryTitle,  user: { id: 1 }
     });
@@ -31,6 +31,16 @@ export class CategoryService {
     }
     return category;
   }
+
+  async getAllSubCategory(){
+    const categories = await this.categoryRepository.find({order : {dndNumber : 'asc', subCategories : {id : "asc"}}})
+    const allSubCategory = categories.map(category => category.subCategories).flat();
+    if(!allSubCategory){
+      return []
+    }
+    return allSubCategory
+  }
+
 
   async updateTitles(categoryDto: Category[], user: User): Promise<any> {
     if (!user.isAdmin) throw new UnauthorizedException('관리자 권한이 없습니다.');
