@@ -1,11 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { BoardTitleBox } from '@/src/components/board/BoardWrapComp';
+import React, { useState } from 'react';
 import BoardForm from '@/src/components/board/subTitlePage/BoardForm';
 import styled from 'styled-components';
 import night_BG from '@/src/assets/images/dark_night.jpg';
-import CategoryCheckList from './CategoryCheckList';
-import CategoryBox from '@/src/components/category/CategoryBox';
+import CategoryCheckList from './CategorySelectWrap';
 
 
 
@@ -20,7 +18,6 @@ const CreateEditPageInner = ({ id, isEdit = false } : CreateEditPageInnerProps) 
   return (
     <CreateWrap>
       <CreateContainer>
-        {/* <BoardTitleBox>{currentTitle && currentTitle.map((ele, idx) => <p key={ele + 'salt' + idx}>{ele}</p>)}</BoardTitleBox> */}
         <CategoryCheckList currentSubCategory={currentSubCategory} setCurrentSubCategory={setCurrentSubCategory} />
         <BoardForm subTitle={currentSubCategory} setCurrentSubCategory={setCurrentSubCategory} id={isEdit ? id : undefined} isEdit={isEdit} />
       </CreateContainer>
