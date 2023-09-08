@@ -38,7 +38,7 @@ const CategorySelectWrap = ({currentSubCategory, setCurrentSubCategory}:Category
           <CategoryOptionsArea>
             <CategoryListBox>
               {data?.map(({categorySubTitle}: any) => (
-                <CategoryItem onClick={onClickCategoryItem(categorySubTitle)}>{categorySubTitle}</CategoryItem>
+                <CategoryItem key={categorySubTitle + 'categorySubTitle'} onClick={onClickCategoryItem(categorySubTitle)}>{categorySubTitle}</CategoryItem>
               ))}
             </CategoryListBox>
           </CategoryOptionsArea>
