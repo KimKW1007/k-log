@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import CategoryItems from './CategoryItems';
 import Link from 'next/link';
@@ -12,22 +12,24 @@ export interface CategoryBackProps {
 export interface SubCategoryBackProps {
   id?: string;
   categorySubTitle: string;
+  boards : any;
 }
 const CategoryList = ({ isOverHeader }: { isOverHeader: boolean }) => {
+  const [allBoardLength, setAllBoardLength] = useState(0);
   return (
-    <CategoryNav>
+    <CategoryNav $isOverHeader={isOverHeader}>
       <CategoryListBox className='customScroll' $isOverHeader={isOverHeader}>
         <CategoryAllListLink href={'/category'} $isOverHeader={isOverHeader}>
-          분류 전체보기
+          분류 전체보기<span> &#40; {allBoardLength} &#41;</span>
         </CategoryAllListLink>
-        <CategoryItems isOverHeader={isOverHeader} />
+        <CategoryItems setAllBoardLength={setAllBoardLength} isOverHeader={isOverHeader} />
       </CategoryListBox>
     </CategoryNav>
   );
 };
 
 export default CategoryList;
-const DropAni = keyframes`
+export const DropAni = keyframes`
   0%{
     margin-top: -4px;
     opacity: 0;
@@ -38,10 +40,20 @@ const DropAni = keyframes`
   }
 `;
 
-const CategoryNav = styled.nav`
+const CategoryNav = styled.nav<{ $isOverHeader?: boolean }>`
   position: absolute;
+  z-index: 16;
   margin-top: 2px;
   animation: ${DropAni} 0.4s forwards;
+  border-top: 4px solid ${({ theme }) => theme.color.err};
+
+  ${({ $isOverHeader, theme }) =>
+  $isOverHeader &&
+  `
+  border-top: 4px solid ${theme.color.success};
+`}
+  
+
 `;
 
 export const CategoryAllListLink = styled(Link)<{ $isOverHeader?: boolean }>`
@@ -63,7 +75,7 @@ export const CategoryAllListLink = styled(Link)<{ $isOverHeader?: boolean }>`
   `}
 `;
 
-const CategoryListBox = styled.div<{ $isOverHeader: boolean }>`
+export const CategoryListBox = styled.div<{ $isOverHeader ?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 230px;
@@ -73,8 +85,7 @@ const CategoryListBox = styled.div<{ $isOverHeader: boolean }>`
   color: #fff;
   padding: 10px 15px 25px;
   transition: 0.4s ease-in-out;
-  border: 1px solid #565656;
-  border-top: 4px solid ${({ theme }) => theme.color.err};
+  border: 2px solid #565656;
   border-radius: 0 0 20px 20px;
   &::-webkit-scrollbar-thumb {
     transition: background-color 0.4s ease-in-out;
@@ -88,9 +99,11 @@ const CategoryListBox = styled.div<{ $isOverHeader: boolean }>`
     `
     background: #fff;
     color:#232323;
-    border-top: 4px solid ${theme.color.success};
+    border: 2px solid ${theme.color.success};
     &::-webkit-scrollbar-thumb {
       background-color: #292929;
     }
   `}
+  border-top: 0;
+
 `;

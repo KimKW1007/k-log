@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import customApi from '@/src/utils/customApi';
@@ -9,9 +9,31 @@ import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { EmptyIconBox } from '@/src/components/board/BoardWrapComp';
 import TypingLoading from '../common/Loading/TypingLoading';
 
-const CategoryItems = ({ isOverHeader }: { isOverHeader?: boolean }) => {
+interface CategoryItemsProps {
+  setAllBoardLength : React.Dispatch<React.SetStateAction<number>>;
+  isOverHeader?: boolean
+}
+
+const CategoryItems = ({ isOverHeader, setAllBoardLength }: CategoryItemsProps) => {
   const { getApi } = customApi('/category');
   const { data, isLoading } = useQuery([GET_ALL_CATEGORY], () => getApi());
+  const [categoryBoardLength , setCategoryBoardLength] = useState<number[]>([]);
+  useEffect(()=>{
+    if(data){
+      let allBoardLength = 0
+      const categoryBoardLength = data.map((ele : any) => {
+        let boardLength = 0;
+        ele.subCategories.map((obj: any) => {
+          boardLength += obj.boards.length;
+        })
+        allBoardLength += boardLength
+        return boardLength
+      })
+      setCategoryBoardLength(categoryBoardLength)
+      setAllBoardLength(allBoardLength)
+    }
+  },[data])
+
   return (
     <>
     {isLoading ? <TypingLoading /> :
@@ -23,18 +45,18 @@ const CategoryItems = ({ isOverHeader }: { isOverHeader?: boolean }) => {
           </EmptyCategoryBox>
         )}
         {data?.length > 0 &&
-          data.map(({ categoryTitle, subCategories }: CategoryBackProps) => (
-            <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
+          data.map(({ categoryTitle, subCategories }: CategoryBackProps, idx : number) => (
+              <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
               <CategoryTitle>
-                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}</Link>
+                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}<span> &#40; {categoryBoardLength[idx]} &#41;</span></Link>
               </CategoryTitle>
-              {subCategories.map(({ categorySubTitle, id }: SubCategoryBackProps) => (
-                <CategoryItem key={'categorySubTitle' + categorySubTitle}>
-                  <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle}</Link>
-                </CategoryItem>
-              ))}
-            </CategoryItmeList>
-          ))}
+              {subCategories.map(({ categorySubTitle, id, boards }: SubCategoryBackProps) => (
+                  <CategoryItem key={'categorySubTitle' + categorySubTitle}>
+                    <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle} <span> &#40; {boards.length} &#41;</span></Link>
+                  </CategoryItem>
+                ))}
+              </CategoryItmeList>
+            ))}
       </>
       }
     </>
@@ -102,6 +124,9 @@ const CategoryItem = styled.dd`
     word-break: keep-all;
     padding: 7px 20px;
     transition: 0.2s;
+    span{
+      display:inline-block;
+    }
     &:after {
       content: '';
       position: absolute;
