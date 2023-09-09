@@ -14,7 +14,7 @@ const PageLoading = ({isLoading , isCreate} : {isLoading : boolean; isCreate ?: 
         setIsOpacity(true);
         setTimeout(()=>{
           setIsShow(false);
-        },1500)
+        },1200)
       },100)
     }
     return ()=>{clearTimeout(loadTimer)}
