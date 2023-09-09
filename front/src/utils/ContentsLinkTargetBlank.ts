@@ -3,7 +3,9 @@ const ContentsLinkTargetBlank = (ref: React.RefObject<HTMLDivElement>) => {
     const Links = ref.current.querySelectorAll('a');
     if(Links.length > 0){
       Links.forEach((Link)=>{
-        Link.target = "_blank";
+        if(!Link.href.includes(window.location.host)){
+          Link.target = "_blank";
+        }
       })
     }
   }
