@@ -14,7 +14,7 @@ interface CreateEditPageInnerProps{
 
 
 const CreateEditPageInner = ({ id, isEdit = false } : CreateEditPageInnerProps) => {
-  const [currentSubCategory , setCurrentSubCategory] = useState('카테고리 선택');
+  const [currentSubCategory , setCurrentSubCategory] = useState('');
   return (
     <CreateWrap>
       <CreateContainer>

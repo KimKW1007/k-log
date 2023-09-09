@@ -31,7 +31,7 @@ const CategorySelectWrap = ({currentSubCategory, setCurrentSubCategory}:Category
     <CategorySelectArea>
       <CategorySelect ref={categoryRef}>
         <CurrentCategoryArea isFocus={isCategoryOn} onClick={() => setIsCategoryOn((prev) => !prev)}>
-          <CategoryText>{currentSubCategory}</CategoryText>
+          <CategoryText>{currentSubCategory || "카테고리 선택"}</CategoryText>
           <ArrowBox>{isCategoryOn ? <ChevronUp /> : <ChevronDown />}</ArrowBox>
         </CurrentCategoryArea>
         {isCategoryOn && (
