@@ -138,7 +138,6 @@ const ImageBox = styled.div<{ isDefaultImg: boolean }>`
   position: relative;
   width: 168px;
   height: 168px;
-  background: #fff;
   overflow: hidden;
   flex-shrink: 0;
   margin-left: 30px;
