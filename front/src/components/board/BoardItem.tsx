@@ -138,6 +138,7 @@ const ImageBox = styled.div<{ isDefaultImg: boolean }>`
   position: relative;
   width: 168px;
   height: 168px;
+  background: #fff;
   overflow: hidden;
   flex-shrink: 0;
   margin-left: 30px;
@@ -163,5 +164,5 @@ const ImageBox = styled.div<{ isDefaultImg: boolean }>`
 const ImageBg = styled.div<{ thumbnailUrl: string }>`
   width: 100%;
   height: 100%;
-  background: url(${({ thumbnailUrl }) => thumbnailUrl}) no-repeat center center/auto 100%;
+  background: url(${({ thumbnailUrl }) => thumbnailUrl}) no-repeat center center/cover;
 `;
