@@ -122,7 +122,7 @@ const ListBox = styled(OnlyAlignCenterFlex)<{ isLoading: boolean; isEmpty: boole
   position: relative;
   background: #23262d60;
   border-radius: 100px 100px 0 0;
-  min-height: 800px;
+  min-height: calc(100vh - 410px);
   padding: 120px 50px 50px;
   flex-direction: column;
   justify-content: space-between;
