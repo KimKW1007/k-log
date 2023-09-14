@@ -17,7 +17,7 @@ export interface CategoryInputProps {
 
 const EditCategoryInput = ({ sub = false, categoryIndex, subCategoriesIndex, name, remove }: CategoryInputProps) => {
   const [isOnDeleteBtn, setIsOnDeleteBtn] = useState(false);
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const onClickDeleteInput = () => {
@@ -50,7 +50,13 @@ const EditCategoryInput = ({ sub = false, categoryIndex, subCategoriesIndex, nam
 
   return (
     <EditInputBox>
-      <EditInput {...register(name)} name={name} placeholder="카테고리를 입력해주세요"></EditInput>
+      <EditInput {...register(name,{onChange(event) {
+          const value = event.target.value;
+          if(value.includes("-")){
+            alert("특수기호 '-' 는 사용 할 수 없습니다.");
+            setValue(name , value.replace('-', ''));
+          }
+      },})} name={name} placeholder="카테고리를 입력해주세요"></EditInput>
       <DeleteBox>
         <DeleteBtn type="button" onClick={handleDeleteModal} onMouseLeave={() => setIsOnDeleteBtn(false)} onMouseOver={() => setIsOnDeleteBtn(true)} isOnDeleteBtn={isOpenDeleteModal || isOnDeleteBtn}>
           <Trash></Trash>

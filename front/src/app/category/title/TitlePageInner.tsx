@@ -10,12 +10,13 @@ import useIsMount from '@/src/hooks/useIsMount';
 import { useRecoilState } from 'recoil';
 import { currentPagenation } from '@/src/atoms/atoms';
 import PageLoading from '@/src/components/common/Loading/PageLoading';
+import { replaceSlash } from '@/src/utils/replaceSlash';
 
 const TitlePageInner = ({title} : {title : string}) => {
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
   const { isMount } = useIsMount();
-  const { getApi } = customApi(`/board/category/${title.replaceAll('/', '-')}?page=${currentPage ?? 1}`);
+  const { getApi } = customApi(`/board/category/${replaceSlash(title)}?page=${currentPage ?? 1}`);
   const { data, isLoading, refetch } = useQuery([GET_BOARDS, title], () => getApi().catch(e => notFound()), {
     enabled: !!Boolean(title) && isMount
   });

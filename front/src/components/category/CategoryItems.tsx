@@ -8,6 +8,7 @@ import { CategoryBackProps, SubCategoryBackProps } from './CategoryList';
 import { EmojiDizzyFill } from '@styled-icons/bootstrap/EmojiDizzyFill';
 import { EmptyIconBox } from '@/src/components/board/BoardWrapComp';
 import TypingLoading from '../common/Loading/TypingLoading';
+import { replaceSlash } from '@/src/utils/replaceSlash';
 
 interface CategoryItemsProps {
   setAllBoardLength : React.Dispatch<React.SetStateAction<number>>;
@@ -48,11 +49,11 @@ const CategoryItems = ({ isOverHeader, setAllBoardLength }: CategoryItemsProps) 
           data.map(({ categoryTitle, subCategories }: CategoryBackProps, idx : number) => (
               <CategoryItmeList $isOverHeader={isOverHeader} key={'categoryTitle' + categoryTitle}>
               <CategoryTitle>
-                <Link href={`/category/${categoryTitle.replaceAll('/', '-')}`}>{categoryTitle}<span> &#40; {categoryBoardLength[idx]} &#41;</span></Link>
+                <Link href={`/category/${replaceSlash(categoryTitle)}`}>{categoryTitle}<span> &#40; {categoryBoardLength[idx]} &#41;</span></Link>
               </CategoryTitle>
               {subCategories.map(({ categorySubTitle, id, boards }: SubCategoryBackProps) => (
                   <CategoryItem key={'categorySubTitle' + categorySubTitle}>
-                    <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{categorySubTitle} <span> &#40; {boards.length} &#41;</span></Link>
+                    <Link href={`/category/${replaceSlash(categoryTitle)}/${replaceSlash(categorySubTitle)}`}>{categorySubTitle} <span> &#40; {boards.length} &#41;</span></Link>
                   </CategoryItem>
                 ))}
               </CategoryItmeList>

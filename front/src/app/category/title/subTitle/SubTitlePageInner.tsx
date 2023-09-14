@@ -10,12 +10,13 @@ import { currentPagenation } from '@/src/atoms/atoms';
 import useIsMount from '@/src/hooks/useIsMount';
 import PageLoading from '@/src/components/common/Loading/PageLoading';
 import { CategoryPageProps } from '@/app/category/[title]/[subTitle]/page';
+import { replaceSlash } from '@/src/utils/replaceSlash';
 
 const SubTitlePageInner = ({title, subTitle} : CategoryPageProps) => {
     const pathname = usePathname();
     const { isMount } = useIsMount();
     const [currentPage, setCurrentPage] = useRecoilState(currentPagenation);
-    const { getApi } = customApi(`/board/subCategory/${subTitle.replaceAll('/', '-')}?page=${currentPage ?? 1}`);
+    const { getApi } = customApi(`/board/subCategory/${replaceSlash(subTitle)}?page=${currentPage ?? 1}`);
     const { data, isLoading, refetch } = useQuery([GET_BOARDS, subTitle], () => getApi(), {
       enabled: !!Boolean(subTitle) && !!Boolean(title)
     });

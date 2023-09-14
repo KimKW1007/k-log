@@ -19,6 +19,7 @@ import useConvert from '@/src/hooks/useConvert';
 import createBlockquoteBox from '@/src/utils/createBlockquoteBox';
 import { ContentsWrap } from '@/src/styles/boardContents-style';
 import ContentsLinkTargetBlank from '@/src/utils/ContentsLinkTargetBlank';
+import { replaceSlash } from '@/src/utils/replaceSlash';
 
 const BoardDetail = ({ id }: { id: string }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userInfomation);
@@ -51,7 +52,7 @@ const BoardDetail = ({ id }: { id: string }) => {
         <>
           <DetailTitleBox>
             <CategoryBox>
-              <Link href={`/category/${categoryTitle.replaceAll('/', '-')}/${categorySubTitle.replaceAll('/', '-')}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
+              <Link href={`/category/${replaceSlash(categoryTitle)}/${replaceSlash(categorySubTitle)}`}>{`${categoryTitle} - ${categorySubTitle}`}</Link>
             </CategoryBox>
             <h2>{boardTitle}</h2>
             <CreatedDateBox>

@@ -2,6 +2,7 @@ import type { Metadata, NextPage, ResolvingMetadata } from 'next';
 import SubTitlePageInner from '@/src/app/category/title/subTitle/SubTitlePageInner';
 import customApi from '@/src/utils/customApi';
 import { notFound } from 'next/navigation';
+import { replaceDash } from '@/src/utils/replaceSlash';
 
 export interface CategoryPageProps {
   [key: string]: string;
@@ -10,7 +11,7 @@ export interface CategoryPageProps {
 export const generateMetadata = async ({ params: { title, subTitle } }: { params: CategoryPageProps }, parent: ResolvingMetadata): Promise<Metadata> => {
   try {
     const decodeTitle = decodeURI(title);
-    const decodeSubTitle = decodeURI(subTitle).replaceAll('-', '/');
+    const decodeSubTitle = replaceDash(decodeURI(subTitle));
     const { getApi } = customApi(`/category/getSubCategory/${decodeTitle}`);
     const data = await getApi();
     const checkSubTitleInData = data.subCategories.find((x: { categorySubTitle: string }) => x.categorySubTitle === decodeSubTitle);
@@ -28,8 +29,8 @@ export const generateMetadata = async ({ params: { title, subTitle } }: { params
 
 const SubCategoryPage: NextPage = ({ params }: any) => {
   const { title, subTitle } = params;
-  const decodeTitle = decodeURI(title).replaceAll('-', '/');
-  const decodeSubTitle = decodeURI(subTitle).replaceAll('-', '/');
+  const decodeTitle = replaceDash(decodeURI(title));
+  const decodeSubTitle = replaceDash(decodeURI(subTitle));
 
   return <SubTitlePageInner title={decodeTitle} subTitle={decodeSubTitle} />;
 };
